@@ -53,7 +53,8 @@ export async function POST(req: Request) {
     };
     await redis.hset(KEY_OPS, key, JSON.stringify(entry));
     await redis.zadd(KEY_RANK, xp, key);
-    return NextResponse.json({ ok: true });
+    // Geef de écht opgeslagen (begrensde) waarden terug — transparant bij clamping.
+    return NextResponse.json({ ok: true, stored: { xp, level: entry.level, solved, streak: entry.streak } });
   } catch (e) {
     return NextResponse.json({ ok: false, error: String(e).slice(0, 120) }, { status: 500 });
   }

@@ -20,11 +20,6 @@ const DEMO: Operator[] = [
   { uid: "d8", name: "awk_anouk", xp: 75, level: 2, streak: 1, solved: 4, color: "#e8dcc6" },
 ];
 
-const SEG = 14;
-function bar(xp: number, max: number): string {
-  const f = xp <= 0 ? 0 : Math.max(1, Math.round((xp / max) * SEG));
-  return "▓".repeat(f) + "░".repeat(SEG - f);
-}
 const medal = (r: number) => (r === 1 ? "🥇" : r === 2 ? "🥈" : r === 3 ? "🥉" : `#${r}`);
 const clock = () => { const d = new Date(); return [d.getHours(), d.getMinutes(), d.getSeconds()].map((n) => String(n).padStart(2, "0")).join(":"); };
 
@@ -106,7 +101,7 @@ export default function LeaderboardPage() {
         <span className="kicker">ranglijst · operator-monitor</span>
         <h1 className="mt-3 text-4xl font-bold tracking-tight">Leader<span className="text-gradient">board</span></h1>
         <p className="mt-3 max-w-2xl text-[15px] text-fg-muted">
-          Een live <span className="font-mono text-brand">htop</span> van alle operators, gerangschikt op verdiende inkt (XP).
+          Een live <span className="font-mono text-brand">htop</span> van alle operators, gerangschikt op verdiende XP.
           {!configured && " — lokale demo; verbind Upstash voor de échte gedeelde ranglijst."}
         </p>
       </Reveal>
@@ -175,7 +170,7 @@ export default function LeaderboardPage() {
             <div className="mb-2 text-[color:rgb(var(--term-fg)/0.85)]">
               <span className="text-[color:rgb(var(--t-cmd))]">operators</span>: {rows.length}
               <span className="mx-2 opacity-40">·</span>
-              totale inkt: <span className="text-[color:rgb(var(--t-flag))]">{totalXp.toLocaleString("nl-BE")}</span> XP
+              totale XP: <span className="text-[color:rgb(var(--t-flag))]">{totalXp.toLocaleString("nl-BE")}</span>
               <span className="mx-2 opacity-40">·</span>
               {hasJoined ? <>jouw rang: <span className="text-[color:rgb(var(--t-op))]">#{myRank || "—"}</span></> : <span className="opacity-60">nog niet aangesloten</span>}
               {!configured && <span className="ml-2 text-[color:rgb(var(--t-comment))]"># lokale demo</span>}
@@ -186,7 +181,7 @@ export default function LeaderboardPage() {
               <span>rang</span>
               <span>operator</span>
               <span className="hidden sm:block text-right">lvl</span>
-              <span>inkt (xp)</span>
+              <span>xp</span>
               <span className="hidden sm:block text-right">🔥</span>
               <span className="hidden sm:block text-right">✓</span>
             </div>
@@ -198,16 +193,19 @@ export default function LeaderboardPage() {
                 const c = op.color || "#E95420";
                 return (
                   <div key={op.uid ?? op.name + i}
-                    className={`grid grid-cols-[2.6rem_1fr_auto] sm:grid-cols-[2.6rem_minmax(0,1fr)_2.6rem_auto_3rem_3rem] gap-x-3 items-center py-1.5 ${isMe ? "bg-[rgb(var(--brand)/0.14)] rounded" : ""}`}>
+                    className={`grid grid-cols-[2.6rem_1fr_auto] sm:grid-cols-[2.6rem_minmax(0,1fr)_2.6rem_auto_3rem_3rem] gap-x-3 items-center py-2 transition-colors ${isMe ? "bg-[rgb(var(--brand)/0.12)] rounded-md ring-1 ring-inset ring-[rgb(var(--brand)/0.35)]" : "hover:bg-white/[0.03] rounded-md"}`}>
                     <span className="font-mono text-[13px] text-[color:rgb(var(--term-fg)/0.8)]">{medal(i + 1)}</span>
                     <span className="min-w-0 flex items-center gap-2">
                       <StyledName name={op.name} color={c} level={op.level} showTitle />
                       {isMe && <span className="text-2xs text-[color:rgb(var(--t-op))] font-mono shrink-0">← jij</span>}
                     </span>
                     <span className="hidden sm:block text-right font-mono text-[12px] text-[color:rgb(var(--term-fg)/0.7)]">{op.level}</span>
-                    <span className="font-mono text-[12.5px] whitespace-nowrap">
-                      <span style={{ color: c }}>{bar(op.xp, maxXp)}</span>
-                      <span className="ml-2 tabular text-[color:rgb(var(--term-fg)/0.9)]">{op.xp}</span>
+                    <span className="flex items-center gap-2.5">
+                      <span className="relative h-[7px] w-24 sm:w-44 rounded-full bg-[rgb(var(--term-fg)/0.1)] overflow-hidden shrink-0">
+                        <span className="absolute inset-y-0 left-0 rounded-full transition-[width] duration-700"
+                          style={{ width: `${Math.max(5, Math.round((op.xp / maxXp) * 100))}%`, background: `linear-gradient(90deg, ${c}aa, ${c})`, boxShadow: `0 0 8px ${c}80` }} />
+                      </span>
+                      <span className="font-mono tabular text-[12.5px] text-[color:rgb(var(--term-fg)/0.92)] w-12 text-right shrink-0">{op.xp}</span>
                     </span>
                     <span className="hidden sm:block text-right font-mono text-[12px] text-[color:rgb(var(--term-fg)/0.7)]">🔥{op.streak}</span>
                     <span className="hidden sm:block text-right font-mono text-[12px] text-[color:rgb(var(--t-exec))]">{op.solved}</span>
@@ -220,7 +218,7 @@ export default function LeaderboardPage() {
       </Reveal>
 
       <p className="mt-4 text-[12px] text-fg-dim font-mono">
-        ↻ ververst automatisch elke 20s {configured ? "· live via Upstash" : "· demo-modus (geen server gekoppeld)"}.
+        ↻ ververst automatisch elke 10s {configured ? "· live via Upstash" : "· demo-modus (geen server gekoppeld)"}.
       </p>
     </div>
   );
