@@ -201,6 +201,23 @@
     color: rgb(var(--fg-dim)); background: rgb(var(--hover) / 0.6); border: 1px solid rgb(var(--line)); border-radius: 99px;
   }
 
+  /* ── Compacte oefeningen-rij (examen-DB-stijl) ── */
+  .tag-chip {
+    display: inline-flex; align-items: center; height: 21px; padding: 0 7px; white-space: nowrap;
+    font-family: var(--font-mono), monospace; font-size: 10.5px; font-weight: 500; letter-spacing: 0.01em;
+    color: rgb(var(--fg-dim)); background: rgb(var(--sunken)); border: 1px solid rgb(var(--line)); border-radius: 6px;
+  }
+  .xp-chip {
+    display: inline-flex; align-items: center; height: 21px; padding: 0 7px; white-space: nowrap;
+    font-family: var(--font-mono), monospace; font-size: 10.5px; font-weight: 700; letter-spacing: 0.01em;
+    color: rgb(var(--d, var(--ok))); background: rgb(var(--d, var(--ok)) / 0.12);
+    border: 1px solid rgb(var(--d, var(--ok)) / 0.32); border-radius: 6px;
+  }
+  .diff-dot {
+    display: inline-block; width: 7px; height: 7px; border-radius: 50%; flex: none;
+    background: rgb(var(--d)); box-shadow: 0 0 8px rgb(var(--d) / 0.75);
+  }
+
   /* ───────────────────────────── Terminal-venster ───────────────────── */
   .terminal {
     position: relative; display: flex; flex-direction: column;
