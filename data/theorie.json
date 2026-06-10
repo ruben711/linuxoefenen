@@ -1,0 +1,2792 @@
+[
+  {
+    "id": "th-01-01",
+    "chapter": "H1 Intro & geschiedenis",
+    "type": "mc",
+    "question": "Wat betekent de afkorting GNU?",
+    "answer": "B. GNU's Not Unix",
+    "explanation": "GNU is een recursief acroniem dat staat voor 'GNU's Not Unix'. Het GNU-project werd in 1983 gestart door Richard Stallman met als doel een volledig vrij Unix-achtig besturingssysteem te maken.",
+    "choices": [
+      "A. General Network Utility",
+      "B. GNU's Not Unix",
+      "C. Global New Unix",
+      "D. GNU Networked Utilities"
+    ]
+  },
+  {
+    "id": "th-01-02",
+    "chapter": "H1 Intro & geschiedenis",
+    "type": "open",
+    "question": "In welk jaar werd het GNU-project gestart en door wie?",
+    "answer": "1983 door Richard Stallman",
+    "explanation": "Richard Stallman lanceerde het GNU-project in 1983 met als doel een compleet vrij (free as in freedom) Unix-achtig besturingssysteem te ontwikkelen."
+  },
+  {
+    "id": "th-01-03",
+    "chapter": "H1 Intro & geschiedenis",
+    "type": "open",
+    "question": "Wat is het verschil tussen een besturingssysteem en een kernel?",
+    "answer": "De kernel is de kern van het besturingssysteem die hardwarebronnen beheert. Het besturingssysteem is het volledige pakket inclusief kernel, systeemhulpprogramma's, bibliotheken en gebruikersinterface.",
+    "explanation": "De kernel verwerkt systeemaanroepen, geheugenbeheer, processen en bestandssystemen. Het volledige besturingssysteem omvat ook shell, bureaubladomgeving, bibliotheken en andere hulpprogramma's."
+  },
+  {
+    "id": "th-01-04",
+    "chapter": "H1 Intro & geschiedenis",
+    "type": "mc",
+    "question": "Welke van de volgende onderdelen behoort NIET tot het besturingssysteem, maar uitsluitend tot de kernel?",
+    "answer": "C. Geheugenbeheer",
+    "explanation": "Geheugenbeheer is een kernfunctie die rechtstreeks door de kernel wordt uitgevoerd. De shell, bibliotheken en bureaubladomgeving zijn onderdelen van het bredere besturingssysteem maar niet van de kernel zelf.",
+    "choices": [
+      "A. Shell (gebruikersinterface)",
+      "B. Systeembibliotheken",
+      "C. Geheugenbeheer",
+      "D. Bureaubladomgeving"
+    ]
+  },
+  {
+    "id": "th-01-05",
+    "chapter": "H1 Intro & geschiedenis",
+    "type": "open",
+    "question": "Wat zijn de vier vrijheden van vrije software (GNU)?",
+    "answer": "Vrijheid 0: het programma uitvoeren voor elk doel. Vrijheid 1: bestuderen en aanpassen van de broncode. Vrijheid 2: kopieën verspreiden. Vrijheid 3: gewijzigde versies verspreiden.",
+    "explanation": "De vier vrijheden vormen de basis van de vrije softwarebeweging. Ze garanderen dat gebruikers de controle behouden over de software die ze gebruiken."
+  },
+  {
+    "id": "th-01-06",
+    "chapter": "H1 Intro & geschiedenis",
+    "type": "open",
+    "question": "Wat is het verschil tussen 'copyright' en 'copyleft'?",
+    "answer": "Copyright beperkt wat je met software mag doen. Copyleft zorgt ervoor dat software en afgeleiden ervan vrij blijven.",
+    "explanation": "De GPL gebruikt het copyleft-principe: iedereen die de software verspreidt, moet dit doen onder dezelfde (vrije) licentie. Zo blijft de software altijd toegankelijk."
+  },
+  {
+    "id": "th-01-07",
+    "chapter": "H1 Intro & geschiedenis",
+    "type": "mc",
+    "question": "Wat zijn de belangrijkste vereisten van de GNU General Public License (GPL)?",
+    "answer": "B. Broncode moet beschikbaar zijn, wijzigingen moeten ook GPL zijn, geen extra beperkingen",
+    "explanation": "De GPL vereist dat broncode beschikbaar is, dat wijzigingen ook onder GPL worden verspreid, en dat er geen extra beperkingen worden toegevoegd. Commercieel gebruik is wél toegestaan.",
+    "choices": [
+      "A. Broncode hoeft niet beschikbaar te zijn, commercieel gebruik is verboden",
+      "B. Broncode moet beschikbaar zijn, wijzigingen moeten ook GPL zijn, geen extra beperkingen",
+      "C. Alleen niet-commercieel gebruik is toegestaan",
+      "D. De licentie geldt enkel voor de originele auteur"
+    ]
+  },
+  {
+    "id": "th-01-08",
+    "chapter": "H1 Intro & geschiedenis",
+    "type": "open",
+    "question": "Wie is de maker van MINIX en in welk jaar werd het gemaakt?",
+    "answer": "Andrew Tanenbaum, 1987",
+    "explanation": "MINIX werd in 1987 gemaakt door Andrew Tanenbaum als educatief Unix-achtig besturingssysteem. Het had een microkernel-ontwerp en inspireerde Linus Torvalds bij het maken van Linux."
+  },
+  {
+    "id": "th-01-09",
+    "chapter": "H1 Intro & geschiedenis",
+    "type": "mc",
+    "question": "Waarvoor was MINIX oorspronkelijk bedoeld?",
+    "answer": "B. Educatieve doeleinden om besturingssystemen te leren",
+    "explanation": "Andrew Tanenbaum ontwikkelde MINIX als leermiddel voor zijn studenten om de principes van besturingssystemen te begrijpen. Het werd geleverd met volledige broncode.",
+    "choices": [
+      "A. Commerciële servers",
+      "B. Educatieve doeleinden om besturingssystemen te leren",
+      "C. Supercomputers",
+      "D. Mobiele apparaten"
+    ]
+  },
+  {
+    "id": "th-01-10",
+    "chapter": "H1 Intro & geschiedenis",
+    "type": "open",
+    "question": "In welk jaar kondigde Linus Torvalds Linux aan en hoe omschreef hij het?",
+    "answer": "1991; hij omschreef het als een hobbyproject ('just a hobby, won't be big and professional like gnu') voor 386/486 AT-klonen.",
+    "explanation": "Op 25 augustus 1991 maakte Linus Torvalds zijn project bekend op de comp.os.minix nieuwsgroep. Versie 0.01 werd uitgebracht in september 1991, versie 1.0 in maart 1994."
+  },
+  {
+    "id": "th-01-11",
+    "chapter": "H1 Intro & geschiedenis",
+    "type": "open",
+    "question": "Hoe komt de naam 'Linux' tot stand?",
+    "answer": "Linux komt van 'Linus' Unix'. Oorspronkelijk heette het project 'Freax' (free + freak + Unix), maar de naam Linux werd gebruikt door de FTP-beheerder van de server waar de bestanden werden gehost.",
+    "explanation": "Linus Torvalds wilde zijn project aanvankelijk 'Freax' noemen, maar Ari Lemmke, de FTP-beheerder, noemde de map op de server 'linux', waarna die naam bleef hangen."
+  },
+  {
+    "id": "th-01-12",
+    "chapter": "H1 Intro & geschiedenis",
+    "type": "mc",
+    "question": "Welke Linux-distributie staat bekend als gebruiksvriendelijk en geschikt voor beginners?",
+    "answer": "C. Ubuntu",
+    "explanation": "Ubuntu, afgeleid van Debian, staat bekend als één van de meest gebruiksvriendelijke Linux-distributies en is populair bij beginners. Debian staat meer bekend om stabiliteit, RHEL om enterprise-gebruik.",
+    "choices": [
+      "A. Debian",
+      "B. Red Hat Enterprise Linux",
+      "C. Ubuntu",
+      "D. Fedora"
+    ]
+  },
+  {
+    "id": "th-01-13",
+    "chapter": "H1 Intro & geschiedenis",
+    "type": "mc",
+    "question": "Tot welke distributiefamilie behoren Ubuntu en Debian?",
+    "answer": "C. Debian-familie",
+    "explanation": "Ubuntu is gebaseerd op Debian. Samen vormen ze de Debian-familie, die het apt-pakketbeheersysteem gebruikt. Red Hat gebruikt rpm/dnf, SUSE gebruikt zypper.",
+    "choices": [
+      "A. Red Hat-familie",
+      "B. SUSE-familie",
+      "C. Debian-familie",
+      "D. Arch-familie"
+    ]
+  },
+  {
+    "id": "th-01-14",
+    "chapter": "H1 Intro & geschiedenis",
+    "type": "open",
+    "question": "Noem drie populaire Linux-distributies en hun kenmerken.",
+    "answer": "Debian: stabiliteit en vrije softwareprincipes; Ubuntu: gebruiksvriendelijk voor beginners (Debian-familie); Red Hat Enterprise Linux: commerciële enterprise-distributie; Fedora: nieuwste functies, gesponsord door Red Hat; CentOS: gratis alternatief voor RHEL; openSUSE: gemeenschapsgedreven distributie.",
+    "explanation": "Linux-distributies zijn complete besturingssystemen gebouwd rond de Linux-kernel, elk met eigen pakketbeheer, standaardsoftware en configuratie."
+  },
+  {
+    "id": "th-01-15",
+    "chapter": "H1 Intro & geschiedenis",
+    "type": "mc",
+    "question": "Welk percentage van de supercomputers in de wereld draait op Linux?",
+    "answer": "C. Meer dan 95%",
+    "explanation": "Linux domineert de supercomputermarkt met meer dan 95% van de top 500 supercomputers. Dit omvat wetenschappelijke onderzoekssystemen, weersvoorspellingssystemen en financiële modelleringssystemen.",
+    "choices": [
+      "A. Circa 50%",
+      "B. Circa 75%",
+      "C. Meer dan 95%",
+      "D. Circa 30%"
+    ]
+  },
+  {
+    "id": "th-01-16",
+    "chapter": "H1 Intro & geschiedenis",
+    "type": "open",
+    "question": "Welke grote bedrijven gebruiken Linux als basis voor hun infrastructuur?",
+    "answer": "Google (volledige infrastructuur), Amazon (AWS-diensten), Netflix (streaming-infrastructuur), SpaceX (missiekritieke systemen).",
+    "explanation": "Linux is de ruggengraat van de moderne cloudinfrastructuur en wordt gebruikt door nagenoeg alle grote technologiebedrijven."
+  },
+  {
+    "id": "th-01-17",
+    "chapter": "H1 Intro & geschiedenis",
+    "type": "open",
+    "question": "Wat betekent de 'Unix-filosofie' van 'Everything is a file'?",
+    "answer": "In Unix/Linux worden apparaten, processen en netwerkverbindingen als bestanden behandeld, zodat ze op een uniforme manier kunnen worden benaderd via dezelfde lees/schrijf-bewerkingen.",
+    "explanation": "Deze filosofie maakt de Unix-commandoregelinterface krachtig en consistent: tools die tekst lezen en schrijven, kunnen werken met bestanden, apparaten én andere processen via pipes."
+  },
+  {
+    "id": "th-01-18",
+    "chapter": "H1 Intro & geschiedenis",
+    "type": "mc",
+    "question": "Welke eigenschap van Unix-systemen maakt het mogelijk dat meerdere gebruikers tegelijk kunnen werken?",
+    "answer": "B. Multi-user en multi-tasking",
+    "explanation": "Unix is van oorsprong ontworpen als multi-user, multi-tasking systeem, wat betekent dat meerdere gebruikers tegelijk kunnen inloggen en meerdere processen gelijktijdig kunnen draaien.",
+    "choices": [
+      "A. Hiërarchisch bestandssysteem",
+      "B. Multi-user en multi-tasking",
+      "C. Commandoregelinterface",
+      "D. Vrije software"
+    ]
+  },
+  {
+    "id": "th-01-19",
+    "chapter": "H1 Intro & geschiedenis",
+    "type": "open",
+    "question": "Wat zijn de belangrijkste kenmerken van Unix?",
+    "answer": "Multi-user en multi-tasking besturingssysteem, hiërarchisch bestandssysteem, krachtige commandoregelinterface, 'everything is a file'-filosofie.",
+    "explanation": "Deze kenmerken maken Unix (en dus Linux) bijzonder geschikt voor servers, ontwikkeling en systeembeheer."
+  },
+  {
+    "id": "th-01-20",
+    "chapter": "H1 Intro & geschiedenis",
+    "type": "mc",
+    "question": "Welk besturingssysteem is gebaseerd op FreeBSD, een open-source Unix-variant?",
+    "answer": "C. macOS",
+    "explanation": "macOS is gebaseerd op FreeBSD (een BSD Unix-variant) en heeft daardoor veel Unix-eigenschappen. Android daarentegen is gebaseerd op de Linux-kernel.",
+    "choices": [
+      "A. Windows",
+      "B. Android",
+      "C. macOS",
+      "D. ChromeOS"
+    ]
+  },
+  {
+    "id": "th-01-21",
+    "chapter": "H1 Intro & geschiedenis",
+    "type": "open",
+    "question": "Waarom is Linux dominant in server-omgevingen?",
+    "answer": "Linux is gratis en open source, stabiel, veilig, heeft krachtige commandoregeltools, wordt actief onderhouden door een grote community, en ondersteunt virtualisatie en containers (Docker, Kubernetes) uitstekend.",
+    "explanation": "De combinatie van vrije beschikbaarheid, stabiliteit, beveiliging en krachtige tools maakt Linux de voorkeurskeuze voor webservers, databases, cloud-platforms en container-orchestratie."
+  },
+  {
+    "id": "th-01-22",
+    "chapter": "H1 Intro & geschiedenis",
+    "type": "mc",
+    "question": "Welk GNU-component zorgt voor de standaard shell in Linux?",
+    "answer": "C. GNU Bash",
+    "explanation": "GNU Bash (Bourne Again SHell) is de standaard interactieve shell in de meeste Linux-distributies. GCC is de compiler, GNU Make de bouwautomatisering, GNU Coreutils bevat basiscommando's zoals ls, cp en mv.",
+    "choices": [
+      "A. GCC",
+      "B. GNU Make",
+      "C. GNU Bash",
+      "D. GNU Coreutils"
+    ]
+  },
+  {
+    "id": "th-01-23",
+    "chapter": "H1 Intro & geschiedenis",
+    "type": "mc",
+    "question": "Wat levert GNU Coreutils aan een Linux-systeem?",
+    "answer": "B. Basiscommando's voor bestands-, shell- en tekstbeheer",
+    "explanation": "GNU Coreutils bevat essentiële hulpprogramma's zoals ls, cp, mv, rm, cat, echo, en many more. Zonder Coreutils zou een Linux-systeem niet bruikbaar zijn voor dagelijkse taken.",
+    "choices": [
+      "A. De compiler voor C-programma's",
+      "B. Basiscommando's voor bestands-, shell- en tekstbeheer",
+      "C. De debugger voor programma's",
+      "D. Het bouwautomatiseringssysteem"
+    ]
+  },
+  {
+    "id": "th-01-24",
+    "chapter": "H1 Intro & geschiedenis",
+    "type": "open",
+    "question": "Wat zijn de carrièrevoordelen van Linux-kennis?",
+    "answer": "Grote vraag naar Linux-vaardigheden in IT, hogere salarissen voor Linux-professionals, essentieel voor DevOps en cloud computing, vereist voor cybersecurityrollen.",
+    "explanation": "Linux is de ruggengraat van de moderne IT-infrastructuur. Kennis van Linux opent deuren naar serverbeheeer, cloudplatforms (AWS, GCP, Azure), DevOps en security."
+  },
+  {
+    "id": "th-01-25",
+    "chapter": "H1 Intro & geschiedenis",
+    "type": "mc",
+    "question": "Welke stap komt NIET voor in een typisch Linux-leertraject?",
+    "answer": "C. Systeemregistratie en licentieactivering",
+    "explanation": "Linux is vrij en open source; er is geen licentieactivering nodig. Het leertraject omvat wel navigatie, bestandssysteem, tekstverwerking, scripting, systeembeheer, netwerkconfiguratie en beveiliging.",
+    "choices": [
+      "A. Basisnavigatie via de commandoregel",
+      "B. Tekstverwerking en shell scripting",
+      "C. Systeemregistratie en licentieactivering",
+      "D. Netwerkconfiguratie"
+    ]
+  },
+  {
+    "id": "th-02-01",
+    "chapter": "H2 Shell & navigatie",
+    "type": "open",
+    "question": "Wat betekent de afkorting TTY?",
+    "answer": "TeleTYpe Writer",
+    "explanation": "TTY staat voor TeleTYpe Writer: vroege schrijfmachines die verbonden waren met computers. De term wordt nog steeds gebruikt voor terminals in Linux."
+  },
+  {
+    "id": "th-02-02",
+    "chapter": "H2 Shell & navigatie",
+    "type": "mc",
+    "question": "Wat is het verschil tussen een terminal en een shell?",
+    "answer": "B",
+    "explanation": "De terminal (of terminal-emulator) biedt de omgeving om een shell op te starten. De shell (bijv. bash) is het programma dat je commando's interpreteert en doorstuurt naar de kernel.",
+    "choices": [
+      "A) Ze zijn hetzelfde.",
+      "B) Een terminal is de software die de shell uitvoert; een shell is de interpreter die commando's verwerkt.",
+      "C) Een shell is de hardware, een terminal is de software.",
+      "D) Een terminal is alleen beschikbaar voor root."
+    ]
+  },
+  {
+    "id": "th-02-03",
+    "chapter": "H2 Shell & navigatie",
+    "type": "open",
+    "question": "Welke shells zijn beschikbaar op Linux (noem er drie)?",
+    "answer": "bash, zsh, dash, ksh, sh (kies er drie)",
+    "explanation": "Veelgebruikte shells zijn bash (standaard op Linux), zsh (standaard op macOS), dash (lichtgewicht), ksh en sh (originele Unix-shell)."
+  },
+  {
+    "id": "th-02-04",
+    "chapter": "H2 Shell & navigatie",
+    "type": "mc",
+    "question": "Wat betekent het '$'-teken aan het einde van de terminal-prompt?",
+    "answer": "C",
+    "explanation": "Het '$'-teken toont dat je een gewone gebruiker bent. Het '#'-teken toont dat je als root (beheerder) werkt.",
+    "choices": [
+      "A) Je hebt geen rechten.",
+      "B) Je bent ingelogd als root.",
+      "C) Je bent ingelogd als gewone (niet-bevoorrechte) gebruiker.",
+      "D) Het systeem wacht op invoer van een script."
+    ]
+  },
+  {
+    "id": "th-02-05",
+    "chapter": "H2 Shell & navigatie",
+    "type": "open",
+    "question": "Wat is het verschil tussen een gewone gebruiker en root in Linux?",
+    "answer": "Root heeft volledige systeemtoegang en kan elk bestand wijzigen; een gewone gebruiker kan alleen bestanden in zijn thuismap aanpassen.",
+    "explanation": "Linux is gebouwd met scheiding van rechten: gewone gebruikers hebben beperkte toegang, root heeft onbeperkte toegang. Dit is een fundamenteel beveiligingsprincipe."
+  },
+  {
+    "id": "th-02-06",
+    "chapter": "H2 Shell & navigatie",
+    "type": "mc",
+    "question": "Hoe wissel je naar de root-gebruiker met je eigen wachtwoord (niet het rootwachtwoord)?",
+    "answer": "B",
+    "explanation": "'sudo su' vraagt je eigen wachtwoord en geeft dan een root-shell. 'su -' vraagt het rootwachtwoord zelf.",
+    "choices": [
+      "A) su -",
+      "B) sudo su",
+      "C) su root",
+      "D) login root"
+    ]
+  },
+  {
+    "id": "th-02-07",
+    "chapter": "H2 Shell & navigatie",
+    "type": "mc",
+    "question": "Wat is de rootmap van het Linux-bestandssysteem?",
+    "answer": "C",
+    "explanation": "In Linux is er één rootmap: /. Alle andere mappen hangen hieronder. Dit is fundamenteel anders dan Windows, dat meerdere schijfletter-roots heeft (C:, D:, ...).",
+    "choices": [
+      "A) /home",
+      "B) /root",
+      "C) /",
+      "D) C:\\"
+    ]
+  },
+  {
+    "id": "th-02-08",
+    "chapter": "H2 Shell & navigatie",
+    "type": "mc",
+    "question": "In welke map staan configuratiebestanden van het systeem?",
+    "answer": "B",
+    "explanation": "/etc bevat systeemconfiguratiebestanden zoals /etc/passwd, /etc/hosts en /etc/fstab.",
+    "choices": [
+      "A) /bin",
+      "B) /etc",
+      "C) /var",
+      "D) /usr"
+    ]
+  },
+  {
+    "id": "th-02-09",
+    "chapter": "H2 Shell & navigatie",
+    "type": "open",
+    "question": "Wat is het doel van de map /tmp?",
+    "answer": "Tijdelijke bestanden die bij herstart van het systeem verwijderd worden.",
+    "explanation": "/tmp dient voor tijdelijke bestanden. De inhoud wordt gewoonlijk gewist bij het herstarten van het systeem."
+  },
+  {
+    "id": "th-02-10",
+    "chapter": "H2 Shell & navigatie",
+    "type": "mc",
+    "question": "Wat is het verschil tussen /bin en /usr/bin?",
+    "answer": "B",
+    "explanation": "/bin bevat de minimale commando's nodig voor het opstarten en herstel (ls, cat, bash). /usr/bin bevat geïnstalleerde programma's die pas na het opstarten beschikbaar zijn.",
+    "choices": [
+      "A) /bin is voor systeembeheerders, /usr/bin voor gewone gebruikers.",
+      "B) /bin bevat essentiële systeemcommando's die bij het opstarten nodig zijn; /usr/bin bevat extra gebruikerssoftware.",
+      "C) Er is geen verschil.",
+      "D) /usr/bin is alleen beschikbaar na inloggen."
+    ]
+  },
+  {
+    "id": "th-02-11",
+    "chapter": "H2 Shell & navigatie",
+    "type": "mc",
+    "question": "Wat stelt het tilde-teken (~) voor in een Linux-pad?",
+    "answer": "C",
+    "explanation": "~ verwijst naar de thuismap van de huidige gebruiker, bijv. /home/alice. Je kunt schrijven ~/Documents in plaats van /home/alice/Documents.",
+    "choices": [
+      "A) De rootmap /",
+      "B) De huidige map",
+      "C) De thuismap van de huidige gebruiker",
+      "D) De bovenliggende map"
+    ]
+  },
+  {
+    "id": "th-02-12",
+    "chapter": "H2 Shell & navigatie",
+    "type": "open",
+    "question": "Wat betekent .. in een pad?",
+    "answer": "De bovenliggende map (één niveau omhoog in de mappenstructuur).",
+    "explanation": ".. verwijst naar de bovenliggende map. cd .. gaat één niveau omhoog. cd ../.. gaat twee niveaus omhoog."
+  },
+  {
+    "id": "th-02-13",
+    "chapter": "H2 Shell & navigatie",
+    "type": "open",
+    "question": "Wat is het verschil tussen een absoluut en een relatief pad?",
+    "answer": "Een absoluut pad begint altijd met / en beschrijft het volledige pad vanaf de root. Een relatief pad is relatief aan de huidige werkmap en begint niet met /.",
+    "explanation": "Voorbeeld absoluut: /home/alice/Documents. Voorbeeld relatief (vanuit /home/alice): Documents of ../bob."
+  },
+  {
+    "id": "th-02-14",
+    "chapter": "H2 Shell & navigatie",
+    "type": "mc",
+    "question": "Welk commando toont je huidige werkmap?",
+    "answer": "C",
+    "explanation": "pwd (Print Working Directory) toont het volledige pad van de map waarin je momenteel werkt.",
+    "choices": [
+      "A) ls",
+      "B) cd",
+      "C) pwd",
+      "D) dir"
+    ]
+  },
+  {
+    "id": "th-02-15",
+    "chapter": "H2 Shell & navigatie",
+    "type": "mc",
+    "question": "Hoe navigeer je naar de vorige map waar je was?",
+    "answer": "C",
+    "explanation": "cd - keert terug naar de vorige werkmap. Dit is handig wanneer je veel heen en weer schakelt tussen twee mappen.",
+    "choices": [
+      "A) cd ..",
+      "B) cd ~",
+      "C) cd -",
+      "D) cd /"
+    ]
+  },
+  {
+    "id": "th-02-16",
+    "chapter": "H2 Shell & navigatie",
+    "type": "mc",
+    "question": "Welke vlag van ls toont ook verborgen bestanden?",
+    "answer": "C",
+    "explanation": "ls -a toont ook bestanden en mappen die beginnen met een punt (.), zoals .bashrc en .profile. Dit zijn verborgen bestanden in Linux.",
+    "choices": [
+      "A) -l",
+      "B) -h",
+      "C) -a",
+      "D) -v"
+    ]
+  },
+  {
+    "id": "th-02-17",
+    "chapter": "H2 Shell & navigatie",
+    "type": "mc",
+    "question": "Wat doet het commando 'touch bestand.txt'?",
+    "answer": "C",
+    "explanation": "touch maakt een leeg bestand aan als het nog niet bestaat. Als het bestand al bestaat, wordt enkel de tijdstempel bijgewerkt.",
+    "choices": [
+      "A) Verwijdert bestand.txt",
+      "B) Opent bestand.txt in een editor",
+      "C) Maakt een leeg bestand aan of past de tijdstempel aan als het al bestaat",
+      "D) Toont de inhoud van bestand.txt"
+    ]
+  },
+  {
+    "id": "th-02-18",
+    "chapter": "H2 Shell & navigatie",
+    "type": "mc",
+    "question": "Welke vlag van mkdir maakt automatisch tussenliggende mappen aan?",
+    "answer": "B",
+    "explanation": "mkdir -p maakt de volledige padstructuur aan, ook als tussenliggende mappen nog niet bestaan. Bijv. mkdir -p a/b/c maakt a, a/b én a/b/c aan.",
+    "choices": [
+      "A) -r",
+      "B) -p",
+      "C) -f",
+      "D) -v"
+    ]
+  },
+  {
+    "id": "th-02-19",
+    "chapter": "H2 Shell & navigatie",
+    "type": "open",
+    "question": "Wat is het gevaar van het commando 'rm -rf'?",
+    "answer": "Het verwijdert mappen en hun inhoud definitief en geforceerd, zonder bevestiging te vragen. Er is geen prullenbak in Linux.",
+    "explanation": "rm -rf is onomkeerbaar: bestanden worden niet naar een prullenbak verplaatst maar definitief gewist. Gebruik het met grote voorzichtigheid, nooit met wildcards in de buurt van rootpad."
+  },
+  {
+    "id": "th-02-20",
+    "chapter": "H2 Shell & navigatie",
+    "type": "mc",
+    "question": "Wat is het verschil tussen 'less' en 'more' voor het bekijken van bestanden?",
+    "answer": "B",
+    "explanation": "less is de modernere pager die zowel omhoog als omlaag bladeren ondersteunt. more is de oudere versie die enkel naar beneden gaat. 'less is more' is dan ook een bekende Linux-grap.",
+    "choices": [
+      "A) Ze doen hetzelfde.",
+      "B) less is moderner en laat ook omhoog bladeren; more is ouder en gaat alleen naar beneden.",
+      "C) more is moderner dan less.",
+      "D) less toont alleen de eerste 10 regels."
+    ]
+  },
+  {
+    "id": "th-02-21",
+    "chapter": "H2 Shell & navigatie",
+    "type": "mc",
+    "question": "Hoe verlaat je een man-pagina?",
+    "answer": "C",
+    "explanation": "Druk op 'q' (quit) om een man-pagina te verlaten. Dit werkt ook in less en other pager-programma's.",
+    "choices": [
+      "A) Ctrl+C",
+      "B) Escape",
+      "C) q",
+      "D) x"
+    ]
+  },
+  {
+    "id": "th-02-22",
+    "chapter": "H2 Shell & navigatie",
+    "type": "open",
+    "question": "Wat is het verschil tussen 'man ls' en 'ls --help'?",
+    "answer": "'man ls' toont de volledige, gedetailleerde handleiding met alle opties en voorbeelden. 'ls --help' geeft een korte samenvatting van de meest gebruikte opties.",
+    "explanation": "Gebruik --help voor een snel geheugensteuntje, gebruik man voor diepgaande documentatie met uitleg en voorbeelden."
+  },
+  {
+    "id": "th-02-23",
+    "chapter": "H2 Shell & navigatie",
+    "type": "mc",
+    "question": "Wat doet 'cp -r directory1 directory2'?",
+    "answer": "C",
+    "explanation": "cp -r staat voor recursief kopiëren: de volledige mapstructuur inclusief alle submappen en bestanden wordt gekopieerd.",
+    "choices": [
+      "A) Hernoemt directory1 naar directory2",
+      "B) Kopieert alleen de inhoud van directory1",
+      "C) Kopieert directory1 en alle inhoud recursief naar directory2",
+      "D) Verwijdert directory1 en maakt directory2 aan"
+    ]
+  },
+  {
+    "id": "th-02-24",
+    "chapter": "H2 Shell & navigatie",
+    "type": "mc",
+    "question": "Wat is de omgevingsvariabele die naar je thuismap verwijst?",
+    "answer": "B",
+    "explanation": "$HOME bevat het pad naar je thuismap, bijv. /home/alice. Je kunt het gebruiken in commando's: cd $HOME is gelijk aan cd ~.",
+    "choices": [
+      "A) $PATH",
+      "B) $HOME",
+      "C) $USER",
+      "D) $SHELL"
+    ]
+  },
+  {
+    "id": "th-02-25",
+    "chapter": "H2 Shell & navigatie",
+    "type": "open",
+    "question": "Welke mappen zijn beschikbaar in de Linux FHS onder / (noem er vijf)?",
+    "answer": "/bin, /etc, /home, /usr, /var, /tmp, /dev, /proc, /root, /lib, /sbin, /opt, /media, /mnt (kies er vijf)",
+    "explanation": "De Filesystem Hierarchy Standard (FHS) definieert de standaard mappenstructuur. Elke map heeft een specifiek doel: /etc voor configuratie, /var voor variabele data, /tmp voor tijdelijke bestanden, etc."
+  },
+  {
+    "id": "th-02-26",
+    "chapter": "H2 Shell & navigatie",
+    "type": "mc",
+    "question": "Wat is het doel van /proc in Linux?",
+    "answer": "B",
+    "explanation": "/proc is een virtueel bestandssysteem dat door de kernel aangemaakt wordt en informatie over draaiende processen en systeemstatus bevat. De bestanden bestaan niet echt op schijf.",
+    "choices": [
+      "A) Programma's opslaan",
+      "B) Procesinfo als virtueel bestandssysteem tonen (aangemaakt door de kernel)",
+      "C) Configuratiebestanden bevatten",
+      "D) Tijdelijke bestanden opslaan"
+    ]
+  },
+  {
+    "id": "th-02-27",
+    "chapter": "H2 Shell & navigatie",
+    "type": "open",
+    "question": "Hoe zoek je naar man-pagina's die te maken hebben met een bepaald sleutelwoord?",
+    "answer": "Gebruik 'man -k sleutelwoord' of 'apropos sleutelwoord'.",
+    "explanation": "Beide commando's doorzoeken de beschrijvingen van alle man-pagina's op het opgegeven sleutelwoord en tonen de gevonden commando's."
+  },
+  {
+    "id": "th-02-28",
+    "chapter": "H2 Shell & navigatie",
+    "type": "open",
+    "question": "Wat zijn de drie soorten rechten (permissions) in Linux?",
+    "answer": "Read (r): lezen/bekijken. Write (w): schrijven/wijzigen. Execute (x): uitvoeren (voor bestanden) of betreden (voor mappen).",
+    "explanation": "In Linux heeft elk bestand of map drie rechtencategorieën (eigenaar, groep, overigen) met telkens r/w/x-bits. Je ziet dit bij ls -l, bijv. -rw-r--r--."
+  },
+  {
+    "id": "th-03-01",
+    "chapter": "H3 History & variabelen",
+    "type": "open",
+    "question": "Wat is het verschil tussen een shell-variabele en een omgevingsvariabele?",
+    "answer": "Een shell-variabele is enkel beschikbaar in de huidige shell; een omgevingsvariabele (aangemaakt met export) wordt ook doorgegeven aan kind-processen.",
+    "explanation": "Gebruik 'set' om alle shell-variabelen te zien en 'env' om enkel de geëxporteerde omgevingsvariabelen te zien."
+  },
+  {
+    "id": "th-03-02",
+    "chapter": "H3 History & variabelen",
+    "type": "mc",
+    "question": "Welk commando toon je alle huidige omgevingsvariabelen?",
+    "answer": "env",
+    "explanation": "'env' toont alle geëxporteerde omgevingsvariabelen. 'set' toont alle shell-variabelen (inclusief lokale), maar dat is een superset.",
+    "choices": [
+      "set",
+      "env",
+      "ls -e",
+      "vars"
+    ]
+  },
+  {
+    "id": "th-03-03",
+    "chapter": "H3 History & variabelen",
+    "type": "open",
+    "question": "Wat doet de PATH-variabele?",
+    "answer": "PATH bevat een lijst van mappen (gescheiden door dubbele punten) waarin de shell zoekt naar uitvoerbare bestanden wanneer je een commando ingeeft.",
+    "explanation": "De shell doorzoekt de mappen in PATH van links naar rechts. Het eerste gevonden programma wordt uitgevoerd. Staat de map niet in PATH, dan krijg je 'command not found'."
+  },
+  {
+    "id": "th-03-04",
+    "chapter": "H3 History & variabelen",
+    "type": "mc",
+    "question": "Hoe maak je een variabele beschikbaar voor kind-processen?",
+    "answer": "export MY_VAR",
+    "explanation": "Het 'export' commando promoveert een shell-variabele naar omgevingsvariabele, zodat kind-processen (subshells, programma's) er toegang toe hebben.",
+    "choices": [
+      "set MY_VAR=test",
+      "export MY_VAR",
+      "global MY_VAR",
+      "share MY_VAR"
+    ]
+  },
+  {
+    "id": "th-03-05",
+    "chapter": "H3 History & variabelen",
+    "type": "mc",
+    "question": "Welk toetscombinatie herhaalt het laatste ingevoerde commando?",
+    "answer": "!!",
+    "explanation": "!! (twee uitroeptekens) is een history-uitbreiding die het laatste commando herhaalt en uitvoert.",
+    "choices": [
+      "Ctrl+R",
+      "!!",
+      "!last",
+      "Ctrl+P"
+    ]
+  },
+  {
+    "id": "th-03-06",
+    "chapter": "H3 History & variabelen",
+    "type": "mc",
+    "question": "Hoe zoek je interactief door de commandogeschiedenis?",
+    "answer": "Ctrl+R",
+    "explanation": "Ctrl+R start een omgekeerde zoekopdracht (reverse-i-search) door de history. Je typt een zoekterm en de shell toont het meest recente overeenkomende commando. Druk nogmaals Ctrl+R voor het vorige resultaat.",
+    "choices": [
+      "Ctrl+F",
+      "Alt+H",
+      "Ctrl+R",
+      "Ctrl+S"
+    ]
+  },
+  {
+    "id": "th-03-07",
+    "chapter": "H3 History & variabelen",
+    "type": "mc",
+    "question": "In welk bestand zet je permanente omgevingsvariabelen voor een interactieve bash-shell?",
+    "answer": "~/.bashrc",
+    "explanation": "~/.bashrc wordt ingeladen bij elke nieuwe interactieve (niet-login) bash-shell. Voor login-shells is ~/.bash_profile of ~/.profile gebruikelijk. /etc/bash.bashrc geldt systeem-breed.",
+    "choices": [
+      "~/.bashrc",
+      "/etc/bash.bashrc",
+      "~/.bash_logout",
+      "~/.profile_global"
+    ]
+  },
+  {
+    "id": "th-03-08",
+    "chapter": "H3 History & variabelen",
+    "type": "mc",
+    "question": "Wat is de waarde van $? na een succesvol uitgevoerd commando?",
+    "answer": "0",
+    "explanation": "$? bevat de exitstatus van het vorige commando. 0 betekent succes; een waarde > 0 wijst op een fout.",
+    "choices": [
+      "1",
+      "0",
+      "-1",
+      "true"
+    ]
+  },
+  {
+    "id": "th-03-09",
+    "chapter": "H3 History & variabelen",
+    "type": "mc",
+    "question": "Welk commando toont het volledige pad naar het uitvoerbare bestand van 'cat'?",
+    "answer": "which cat",
+    "explanation": "'which' zoekt in de mappen van PATH en toont het eerste gevonden pad van het programma.",
+    "choices": [
+      "locate cat",
+      "find cat",
+      "which cat",
+      "path cat"
+    ]
+  },
+  {
+    "id": "th-03-10",
+    "chapter": "H3 History & variabelen",
+    "type": "mc",
+    "question": "Hoe voeg je een nieuwe map '/opt/mytools' VOORAAN toe aan PATH voor de huidige sessie?",
+    "answer": "export PATH=\"/opt/mytools:$PATH\"",
+    "explanation": "Door de nieuwe map vóór $PATH te plaatsen, wordt ze als eerste doorzocht. Zo overschrijf je ook eventuele gelijknamige commando's uit standaardmappen.",
+    "choices": [
+      "PATH=/opt/mytools",
+      "export PATH=\"$PATH:/opt/mytools\"",
+      "export PATH=\"/opt/mytools:$PATH\"",
+      "add PATH /opt/mytools"
+    ]
+  },
+  {
+    "id": "th-03-11",
+    "chapter": "H3 History & variabelen",
+    "type": "mc",
+    "question": "Wat toont het commando 'type cd'?",
+    "answer": "cd is a shell builtin",
+    "explanation": "'cd' is een ingebouwd shell-commando (builtin). Het staat niet als apart bestand in PATH. 'type' laat dit verschil zien, 'which' vindt het daarom ook niet.",
+    "choices": [
+      "/bin/cd",
+      "cd is a shell builtin",
+      "cd: command not found",
+      "cd is an alias"
+    ]
+  },
+  {
+    "id": "th-03-12",
+    "chapter": "H3 History & variabelen",
+    "type": "open",
+    "question": "Wat is het nut van het exporteren van omgevingsvariabelen bij het werken met applicaties?",
+    "answer": "Exporteren zorgt ervoor dat applicaties en scripts die je start toegang hebben tot die variabelen, wat veiliger is dan gevoelige gegevens hardcoderen in de broncode.",
+    "explanation": "Best practice is om configuratie (API-sleutels, databasewachtwoorden, …) via omgevingsvariabelen door te geven zodat deze niet in de code (en versiebeheersystemen) terechtkomen."
+  },
+  {
+    "id": "th-03-13",
+    "chapter": "H3 History & variabelen",
+    "type": "mc",
+    "question": "Welke syntaxis gebruik je om een standaardwaarde terug te geven als een variabele leeg of niet gedefinieerd is?",
+    "answer": "${VAR:-default}",
+    "explanation": "${VAR:-default} geeft de waarde van VAR terug als die gezet is, anders geeft het 'default' terug. ${VAR:=default} doet hetzelfde maar wijst ook de standaardwaarde toe aan VAR als die leeg is.",
+    "choices": [
+      "${VAR|default}",
+      "${VAR:-default}",
+      "${VAR??default}",
+      "${VAR=?default}"
+    ]
+  },
+  {
+    "id": "th-03-14",
+    "chapter": "H3 History & variabelen",
+    "type": "open",
+    "question": "Wat doet 'source ~/.bashrc' (of '. ~/.bashrc')?",
+    "answer": "Het voert ~/.bashrc uit in de huidige shell-omgeving, zodat wijzigingen (nieuwe aliassen, variabelen, PATH-aanpassingen) onmiddellijk actief zijn zonder een nieuwe terminal te openen.",
+    "explanation": "In tegenstelling tot een gewone script-uitvoering wordt source/. uitgevoerd in de huidige shell-context, niet in een subshell."
+  },
+  {
+    "id": "th-03-15",
+    "chapter": "H3 History & variabelen",
+    "type": "mc",
+    "question": "Wat is het verschil tussen > en >> bij het schrijven naar een bestand?",
+    "answer": "> overschrijft, >> voegt toe",
+    "explanation": "Met > wordt de inhoud van het bestand volledig vervangen. Met >> worden nieuwe regels aan het einde toegevoegd zonder bestaande inhoud te verwijderen. Dit is belangrijk bij het opbouwen van scripts met meerdere echo-commando's.",
+    "choices": [
+      "> voegt toe, >> overschrijft",
+      "> overschrijft, >> voegt toe",
+      "Beide overschrijven",
+      "Beide voegen toe"
+    ]
+  },
+  {
+    "id": "th-04-01",
+    "chapter": "H4 Redirects & pipes",
+    "type": "mc",
+    "question": "Wat zijn de drie standaardstromen die elk Linux-proces heeft?",
+    "answer": "B",
+    "explanation": "Elk Linux-proces heeft drie standaardstromen: stdin (0) voor invoer, stdout (1) voor normale uitvoer en stderr (2) voor foutmeldingen.",
+    "choices": [
+      "A. stdin, stdout, stdlog",
+      "B. stdin, stdout, stderr",
+      "C. input, output, error",
+      "D. fd0, fd1, fd3"
+    ]
+  },
+  {
+    "id": "th-04-02",
+    "chapter": "H4 Redirects & pipes",
+    "type": "mc",
+    "question": "Welk bestandsdescriptornummer hoort bij stderr?",
+    "answer": "C",
+    "explanation": "stdin = 0, stdout = 1, stderr = 2. Het getal 2 is het bestandsdescriptornummer van de standaardfoutstroom.",
+    "choices": [
+      "A. 0",
+      "B. 1",
+      "C. 2",
+      "D. 3"
+    ]
+  },
+  {
+    "id": "th-04-03",
+    "chapter": "H4 Redirects & pipes",
+    "type": "open",
+    "question": "Wat is het verschil tussen > en >> bij uitvoer-omleiding?",
+    "answer": "> overschrijft het bestand (of maakt het aan); >> voegt toe aan het bestaande bestand (append).",
+    "explanation": "> maakt een nieuw bestand aan of wist de bestaande inhoud volledig. >> voegt de uitvoer achteraan toe zodat bestaande inhoud bewaard blijft."
+  },
+  {
+    "id": "th-04-04",
+    "chapter": "H4 Redirects & pipes",
+    "type": "mc",
+    "question": "Hoe leid je zowel stdout als stderr om naar hetzelfde bestand output.txt?",
+    "answer": "B",
+    "explanation": "commando > output.txt 2>&1 stuurt stdout naar output.txt en daarna stderr naar dezelfde bestemming als stdout. De kortere bash-afkorting &> werkt ook.",
+    "choices": [
+      "A. commando > output.txt 2> output.txt",
+      "B. commando > output.txt 2>&1",
+      "C. commando 2> output.txt 1>&2",
+      "D. commando | output.txt"
+    ]
+  },
+  {
+    "id": "th-04-05",
+    "chapter": "H4 Redirects & pipes",
+    "type": "open",
+    "question": "Hoe werkt een pipe (|) en wat is het voordeel?",
+    "answer": "Een pipe koppelt de stdout van het ene commando aan de stdin van het volgende, zodat je krachtige ketens van commando's kunt bouwen zonder tijdelijke bestanden.",
+    "explanation": "Data stroomt in geheugen van commando naar commando. Dit maakt complexe tekstverwerking mogelijk met kleine, gespecialiseerde commando's die elk één taak doen."
+  },
+  {
+    "id": "th-04-06",
+    "chapter": "H4 Redirects & pipes",
+    "type": "open",
+    "question": "Wat is het verschil tussen cat en tac?",
+    "answer": "cat toont de regels van een bestand in normale volgorde; tac toont ze in omgekeerde volgorde (laatste regel eerst).",
+    "explanation": "tac is letterlijk cat achterstevoren. Het is handig om de meest recente regels van een log bovenaan te tonen."
+  },
+  {
+    "id": "th-04-07",
+    "chapter": "H4 Redirects & pipes",
+    "type": "mc",
+    "question": "Hoe sla je de uitvoer van een commando op in een bestand en toon je ze tegelijkertijd op het scherm?",
+    "answer": "B",
+    "explanation": "tee leest van stdin en schrijft gelijktijdig naar stdout (het scherm) en naar het opgegeven bestand. Zo zie je de uitvoer én heb je een kopie in een bestand.",
+    "choices": [
+      "A. commando > bestand && cat bestand",
+      "B. commando | tee bestand",
+      "C. commando 2> bestand",
+      "D. commando < bestand"
+    ]
+  },
+  {
+    "id": "th-04-08",
+    "chapter": "H4 Redirects & pipes",
+    "type": "open",
+    "question": "Wat is /dev/null en wanneer gebruik je het?",
+    "answer": "/dev/null is een speciaal bestand dat alle uitvoer die ernaartoe wordt gestuurd, weggooit. Je gebruikt het om ongewenste uitvoer of foutmeldingen te onderdrukken.",
+    "explanation": "Veelgebruikte voorbeelden: commando > /dev/null (stdout negeren), commando 2> /dev/null (stderr negeren), commando &> /dev/null (alles negeren)."
+  },
+  {
+    "id": "th-04-09",
+    "chapter": "H4 Redirects & pipes",
+    "type": "mc",
+    "question": "Welk commando gebruik je om de eerste 10 regels van een bestand te tonen?",
+    "answer": "B",
+    "explanation": "head toont standaard de eerste 10 regels van een bestand. Met -n kun je het aantal aanpassen, bijv. head -n 5.",
+    "choices": [
+      "A. tail bestand.txt",
+      "B. head bestand.txt",
+      "C. top bestand.txt",
+      "D. first bestand.txt"
+    ]
+  },
+  {
+    "id": "th-04-10",
+    "chapter": "H4 Redirects & pipes",
+    "type": "open",
+    "question": "Wat doet de optie -f bij het tail-commando?",
+    "answer": "tail -f volgt een bestand live: elke nieuwe regel die aan het bestand wordt toegevoegd, wordt meteen getoond. Ideaal voor het monitoren van logbestanden.",
+    "explanation": "Dit is bijzonder nuttig bij logbestanden als /var/log/syslog: je ziet nieuwe berichten meteen verschijnen zonder het commando opnieuw uit te voeren."
+  },
+  {
+    "id": "th-04-11",
+    "chapter": "H4 Redirects & pipes",
+    "type": "mc",
+    "question": "Welke operator gebruik je om de stdin van een commando uit een bestand te lezen?",
+    "answer": "C",
+    "explanation": "De < operator leidt de inhoud van een bestand om als stdin voor het commando. Bijv. sort < bestand.txt geeft de bestandsinhoud als invoer aan sort.",
+    "choices": [
+      "A. >",
+      "B. >>",
+      "C. <",
+      "D. |"
+    ]
+  },
+  {
+    "id": "th-04-12",
+    "chapter": "H4 Redirects & pipes",
+    "type": "open",
+    "question": "Wat is een 'here document' en hoe gebruik je het?",
+    "answer": "Een here document (<<) laat je meerdere regels tekst inline meegeven als stdin, tot een opgegeven scheidingsteken. Bijv: cat << EOF > bestand.txt ... EOF",
+    "explanation": "De << operator maakt een tijdelijke invoerstroom van alle tekst tot het scheidingsteken (bijv. EOF). Handig om bestanden aan te maken of multiregelige invoer te geven zonder externe bestanden."
+  },
+  {
+    "id": "th-04-13",
+    "chapter": "H4 Redirects & pipes",
+    "type": "open",
+    "question": "Wat is het verschil tussen een pipe (|) en omleiding (> of <)?",
+    "answer": "Een pipe laat data in het geheugen stromen tussen twee commando's. Omleiding stuurt data van of naar bestanden op schijf.",
+    "explanation": "Pipes verbinden commando's met elkaar in real time; omleidingen verbinden commando's met bestanden. Beide technieken kunnen gecombineerd worden."
+  },
+  {
+    "id": "th-04-14",
+    "chapter": "H4 Redirects & pipes",
+    "type": "mc",
+    "question": "Welk commando is het meest aanbevolen om door grote bestanden te bladeren?",
+    "answer": "C",
+    "explanation": "less is de aanbevolen pager omdat je er zowel vooruit als achteruit in kunt bladeren, en omdat je kunt zoeken met / (vooruit) en ? (achteruit). more kan alleen vooruit bladeren.",
+    "choices": [
+      "A. more",
+      "B. cat",
+      "C. less",
+      "D. head"
+    ]
+  },
+  {
+    "id": "th-04-15",
+    "chapter": "H4 Redirects & pipes",
+    "type": "mc",
+    "question": "Hoe tel je het aantal regels in een bestand met wc?",
+    "answer": "C",
+    "explanation": "wc -l telt het aantal regels. -w telt woorden, -c telt bytes.",
+    "choices": [
+      "A. wc -w bestand.txt",
+      "B. wc -c bestand.txt",
+      "C. wc -l bestand.txt",
+      "D. wc -n bestand.txt"
+    ]
+  },
+  {
+    "id": "th-04-16",
+    "chapter": "H4 Redirects & pipes",
+    "type": "mc",
+    "question": "Welk commando gebruik je om duplicaten te verwijderen uit een gesorteerde lijst?",
+    "answer": "D",
+    "explanation": "Zowel sort -u als een combinatie van sort | uniq verwijderen duplicaten. uniq werkt enkel correct op opeenvolgende duplicaten, vandaar dat je eerst sorteert.",
+    "choices": [
+      "A. sort -u",
+      "B. uniq",
+      "C. grep -v",
+      "D. A en B zijn beide correct"
+    ]
+  },
+  {
+    "id": "th-04-17",
+    "chapter": "H4 Redirects & pipes",
+    "type": "open",
+    "question": "Wat doet het commando 'cat numbers.txt | sort -n | uniq -d'?",
+    "answer": "Het toont alle getallen uit numbers.txt die minstens twee keer voorkomen (duplicaten), gesorteerd numeriek.",
+    "explanation": "sort -n sorteert numeriek zodat opeenvolgende duplicaten naast elkaar staan. uniq -d toont dan enkel de regels die meerdere keren voorkomen."
+  },
+  {
+    "id": "th-04-18",
+    "chapter": "H4 Redirects & pipes",
+    "type": "open",
+    "question": "Waarom is het beter om filters vroeg in een pipeline te plaatsen?",
+    "answer": "Door vroeg te filteren verklein je de hoeveelheid data die door latere commando's verwerkt moet worden, wat de pipeline sneller en efficiënter maakt.",
+    "explanation": "Bijv. grep pattern bestand.txt | head -10 is efficiënter dan cat bestand.txt | grep pattern | head -10, omdat grep dan minder data doorgeeft."
+  },
+  {
+    "id": "th-04-19",
+    "chapter": "H4 Redirects & pipes",
+    "type": "mc",
+    "question": "Welke pipe-variant laat je de uitvoer van een commando als bestandsinvoer gebruiken voor een ander commando (processubstitutie)?",
+    "answer": "D",
+    "explanation": "Processubstitutie met <(commando) laat je de uitvoer van een commando gebruiken als tijdelijk bestand. diff <(ls /bin) <(ls /usr/bin) vergelijkt de uitvoer van twee ls-commando's.",
+    "choices": [
+      "A. commando1 | commando2",
+      "B. commando < <(andere_commando)",
+      "C. diff <(ls /bin) <(ls /usr/bin)",
+      "D. B en C zijn beide correct"
+    ]
+  },
+  {
+    "id": "th-04-20",
+    "chapter": "H4 Redirects & pipes",
+    "type": "mc",
+    "question": "Hoe kun je de uitvoer van ps aux filteren om enkel Firefox-processen te tonen (en de grep-regel zelf te verbergen)?",
+    "answer": "D",
+    "explanation": "ps aux | grep firefox | grep -v grep toont Firefox-processen en verwijdert de grep-regel zelf uit de resultaten. Alternatief: ps aux | grep '[f]irefox'.",
+    "choices": [
+      "A. ps aux | grep firefox",
+      "B. ps aux | grep -v grep | grep firefox",
+      "C. ps aux | grep -v grep firefox",
+      "D. ps aux | grep firefox | grep -v grep"
+    ]
+  },
+  {
+    "id": "th-05-01",
+    "chapter": "H5 Echo, alias & operatoren",
+    "type": "mc",
+    "question": "Wat is het verschil tussen enkele aanhalingstekens en dubbele aanhalingstekens in Bash?",
+    "answer": "B",
+    "explanation": "Binnen dubbele aanhalingstekens worden $VAR en $(commando) geïnterpreteerd. Binnen enkele aanhalingstekens is alles letterlijk.",
+    "choices": [
+      "A. Er is geen verschil; beide werken hetzelfde.",
+      "B. Dubbele aanhalingstekens laten variabele-uitbreiding en commandosubstitutie toe; enkele niet.",
+      "C. Enkele aanhalingstekens laten variabele-uitbreiding toe; dubbele niet.",
+      "D. Dubbele aanhalingstekens worden alleen gebruikt voor getallen."
+    ]
+  },
+  {
+    "id": "th-05-02",
+    "chapter": "H5 Echo, alias & operatoren",
+    "type": "mc",
+    "question": "Welk commando gebruik je om te controleren of een programma een shell-builtin of een extern bestand is?",
+    "answer": "C",
+    "explanation": "type geeft aan of een naam een builtin, een extern bestand, een alias of een functie is. which werkt alleen voor externe bestanden.",
+    "choices": [
+      "A. which",
+      "B. find",
+      "C. type",
+      "D. locate"
+    ]
+  },
+  {
+    "id": "th-05-03",
+    "chapter": "H5 Echo, alias & operatoren",
+    "type": "mc",
+    "question": "Wat doet de operator && in een commandoregel?",
+    "answer": "B",
+    "explanation": "&&  is de logische EN-operator: het tweede commando wordt enkel uitgevoerd als het eerste een exitstatus 0 retourneert.",
+    "choices": [
+      "A. Voert beide commando's altijd uit, ongeacht het resultaat.",
+      "B. Voert het tweede commando alleen uit als het eerste geslaagd is (exitstatus 0).",
+      "C. Voert het tweede commando alleen uit als het eerste mislukt.",
+      "D. Voert beide commando's tegelijk in de achtergrond uit."
+    ]
+  },
+  {
+    "id": "th-05-04",
+    "chapter": "H5 Echo, alias & operatoren",
+    "type": "mc",
+    "question": "Wat doet de operator || in een commandoregel?",
+    "answer": "C",
+    "explanation": "|| is de logische OF-operator en dient voor foutafhandeling: het tweede commando loopt alleen als het eerste faalt.",
+    "choices": [
+      "A. Voert het tweede commando alleen uit als het eerste geslaagd is.",
+      "B. Voert beide commando's altijd uit.",
+      "C. Voert het tweede commando alleen uit als het eerste mislukt (exitstatus ≠ 0).",
+      "D. Leidt de uitvoer door naar het volgende commando."
+    ]
+  },
+  {
+    "id": "th-05-05",
+    "chapter": "H5 Echo, alias & operatoren",
+    "type": "mc",
+    "question": "Hoe start je een commando als achtergrondproces?",
+    "answer": "B",
+    "explanation": "Een & aan het einde van een commando zorgt dat het op de achtergrond wordt gestart, zodat de terminal vrij blijft.",
+    "choices": [
+      "A. Door het commando voor te laten gaan door bg.",
+      "B. Door & toe te voegen aan het einde van het commando.",
+      "C. Door het commando te beginnen met background.",
+      "D. Door Ctrl+Z in te drukken voor het uitvoeren."
+    ]
+  },
+  {
+    "id": "th-05-06",
+    "chapter": "H5 Echo, alias & operatoren",
+    "type": "mc",
+    "question": "Wat bevat de variabele $? na het uitvoeren van een commando?",
+    "answer": "C",
+    "explanation": "$? slaat de exitstatus van het vorige commando op. 0 betekent succes; elke andere waarde duidt op een fout.",
+    "choices": [
+      "A. Het PID van het laatste proces.",
+      "B. De naam van het laatste commando.",
+      "C. De exitstatus van het laatste commando (0 = succes, niet-nul = fout).",
+      "D. De uitvoer van het laatste commando."
+    ]
+  },
+  {
+    "id": "th-05-07",
+    "chapter": "H5 Echo, alias & operatoren",
+    "type": "open",
+    "question": "Hoe maak je een alias permanent (beschikbaar in elke nieuwe terminalsessie)?",
+    "answer": "Voeg de alias-definitie toe aan ~/.bashrc en laad dit bestand opnieuw met source ~/.bashrc.",
+    "explanation": "Aliassen aangemaakt in de terminal verdwijnen als de sessie sluit. Door ze in ~/.bashrc te plaatsen worden ze automatisch geladen bij elke nieuwe Bash-sessie."
+  },
+  {
+    "id": "th-05-08",
+    "chapter": "H5 Echo, alias & operatoren",
+    "type": "open",
+    "question": "Hoe controleer je of een commando bestaat vóór je het gebruikt in een script?",
+    "answer": "Gebruik command -v commando om te controleren of het bestaat, bijv. command -v git > /dev/null && echo 'Git beschikbaar'.",
+    "explanation": "command -v is de draagbare (POSIX-conforme) methode om te testen of een commando beschikbaar is, in tegenstelling tot which dat niet altijd aanwezig is."
+  },
+  {
+    "id": "th-05-09",
+    "chapter": "H5 Echo, alias & operatoren",
+    "type": "mc",
+    "question": "Hoe escape je een speciaal teken (zoals $) in een dubbel-geciteerde string?",
+    "answer": "B",
+    "explanation": "Een backslash (\\) voor een speciaal teken heft de speciale betekenis op. echo \"Prijs: \\$10\" drukt letterlijk Prijs: $10 af.",
+    "choices": [
+      "A. Door het teken te verdubbelen: $$.",
+      "B. Door een backslash voor het teken te plaatsen: \\$.",
+      "C. Door de string te wisselen naar enkele aanhalingstekens.",
+      "D. Door het teken te omsluiten met accolades: ${$}."
+    ]
+  },
+  {
+    "id": "th-05-10",
+    "chapter": "H5 Echo, alias & operatoren",
+    "type": "open",
+    "question": "Wat is het verschil tussen ; en && als scheidingsteken tussen commando's?",
+    "answer": "; voert het volgende commando altijd uit, ongeacht het resultaat van het vorige. && voert het volgende commando alleen uit als het vorige geslaagd is.",
+    "explanation": "Gebruik ; als volgorde belangrijk is maar afhankelijkheid niet. Gebruik && voor afhankelijke bewerkingen waarbij latere stappen geen zin hebben als een eerdere stap mislukt."
+  },
+  {
+    "id": "th-05-11",
+    "chapter": "H5 Echo, alias & operatoren",
+    "type": "open",
+    "question": "Wat is het verschil tussen type en which?",
+    "answer": "type toont alle soorten (builtin, alias, functie, extern bestand). which toont alleen het pad van externe uitvoerbare bestanden.",
+    "explanation": "cd is een builtin en which geeft dan niets terug, terwijl type cd aangeeft dat het een shell builtin is."
+  },
+  {
+    "id": "th-05-12",
+    "chapter": "H5 Echo, alias & operatoren",
+    "type": "mc",
+    "question": "Welk echo-commando drukt tekst op twee aparte regels af zonder een tweede echo te gebruiken?",
+    "answer": "B",
+    "explanation": "De -e vlag laat echo escape-sequenties interpreteren. Zonder -e wordt \\n letterlijk afgedrukt.",
+    "choices": [
+      "A. echo \"Regel 1\\nRegel 2\"",
+      "B. echo -e \"Regel 1\\nRegel 2\"",
+      "C. echo -n \"Regel 1\\nRegel 2\"",
+      "D. echo --newline \"Regel 1 Regel 2\""
+    ]
+  },
+  {
+    "id": "th-05-13",
+    "chapter": "H5 Echo, alias & operatoren",
+    "type": "mc",
+    "question": "Welk commando gebruik je om de alias 'psg' te verwijderen?",
+    "answer": "C",
+    "explanation": "unalias is het ingebouwde shell-commando om aliassen te verwijderen.",
+    "choices": [
+      "A. alias -d psg",
+      "B. remove alias psg",
+      "C. unalias psg",
+      "D. delete psg"
+    ]
+  },
+  {
+    "id": "th-05-14",
+    "chapter": "H5 Echo, alias & operatoren",
+    "type": "open",
+    "question": "Hoe gebruik je regelcontinuatie om een lang commando over meerdere regels te spreiden?",
+    "answer": "Eindig elke regel (behalve de laatste) met een backslash (\\) gevolgd door een newline.",
+    "explanation": "De backslash 'escapet' de newline, zodat de shell de volgende regel als voortzetting van hetzelfde commando behandelt. Dit verbetert de leesbaarheid van complexe commando's."
+  },
+  {
+    "id": "th-06-01",
+    "chapter": "H6 Globbing, archiveren & links",
+    "type": "open",
+    "question": "Wat is het verschil tussen * en ? in globbing-patronen?",
+    "answer": "* matcht nul, één of meer willekeurige tekens. ? matcht precies één willekeurig teken.",
+    "explanation": "* is onbegrensd en kan dus ook lege strings matchen, terwijl ? altijd exact één teken vereist. Bijvoorbeeld: file*.txt matcht fileA.txt maar ook file.txt; file?.txt matcht fileA.txt maar niet file.txt of file10.txt."
+  },
+  {
+    "id": "th-06-02",
+    "chapter": "H6 Globbing, archiveren & links",
+    "type": "mc",
+    "question": "Welk globbing-patroon matcht file1.txt, file2.txt en file3.txt maar NIET file4.txt?",
+    "answer": "B",
+    "explanation": "file[1-3].txt gebruikt een tekenbereik en matcht alleen bestanden waarbij het teken op die positie 1, 2 of 3 is. file*.txt zou ook file4.txt matchen. file?.txt matcht één willekeurig teken inclusief 4. file[!4].txt matcht alles behalve 4, dus ook cijfers 5-9.",
+    "choices": [
+      "A. file*.txt",
+      "B. file[1-3].txt",
+      "C. file?.txt",
+      "D. file[!4].txt"
+    ]
+  },
+  {
+    "id": "th-06-03",
+    "chapter": "H6 Globbing, archiveren & links",
+    "type": "mc",
+    "question": "Welk commando maakt een gzip-gecomprimeerd tar-archief aan van de map project/?",
+    "answer": "B",
+    "explanation": "De vlag -z schakelt gzip-compressie in. -c staat voor create, -f voor de bestandsnaam. -j zou bzip2-compressie gebruiken, en tar -cf maakt een niet-gecomprimeerd archief.",
+    "choices": [
+      "A. tar -cf project.tar.gz project/",
+      "B. tar -czf project.tar.gz project/",
+      "C. tar -cjf project.tar.gz project/",
+      "D. gzip project/"
+    ]
+  },
+  {
+    "id": "th-06-04",
+    "chapter": "H6 Globbing, archiveren & links",
+    "type": "open",
+    "question": "Wat is het verschil tussen een harde link en een symbolische link?",
+    "answer": "Een harde link verwijst direct naar hetzelfde inode als het origineel en deelt dus dezelfde data. Een symbolische link is een apart bestand dat het pad naar het origineel opslaat.",
+    "explanation": "Harde links kunnen niet naar mappen wijzen, werken niet over bestandssystemen heen, maar blijven werken als het origineel verwijderd wordt. Symbolische links kunnen naar mappen én over bestandssystemen heen wijzen, maar worden gebroken als het origineel verdwijnt."
+  },
+  {
+    "id": "th-06-05",
+    "chapter": "H6 Globbing, archiveren & links",
+    "type": "open",
+    "question": "Wat is een inode in een Linux-bestandssysteem?",
+    "answer": "Een inode is een datastructuur die alle metadata van een bestand bevat: bestandstype, permissies, eigenaar, grootte, tijdstempels, link-telling en de locatie van de datablokken op schijf. De bestandsnaam zelf is NIET opgeslagen in de inode maar in de map.",
+    "explanation": "De scheiding tussen bestandsnaam (in de map) en inode (metadata + datablokken) maakt het mogelijk meerdere harde links naar hetzelfde bestand te hebben, en is fundamenteel voor de werking van het Linux-bestandssysteem."
+  },
+  {
+    "id": "th-06-06",
+    "chapter": "H6 Globbing, archiveren & links",
+    "type": "open",
+    "question": "Wanneer gebruik je het dd-commando?",
+    "answer": "dd gebruik je voor blokgewijze kopieerbewerkingen zoals: schijfback-ups maken/terugzetten, bestanden van een specifieke grootte aanmaken (testdata), bootbare USB-sticks schrijven vanuit een ISO, en performancetests uitvoeren.",
+    "explanation": "dd werkt op blokniveau en is daardoor extreem krachtig maar ook gevaarlijk: een vergissing in de apparaatnaam kan data permanent vernietigen. Controleer altijd if= (invoer) en of= (uitvoer) voor je het uitvoert."
+  },
+  {
+    "id": "th-06-07",
+    "chapter": "H6 Globbing, archiveren & links",
+    "type": "mc",
+    "question": "Hoe sluit je bepaalde bestandstypen uit van een tar-archief?",
+    "answer": "B",
+    "explanation": "De optie --exclude='PATROON' sluit bestanden die overeenkomen met het patroon uit van het archief. Je kunt meerdere --exclude-opties combineren, bijv. --exclude='*.tmp' --exclude='*.log'.",
+    "choices": [
+      "A. tar -czf archief.tar.gz --skip='*.tmp' map/",
+      "B. tar -czf archief.tar.gz --exclude='*.tmp' map/",
+      "C. tar -czf archief.tar.gz -e '*.tmp' map/",
+      "D. tar -czf archief.tar.gz --ignore='*.tmp' map/"
+    ]
+  },
+  {
+    "id": "th-06-08",
+    "chapter": "H6 Globbing, archiveren & links",
+    "type": "mc",
+    "question": "Hoe vind je alle bestanden die hetzelfde inode delen als original.txt?",
+    "answer": "B",
+    "explanation": "find . -inum N zoekt alle bestanden met inode-nummer N. stat -c %i original.txt geeft het inode-nummer van original.txt terug. Door beide te combineren via command substitution vind je alle harde links naar hetzelfde bestand.",
+    "choices": [
+      "A. find . -links $(stat original.txt)",
+      "B. find . -inum $(stat -c %i original.txt)",
+      "C. ls -li original.txt",
+      "D. stat --links original.txt"
+    ]
+  },
+  {
+    "id": "th-06-09",
+    "chapter": "H6 Globbing, archiveren & links",
+    "type": "mc",
+    "question": "Wat zijn de kenmerken van een harde link? (selecteer alles wat van toepassing is)",
+    "answer": "A en C",
+    "explanation": "Harde links delen het inode-nummer met het origineel (A) en blijven werken als het origineel verwijderd wordt, omdat de data bewaard blijft zolang er nog één harde link bestaat (C). Harde links kunnen NIET naar mappen wijzen (B) en kunnen NIET over bestandssysteemgrenzen heen werken (D) — dat zijn eigenschappen van symbolische links.",
+    "choices": [
+      "A. Heeft hetzelfde inode-nummer als het origineel.",
+      "B. Kan naar mappen wijzen.",
+      "C. Blijft werken nadat het origineel verwijderd is.",
+      "D. Kan over bestandssystemen heen werken."
+    ]
+  },
+  {
+    "id": "th-06-10",
+    "chapter": "H6 Globbing, archiveren & links",
+    "type": "mc",
+    "question": "Welk commando toont gedetailleerde metadata van een bestand, inclusief het inode-nummer en de link-telling?",
+    "answer": "C",
+    "explanation": "stat toont alle inode-informatie: bestandstype, permissies, eigenaar, grootte, tijdstempels (access, modify, change), inode-nummer en link-telling. ls -l toont een beperktere weergave en info is een documentatietool.",
+    "choices": [
+      "A. ls -l bestand.txt",
+      "B. file bestand.txt",
+      "C. stat bestand.txt",
+      "D. info bestand.txt"
+    ]
+  },
+  {
+    "id": "th-06-11",
+    "chapter": "H6 Globbing, archiveren & links",
+    "type": "open",
+    "question": "Wat doet het commando 'shopt -s globstar'?",
+    "answer": "Het schakelt de globstar-shell-optie in, waardoor ** als wildcard door alle submappen heen werkt.",
+    "explanation": "Zonder globstar matcht ** hetzelfde als *. Met globstar ingeschakeld matcht ls **/*.py alle .py-bestanden in de huidige map én alle submappen recursief."
+  },
+  {
+    "id": "th-06-12",
+    "chapter": "H6 Globbing, archiveren & links",
+    "type": "open",
+    "question": "Wat is het verschil in compressie tussen gzip (-z), bzip2 (-j) en xz (-J) bij gebruik met tar?",
+    "answer": "gzip is het snelst maar geeft de minste compressie; bzip2 is trager maar comprimeert beter dan gzip; xz is het traagst maar levert de beste compressie.",
+    "explanation": "Kies gzip voor snelle dagelijkse back-ups, bzip2 voor een betere balans, en xz wanneer bestandsgrootte de prioriteit heeft (bijv. distributies). De extensies zijn respectievelijk .tar.gz/.tgz, .tar.bz2 en .tar.xz."
+  },
+  {
+    "id": "th-06-13",
+    "chapter": "H6 Globbing, archiveren & links",
+    "type": "open",
+    "question": "Welke veiligheidsregels zijn essentieel bij het gebruik van dd?",
+    "answer": "Controleer altijd de apparaatnaam (if= en of=) voor uitvoering; gebruik lsblk om het correcte apparaat te identificeren; voer sync uit na de bewerking; test eerst met kleine hoeveelheden data.",
+    "explanation": "dd heeft geen bevestigingsvraag en kan een schijf onherstelbaar overschrijven bij een foutief apparaatpad. status=progress geeft voortgang en helpt menselijke fouten tijdig op te merken."
+  },
+  {
+    "id": "th-06-14",
+    "chapter": "H6 Globbing, archiveren & links",
+    "type": "mc",
+    "question": "Wat slaat een inode NIET op?",
+    "answer": "B",
+    "explanation": "De bestandsnaam is NIET opgeslagen in de inode maar in het directory-item (de map). De inode bevat wel permissies, grootte, tijdstempels, eigenaar, link-telling en verwijzingen naar datablokken. Dit is wat meerdere harde links (verschillende namen) naar hetzelfde inode mogelijk maakt.",
+    "choices": [
+      "A. Bestandspermissies",
+      "B. De bestandsnaam",
+      "C. De bestandsgrootte",
+      "D. Tijdstempels"
+    ]
+  },
+  {
+    "id": "th-06-15",
+    "chapter": "H6 Globbing, archiveren & links",
+    "type": "mc",
+    "question": "Hoe maak je een symbolische link aan die naar de map /etc/nginx/sites-available/mysite wijst in /etc/nginx/sites-enabled/?",
+    "answer": "B",
+    "explanation": "ln -s maakt een symbolische link aan. Dit is het standaardpatroon in nginx (en Apache) voor het in- en uitschakelen van virtuele hosts: de configuratie staat in sites-available en een symlink in sites-enabled activeert die.",
+    "choices": [
+      "A. ln /etc/nginx/sites-available/mysite /etc/nginx/sites-enabled/",
+      "B. ln -s /etc/nginx/sites-available/mysite /etc/nginx/sites-enabled/",
+      "C. cp -s /etc/nginx/sites-available/mysite /etc/nginx/sites-enabled/",
+      "D. link /etc/nginx/sites-available/mysite /etc/nginx/sites-enabled/"
+    ]
+  },
+  {
+    "id": "th-06-16",
+    "chapter": "H6 Globbing, archiveren & links",
+    "type": "mc",
+    "question": "Wat toont het commando 'df -i'?",
+    "answer": "B",
+    "explanation": "df -i toont het aantal gebruikte en beschikbare inodes per bestandssysteem. Als het aantal inodes vol raakt, kun je geen nieuwe bestanden aanmaken ook al is er nog schijfruimte beschikbaar.",
+    "choices": [
+      "A. De schijfruimte per bestandssysteem in mensvriendelijk formaat.",
+      "B. Het inode-gebruik per bestandssysteem.",
+      "C. De inode-nummers van bestanden in de huidige map.",
+      "D. De grootte van alle mappen recursief."
+    ]
+  },
+  {
+    "id": "th-07-01",
+    "chapter": "H7 Filters & pipelines",
+    "type": "open",
+    "question": "Wat is het verschil tussen `grep -v` en `grep -c`?",
+    "answer": "grep -v toont de regels die NIET overeenkomen met het patroon (invert match); grep -c telt het aantal regels dat WEL overeenkomt en toont alleen dat getal.",
+    "explanation": "-v keert de selectie om zodat je de niet-overeenkomende regels ziet. -c telt de overeenkomende regels en geeft alleen het aantal terug, niet de regels zelf."
+  },
+  {
+    "id": "th-07-02",
+    "chapter": "H7 Filters & pipelines",
+    "type": "open",
+    "question": "Hoe extraheer je de derde kolom uit een CSV-bestand met komma als scheidingsteken?",
+    "answer": "cut -d, -f3 bestand.csv",
+    "explanation": "Met cut gebruik je -d om het scheidingsteken op te geven (hier een komma) en -f om het veldnummer te kiezen (hier 3)."
+  },
+  {
+    "id": "th-07-03",
+    "chapter": "H7 Filters & pipelines",
+    "type": "open",
+    "question": "Wat doet de pipeline `sort | uniq -c | sort -nr`?",
+    "answer": "Ze sorteert de invoer, telt hoe vaak elke unieke regel voorkomt en sorteert dan het resultaat van hoog naar laag op het aantal.",
+    "explanation": "sort groepeert identieke regels. uniq -c telt opeenvolgende identieke regels en zet het aantal ervoor. sort -nr sorteert numerisch in omgekeerde volgorde zodat de meest voorkomende regel bovenaan staat."
+  },
+  {
+    "id": "th-07-04",
+    "chapter": "H7 Filters & pipelines",
+    "type": "open",
+    "question": "Hoe vervang je tekst rechtstreeks in een bestand met sed (in-place) terwijl je een back-up bewaart?",
+    "answer": "sed -i.bak 's/oud/nieuw/g' bestand.txt",
+    "explanation": "De vlag -i past het bestand direct aan. Door een extensie (.bak) toe te voegen, maakt sed eerst een back-up van het originele bestand."
+  },
+  {
+    "id": "th-07-05",
+    "chapter": "H7 Filters & pipelines",
+    "type": "open",
+    "question": "Wat is het doel van het `tee`-commando?",
+    "answer": "tee leest van stdin en schrijft de data tegelijk naar stdout én naar een of meerdere bestanden, zodat je de uitvoer kunt opslaan zonder de pipeline te onderbreken.",
+    "explanation": "Zonder tee zou je de uitvoer moeten omleiden naar een bestand, waardoor de volgende stap in de pipeline niets ontvangt. tee lost dit op door de stroom te splitsen."
+  },
+  {
+    "id": "th-07-06",
+    "chapter": "H7 Filters & pipelines",
+    "type": "open",
+    "question": "Hoe tel je het aantal unieke regels in een bestand?",
+    "answer": "sort bestand.txt | uniq | wc -l  of  sort -u bestand.txt | wc -l",
+    "explanation": "Eerst sorteer je zodat identieke regels naast elkaar staan. uniq verwijdert de duplicaten en wc -l telt de resterende regels."
+  },
+  {
+    "id": "th-07-07",
+    "chapter": "H7 Filters & pipelines",
+    "type": "open",
+    "question": "Wat is het verschil tussen `tr -d` en `tr -s`?",
+    "answer": "tr -d verwijdert alle opgegeven tekens volledig; tr -s comprimeert opeenvolgende identieke tekens tot één exemplaar.",
+    "explanation": "Voorbeeld: echo 'aaa bbb' | tr -d 'a' geeft '  bbb' (alle a's weg). echo 'aaa bbb' | tr -s 'a' geeft 'a bbb' (meerdere a's gecomprimeerd tot één)."
+  },
+  {
+    "id": "th-07-08",
+    "chapter": "H7 Filters & pipelines",
+    "type": "mc",
+    "question": "Welk commando gebruik je om een bestand te lezen én de uitvoer door te sturen naar zowel een bestand als een volgende pipe-stap?",
+    "answer": "tee",
+    "explanation": "tee is het enige commando dat de uitvoerstroom opsplitst: het schrijft tegelijk naar een bestand en geeft de data ongewijzigd door naar stdout (en zo naar de volgende pipe-stap).",
+    "choices": [
+      "cat",
+      "tee",
+      "grep",
+      "wc"
+    ]
+  },
+  {
+    "id": "th-07-09",
+    "chapter": "H7 Filters & pipelines",
+    "type": "mc",
+    "question": "Wat doet `grep -E \"(ERROR|WARNING)\" logbestand.txt`?",
+    "answer": "B: Zoekt naar regels die ERROR of WARNING bevatten",
+    "explanation": "Met -E (Extended Regular Expressions) is | de OR-operator. (ERROR|WARNING) matcht elke regel die ERROR OF WARNING bevat.",
+    "choices": [
+      "A: Zoekt letterlijk naar de tekst (ERROR|WARNING)",
+      "B: Zoekt naar regels die ERROR of WARNING bevatten",
+      "C: Zoekt alleen naar regels die zowel ERROR als WARNING bevatten",
+      "D: Telt het aantal regels met ERROR of WARNING"
+    ]
+  },
+  {
+    "id": "th-07-10",
+    "chapter": "H7 Filters & pipelines",
+    "type": "mc",
+    "question": "Welk commando zet alle kleine letters in een tekststroom om naar hoofdletters?",
+    "answer": "tr 'a-z' 'A-Z'",
+    "explanation": "tr vertaalt elk teken in de eerste reeks naar het corresponderende teken in de tweede reeks. 'a-z' naar 'A-Z' zet alle kleine letters om naar hoofdletters.",
+    "choices": [
+      "tr 'a-z' 'A-Z'",
+      "sed 's/[a-z]/[A-Z]/g'",
+      "grep -i",
+      "cut -u"
+    ]
+  },
+  {
+    "id": "th-07-11",
+    "chapter": "H7 Filters & pipelines",
+    "type": "mc",
+    "question": "Je wilt regels in een CSV-bestand sorteren op de derde kolom (numerisch) waarbij het scheidingsteken een komma is. Welk commando gebruik je?",
+    "answer": "sort -t, -k3 -n bestand.csv",
+    "explanation": "-t, geeft het kolomscheidingsteken op. -k3 sorteert op kolom 3. -n zorgt voor numerieke sortering.",
+    "choices": [
+      "sort -k3 bestand.csv",
+      "sort -t, -k3 -n bestand.csv",
+      "sort -d, -f3 bestand.csv",
+      "sort -n -c3 bestand.csv"
+    ]
+  },
+  {
+    "id": "th-07-12",
+    "chapter": "H7 Filters & pipelines",
+    "type": "open",
+    "question": "Wat is een filter in de context van Linux-tekstverwering?",
+    "answer": "Een filter is een commando dat invoer leest van stdin of een bestand, de data verwerkt of transformeert en het resultaat naar stdout schrijft, zodat het in een pipeline gekoppeld kan worden.",
+    "explanation": "Filters volgen de Unix-filosofie: doe één ding goed. Door filters te koppelen via pipes (|) kun je complexe tekstverwerkingstaken uitvoeren."
+  },
+  {
+    "id": "th-07-13",
+    "chapter": "H7 Filters & pipelines",
+    "type": "open",
+    "question": "Waarom moet je de invoer voor `uniq` eerst sorteren?",
+    "answer": "Omdat uniq alleen aangrenzende (opvolgende) identieke regels herkent en verwijdert. Als er dezelfde waarden verspreid in het bestand staan, worden ze niet als duplicaten beschouwd.",
+    "explanation": "Voorbeeld: een bestand met 'apple, banana, apple' geeft via uniq nog steeds alle drie de regels terug. Na sort staat 'apple' twee keer naast elkaar en verwijdert uniq de duplicaat."
+  },
+  {
+    "id": "th-07-14",
+    "chapter": "H7 Filters & pipelines",
+    "type": "mc",
+    "question": "Wat is het verschil tussen `sort -n` en `sort` (zonder vlaggen)?",
+    "answer": "B: sort -n sorteert numerisch; sort zonder vlag sorteert alfabetisch",
+    "explanation": "Alfabetisch staat '10' voor '2' omdat '1' < '2'. Numerisch staat '2' voor '10'. Gebruik altijd -n als je getallen wilt sorteren op waarde.",
+    "choices": [
+      "A: Er is geen verschil",
+      "B: sort -n sorteert numerisch; sort zonder vlag sorteert alfabetisch",
+      "C: sort -n sorteert omgekeerd",
+      "D: sort zonder vlag sorteert numerisch"
+    ]
+  },
+  {
+    "id": "th-07-15",
+    "chapter": "H7 Filters & pipelines",
+    "type": "mc",
+    "question": "Welke vlag gebruik je bij `grep` om de context van 3 regels voor en na elke overeenkomst te tonen?",
+    "answer": "-C 3",
+    "explanation": "-C (context) toont het opgegeven aantal regels voor én na de overeenkomst. -A toont regels na (after), -B toont regels voor (before).",
+    "choices": [
+      "-A 3",
+      "-B 3",
+      "-C 3",
+      "-n 3"
+    ]
+  },
+  {
+    "id": "th-07-16",
+    "chapter": "H7 Filters & pipelines",
+    "type": "open",
+    "question": "Hoe verwijder je Windows-regeleindes (carriage returns, \\r) uit een bestand met tr?",
+    "answer": "cat bestand.txt | tr -d '\\r'  of  tr -d '\\r' < bestand.txt",
+    "explanation": "Windows-tekstbestanden gebruiken \\r\\n als regelafsluiters, terwijl Linux alleen \\n gebruikt. tr -d '\\r' verwijdert alle carriage-return tekens."
+  },
+  {
+    "id": "th-07-17",
+    "chapter": "H7 Filters & pipelines",
+    "type": "mc",
+    "question": "Welk commando gebruik je om twee gesorteerde bestanden te vergelijken en alleen de gemeenschappelijke regels te tonen?",
+    "answer": "comm -12 bestand1.txt bestand2.txt",
+    "explanation": "comm toont drie kolommen: kolom 1 (uniek voor bestand1), kolom 2 (uniek voor bestand2) en kolom 3 (gemeenschappelijk). -12 onderdrukt kolommen 1 en 2, zodat alleen de gemeenschappelijke regels overblijven.",
+    "choices": [
+      "diff bestand1.txt bestand2.txt",
+      "comm -12 bestand1.txt bestand2.txt",
+      "comm -23 bestand1.txt bestand2.txt",
+      "grep -f bestand1.txt bestand2.txt"
+    ]
+  },
+  {
+    "id": "th-07-18",
+    "chapter": "H7 Filters & pipelines",
+    "type": "open",
+    "question": "Wat is het nut van `cat -A bestand.txt`?",
+    "answer": "Het toont onzichtbare tekens: regeleindes worden zichtbaar als '$' en TAB-tekens als '^I'. Dit helpt bij het debuggen van bestanden met verborgen whitespace.",
+    "explanation": "Dit is handig om te controleren of een bestand Windows-regeleindes (\\r$) heeft of TAB-tekens bevat die anders onzichtbaar zouden zijn."
+  },
+  {
+    "id": "th-07-19",
+    "chapter": "H7 Filters & pipelines",
+    "type": "open",
+    "question": "Je wilt de meest gebruikte shell-commando's uit je geschiedenis halen. Welke pipeline gebruik je?",
+    "answer": "history | awk '{print $2}' | sort | uniq -c | sort -nr | head -10",
+    "explanation": "history geeft de commandogeschiedenis. awk '{print $2}' extraheert het tweede veld (het commando). Daarna wordt de standaard frequentietelling-pipeline (sort | uniq -c | sort -nr) toegepast en head -10 toont de top 10."
+  },
+  {
+    "id": "th-07-20",
+    "chapter": "H7 Filters & pipelines",
+    "type": "mc",
+    "question": "Wat is het verschil tussen `grep -l` en `grep -L`?",
+    "answer": "A: -l toont bestanden met overeenkomsten; -L toont bestanden zonder overeenkomsten",
+    "explanation": "-l (lowercase L) toont alleen de bestandsnamen die minstens één overeenkomst bevatten. -L toont de bestandsnamen die géén overeenkomst bevatten. Beide zijn handig bij het doorzoeken van meerdere bestanden.",
+    "choices": [
+      "A: -l toont bestanden met overeenkomsten; -L toont bestanden zonder overeenkomsten",
+      "B: -l toont regelnummers; -L toont bestandsnamen",
+      "C: -l is hoofdletterongevoelig; -L is hoofdlettergevoelig",
+      "D: Er is geen verschil"
+    ]
+  },
+  {
+    "id": "th-08-01",
+    "chapter": "H8 Shell scripting",
+    "type": "mc",
+    "question": "Wat is het doel van de shebang-regel (#!/bin/bash) in een shell script?",
+    "answer": "B",
+    "explanation": "De shebang-regel #!/bin/bash moet de eerste regel van het script zijn en geeft aan welke interpreter (hier bash op /bin/bash) het script uitvoert. Zonder shebang bepaalt het systeem zelf de interpreter, wat tot onverwacht gedrag kan leiden.",
+    "choices": [
+      "A. Het is een commentaarregel die de scriptnaam beschrijft.",
+      "B. Het vertelt het systeem welke interpreter gebruikt moet worden om het script uit te voeren.",
+      "C. Het maakt het script automatisch uitvoerbaar.",
+      "D. Het stelt de variabele $BASH in op de locatie van bash."
+    ]
+  },
+  {
+    "id": "th-08-02",
+    "chapter": "H8 Shell scripting",
+    "type": "mc",
+    "question": "Hoe maak je een script greeting.sh uitvoerbaar?",
+    "answer": "B",
+    "explanation": "chmod +x voegt het uitvoerrecht toe aan het bestand. Daarna kan het script worden uitgevoerd met ./greeting.sh. bash -x voert een script uit in debugmodus maar maakt het niet uitvoerbaar.",
+    "choices": [
+      "A. run greeting.sh",
+      "B. chmod +x greeting.sh",
+      "C. execute greeting.sh",
+      "D. bash -x greeting.sh"
+    ]
+  },
+  {
+    "id": "th-08-03",
+    "chapter": "H8 Shell scripting",
+    "type": "open",
+    "question": "Wat is het verschil tussen $1 en $@ in een shell script?",
+    "answer": "$1 is het eerste argument meegegeven aan het script; $@ bevat alle argumenten als een reeks afzonderlijke waarden.",
+    "explanation": "$1 bevat enkel het eerste opdrachtregelargument. $@ bevat alle meegegeven argumenten afzonderlijk (als 'array'), terwijl $* alle argumenten samenvoegt tot één string. $# bevat het aantal argumenten."
+  },
+  {
+    "id": "th-08-04",
+    "chapter": "H8 Shell scripting",
+    "type": "mc",
+    "question": "Welk commando gebruik je om invoer van de gebruiker te lezen in een script?",
+    "answer": "C",
+    "explanation": "Het ingebouwde bash-commando read leest invoer van de gebruiker. Met read -p 'Prompttekst: ' variabele wordt een prompttekst getoond en de invoer opgeslagen in de opgegeven variabele.",
+    "choices": [
+      "A. input",
+      "B. scan",
+      "C. read",
+      "D. get"
+    ]
+  },
+  {
+    "id": "th-08-05",
+    "chapter": "H8 Shell scripting",
+    "type": "mc",
+    "question": "Welke bestandstestoperator gebruik je om te controleren of een pad een gewone bestand is (geen map of link)?",
+    "answer": "C",
+    "explanation": "-f controleert of het pad een gewoon bestand is. -d controleert op een map, -e op bestaan (ongeacht type) en -r op leesbaarheid.",
+    "choices": [
+      "A. -d",
+      "B. -e",
+      "C. -f",
+      "D. -r"
+    ]
+  },
+  {
+    "id": "th-08-06",
+    "chapter": "H8 Shell scripting",
+    "type": "open",
+    "question": "Wanneer gebruik je een while-lus in plaats van een for-lus?",
+    "answer": "Een while-lus gebruik je als je niet van tevoren weet hoeveel iteraties nodig zijn, bijvoorbeeld bij het lezen van invoer tot een bepaalde conditie waar is. Een for-lus gebruik je bij een bekende lijst of reeks.",
+    "explanation": "Een for-lus itereert over een vaste lijst of reeks (bijv. {1..10} of bestanden). Een while-lus loopt zolang een conditie waar is, wat handig is bij onbepaald aantal iteraties, zoals het verwerken van gebruikersinvoer of wachten op een gebeurtenis."
+  },
+  {
+    "id": "th-08-07",
+    "chapter": "H8 Shell scripting",
+    "type": "mc",
+    "question": "Hoe stel je een standaardwaarde in voor een variabele als die niet opgegeven of leeg is?",
+    "answer": "B",
+    "explanation": "De syntax ${VARIABELE:-standaard} geeft de waarde van VARIABELE terug als die ingesteld en niet leeg is, anders wordt 'standaard' gebruikt. Zo kan een script flexibel argumenten of configuratiewaarden ontvangen met een veilige terugval.",
+    "choices": [
+      "A. ${VARIABELE=standaard}",
+      "B. ${VARIABELE:-standaard}",
+      "C. ${VARIABELE:standaard}",
+      "D. ${VARIABELE||standaard}"
+    ]
+  },
+  {
+    "id": "th-08-08",
+    "chapter": "H8 Shell scripting",
+    "type": "open",
+    "question": "Wat doet het commando 'set -euo pipefail' bovenaan een script?",
+    "answer": "Het schakelt strikte foutafhandeling in: -e stopt bij de eerste fout, -u behandelt niet-gedefinieerde variabelen als fout, en -o pipefail laat het script stoppen bij een mislukte opdracht in een pipe.",
+    "explanation": "set -e: stopt het script zodra een commando een niet-nul exitcode geeft. set -u: geeft een fout bij gebruik van een niet-gedefinieerde variabele. set -o pipefail: zorgt dat de pipe-exitcode de exitcode is van het eerste mislukte commando. Samen zorgen ze voor robuuste foutafhandeling."
+  },
+  {
+    "id": "th-08-09",
+    "chapter": "H8 Shell scripting",
+    "type": "mc",
+    "question": "Welke bash-syntax gebruik je voor rekenkundige bewerkingen?",
+    "answer": "C",
+    "explanation": "$((expressie)) is de correcte bash-syntax voor rekenkundige bewerkingen. Het ondersteunt +, -, *, / en % (modulo). $[...] is verouderd, $(commando) is voor command substitution en ${...} is voor variabelesubstitutie.",
+    "choices": [
+      "A. $[A + B]",
+      "B. $(A + B)",
+      "C. $((A + B))",
+      "D. ${A + B}"
+    ]
+  },
+  {
+    "id": "th-08-10",
+    "chapter": "H8 Shell scripting",
+    "type": "mc",
+    "question": "Hoe voer je een script uit zonder het uitvoerbaar te maken via chmod?",
+    "answer": "C",
+    "explanation": "Door 'bash script.sh' te typen roep je de bash-interpreter expliciet aan om het script uit te voeren, zonder dat het bestand uitvoerrechten nodig heeft. ./script.sh vereist wél uitvoerrechten.",
+    "choices": [
+      "A. ./script.sh",
+      "B. run script.sh",
+      "C. bash script.sh",
+      "D. exec script.sh"
+    ]
+  },
+  {
+    "id": "th-08-11",
+    "chapter": "H8 Shell scripting",
+    "type": "open",
+    "question": "Wat is de functie van het speciale teken $? in een script?",
+    "answer": "$? bevat de exitcode van het laatste uitgevoerde commando. Een exitcode van 0 betekent succes; een andere waarde wijst op een fout.",
+    "explanation": "Na elk commando wordt de exitcode opgeslagen in $?. Scripts kunnen dit gebruiken om te controleren of een commando geslaagd is: if [ $? -eq 0 ]; then .... Het is een kernmechanisme voor foutafhandeling in bash."
+  },
+  {
+    "id": "th-08-12",
+    "chapter": "H8 Shell scripting",
+    "type": "mc",
+    "question": "Welk van de volgende commando's leest een bestand regel voor regel in een while-lus?",
+    "answer": "B",
+    "explanation": "while read -r line; do ... done < bestand is de correcte methode om een bestand regel voor regel te lezen. De -r vlag voorkomt dat backslashes als escape-tekens worden behandeld. De omleidingsoperator < koppelt het bestand aan de standaardinvoer van de lus.",
+    "choices": [
+      "A. for line in $(cat bestand); do echo $line; done",
+      "B. while read -r line; do echo \"$line\"; done < bestand",
+      "C. until eof; do read line; done",
+      "D. read bestand | while line; do echo $line; done"
+    ]
+  },
+  {
+    "id": "th-08-13",
+    "chapter": "H8 Shell scripting",
+    "type": "mc",
+    "question": "Hoe sluit je een case-statement af in bash?",
+    "answer": "C",
+    "explanation": "Een case-statement wordt afgesloten met esac (case achterstevoren). Een if-statement sluit af met fi, een for/while/until-lus met done.",
+    "choices": [
+      "A. end case",
+      "B. done",
+      "C. esac",
+      "D. fi"
+    ]
+  },
+  {
+    "id": "th-08-14",
+    "chapter": "H8 Shell scripting",
+    "type": "open",
+    "question": "Wat is command substitution en hoe gebruik je het?",
+    "answer": "Command substitution laat je de uitvoer van een commando als waarde gebruiken. Je schrijft $(commando) of de verouderde backtick-notatie `commando`.",
+    "explanation": "Met $(commando) wordt het commando uitgevoerd en de uitvoer ingevuld op die plek. Voorbeeld: DATUM=$(date) slaat de huidige datum op in DATUM. Dit is handig voor het vullen van variabelen met dynamische waarden of voor gebruik in echo-regels."
+  },
+  {
+    "id": "th-08-15",
+    "chapter": "H8 Shell scripting",
+    "type": "open",
+    "question": "Wat is het verschil tussen enkelvoudige (') en dubbele (\") aanhalingstekens in bash?",
+    "answer": "Dubbele aanhalingstekens staan variabelesubstitutie en command substitution toe; enkelvoudige aanhalingstekens behandelen alles letterlijk en voeren geen substitutie uit.",
+    "explanation": "In \"$naam\" wordt de variabele naam vervangen door zijn waarde. In '$naam' wordt letterlijk $naam afgedrukt, zonder substitutie. Gebruik enkelvoudige aanhalingstekens als je de tekst letterlijk wilt bewaren (bv. in heredoc-openers << 'EOF')."
+  },
+  {
+    "id": "th-08-16",
+    "chapter": "H8 Shell scripting",
+    "type": "mc",
+    "question": "Wat doet de -z testoperator bij een string?",
+    "answer": "B",
+    "explanation": "-z STRING geeft waar terug als de string leeg is (lengte nul). Gebruik -n om te controleren of een string NIET leeg is. Voorbeeld: if [ -z \"$naam\" ]; then echo 'Geen naam opgegeven'; fi",
+    "choices": [
+      "A. Controleert of de string nul of meer tekens bevat.",
+      "B. Controleert of de string leeg is.",
+      "C. Controleert of de string een getal is.",
+      "D. Controleert of de string bestaat als bestandsnaam."
+    ]
+  },
+  {
+    "id": "th-08-17",
+    "chapter": "H8 Shell scripting",
+    "type": "mc",
+    "question": "Hoe exporteer je een variabele zodat kindprocessen (subshells) er toegang toe hebben?",
+    "answer": "C",
+    "explanation": "Met export VARIABELE=waarde of export VARIABELE (als de variabele al gedefinieerd is) wordt de variabele een omgevingsvariabele die beschikbaar is voor alle kindprocessen die het script start.",
+    "choices": [
+      "A. global VARIABELE=waarde",
+      "B. VARIABELE=waarde; share VARIABELE",
+      "C. export VARIABELE=waarde",
+      "D. public VARIABELE=waarde"
+    ]
+  },
+  {
+    "id": "th-08-18",
+    "chapter": "H8 Shell scripting",
+    "type": "open",
+    "question": "Wat is het nut van readonly bij variabelen in een script?",
+    "answer": "readonly markeert een variabele als constante zodat de waarde later in het script niet meer gewijzigd kan worden. Dit is nuttig voor configuratiewaarden die niet mogen veranderen.",
+    "explanation": "Gebruik readonly voor constanten zoals PI, CONFIG_FILE of maximale drempelwaarden. Als je later toch probeert de variabele te wijzigen, geeft bash een foutmelding en weigert de wijziging."
+  },
+  {
+    "id": "th-08-19",
+    "chapter": "H8 Shell scripting",
+    "type": "mc",
+    "question": "Welke structuur gebruik je om een script te laten stoppen bij elke fout?",
+    "answer": "B",
+    "explanation": "set -e (of set -o errexit) aan het begin van een script laat bash het script onmiddellijk afsluiten zodra een commando een niet-nul exitcode geeft. Dit voorkomt dat het script doorgaat na een fout.",
+    "choices": [
+      "A. bash --strict script.sh",
+      "B. set -e aan het begin van het script",
+      "C. if error; then exit; fi na elk commando",
+      "D. error_check=true"
+    ]
+  },
+  {
+    "id": "th-08-20",
+    "chapter": "H8 Shell scripting",
+    "type": "mc",
+    "question": "Wat drukt '$0' af in een shell script?",
+    "answer": "C",
+    "explanation": "$0 bevat de naam waarmee het script aangeroepen is (bv. ./mijnscript.sh of /usr/local/bin/mijnscript.sh). Dit wordt vaak gebruikt in usage-berichten: echo \"Usage: $0 <argument>\"",
+    "choices": [
+      "A. De naam van de huidige shell.",
+      "B. Het eerste argument van het script.",
+      "C. De naam van het script zelf.",
+      "D. De exit-code van het vorige commando."
+    ]
+  },
+  {
+    "id": "th-08-21",
+    "chapter": "H8 Shell scripting",
+    "type": "mc",
+    "question": "Hoe combineer je twee condities in een if-statement zodat beide waar moeten zijn?",
+    "answer": "C",
+    "explanation": "&& is de logische AND-operator: beide condities moeten waar zijn. || is de logische OR-operator: minstens één conditie moet waar zijn. Binnen dubbele haken [[ ]] kan je ook && en || direct gebruiken.",
+    "choices": [
+      "A. if [ cond1 ] & [ cond2 ]",
+      "B. if [ cond1 ] || [ cond2 ]",
+      "C. if [ cond1 ] && [ cond2 ]",
+      "D. if [ cond1 AND cond2 ]"
+    ]
+  },
+  {
+    "id": "th-08-22",
+    "chapter": "H8 Shell scripting",
+    "type": "open",
+    "question": "Wat is een functie in een shell script en hoe definieer je er één?",
+    "answer": "Een functie is een herbruikbaar blok commando's dat je aanroept via zijn naam. Je definieert het met functienaam() { commando's; } of function functienaam { commando's; }.",
+    "explanation": "Functies maken scripts modulair en vermijden herhaling. Parameters worden doorgegeven via $1, $2, enz. binnen de functie. Lokale variabelen maak je met local variabele=waarde zodat ze niet buiten de functie beschikbaar zijn."
+  },
+  {
+    "id": "th-09-01",
+    "chapter": "H9 Gebruikers & groepen",
+    "type": "open",
+    "question": "Wat is het verschil tussen UID en GID?",
+    "answer": "UID (User ID) is het unieke nummer dat een gebruiker identificeert op het systeem. GID (Group ID) is het unieke nummer van een groep. Elke gebruiker heeft een primaire GID en kan lid zijn van meerdere groepen.",
+    "explanation": "UID's starten voor reguliere gebruikers bij 1000 op Debian/Ubuntu. GID's werken op dezelfde manier voor groepen. Root heeft UID 0 en GID 0."
+  },
+  {
+    "id": "th-09-02",
+    "chapter": "H9 Gebruikers & groepen",
+    "type": "mc",
+    "question": "Waar worden de wachtwoorden van gebruikers echt opgeslagen?",
+    "answer": "/etc/shadow",
+    "explanation": "/etc/passwd bevat een 'x' als plaatshouder voor het wachtwoord. De echte (gehashe) wachtwoorden staan in /etc/shadow, dat alleen leesbaar is voor root. Dit verhoogt de beveiliging.",
+    "choices": [
+      "/etc/passwd",
+      "/etc/shadow",
+      "/etc/group",
+      "/etc/login.defs"
+    ]
+  },
+  {
+    "id": "th-09-03",
+    "chapter": "H9 Gebruikers & groepen",
+    "type": "mc",
+    "question": "Welk commando gebruik je om een gebruiker toe te voegen aan een bestaande groep zonder zijn andere groepen te verwijderen?",
+    "answer": "sudo usermod -aG groep gebruiker",
+    "explanation": "De -a vlag staat voor 'append' (toevoegen). Zonder -a vervangt -G alle bestaande secundaire groepen, wat kan leiden tot verlies van groepslidmaatschappen.",
+    "choices": [
+      "sudo usermod -G groep gebruiker",
+      "sudo usermod -aG groep gebruiker",
+      "sudo groupadd gebruiker groep",
+      "sudo gpasswd groep gebruiker"
+    ]
+  },
+  {
+    "id": "th-09-04",
+    "chapter": "H9 Gebruikers & groepen",
+    "type": "open",
+    "question": "Wat is het verschil tussen 'su' en 'sudo'?",
+    "answer": "su (switch user) wisselt volledig van gebruiker en vereist het wachtwoord van die gebruiker. sudo voert slechts één commando uit met verhoogde rechten en vereist het wachtwoord van de huidige gebruiker.",
+    "explanation": "sudo is veiliger omdat het het root-wachtwoord geheim houdt, en elke actie gelogd wordt. sudo kan ook via het sudoers-bestand ingeperkt worden tot specifieke commando's."
+  },
+  {
+    "id": "th-09-05",
+    "chapter": "H9 Gebruikers & groepen",
+    "type": "mc",
+    "question": "Hoe verhinder je dat een gebruiker kan inloggen zonder de account te verwijderen?",
+    "answer": "sudo usermod -L -s /usr/sbin/nologin gebruiker",
+    "explanation": "-L vergrendelt het account (wachtwoord werkt niet meer), en -s /usr/sbin/nologin als shell weigert ook login via andere methodes. Je kunt ook enkel passwd -l gebruiken.",
+    "choices": [
+      "sudo userdel gebruiker",
+      "sudo usermod -L -s /usr/sbin/nologin gebruiker",
+      "sudo passwd -r gebruiker",
+      "sudo groupdel gebruiker"
+    ]
+  },
+  {
+    "id": "th-09-06",
+    "chapter": "H9 Gebruikers & groepen",
+    "type": "mc",
+    "question": "Welk bestand bevat de groepslidmaatschapsinformatie?",
+    "answer": "/etc/group",
+    "explanation": "/etc/group heeft het formaat: groepnaam:x:GID:ledenlijst. Elke regel is één groep en de leden worden gescheiden door komma's opgelijst.",
+    "choices": [
+      "/etc/passwd",
+      "/etc/shadow",
+      "/etc/group",
+      "/etc/groups"
+    ]
+  },
+  {
+    "id": "th-09-07",
+    "chapter": "H9 Gebruikers & groepen",
+    "type": "mc",
+    "question": "Hoe stel je in dat een account vervalt op een specifieke datum?",
+    "answer": "sudo usermod -e 2025-12-31 gebruiker",
+    "explanation": "De vlag -e van usermod stelt de accountvervaldatum in. Je kunt ook chage -E gebruiken. De datum moet in het formaat YYYY-MM-DD zijn.",
+    "choices": [
+      "sudo chage -d 2025-12-31 gebruiker",
+      "sudo usermod -e 2025-12-31 gebruiker",
+      "sudo passwd -e 2025-12-31 gebruiker",
+      "sudo groupmod -e 2025-12-31 gebruiker"
+    ]
+  },
+  {
+    "id": "th-09-08",
+    "chapter": "H9 Gebruikers & groepen",
+    "type": "mc",
+    "question": "Wat is de veiligste manier om het /etc/sudoers bestand te bewerken?",
+    "answer": "sudo visudo",
+    "explanation": "visudo vergrendelt het sudoers-bestand tijdens het bewerken en controleert de syntaxis voor het opgeslagen wordt. Een syntaxfout in sudoers kan het systeem onbeheerbaar maken.",
+    "choices": [
+      "sudo nano /etc/sudoers",
+      "sudo vim /etc/sudoers",
+      "sudo visudo",
+      "sudo gedit /etc/sudoers"
+    ]
+  },
+  {
+    "id": "th-09-09",
+    "chapter": "H9 Gebruikers & groepen",
+    "type": "mc",
+    "question": "Welke UID heeft de root-gebruiker altijd?",
+    "answer": "0",
+    "explanation": "UID 0 is altijd gereserveerd voor root, de supergebruiker met onbeperkte rechten. Systeemdiensten gebruiken UID's 1-999 en reguliere gebruikers starten bij UID 1000.",
+    "choices": [
+      "1",
+      "0",
+      "999",
+      "1000"
+    ]
+  },
+  {
+    "id": "th-09-10",
+    "chapter": "H9 Gebruikers & groepen",
+    "type": "mc",
+    "question": "Welk commando toont de huidige gebruikersnaam?",
+    "answer": "whoami",
+    "explanation": "whoami drukt enkel de naam van de huidige gebruiker af. id geeft meer informatie (UID, GID, groepen). who en w tonen alle ingelogde gebruikers.",
+    "choices": [
+      "id",
+      "who",
+      "whoami",
+      "w"
+    ]
+  },
+  {
+    "id": "th-09-11",
+    "chapter": "H9 Gebruikers & groepen",
+    "type": "mc",
+    "question": "Wat doet het commando 'sudo chage -d 0 alice'?",
+    "answer": "Forceert alice om haar wachtwoord te wijzigen bij de volgende inlog",
+    "explanation": "-d stelt de 'last password change' datum in. Door hem op 0 te zetten (1 januari 1970), is het wachtwoord al 'verlopen' en moet alice het onmiddellijk wijzigen.",
+    "choices": [
+      "Verwijdert het wachtwoord van alice",
+      "Forceert alice om haar wachtwoord te wijzigen bij de volgende inlog",
+      "Stelt de minimale wachtwoordduur in op 0 dagen",
+      "Verloopt het account van alice onmiddellijk"
+    ]
+  },
+  {
+    "id": "th-09-12",
+    "chapter": "H9 Gebruikers & groepen",
+    "type": "open",
+    "question": "Wat is het verschil tussen een primaire en een secundaire groep?",
+    "answer": "Een primaire groep is de standaardgroep van een gebruiker (staat in /etc/passwd) en wordt gebruikt als eigenaar van nieuw aangemaakte bestanden. Secundaire groepen zijn extra groepen voor gedeelde toegang tot bestanden en mappen.",
+    "explanation": "Elke gebruiker heeft precies één primaire groep, maar kan lid zijn van meerdere secundaire groepen. De id-opdracht toont ze allemaal."
+  },
+  {
+    "id": "th-09-13",
+    "chapter": "H9 Gebruikers & groepen",
+    "type": "open",
+    "question": "Welke velden staan er in /etc/passwd, in welke volgorde?",
+    "answer": "gebruikersnaam:x:UID:GID:GECOS:home-map:shell — zeven velden gescheiden door dubbele punten.",
+    "explanation": "Het x-veld is een plaatshouder voor het wachtwoord (dat in /etc/shadow staat). GECOS bevat optioneel de volledige naam en contactinfo."
+  },
+  {
+    "id": "th-09-14",
+    "chapter": "H9 Gebruikers & groepen",
+    "type": "mc",
+    "question": "Welk commando gebruik je om de inloggeschiedenis van het systeem te bekijken?",
+    "answer": "last",
+    "explanation": "last leest het /var/log/wtmp-bestand en toont de historische inlogsessies. who en w tonen enkel de momenteel ingelogde gebruikers.",
+    "choices": [
+      "who",
+      "w",
+      "last",
+      "id"
+    ]
+  },
+  {
+    "id": "th-09-15",
+    "chapter": "H9 Gebruikers & groepen",
+    "type": "mc",
+    "question": "Wat doet de vlag -r bij useradd?",
+    "answer": "Maakt een systeemaccount aan (UID < 1000, geen home-map)",
+    "explanation": "Systeemaccounts worden gebruikt door diensten (daemons) en hebben doorgaans geen home-map. Ze krijgen een UID onder de 1000 toegewezen.",
+    "choices": [
+      "Verwijdert een bestaande gebruiker",
+      "Maakt een systeemaccount aan (UID < 1000, geen home-map)",
+      "Stelt de root als primaire groep in",
+      "Maakt de gebruiker enkel-lezen"
+    ]
+  },
+  {
+    "id": "th-09-16",
+    "chapter": "H9 Gebruikers & groepen",
+    "type": "mc",
+    "question": "Welk commando toont de wachtwoordvervalinformatie van een gebruiker?",
+    "answer": "sudo chage -l alice",
+    "explanation": "chage -l toont uitgebreide informatie over het wachtwoordbeleid: laatste wijziging, minimale/maximale geldigheidsduur, waarschuwingsperiode en accountvervaldatum.",
+    "choices": [
+      "sudo passwd -S alice",
+      "sudo chage -l alice",
+      "sudo id alice",
+      "sudo getent passwd alice"
+    ]
+  },
+  {
+    "id": "th-10-01",
+    "chapter": "H10 Permissies",
+    "type": "mc",
+    "question": "Wat betekent de permissie '755' in octale notatie?",
+    "answer": "A",
+    "explanation": "755 = rwxr-xr-x. Eigenaar (7) = r(4)+w(2)+x(1). Groep (5) = r(4)+x(1). Anderen (5) = r(4)+x(1). De eigenaar heeft alle rechten, groep en anderen kunnen lezen en uitvoeren.",
+    "choices": [
+      "A. Eigenaar: alle rechten; groep en anderen: lezen en uitvoeren",
+      "B. Eigenaar: lezen en schrijven; groep en anderen: lezen",
+      "C. Iedereen heeft alle rechten",
+      "D. Eigenaar: alle rechten; groep: lezen en schrijven; anderen: niets"
+    ]
+  },
+  {
+    "id": "th-10-02",
+    "chapter": "H10 Permissies",
+    "type": "mc",
+    "question": "Wat is de symbolische permissiestring voor octale waarde 644?",
+    "answer": "C",
+    "explanation": "644 = rw-r--r--. Eigenaar (6) = r(4)+w(2). Groep (4) = r. Anderen (4) = r. De eigenaar kan lezen en schrijven, groep en anderen kunnen alleen lezen.",
+    "choices": [
+      "A. rwxr-xr-x",
+      "B. rw-rw-rw-",
+      "C. rw-r--r--",
+      "D. rwx------"
+    ]
+  },
+  {
+    "id": "th-10-03",
+    "chapter": "H10 Permissies",
+    "type": "mc",
+    "question": "Welk commando pas je toe om een script uitvoerbaar te maken?",
+    "answer": "B",
+    "explanation": "+x voegt het uitvoerrecht (execute) toe. Dit is nodig om een bestand als programma te kunnen draaien.",
+    "choices": [
+      "A. chmod +w script.sh",
+      "B. chmod +x script.sh",
+      "C. chown +x script.sh",
+      "D. chmod -r script.sh"
+    ]
+  },
+  {
+    "id": "th-10-04",
+    "chapter": "H10 Permissies",
+    "type": "open",
+    "question": "Wat is het verschil tussen 'chmod 644' en 'chmod u=rw,g=r,o=r'?",
+    "answer": "Geen verschil: beide stellen exact dezelfde permissies in (rw-r--r--).",
+    "explanation": "644 in octale notatie staat voor rw-r--r--. De symbolische notatie u=rw,g=r,o=r betekent hetzelfde: eigenaar lezen+schrijven, groep lezen, anderen lezen. Beide methoden zijn gelijkwaardig."
+  },
+  {
+    "id": "th-10-05",
+    "chapter": "H10 Permissies",
+    "type": "open",
+    "question": "Hoe maak je een map waarbij alle nieuw aangemaakte bestanden automatisch de groepseigenaar van de map erven?",
+    "answer": "Stel de SGID-bit in op de map: chmod g+s map/ of chmod 2775 map/",
+    "explanation": "De SGID-bit (Set Group ID) op een map zorgt ervoor dat alle nieuw aangemaakte bestanden en submappen automatisch de groep van de map erven in plaats van de primaire groep van de gebruiker die het bestand aanmaakt."
+  },
+  {
+    "id": "th-10-06",
+    "chapter": "H10 Permissies",
+    "type": "mc",
+    "question": "Wat doet de sticky bit op een map?",
+    "answer": "B",
+    "explanation": "De sticky bit op een map (zoals /tmp) zorgt ervoor dat gebruikers weliswaar bestanden kunnen aanmaken in de map, maar dat ze alleen hun eigen bestanden kunnen verwijderen. Je kunt dus geen bestanden van anderen wissen.",
+    "choices": [
+      "A. Bestanden worden onwijzigbaar (immutable)",
+      "B. Alleen de eigenaar van een bestand kan zijn eigen bestanden verwijderen",
+      "C. De map erft automatisch de groep van de bovenliggende map",
+      "D. Bestanden worden bij elke toegang automatisch vergrendeld"
+    ]
+  },
+  {
+    "id": "th-10-07",
+    "chapter": "H10 Permissies",
+    "type": "open",
+    "question": "Wat is de werking van umask?",
+    "answer": "umask bepaalt welke permissies worden weggenomen van nieuw aangemaakte bestanden en mappen.",
+    "explanation": "De maximale permissies zonder umask zijn 666 voor bestanden en 777 voor mappen. Met umask 022 worden de schrijfbits voor groep en anderen weggehaald: bestanden krijgen 644 (666-022) en mappen 755 (777-022)."
+  },
+  {
+    "id": "th-10-08",
+    "chapter": "H10 Permissies",
+    "type": "mc",
+    "question": "Welke umask-waarde geeft nieuwe bestanden permissie 600?",
+    "answer": "C",
+    "explanation": "Met umask 077 worden alle bits voor groep en anderen weggehaald: 666 - 077 = 600 (rw-------). Dit is een strenge instelling voor privégebruik.",
+    "choices": [
+      "A. 022",
+      "B. 002",
+      "C. 077",
+      "D. 044"
+    ]
+  },
+  {
+    "id": "th-10-09",
+    "chapter": "H10 Permissies",
+    "type": "open",
+    "question": "Wat is een beveiligingsimplicatie van SUID-bestanden?",
+    "answer": "Een SUID-bestand draait met de rechten van de eigenaar (vaak root) in plaats van de rechten van de gebruiker die het uitvoert.",
+    "explanation": "Als een SUID-bestand eigendom is van root, kan elke gebruiker het bestand uitvoeren met root-rechten. Dit is bewust toegepast bij commando's als passwd, maar vormt een risico als kwaadaardige software SUID-rechten verkrijgt. Regelmatige audits met find zijn daarom essentieel."
+  },
+  {
+    "id": "th-10-10",
+    "chapter": "H10 Permissies",
+    "type": "mc",
+    "question": "Welk commando zoekt alle bestanden groter dan 100MB in de map /home?",
+    "answer": "B",
+    "explanation": "De juiste syntaxis is -size +100M. Het plus-teken betekent 'groter dan'. M staat voor megabytes. Andere eenheden zijn c (bytes), k (kilobytes), G (gigabytes).",
+    "choices": [
+      "A. find /home -size +100MB",
+      "B. find /home -size +100M",
+      "C. find /home -bigger 100M",
+      "D. find /home -type f -size 100M"
+    ]
+  },
+  {
+    "id": "th-10-11",
+    "chapter": "H10 Permissies",
+    "type": "mc",
+    "question": "Welk commando wijzigt de eigenaar van bestand.txt naar bob en de groep naar staff?",
+    "answer": "C",
+    "explanation": "chown eigenaar:groep bestand is de correcte syntaxis. De dubbele punt scheidt eigenaar en groep. chgrp wijzigt alleen de groep, niet de eigenaar.",
+    "choices": [
+      "A. chmod bob:staff bestand.txt",
+      "B. chown bob staff bestand.txt",
+      "C. chown bob:staff bestand.txt",
+      "D. chgrp bob:staff bestand.txt"
+    ]
+  },
+  {
+    "id": "th-10-12",
+    "chapter": "H10 Permissies",
+    "type": "mc",
+    "question": "Hoe voeg je met één symbolisch commando het uitvoerrecht toe voor ALLE categorieën (eigenaar, groep, anderen)?",
+    "answer": "B",
+    "explanation": "+x zonder een categorie-aanduiding (u, g, o of a) is gelijk aan a+x en voegt het uitvoerrecht toe voor iedereen. chmod 111 doet hetzelfde in octale notatie.",
+    "choices": [
+      "A. chmod u+x bestand",
+      "B. chmod +x bestand",
+      "C. chmod x=a bestand",
+      "D. chmod 111 bestand"
+    ]
+  },
+  {
+    "id": "th-10-13",
+    "chapter": "H10 Permissies",
+    "type": "mc",
+    "question": "Wat toont 'ls -ld /tmp' als de sticky bit actief is?",
+    "answer": "B",
+    "explanation": "De sticky bit verschijnt als 't' in de uitvoerpositie van others (laatste karakter van de permissiestring). Dus drwxrwxrwt toont dat de sticky bit actief is op de map.",
+    "choices": [
+      "A. drwxrwxrws",
+      "B. drwxrwxrwt",
+      "C. drwxrwxrwx",
+      "D. drwsrwxrwx"
+    ]
+  },
+  {
+    "id": "th-10-14",
+    "chapter": "H10 Permissies",
+    "type": "mc",
+    "question": "Welk commando zoekt alle bestanden in /home die in de afgelopen 7 dagen zijn gewijzigd?",
+    "answer": "B",
+    "explanation": "-mtime staat voor modification time in dagen. -mtime -7 zoekt bestanden die minder dan 7 dagen geleden zijn gewijzigd. -mmin werkt met minuten, -atime met toegangstijd.",
+    "choices": [
+      "A. find /home -time -7",
+      "B. find /home -mtime -7",
+      "C. find /home -mmin -7",
+      "D. find /home -atime +7"
+    ]
+  },
+  {
+    "id": "th-10-15",
+    "chapter": "H10 Permissies",
+    "type": "open",
+    "question": "Wat is de permissie 700 in symbolische notatie?",
+    "answer": "rwx------",
+    "explanation": "700 = 7 (rwx) voor eigenaar, 0 (---) voor groep, 0 (---) voor anderen. Alleen de eigenaar heeft alle rechten; groep en anderen hebben geen enkele toegang."
+  },
+  {
+    "id": "th-10-16",
+    "chapter": "H10 Permissies",
+    "type": "mc",
+    "question": "Welk type bestand heeft 'd' als eerste karakter in de permissiestring?",
+    "answer": "C",
+    "explanation": "Het eerste karakter van de permissiestring geeft het bestandstype aan: '-' voor een gewoon bestand, 'd' voor een map (directory), 'l' voor een symbolische koppeling.",
+    "choices": [
+      "A. Een symbolische koppeling",
+      "B. Een regulier bestand",
+      "C. Een map",
+      "D. Een apparaatbestand"
+    ]
+  },
+  {
+    "id": "th-10-17",
+    "chapter": "H10 Permissies",
+    "type": "mc",
+    "question": "Hoe verwijder je het schrijfrecht voor de groep op bestand.txt met symbolische notatie?",
+    "answer": "B",
+    "explanation": "g staat voor group (groep), het minteken verwijdert de permissie, w staat voor write (schrijven). Dus chmod g-w verwijdert het schrijfrecht voor de groep.",
+    "choices": [
+      "A. chmod g+w bestand.txt",
+      "B. chmod g-w bestand.txt",
+      "C. chmod o-w bestand.txt",
+      "D. chmod u-w bestand.txt"
+    ]
+  },
+  {
+    "id": "th-10-18",
+    "chapter": "H10 Permissies",
+    "type": "open",
+    "question": "Wat doet 'find /home -nouser'?",
+    "answer": "Zoekt bestanden waarvan de eigenaar niet meer bestaat in het systeem (wees-bestanden).",
+    "explanation": "Als een gebruiker verwijderd wordt maar diens bestanden niet, zijn die bestanden 'eigendomsloos'. find -nouser is een belangrijk hulpmiddel bij beveiligingsaudits om zulke wees-bestanden op te sporen."
+  },
+  {
+    "id": "th-10-19",
+    "chapter": "H10 Permissies",
+    "type": "mc",
+    "question": "Wat is de beste permissie voor SSH-privésleutels?",
+    "answer": "C",
+    "explanation": "SSH-privésleutels moeten alleen leesbaar zijn voor de eigenaar: chmod 600 ~/.ssh/id_rsa. SSH weigert in te loggen als de privésleutel te open permissies heeft.",
+    "choices": [
+      "A. 644",
+      "B. 755",
+      "C. 600",
+      "D. 700"
+    ]
+  },
+  {
+    "id": "th-10-20",
+    "chapter": "H10 Permissies",
+    "type": "mc",
+    "question": "Welk speciaal permissiebit is er actief als je 's' ziet op de positie van het uitvoerrecht van de eigenaar?",
+    "answer": "C",
+    "explanation": "De 's' op de uitvoerpositie van de eigenaar (user execute) geeft de SUID-bit aan. De 's' op de groepsuitvoerpositie geeft de SGID-bit aan. De 't' op de others-uitvoerpositie is de sticky bit.",
+    "choices": [
+      "A. Sticky bit",
+      "B. SGID",
+      "C. SUID",
+      "D. Immutable bit"
+    ]
+  },
+  {
+    "id": "th-10-21",
+    "chapter": "H10 Permissies",
+    "type": "open",
+    "question": "Wat is het principe van 'least privilege' in de context van bestandspermissies?",
+    "answer": "Geef gebruikers en processen alleen de minimale permissies die ze nodig hebben voor hun taak, en niet meer.",
+    "explanation": "Door het principe van minimale rechten toe te passen, beperk je de schade die kan worden aangericht door fouten, kwaadaardige software of gehackte accounts. Vermijd 777, gebruik passende rechten zoals 644 voor bestanden en 755 voor mappen."
+  },
+  {
+    "id": "th-11-01",
+    "chapter": "H11 Serverbeheer",
+    "type": "mc",
+    "question": "Wat is de PID van een proces?",
+    "answer": "B",
+    "explanation": "Elk lopend proces in Linux krijgt een unieke Process ID (PID) toegewezen waarmee het geïdentificeerd en beheerd kan worden.",
+    "choices": [
+      "A. De naam van het programma dat het proces gestart heeft",
+      "B. Een uniek numeriek proces-ID",
+      "C. De gebruiker die het proces runt",
+      "D. Het geheugengebruik van het proces"
+    ]
+  },
+  {
+    "id": "th-11-02",
+    "chapter": "H11 Serverbeheer",
+    "type": "open",
+    "question": "Wat zijn de mogelijke processtatussen in Linux? Noem minstens 4.",
+    "answer": "R (Running), S (Sleeping interruptible), D (Sleeping uninterruptible), T (Stopped), Z (Zombie)",
+    "explanation": "Elk proces bevindt zich op elk moment in een van deze toestanden. Zombies zijn processen die klaar zijn maar nog niet opgeruimd zijn door de ouder."
+  },
+  {
+    "id": "th-11-03",
+    "chapter": "H11 Serverbeheer",
+    "type": "mc",
+    "question": "Welke nice-waarden vertegenwoordigen respectievelijk de hoogste en de laagste prioriteit?",
+    "answer": "B",
+    "explanation": "Nice-waarden lopen van -20 (hoogste prioriteit) tot 19 (laagste prioriteit). Alleen root kan negatieve waarden instellen.",
+    "choices": [
+      "A. Hoog = 19, Laag = -20",
+      "B. Hoog = -20, Laag = 19",
+      "C. Hoog = 0, Laag = 100",
+      "D. Hoog = 1, Laag = 10"
+    ]
+  },
+  {
+    "id": "th-11-04",
+    "chapter": "H11 Serverbeheer",
+    "type": "open",
+    "question": "Wat is de taak van systemd in een modern Linux-systeem?",
+    "answer": "systemd is het init-systeem dat services, mount-points, apparaten, login-sessies en systeemstatus beheert.",
+    "explanation": "systemd start als PID 1 en is verantwoordelijk voor het opstarten van alle andere services en het beheer van het systeem."
+  },
+  {
+    "id": "th-11-05",
+    "chapter": "H11 Serverbeheer",
+    "type": "mc",
+    "question": "Welk commando gebruik je om een service in te schakelen én onmiddellijk te starten?",
+    "answer": "B",
+    "explanation": "De vlag --now bij enable start de service onmiddellijk, terwijl enable er voor zorgt dat de service bij elke opstart actief is.",
+    "choices": [
+      "A. sudo systemctl start --enable ssh",
+      "B. sudo systemctl enable --now ssh",
+      "C. sudo systemctl activate ssh",
+      "D. sudo systemctl boot ssh"
+    ]
+  },
+  {
+    "id": "th-11-06",
+    "chapter": "H11 Serverbeheer",
+    "type": "mc",
+    "question": "Wat betekent het cron-veld '*/15' in de minuten-positie?",
+    "answer": "A",
+    "explanation": "De */N-notatie betekent 'elke N eenheden'. */15 bij minuten wil zeggen: elke 15 minuten (minuut 0, 15, 30 en 45).",
+    "choices": [
+      "A. Elke 15e minuut van het uur (0, 15, 30, 45)",
+      "B. Alleen om minuut 15",
+      "C. Elke 15 uur",
+      "D. Het kolomscheidingsteken"
+    ]
+  },
+  {
+    "id": "th-11-07",
+    "chapter": "H11 Serverbeheer",
+    "type": "open",
+    "question": "Welk cron-veldformaat gebruik je om een taak te plannen die elke maandag om 9:00 AM uitvoert?",
+    "answer": "0 9 * * 1 /pad/naar/commando",
+    "explanation": "Dag-van-de-week 1 = maandag (0 = zondag). Minuut 0, uur 9, dag/maand vrij (*), dag-van-week 1."
+  },
+  {
+    "id": "th-11-08",
+    "chapter": "H11 Serverbeheer",
+    "type": "mc",
+    "question": "Welk commando gebruik je om geplande taken van de huidige gebruiker te bekijken?",
+    "answer": "B",
+    "explanation": "De vlag -l (list) bij crontab toont alle geplande taken van de huidige gebruiker.",
+    "choices": [
+      "A. crontab -a",
+      "B. crontab -l",
+      "C. crontab -s",
+      "D. cron --list"
+    ]
+  },
+  {
+    "id": "th-11-09",
+    "chapter": "H11 Serverbeheer",
+    "type": "open",
+    "question": "Wat is het verschil tussen 'netstat -tuln' en 'ss -tuln'?",
+    "answer": "Beide tonen luisterende TCP/UDP-sockets, maar ss is de moderne vervanger van netstat en is sneller en betrouwbaarder.",
+    "explanation": "netstat is verouderd (deel van net-tools) terwijl ss deel uitmaakt van de iproute2-suite die de standaard is op moderne Linux-systemen."
+  },
+  {
+    "id": "th-11-10",
+    "chapter": "H11 Serverbeheer",
+    "type": "mc",
+    "question": "Welk commando toont het netwerkpad (alle hops) van jouw computer naar een externe server?",
+    "answer": "C",
+    "explanation": "traceroute stuurt pakketten met oplopende TTL-waarden om elk tussenstation (hop) te identificeren op weg naar de bestemming.",
+    "choices": [
+      "A. ping",
+      "B. ip route",
+      "C. traceroute",
+      "D. nslookup"
+    ]
+  },
+  {
+    "id": "th-11-11",
+    "chapter": "H11 Serverbeheer",
+    "type": "mc",
+    "question": "Wat is de standaard locatie van systeemlogberichten op een Ubuntu/Debian-systeem?",
+    "answer": "C",
+    "explanation": "Op Debian/Ubuntu-systemen worden algemene systeemberichten opgeslagen in /var/log/syslog. Authenticatieberichten staan in /var/log/auth.log.",
+    "choices": [
+      "A. /var/log/system.log",
+      "B. /etc/log/syslog",
+      "C. /var/log/syslog",
+      "D. /proc/log/syslog"
+    ]
+  },
+  {
+    "id": "th-11-12",
+    "chapter": "H11 Serverbeheer",
+    "type": "mc",
+    "question": "Welk commando gebruik je om alle beschikbare updates te installeren op een Ubuntu-server zonder handmatige bevestiging?",
+    "answer": "C",
+    "explanation": "Eerst ververs je de pakketlijsten met 'apt update', dan installeer je de updates met 'apt upgrade -y' (de -y geeft automatisch 'ja' op bevestigingsvragen).",
+    "choices": [
+      "A. sudo apt update -y",
+      "B. sudo apt upgrade --auto",
+      "C. sudo apt update && sudo apt upgrade -y",
+      "D. sudo apt install --all"
+    ]
+  },
+  {
+    "id": "th-11-13",
+    "chapter": "H11 Serverbeheer",
+    "type": "open",
+    "question": "Leg uit waarvoor rsync gebruikt wordt en geef de drie meest gebruikte vlaggen.",
+    "answer": "rsync synchroniseert bestanden en mappen lokaal of over het netwerk. Meest gebruikte vlaggen: -a (archief: behoudt rechten/tijdstempels/recursief), -v (verbose) en --delete (verwijdert bestanden in doel die niet meer in bron staan).",
+    "explanation": "rsync gebruikt checksums om alleen gewijzigde bestanden te kopiëren, wat het veel efficiënter maakt dan een gewone cp voor back-ups."
+  },
+  {
+    "id": "th-11-14",
+    "chapter": "H11 Serverbeheer",
+    "type": "open",
+    "question": "Wat is een zombie-proces?",
+    "answer": "Een zombie-proces is een proces dat klaar is met uitvoeren maar waarvan de exit-status nog niet gelezen is door het ouder-proces. Het staat als 'Z' in de processenlijst.",
+    "explanation": "Zombie-processen nemen vrijwel geen resources in, maar kunnen de PID-tabel vol maken bij excessieve opbouw. Ze verdwijnen zodra het ouder-proces de exit-status ophaalt."
+  },
+  {
+    "id": "th-11-15",
+    "chapter": "H11 Serverbeheer",
+    "type": "mc",
+    "question": "Wat doet het commando 'sudo systemctl daemon-reload'?",
+    "answer": "B",
+    "explanation": "Na het aanmaken of wijzigen van een service-bestand moet systemd op de hoogte gebracht worden. daemon-reload herlaadt alle unit-bestanden zonder iets te herstarten.",
+    "choices": [
+      "A. Herstart alle services",
+      "B. Herlaadt de systemd-configuratiebestanden zonder services te herstarten",
+      "C. Verwijdert alle gestopte services",
+      "D. Toont de systemd-journaallogboeken"
+    ]
+  },
+  {
+    "id": "th-11-16",
+    "chapter": "H11 Serverbeheer",
+    "type": "open",
+    "question": "Ontwerp een back-upstrategie voor een kleine server: welke drie aspecten zijn cruciaal?",
+    "answer": "1) Regelmaat (dagelijkse/wekelijkse automatische back-ups via cron). 2) Bewaarperiode (rotatie, bv. 7 dagen behouden, oudere verwijderen). 3) Externe opslag (back-up op externe server/locatie voor herstel bij hardware-defect).",
+    "explanation": "Een goede back-upstrategie combineert automatisering (cron + rsync/tar), retentiebeleid (find -mtime +7 -delete) en geografische spreiding (externe server of cloudopslag)."
+  },
+  {
+    "id": "th-11-17",
+    "chapter": "H11 Serverbeheer",
+    "type": "open",
+    "question": "Hoe beveilig je een nieuwe Linux-server in de eerste stappen? Noem minstens 4 maatregelen.",
+    "answer": "1) Systeem updaten (apt update && apt upgrade). 2) Firewall inschakelen (ufw enable + regels). 3) SSH beveiligen (poort wijzigen, root-login uitschakelen). 4) Alleen nodige services activeren. 5) Sterke wachtwoorden / sleutelauthenticatie.",
+    "explanation": "Security hardening begint met een up-to-date systeem en minimale aanvalsoppervlakte (firewall + minimale services). SSH-hardening is essentieel voor serverbeveiliging."
+  },
+  {
+    "id": "th-11-18",
+    "chapter": "H11 Serverbeheer",
+    "type": "open",
+    "question": "Wat is het verschil tussen 'kill PID' en 'kill -9 PID'?",
+    "answer": "'kill PID' stuurt het SIGTERM-signaal, dat het proces vraagt netjes af te sluiten (kan genegeerd worden). 'kill -9 PID' stuurt SIGKILL, dat het proces onmiddellijk beëindigt en niet genegeerd kan worden.",
+    "explanation": "SIGTERM is de vriendelijke manier om een proces te stoppen: het krijgt de kans om opruimingswerk te doen. SIGKILL is de noodsituatie-stop die niet genegeerd kan worden door het proces."
+  },
+  {
+    "id": "th-11-19",
+    "chapter": "H11 Serverbeheer",
+    "type": "mc",
+    "question": "Welk signaal stuurt 'kill' standaard (zonder vlag)?",
+    "answer": "C",
+    "explanation": "Zonder extra vlag stuurt kill het signaal SIGTERM (15), wat het proces vriendelijk vraagt om te stoppen.",
+    "choices": [
+      "A. SIGKILL (9)",
+      "B. SIGSTOP (19)",
+      "C. SIGTERM (15)",
+      "D. SIGHUP (1)"
+    ]
+  },
+  {
+    "id": "th-11-20",
+    "chapter": "H11 Serverbeheer",
+    "type": "open",
+    "question": "Wat doet 'logrotate'?",
+    "answer": "logrotate roteert logbestanden automatisch: het comprimeerd oudere logs, verwijdert logs die ouder zijn dan de bewaarperiode en maakt nieuwe lege logbestanden aan. Dit voorkomt dat logbestanden de schijf vollopen.",
+    "explanation": "Logrotatie is essentieel voor server-onderhoud. De configuratie staat in /etc/logrotate.conf en /etc/logrotate.d/."
+  },
+  {
+    "id": "th-11-21",
+    "chapter": "H11 Serverbeheer",
+    "type": "mc",
+    "question": "Welk commando toont alle ingelogde gebruikers en wat ze momenteel aan het doen zijn?",
+    "answer": "C",
+    "explanation": "'w' toont wie er ingelogd is én wat ze doen (huidig commando). 'who' toont alleen de ingelogde gebruikers, 'last' toont de aanmeldingsgeschiedenis.",
+    "choices": [
+      "A. users",
+      "B. who",
+      "C. w",
+      "D. last"
+    ]
+  },
+  {
+    "id": "th-11-22",
+    "chapter": "H11 Serverbeheer",
+    "type": "open",
+    "question": "Wat is het verschil tussen een 'target' en een 'service' in systemd?",
+    "answer": "Een service is een individuele daemon of programma dat beheerd wordt door systemd. Een target is een groepering van services die samen een systeemtoestand definiëren (vergelijkbaar met runlevels in SysV init), zoals multi-user.target of graphical.target.",
+    "explanation": "Targets vervangen de klassieke runlevels. Wanneer je systemctl set-default gebruikt, stel je in welk target bij het opstarten geladen wordt."
+  },
+  {
+    "id": "th-12-01",
+    "chapter": "H12 Examenrecap",
+    "type": "mc",
+    "question": "Welke ls-optie toont de bestandsgroottes in mensvriendelijk formaat (KB, MB)?",
+    "answer": "-h",
+    "explanation": "-h staat voor 'human-readable' en werkt enkel zinvol in combinatie met -l.",
+    "choices": [
+      "-l",
+      "-h",
+      "-a",
+      "-i"
+    ]
+  },
+  {
+    "id": "th-12-02",
+    "chapter": "H12 Examenrecap",
+    "type": "open",
+    "question": "Wat is het verschil tussen > en >> bij uitvoeromleidingen?",
+    "answer": "> overschrijft het bestand; >> voegt toe aan het einde zonder te overschrijven.",
+    "explanation": "Gebruik > wanneer je een nieuw bestand wilt maken of de inhoud wilt vervangen. Gebruik >> wanneer je bestaande inhoud wilt bewaren en nieuwe inhoud wilt toevoegen."
+  },
+  {
+    "id": "th-12-03",
+    "chapter": "H12 Examenrecap",
+    "type": "mc",
+    "question": "Welk commando gebruik je om uitvoer tegelijk op het scherm te tonen én naar een bestand te schrijven?",
+    "answer": "tee",
+    "explanation": "tee leest van stdin en schrijft tegelijk naar stdout en naar het opgegeven bestand. Zo kun je verdere verwerking in de pipeline koppelen.",
+    "choices": [
+      "tee",
+      "echo",
+      "cat",
+      "pipe"
+    ]
+  },
+  {
+    "id": "th-12-04",
+    "chapter": "H12 Examenrecap",
+    "type": "mc",
+    "question": "Wat doet de optie -size 16c bij het find-commando?",
+    "answer": "Bestanden precies 16 bytes groot",
+    "explanation": "In find staat c voor bytes (characters). -size 16c zoekt dus naar bestanden van exact 16 bytes.",
+    "choices": [
+      "Bestanden groter dan 16 KB",
+      "Bestanden precies 16 bytes groot",
+      "Bestanden van 16 kolommen",
+      "Bestanden met 16 tekens in de naam"
+    ]
+  },
+  {
+    "id": "th-12-05",
+    "chapter": "H12 Examenrecap",
+    "type": "open",
+    "question": "Wat is het verschil tussen een hard link en een symbolische (soft) link?",
+    "answer": "Een hard link is een tweede naam voor hetzelfde bestand (zelfde inode); een symlink is een verwijzing naar het pad van het originele bestand (ander inode).",
+    "explanation": "Harde koppelingen overleven het verwijderen van het origineel; symlinks breken dan. Harde koppelingen kunnen niet over filesystemen of naar mappen wijzen, symlinks wel."
+  },
+  {
+    "id": "th-12-06",
+    "chapter": "H12 Examenrecap",
+    "type": "mc",
+    "question": "Welk type koppeling overleeft het verwijderen van het originele bestand?",
+    "answer": "Harde koppeling",
+    "explanation": "Een harde koppeling deelt het inode met het origineel. Zolang er minstens één harde koppeling bestaat, blijft de bestandsdata beschikbaar.",
+    "choices": [
+      "Harde koppeling",
+      "Symbolische koppeling",
+      "Beide",
+      "Geen van beide"
+    ]
+  },
+  {
+    "id": "th-12-07",
+    "chapter": "H12 Examenrecap",
+    "type": "mc",
+    "question": "Wat is de octaalwaarde voor de permissies rwxr-xr--?",
+    "answer": "754",
+    "explanation": "rwx=7, r-x=5, r--=4. De octaalwaarde is dus 754.",
+    "choices": [
+      "755",
+      "754",
+      "744",
+      "764"
+    ]
+  },
+  {
+    "id": "th-12-08",
+    "chapter": "H12 Examenrecap",
+    "type": "open",
+    "question": "Welke permissies komen overeen met de octaalcode 502?",
+    "answer": "r-x---w-",
+    "explanation": "5=r-x (eigenaar), 0=--- (groep), 2=-w- (anderen). De volledige permissiestring is r-x---w-."
+  },
+  {
+    "id": "th-12-09",
+    "chapter": "H12 Examenrecap",
+    "type": "open",
+    "question": "Wat is het verschil tussen 'chmod 644 ~/mydir' en 'chmod 644 ~/mydir/*'?",
+    "answer": "chmod 644 ~/mydir past de permissies aan van de map zelf; chmod 644 ~/mydir/* past de permissies aan van alle bestanden binnenin de map.",
+    "explanation": "De * glob matcht de inhoud van de map, niet de map zelf. Wil je de permissies van een heel directorieboom recursief aanpassen, gebruik dan find met -exec chmod."
+  },
+  {
+    "id": "th-12-10",
+    "chapter": "H12 Examenrecap",
+    "type": "mc",
+    "question": "Wat doet uniq -c?",
+    "answer": "Telt het aantal opeenvolgende gelijke regels",
+    "explanation": "uniq -c voegt voor elke unieke regel het aantal keer dat die opvolgende verschijnt. Gebruik altijd sort voor uniq -c om niet-aaneengesloten duplicaten ook mee te tellen.",
+    "choices": [
+      "Verwijdert alle duplicaten",
+      "Telt het aantal opeenvolgende gelijke regels",
+      "Verwijdert lege regels",
+      "Sorteert regels op frequentie"
+    ]
+  },
+  {
+    "id": "th-12-11",
+    "chapter": "H12 Examenrecap",
+    "type": "mc",
+    "question": "Welke volgorde is correct om woorden te tellen op frequentie?",
+    "answer": "sort | uniq -c | sort -nr",
+    "explanation": "Eerst sort om duplicaten aaneen te plaatsen, dan uniq -c om te tellen, dan sort -nr om van meest naar minst frequent te sorteren.",
+    "choices": [
+      "uniq -c | sort | sort -nr",
+      "sort | uniq -c | sort -nr",
+      "uniq -c | sort -nr | sort",
+      "sort -nr | uniq -c"
+    ]
+  },
+  {
+    "id": "th-12-12",
+    "chapter": "H12 Examenrecap",
+    "type": "mc",
+    "question": "Wat doet comm -12 bestand1 bestand2?",
+    "answer": "Toont regels die in beide bestanden voorkomen",
+    "explanation": "-1 onderdrukt kolom 1 (alleen in bestand1) en -2 onderdrukt kolom 2 (alleen in bestand2). Wat overblijft zijn de gemeenschappelijke regels (kolom 3).",
+    "choices": [
+      "Toont regels die alleen in bestand1 staan",
+      "Toont regels die alleen in bestand2 staan",
+      "Toont regels die in beide bestanden voorkomen",
+      "Toont regels die in geen enkel bestand voorkomen"
+    ]
+  },
+  {
+    "id": "th-12-13",
+    "chapter": "H12 Examenrecap",
+    "type": "open",
+    "question": "Hoe gebruik je xargs om voor elk item in een bestand een actie uit te voeren met een placeholder?",
+    "answer": "cat bestand.txt | xargs -I{} commando {}",
+    "explanation": "-I{} definieert {} als plaatshouder. xargs vervangt {} door elk item van stdin, één per keer."
+  },
+  {
+    "id": "th-12-14",
+    "chapter": "H12 Examenrecap",
+    "type": "open",
+    "question": "Wat is het verschil tussen grep -v en grep -c?",
+    "answer": "grep -v toont regels die NIET overeenkomen; grep -c telt het aantal overeenkomende regels.",
+    "explanation": "-v staat voor 'invert match', -c voor 'count'. Ze doen dus heel verschillende dingen."
+  },
+  {
+    "id": "th-12-15",
+    "chapter": "H12 Examenrecap",
+    "type": "mc",
+    "question": "Wat doet tr -d '\\n' < bestand.txt?",
+    "answer": "Verwijdert alle regelafsluiters en zet alle regels op één lijn",
+    "explanation": "tr -d '\\n' verwijdert het newline-teken uit elke positie, waardoor alle regels aaneengeregen worden tot één lange regel.",
+    "choices": [
+      "Verwijdert alle spaties",
+      "Verwijdert alle regelafsluiters en zet alle regels op één lijn",
+      "Verwijdert de eerste regel",
+      "Vervangt \\n door een spatie"
+    ]
+  },
+  {
+    "id": "th-12-16",
+    "chapter": "H12 Examenrecap",
+    "type": "open",
+    "question": "Waarom moet je bij comm beide bestanden gesorteerd aanleveren?",
+    "answer": "comm vergelijkt regels in volgorde. Als de bestanden niet gesorteerd zijn, kan het geen correcte vergelijking maken en geeft het foute resultaten.",
+    "explanation": "Gesorteerde bestanden garanderen dat overeenkomende regels ook naast elkaar staan in de vergelijking. Gebruik sort of process substitution <(sort bestand) indien nodig."
+  },
+  {
+    "id": "th-12-17",
+    "chapter": "H12 Examenrecap",
+    "type": "mc",
+    "question": "Wat is de functie van $# in een bashscript?",
+    "answer": "Het aantal doorgegeven argumenten",
+    "explanation": "$# bevat het aantal positionele parameters dat aan het script werd doorgegeven. Gebruik het voor validatie van de invoer.",
+    "choices": [
+      "De naam van het script",
+      "Alle doorgegeven argumenten",
+      "Het aantal doorgegeven argumenten",
+      "De exitcode van het laatste commando"
+    ]
+  },
+  {
+    "id": "th-12-18",
+    "chapter": "H12 Examenrecap",
+    "type": "open",
+    "question": "Wat is het verschil tussen een tijdelijke en een permanente alias?",
+    "answer": "Een tijdelijke alias bestaat alleen in de huidige shellsessie en verdwijnt bij sluiten. Een permanente alias staat in ~/.bashrc en is beschikbaar na elke login.",
+    "explanation": "Om een alias permanent te maken voeg je hem toe aan ~/.bashrc en laad je het bestand opnieuw met 'source ~/.bashrc'."
+  },
+  {
+    "id": "th-12-19",
+    "chapter": "H12 Examenrecap",
+    "type": "open",
+    "question": "Wat is het nut van de shebang-regel #!/bin/bash bovenaan een script?",
+    "answer": "De shebang geeft aan met welke interpreter het script uitgevoerd moet worden. Zonder shebang gebruikt het systeem de standaard shell, wat tot onverwacht gedrag kan leiden.",
+    "explanation": "#!/bin/bash zorgt ervoor dat het script altijd door bash verwerkt wordt, ongeacht welke shell de gebruiker op dat moment gebruikt."
+  },
+  {
+    "id": "th-12-20",
+    "chapter": "H12 Examenrecap",
+    "type": "mc",
+    "question": "Welk commando maak je een script uitvoerbaar?",
+    "answer": "chmod +x script.sh",
+    "explanation": "chmod +x voegt het uitvoerbit toe voor eigenaar, groep en anderen. Daarna kun je het script uitvoeren met ./script.sh.",
+    "choices": [
+      "chmod +x script.sh",
+      "chmod 400 script.sh",
+      "chmod u-x script.sh",
+      "exec script.sh"
+    ]
+  },
+  {
+    "id": "th-12-21",
+    "chapter": "H12 Examenrecap",
+    "type": "open",
+    "question": "Wat is een absoluut pad en waarom gebruik je het in scripts?",
+    "answer": "Een absoluut pad begint met / en verwijst altijd naar dezelfde locatie, ongeacht de huidige werkmap. In scripts zijn absolute paden veiliger omdat het script vanuit elke locatie aangeroepen kan worden.",
+    "explanation": "Relatieve paden zijn afhankelijk van de werkmap op het moment van uitvoeren. Een absoluut pad zoals /home/user/logfile.txt werkt altijd correct."
+  },
+  {
+    "id": "th-12-22",
+    "chapter": "H12 Examenrecap",
+    "type": "mc",
+    "question": "Waarvoor dient de awk-variabele NR?",
+    "answer": "Huidig regelnummer",
+    "explanation": "NR (Number of Records) houdt het cumulatieve regelnummer bij over alle invoerbestanden heen. NR=1 bij de eerste regel.",
+    "choices": [
+      "Aantal kolommen",
+      "Huidig regelnummer",
+      "Aantal records verwerkt per bestand",
+      "Naam van het huidige bestand"
+    ]
+  },
+  {
+    "id": "th-12-23",
+    "chapter": "H12 Examenrecap",
+    "type": "mc",
+    "question": "Welk find-commando zoekt alleen in de homedirectory zelf en niet in submappen?",
+    "answer": "find ~ -maxdepth 1 -type f",
+    "explanation": "-maxdepth 1 beperkt de zoekdiepte tot de startmap zelf. Submappen worden niet doorzocht.",
+    "choices": [
+      "find ~ -depth 1 -type f",
+      "find ~ -maxdepth 1 -type f",
+      "find ~ -level 1 -type f",
+      "find ~ -nodepth -type f"
+    ]
+  },
+  {
+    "id": "th-12-24",
+    "chapter": "H12 Examenrecap",
+    "type": "open",
+    "question": "Wat is het verschil tussen het relatieve pad '../archive/' en het absolute pad '/home/student/archive/'?",
+    "answer": "Het relatieve pad is afhankelijk van de huidige werkmap (.. verwijst naar de bovenliggende map), het absolute pad werkt altijd ongeacht de huidige werkmap.",
+    "explanation": "Vanuit /home/student/projects/ verwijst ../archive/ naar /home/student/archive/. Absolute paden zijn explicieter en veiliger in scripts."
+  }
+]

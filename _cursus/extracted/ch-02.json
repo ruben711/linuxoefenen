@@ -1,0 +1,978 @@
+{
+  "chapterId": "02",
+  "chapterTitle": "De Shell & Navigatie",
+  "summary": "In dit hoofdstuk maak je kennis met de Linux-terminal, console en shell: hun herkomst (TTY), hoe je inlogt als gewone gebruiker of root, en hoe het Linux-bestandssysteem (FHS) is opgebouwd met één root (/). Je leert de essentiële navigatie- en bestandscommando's (pwd, cd, ls, touch, mkdir, cp, mv, rm) en hoe je hulp vindt via man en --help.",
+  "commands": [
+    {
+      "name": "pwd",
+      "category": "Navigatie",
+      "short": "Toont het volledige pad van de huidige map.",
+      "synopsis": "pwd",
+      "flags": [],
+      "examples": [
+        { "cmd": "pwd", "desc": "Toont je huidige werkmap, bijv. /home/alice." }
+      ],
+      "related": ["cd", "ls"],
+      "tags": ["navigatie", "locatie"]
+    },
+    {
+      "name": "cd",
+      "category": "Navigatie",
+      "short": "Verplaats je naar een andere map.",
+      "synopsis": "cd [MAP]",
+      "flags": [],
+      "examples": [
+        { "cmd": "cd /etc", "desc": "Ga naar /etc via absoluut pad." },
+        { "cmd": "cd ..", "desc": "Ga één niveau omhoog naar de bovenliggende map." },
+        { "cmd": "cd ~", "desc": "Ga naar je thuismap." },
+        { "cmd": "cd", "desc": "Ga naar je thuismap (zonder argument)." },
+        { "cmd": "cd $HOME", "desc": "Ga naar je thuismap via de omgevingsvariabele." },
+        { "cmd": "cd -", "desc": "Ga terug naar de vorige map." },
+        { "cmd": "cd /", "desc": "Ga naar de rootmap." }
+      ],
+      "related": ["pwd", "ls"],
+      "tags": ["navigatie", "map"]
+    },
+    {
+      "name": "ls",
+      "category": "Navigatie",
+      "short": "Toont de inhoud van een map.",
+      "synopsis": "ls [OPTIE]... [BESTAND]...",
+      "flags": [
+        { "flag": "-l", "desc": "Lang formaat: toont rechten, eigenaar, grootte en datum." },
+        { "flag": "-a", "desc": "Toont ook verborgen bestanden (beginnen met .)." },
+        { "flag": "-h", "desc": "Toont bestandsgroottes in leesbaar formaat (KB, MB)." },
+        { "flag": "-la", "desc": "Combinatie van lang formaat en verborgen bestanden." },
+        { "flag": "-lh", "desc": "Lang formaat met menselijk leesbare groottes." },
+        { "flag": "-lah", "desc": "Lang formaat + verborgen bestanden + leesbare groottes." }
+      ],
+      "examples": [
+        { "cmd": "ls", "desc": "Toont de inhoud van de huidige map." },
+        { "cmd": "ls -l", "desc": "Toont details zoals rechten, eigenaar en datum." },
+        { "cmd": "ls -la", "desc": "Toont alle bestanden inclusief verborgen bestanden." },
+        { "cmd": "ls -lh", "desc": "Toont bestanden met leesbare bestandsgrootten." },
+        { "cmd": "ls /usr/bin", "desc": "Toont de inhoud van /usr/bin." }
+      ],
+      "related": ["pwd", "cd"],
+      "tags": ["navigatie", "bestanden", "mappen"]
+    },
+    {
+      "name": "touch",
+      "category": "Bestanden",
+      "short": "Maakt een leeg bestand aan of past de tijdstempel aan.",
+      "synopsis": "touch [OPTIE]... BESTAND...",
+      "flags": [],
+      "examples": [
+        { "cmd": "touch notes.txt", "desc": "Maakt het lege bestand notes.txt aan." },
+        { "cmd": "touch file1.txt file2.txt file3.txt", "desc": "Maakt meerdere bestanden tegelijk aan." }
+      ],
+      "related": ["mkdir", "ls"],
+      "tags": ["bestanden", "aanmaken"]
+    },
+    {
+      "name": "mkdir",
+      "category": "Bestanden",
+      "short": "Maakt een nieuwe map aan.",
+      "synopsis": "mkdir [OPTIE]... MAP...",
+      "flags": [
+        { "flag": "-p", "desc": "Maakt ook tussenliggende mappen aan als die nog niet bestaan." }
+      ],
+      "examples": [
+        { "cmd": "mkdir project", "desc": "Maakt de map 'project' aan in de huidige map." },
+        { "cmd": "mkdir -p project/src/main/java", "desc": "Maakt een geneste mappenstructuur aan." }
+      ],
+      "related": ["rmdir", "touch", "ls"],
+      "tags": ["mappen", "aanmaken"]
+    },
+    {
+      "name": "cp",
+      "category": "Bestanden",
+      "short": "Kopieert bestanden of mappen.",
+      "synopsis": "cp [OPTIE]... BRON... DOEL",
+      "flags": [
+        { "flag": "-r", "desc": "Kopieert mappen recursief (inclusief inhoud)." },
+        { "flag": "-i", "desc": "Vraagt bevestiging voor overschrijven." },
+        { "flag": "-v", "desc": "Toont wat er gekopieerd wordt (uitgebreid)." }
+      ],
+      "examples": [
+        { "cmd": "cp report.txt backup.txt", "desc": "Kopieert report.txt naar backup.txt." },
+        { "cmd": "cp -r project project-backup", "desc": "Kopieert de volledige map project." },
+        { "cmd": "cp *.txt backup/", "desc": "Kopieert alle .txt-bestanden naar de map backup." }
+      ],
+      "related": ["mv", "rm", "ls"],
+      "tags": ["bestanden", "kopiëren"]
+    },
+    {
+      "name": "mv",
+      "category": "Bestanden",
+      "short": "Verplaatst of hernoemt bestanden en mappen.",
+      "synopsis": "mv [OPTIE]... BRON... DOEL",
+      "flags": [],
+      "examples": [
+        { "cmd": "mv oldname.txt newname.txt", "desc": "Hernoemt oldname.txt naar newname.txt." },
+        { "cmd": "mv document.txt ~/Documents/", "desc": "Verplaatst document.txt naar ~/Documents/." }
+      ],
+      "related": ["cp", "rm"],
+      "tags": ["bestanden", "verplaatsen", "hernoemen"]
+    },
+    {
+      "name": "rm",
+      "category": "Bestanden",
+      "short": "Verwijdert bestanden of mappen definitief.",
+      "synopsis": "rm [OPTIE]... BESTAND...",
+      "flags": [
+        { "flag": "-i", "desc": "Vraagt bevestiging voor elk bestand dat verwijderd wordt." },
+        { "flag": "-r", "desc": "Verwijdert mappen en hun inhoud recursief." },
+        { "flag": "-f", "desc": "Forceert verwijdering zonder waarschuwingen." },
+        { "flag": "-rf", "desc": "Combineert recursief en geforceerd: gevaarlijk!" }
+      ],
+      "examples": [
+        { "cmd": "rm filename.txt", "desc": "Verwijdert het bestand filename.txt." },
+        { "cmd": "rm -i filename.txt", "desc": "Vraagt bevestiging voor verwijdering." },
+        { "cmd": "rm -r directory_with_contents", "desc": "Verwijdert een map inclusief inhoud." },
+        { "cmd": "rm -rf directory", "desc": "Geforceerd en recursief verwijderen (voorzichtig!)." }
+      ],
+      "related": ["rmdir", "mv"],
+      "tags": ["bestanden", "verwijderen"]
+    },
+    {
+      "name": "rmdir",
+      "category": "Bestanden",
+      "short": "Verwijdert een lege map.",
+      "synopsis": "rmdir MAP...",
+      "flags": [],
+      "examples": [
+        { "cmd": "rmdir empty_directory", "desc": "Verwijdert de lege map empty_directory." }
+      ],
+      "related": ["rm", "mkdir"],
+      "tags": ["mappen", "verwijderen"]
+    },
+    {
+      "name": "cat",
+      "category": "Bekijken",
+      "short": "Toont de volledige inhoud van een bestand.",
+      "synopsis": "cat [OPTIE]... [BESTAND]...",
+      "flags": [],
+      "examples": [
+        { "cmd": "cat filename.txt", "desc": "Toont de volledige inhoud van filename.txt." }
+      ],
+      "related": ["less", "head", "tail"],
+      "tags": ["bekijken", "bestanden"]
+    },
+    {
+      "name": "less",
+      "category": "Bekijken",
+      "short": "Toont bestandsinhoud met bladermogelijkheid (moderne pager).",
+      "synopsis": "less [OPTIE]... BESTAND",
+      "flags": [],
+      "examples": [
+        { "cmd": "less filename.txt", "desc": "Opent filename.txt in de pager; gebruik Space/b/q om te navigeren." }
+      ],
+      "related": ["more", "cat", "head"],
+      "tags": ["bekijken", "bestanden", "pager"]
+    },
+    {
+      "name": "more",
+      "category": "Bekijken",
+      "short": "Toont bestandsinhoud pagina per pagina (oudere pager).",
+      "synopsis": "more BESTAND",
+      "flags": [],
+      "examples": [
+        { "cmd": "more filename.txt", "desc": "Toont filename.txt pagina per pagina." }
+      ],
+      "related": ["less", "cat"],
+      "tags": ["bekijken", "bestanden", "pager"]
+    },
+    {
+      "name": "head",
+      "category": "Bekijken",
+      "short": "Toont de eerste regels van een bestand (standaard 10).",
+      "synopsis": "head [OPTIE]... BESTAND",
+      "flags": [
+        { "flag": "-n GETAL", "desc": "Toont het opgegeven aantal regels." }
+      ],
+      "examples": [
+        { "cmd": "head filename.txt", "desc": "Toont de eerste 10 regels van filename.txt." },
+        { "cmd": "head -20 filename.txt", "desc": "Toont de eerste 20 regels." }
+      ],
+      "related": ["tail", "cat", "less"],
+      "tags": ["bekijken", "bestanden"]
+    },
+    {
+      "name": "tail",
+      "category": "Bekijken",
+      "short": "Toont de laatste regels van een bestand (standaard 10).",
+      "synopsis": "tail [OPTIE]... BESTAND",
+      "flags": [
+        { "flag": "-n GETAL", "desc": "Toont het opgegeven aantal laatste regels." }
+      ],
+      "examples": [
+        { "cmd": "tail filename.txt", "desc": "Toont de laatste 10 regels van filename.txt." },
+        { "cmd": "tail -20 filename.txt", "desc": "Toont de laatste 20 regels." }
+      ],
+      "related": ["head", "cat", "less"],
+      "tags": ["bekijken", "bestanden", "logbestanden"]
+    },
+    {
+      "name": "nano",
+      "category": "Tekst",
+      "short": "Eenvoudige teksteditor in de terminal.",
+      "synopsis": "nano [BESTAND]",
+      "flags": [],
+      "examples": [
+        { "cmd": "nano filename.txt", "desc": "Opent filename.txt in de nano-editor; Ctrl+O om op te slaan, Ctrl+X om af te sluiten." }
+      ],
+      "related": ["cat", "touch"],
+      "tags": ["tekst", "editor"]
+    },
+    {
+      "name": "man",
+      "category": "Systeem",
+      "short": "Toont de volledige handleiding van een commando.",
+      "synopsis": "man [OPTIE]... COMMANDO",
+      "flags": [
+        { "flag": "-k SLEUTELWOORD", "desc": "Doorzoekt alle man-pagina's op sleutelwoord (zelfde als apropos)." }
+      ],
+      "examples": [
+        { "cmd": "man ls", "desc": "Toont de volledige handleiding van ls." },
+        { "cmd": "man cp", "desc": "Toont de volledige handleiding van cp." },
+        { "cmd": "man -k copy", "desc": "Zoekt alle man-pagina's die te maken hebben met 'copy'." },
+        { "cmd": "man 5 passwd", "desc": "Toont sectie 5 van de passwd-handleiding (bestandsformaat)." }
+      ],
+      "related": ["apropos", "--help"],
+      "tags": ["hulp", "documentatie"]
+    },
+    {
+      "name": "apropos",
+      "category": "Systeem",
+      "short": "Zoekt man-pagina's op sleutelwoord (synoniem voor man -k).",
+      "synopsis": "apropos SLEUTELWOORD",
+      "flags": [],
+      "examples": [
+        { "cmd": "apropos file", "desc": "Toont alle commando's die met 'file' te maken hebben." },
+        { "cmd": "apropos \"list directory\"", "desc": "Zoekt op de omschrijving 'list directory'." }
+      ],
+      "related": ["man"],
+      "tags": ["hulp", "documentatie"]
+    },
+    {
+      "name": "whoami",
+      "category": "Gebruikers",
+      "short": "Toont de naam van de huidige ingelogde gebruiker.",
+      "synopsis": "whoami",
+      "flags": [],
+      "examples": [
+        { "cmd": "whoami", "desc": "Toont bijv. 'alice' als je als alice bent ingelogd." }
+      ],
+      "related": ["who", "w"],
+      "tags": ["gebruikers", "sessie"]
+    },
+    {
+      "name": "who",
+      "category": "Gebruikers",
+      "short": "Toont alle ingelogde gebruikers.",
+      "synopsis": "who [OPTIE]...",
+      "flags": [],
+      "examples": [
+        { "cmd": "who", "desc": "Toont alle ingelogde gebruikers met terminal en tijdstip." },
+        { "cmd": "who am i", "desc": "Toont informatie over de huidige sessie." }
+      ],
+      "related": ["whoami", "w"],
+      "tags": ["gebruikers", "sessie"]
+    },
+    {
+      "name": "w",
+      "category": "Gebruikers",
+      "short": "Toont gedetailleerde informatie over ingelogde gebruikers en hun activiteit.",
+      "synopsis": "w [OPTIE]... [GEBRUIKER]",
+      "flags": [],
+      "examples": [
+        { "cmd": "w", "desc": "Toont alle ingelogde gebruikers met login-tijdstip, idle-tijd en actief commando." }
+      ],
+      "related": ["who", "whoami"],
+      "tags": ["gebruikers", "sessie"]
+    },
+    {
+      "name": "su",
+      "category": "Gebruikers",
+      "short": "Wisselt naar een andere gebruiker (substitute user).",
+      "synopsis": "su [OPTIE] [GEBRUIKER]",
+      "flags": [
+        { "flag": "-", "desc": "Laadt ook de omgevingsvariabelen van de doelgebruiker (volledig wisselen)." }
+      ],
+      "examples": [
+        { "cmd": "su - alice", "desc": "Wisselt naar gebruiker alice met haar omgeving." },
+        { "cmd": "su -", "desc": "Wisselt naar root (vraagt om rootwachtwoord)." },
+        { "cmd": "sudo su", "desc": "Wisselt naar root met je eigen wachtwoord (via sudo)." }
+      ],
+      "related": ["sudo", "whoami"],
+      "tags": ["gebruikers", "rechten"]
+    },
+    {
+      "name": "sudo",
+      "category": "Gebruikers",
+      "short": "Voert een commando uit met beheerdersrechten.",
+      "synopsis": "sudo [OPTIE]... COMMANDO",
+      "flags": [
+        { "flag": "-i", "desc": "Start een interactieve root-shell met de root-omgeving." },
+        { "flag": "-s", "desc": "Start een interactieve root-shell met de huidige gebruikersomgeving." },
+        { "flag": "-u GEBRUIKER", "desc": "Voert het commando uit als de opgegeven gebruiker." }
+      ],
+      "examples": [
+        { "cmd": "sudo apt update", "desc": "Voert apt update uit als root." },
+        { "cmd": "sudo -i", "desc": "Start een root-shell met root-omgeving." },
+        { "cmd": "sudo -u postgres psql", "desc": "Voert psql uit als gebruiker postgres." }
+      ],
+      "related": ["su", "whoami"],
+      "tags": ["gebruikers", "rechten", "beheer"]
+    },
+    {
+      "name": "wget",
+      "category": "Netwerk",
+      "short": "Downloadt bestanden van het internet.",
+      "synopsis": "wget [OPTIE]... URL",
+      "flags": [
+        { "flag": "-O NAAM", "desc": "Slaat het gedownloade bestand op onder de opgegeven naam." },
+        { "flag": "--progress=bar", "desc": "Toont een voortgangsbalk tijdens het downloaden." }
+      ],
+      "examples": [
+        { "cmd": "wget https://example.com/file.txt", "desc": "Downloadt file.txt van de opgegeven URL." },
+        { "cmd": "wget -O newname.txt https://example.com/file.txt", "desc": "Downloadt en slaat op als newname.txt." }
+      ],
+      "related": ["curl"],
+      "tags": ["netwerk", "downloaden"]
+    }
+  ],
+  "exercises": [
+    {
+      "title": "Verkenning van het bestandssysteem",
+      "difficulty": "easy",
+      "type": "multi-step",
+      "prompt": "Doorloop de volgende stappen om het Linux-bestandssysteem te verkennen: start vanuit je thuismap, ga naar de rootmap, bekijk de inhoud, ga naar /usr/bin en keer daarna terug naar je thuismap.",
+      "solution": "cd ~ && pwd && cd / && ls -la && cd /usr/bin && ls | head -20 && cd ~",
+      "acceptors": [
+        "cd ~ && cd / && ls && cd /usr/bin && cd ~",
+        "cd $HOME && cd / && ls -la && cd /usr/bin && ls | head -20 && cd ~"
+      ],
+      "expectedOutput": [],
+      "hints": [
+        "Gebruik 'cd ~' of gewoon 'cd' om naar je thuismap te gaan.",
+        "Gebruik 'cd /' om naar de rootmap te gaan.",
+        "Gebruik 'ls -la' om ook verborgen bestanden te zien.",
+        "Gebruik 'cd /usr/bin' om naar de programmamap te gaan."
+      ],
+      "tags": ["navigatie", "bestandssysteem"],
+      "commandsUsed": ["cd", "pwd", "ls"],
+      "steps": [
+        {
+          "prompt": "Ga naar je thuismap en toon je huidige locatie.",
+          "acceptors": ["cd ~", "cd", "cd $HOME"],
+          "solution": "cd ~",
+          "expectedOutput": [],
+          "hints": ["Gebruik cd ~, cd alleen, of cd $HOME."]
+        },
+        {
+          "prompt": "Ga naar de rootmap /.",
+          "acceptors": ["cd /"],
+          "solution": "cd /",
+          "expectedOutput": [],
+          "hints": ["De rootmap is /. Gebruik absoluut pad."]
+        },
+        {
+          "prompt": "Toon de inhoud van de rootmap inclusief verborgen bestanden.",
+          "acceptors": ["ls -la", "ls -al", "ls -a -l"],
+          "solution": "ls -la",
+          "expectedOutput": [],
+          "hints": ["Gebruik de vlaggen -l en -a samen."]
+        },
+        {
+          "prompt": "Ga naar /usr/bin.",
+          "acceptors": ["cd /usr/bin"],
+          "solution": "cd /usr/bin",
+          "expectedOutput": [],
+          "hints": ["Gebruik het absolute pad /usr/bin."]
+        },
+        {
+          "prompt": "Keer terug naar je thuismap.",
+          "acceptors": ["cd ~", "cd", "cd $HOME"],
+          "solution": "cd ~",
+          "expectedOutput": [],
+          "hints": ["Gebruik cd ~, cd alleen, of cd $HOME."]
+        }
+      ]
+    },
+    {
+      "title": "Bestanden en mappen aanmaken",
+      "difficulty": "easy",
+      "type": "multi-step",
+      "prompt": "Maak een oefendirectory aan, navigeer erin, maak drie bestanden aan, bekijk ze gedetailleerd, maak een backupmap aan en kopieer de bestanden daarheen.",
+      "solution": "mkdir linux_practice && cd linux_practice && touch notes.txt commands.txt practice.txt && ls -la && mkdir backup && cp *.txt backup/ && ls -la backup/",
+      "acceptors": [
+        "mkdir linux_practice && cd linux_practice && touch notes.txt commands.txt practice.txt && ls -la && mkdir backup && cp *.txt backup/"
+      ],
+      "expectedOutput": [],
+      "hints": [
+        "Gebruik 'mkdir' om een map aan te maken.",
+        "Gebruik 'touch' om meerdere bestanden tegelijk aan te maken.",
+        "Gebruik 'ls -la' voor gedetailleerde bestandsinfo.",
+        "Gebruik 'cp *.txt backup/' om alle .txt-bestanden te kopiëren."
+      ],
+      "tags": ["bestanden", "mappen", "kopiëren"],
+      "commandsUsed": ["mkdir", "cd", "touch", "ls", "cp"],
+      "steps": [
+        {
+          "prompt": "Maak een map aan met de naam 'linux_practice'.",
+          "acceptors": ["mkdir linux_practice"],
+          "solution": "mkdir linux_practice",
+          "expectedOutput": [],
+          "hints": ["Gebruik mkdir gevolgd door de mapnaam."]
+        },
+        {
+          "prompt": "Navigeer naar de nieuwe map 'linux_practice'.",
+          "acceptors": ["cd linux_practice"],
+          "solution": "cd linux_practice",
+          "expectedOutput": [],
+          "hints": ["Gebruik cd linux_practice of cd ./linux_practice."]
+        },
+        {
+          "prompt": "Maak drie bestanden aan: notes.txt, commands.txt en practice.txt (in één commando).",
+          "acceptors": [
+            "touch notes.txt commands.txt practice.txt",
+            "touch notes.txt && touch commands.txt && touch practice.txt"
+          ],
+          "solution": "touch notes.txt commands.txt practice.txt",
+          "expectedOutput": [],
+          "hints": ["Je kunt meerdere namen meegeven aan touch."]
+        },
+        {
+          "prompt": "Toon de bestanden met gedetailleerde informatie.",
+          "acceptors": ["ls -la", "ls -al", "ls -l", "ls -a -l"],
+          "solution": "ls -la",
+          "expectedOutput": [],
+          "hints": ["Gebruik ls -la voor details inclusief verborgen bestanden."]
+        },
+        {
+          "prompt": "Maak een map 'backup' aan en kopieer alle .txt-bestanden daarheen.",
+          "acceptors": [
+            "mkdir backup && cp *.txt backup/",
+            "mkdir backup; cp *.txt backup/",
+            "mkdir backup && cp notes.txt commands.txt practice.txt backup/"
+          ],
+          "solution": "mkdir backup && cp *.txt backup/",
+          "expectedOutput": [],
+          "hints": ["Gebruik mkdir voor de map en cp *.txt voor alle .txt-bestanden."]
+        }
+      ]
+    },
+    {
+      "title": "Helpsysteem verkennen",
+      "difficulty": "easy",
+      "type": "multi-step",
+      "prompt": "Gebruik het helpsysteem om meer te leren over ls en cp: bekijk de man-pagina van ls, zoek snel naar opties via --help, en bekijk de man-pagina van cp.",
+      "solution": "man ls && ls --help && man cp",
+      "acceptors": ["man ls", "ls --help", "man cp"],
+      "expectedOutput": [],
+      "hints": [
+        "Gebruik 'man ls' voor de volledige handleiding.",
+        "Gebruik 'ls --help' voor een snel overzicht.",
+        "Druk op 'q' om de man-pagina te verlaten."
+      ],
+      "tags": ["hulp", "documentatie"],
+      "commandsUsed": ["man"],
+      "steps": [
+        {
+          "prompt": "Bekijk de volledige handleiding van het ls-commando.",
+          "acceptors": ["man ls"],
+          "solution": "man ls",
+          "expectedOutput": [],
+          "hints": ["Gebruik man gevolgd door de commandonaam. Druk q om te verlaten."]
+        },
+        {
+          "prompt": "Bekijk de snelle helptekst van ls.",
+          "acceptors": ["ls --help", "ls -h"],
+          "solution": "ls --help",
+          "expectedOutput": [],
+          "hints": ["Gebruik --help achter het commando voor een korte samenvatting."]
+        },
+        {
+          "prompt": "Bekijk de volledige handleiding van het cp-commando.",
+          "acceptors": ["man cp"],
+          "solution": "man cp",
+          "expectedOutput": [],
+          "hints": ["Gebruik man cp. Zoek naar de -r en -i opties in de OPTIES-sectie."]
+        }
+      ]
+    },
+    {
+      "title": "Navigatie: absoluut pad (Q1)",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Je bent in /home/alice. Navigeer via een absoluut pad naar /home/alice/documents/reports/2024.",
+      "solution": "cd /home/alice/documents/reports/2024",
+      "acceptors": ["cd /home/alice/documents/reports/2024"],
+      "expectedOutput": [],
+      "hints": ["Een absoluut pad begint altijd met /.", "Typ het volledige pad vanaf de rootmap."],
+      "tags": ["navigatie", "absoluut pad"],
+      "commandsUsed": ["cd"]
+    },
+    {
+      "title": "Navigatie: relatief pad (Q1)",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Je bent in /home/alice. Navigeer via een relatief pad naar /home/alice/documents/reports/2024.",
+      "solution": "cd documents/reports/2024",
+      "acceptors": ["cd documents/reports/2024", "cd ./documents/reports/2024"],
+      "expectedOutput": [],
+      "hints": ["Een relatief pad begint niet met /. Je gaat omlaag in de boomstructuur."],
+      "tags": ["navigatie", "relatief pad"],
+      "commandsUsed": ["cd"]
+    },
+    {
+      "title": "Navigatie naar broer-zustermap (Q2)",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Je bent in /home/alice/documents/projects/web. Navigeer via een relatief pad naar /home/alice/documents/projects/scripts.",
+      "solution": "cd ../scripts",
+      "acceptors": ["cd ../scripts", "cd /home/alice/documents/projects/scripts"],
+      "expectedOutput": [],
+      "hints": ["Gebruik '..' om één niveau omhoog te gaan, daarna de naam van de doelmap."],
+      "tags": ["navigatie", "relatief pad"],
+      "commandsUsed": ["cd"]
+    },
+    {
+      "title": "Navigatie: meerdere niveaus omhoog (Q3)",
+      "difficulty": "medium",
+      "type": "command",
+      "prompt": "Je bent in /home/bob/workspace/python. Navigeer via een relatief pad naar /home/alice/pictures/vacation.",
+      "solution": "cd ../../../alice/pictures/vacation",
+      "acceptors": ["cd ../../../alice/pictures/vacation", "cd /home/alice/pictures/vacation"],
+      "expectedOutput": [],
+      "hints": [
+        "Ga 3 niveaus omhoog (python → workspace → bob → home).",
+        "Dan ga je omlaag naar alice/pictures/vacation.",
+        "Tel het aantal '..' dat je nodig hebt."
+      ],
+      "tags": ["navigatie", "relatief pad"],
+      "commandsUsed": ["cd"]
+    },
+    {
+      "title": "Navigatie: cross-branch (Q4)",
+      "difficulty": "medium",
+      "type": "command",
+      "prompt": "Je bent in /var/log/apache. Navigeer via een relatief pad naar /home/alice.",
+      "solution": "cd ../../../home/alice",
+      "acceptors": ["cd ../../../home/alice", "cd /home/alice"],
+      "expectedOutput": [],
+      "hints": [
+        "Ga 3 niveaus omhoog (apache → log → var → root).",
+        "Dan ga je omlaag naar home/alice."
+      ],
+      "tags": ["navigatie", "relatief pad"],
+      "commandsUsed": ["cd"]
+    },
+    {
+      "title": "Navigatie: sibling jaar (Q5)",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Je bent in /home/alice/documents/reports/2023. Navigeer via een relatief pad naar /home/alice/documents/reports/2024.",
+      "solution": "cd ../2024",
+      "acceptors": ["cd ../2024", "cd /home/alice/documents/reports/2024"],
+      "expectedOutput": [],
+      "hints": ["Beide mappen 2023 en 2024 hebben dezelfde oudermap. Gebruik ../2024."],
+      "tags": ["navigatie", "relatief pad"],
+      "commandsUsed": ["cd"]
+    },
+    {
+      "title": "Navigatie: 2 niveaus omhoog dan omlaag (Q7)",
+      "difficulty": "medium",
+      "type": "command",
+      "prompt": "Je bent in /home/charlie/logs/application. Navigeer via een relatief pad naar /home/charlie/temp.",
+      "solution": "cd ../../temp",
+      "acceptors": ["cd ../../temp", "cd /home/charlie/temp"],
+      "expectedOutput": [],
+      "hints": [
+        "Ga 2 niveaus omhoog (application → logs → charlie).",
+        "Dan ga je omlaag naar temp."
+      ],
+      "tags": ["navigatie", "relatief pad"],
+      "commandsUsed": ["cd"]
+    },
+    {
+      "title": "Navigatie: 3 niveaus omhoog naar thuismap (Q14)",
+      "difficulty": "medium",
+      "type": "command",
+      "prompt": "Je bent in /home/alice/documents/projects/scripts. Navigeer via een relatief pad terug naar Alice's thuismap /home/alice.",
+      "solution": "cd ../../..",
+      "acceptors": ["cd ../../..", "cd /home/alice", "cd ~"],
+      "expectedOutput": [],
+      "hints": [
+        "Ga 3 niveaus omhoog: scripts → projects → documents → alice.",
+        "Je kunt ook cd ~ of cd /home/alice gebruiken."
+      ],
+      "tags": ["navigatie", "relatief pad", "thuismap"],
+      "commandsUsed": ["cd"]
+    },
+    {
+      "title": "Navigatie naar root (Q30)",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Je bent in /home/alice/downloads/music/rock. Navigeer via een absoluut pad naar de rootmap /.",
+      "solution": "cd /",
+      "acceptors": ["cd /", "cd ../../../../.."],
+      "expectedOutput": [],
+      "hints": ["De rootmap heeft als absoluut pad gewoon /."],
+      "tags": ["navigatie", "root"],
+      "commandsUsed": ["cd"]
+    },
+    {
+      "title": "Bonus: langere relatieve navigatie",
+      "difficulty": "hard",
+      "type": "command",
+      "prompt": "Je bent in /home/alice/documents/reports/2023. Navigeer via uitsluitend een relatief pad naar /home/charlie/temp.",
+      "solution": "cd ../../../../charlie/temp",
+      "acceptors": ["cd ../../../../charlie/temp"],
+      "expectedOutput": [],
+      "hints": [
+        "Ga 4 niveaus omhoog (2023 → reports → documents → alice → home).",
+        "Dan ga je omlaag naar charlie/temp.",
+        "Tel zorgvuldig hoeveel '..' je nodig hebt."
+      ],
+      "tags": ["navigatie", "relatief pad", "geavanceerd"],
+      "commandsUsed": ["cd"]
+    },
+    {
+      "title": "Locatie controleren na navigatie",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Nadat je genavigeerd hebt, wil je zeker zijn waar je bent. Welk commando gebruik je om je huidige map te tonen?",
+      "solution": "pwd",
+      "acceptors": ["pwd"],
+      "expectedOutput": [],
+      "hints": ["pwd staat voor 'Print Working Directory'."],
+      "tags": ["navigatie", "locatie"],
+      "commandsUsed": ["pwd"]
+    },
+    {
+      "title": "Verborgen bestanden tonen",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Toon alle bestanden in de huidige map, inclusief verborgen bestanden, in lang formaat.",
+      "solution": "ls -la",
+      "acceptors": ["ls -la", "ls -al", "ls -l -a", "ls -a -l"],
+      "expectedOutput": [],
+      "hints": [
+        "Verborgen bestanden beginnen met een punt (.).",
+        "Gebruik de vlag -a voor alle bestanden en -l voor lang formaat."
+      ],
+      "tags": ["bestanden", "verborgen"],
+      "commandsUsed": ["ls"]
+    },
+    {
+      "title": "Geneste mappen aanmaken",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Maak de geneste mappenstructuur project/src/main/java aan in één commando, ook al bestaan de tussenliggende mappen nog niet.",
+      "solution": "mkdir -p project/src/main/java",
+      "acceptors": ["mkdir -p project/src/main/java"],
+      "expectedOutput": [],
+      "hints": ["Gebruik de vlag -p van mkdir om tussenliggende mappen automatisch aan te maken."],
+      "tags": ["mappen", "aanmaken"],
+      "commandsUsed": ["mkdir"]
+    },
+    {
+      "title": "Man-pagina's zoeken op trefwoord",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Zoek alle commando's waarvan de beschrijving het woord 'copy' bevat via het man-zoeksysteem.",
+      "solution": "man -k copy",
+      "acceptors": ["man -k copy", "apropos copy"],
+      "expectedOutput": [],
+      "hints": ["Gebruik 'man -k' of 'apropos' gevolgd door het zoekwoord."],
+      "tags": ["hulp", "documentatie"],
+      "commandsUsed": ["man", "apropos"]
+    }
+  ],
+  "theory": [
+    {
+      "question": "Wat betekent de afkorting TTY?",
+      "type": "open",
+      "choices": [],
+      "answer": "TeleTYpe Writer",
+      "explanation": "TTY staat voor TeleTYpe Writer: vroege schrijfmachines die verbonden waren met computers. De term wordt nog steeds gebruikt voor terminals in Linux."
+    },
+    {
+      "question": "Wat is het verschil tussen een terminal en een shell?",
+      "type": "mc",
+      "choices": [
+        "A) Ze zijn hetzelfde.",
+        "B) Een terminal is de software die de shell uitvoert; een shell is de interpreter die commando's verwerkt.",
+        "C) Een shell is de hardware, een terminal is de software.",
+        "D) Een terminal is alleen beschikbaar voor root."
+      ],
+      "answer": "B",
+      "explanation": "De terminal (of terminal-emulator) biedt de omgeving om een shell op te starten. De shell (bijv. bash) is het programma dat je commando's interpreteert en doorstuurt naar de kernel."
+    },
+    {
+      "question": "Welke shells zijn beschikbaar op Linux (noem er drie)?",
+      "type": "open",
+      "choices": [],
+      "answer": "bash, zsh, dash, ksh, sh (kies er drie)",
+      "explanation": "Veelgebruikte shells zijn bash (standaard op Linux), zsh (standaard op macOS), dash (lichtgewicht), ksh en sh (originele Unix-shell)."
+    },
+    {
+      "question": "Wat betekent het '$'-teken aan het einde van de terminal-prompt?",
+      "type": "mc",
+      "choices": [
+        "A) Je hebt geen rechten.",
+        "B) Je bent ingelogd als root.",
+        "C) Je bent ingelogd als gewone (niet-bevoorrechte) gebruiker.",
+        "D) Het systeem wacht op invoer van een script."
+      ],
+      "answer": "C",
+      "explanation": "Het '$'-teken toont dat je een gewone gebruiker bent. Het '#'-teken toont dat je als root (beheerder) werkt."
+    },
+    {
+      "question": "Wat is het verschil tussen een gewone gebruiker en root in Linux?",
+      "type": "open",
+      "choices": [],
+      "answer": "Root heeft volledige systeemtoegang en kan elk bestand wijzigen; een gewone gebruiker kan alleen bestanden in zijn thuismap aanpassen.",
+      "explanation": "Linux is gebouwd met scheiding van rechten: gewone gebruikers hebben beperkte toegang, root heeft onbeperkte toegang. Dit is een fundamenteel beveiligingsprincipe."
+    },
+    {
+      "question": "Hoe wissel je naar de root-gebruiker met je eigen wachtwoord (niet het rootwachtwoord)?",
+      "type": "mc",
+      "choices": [
+        "A) su -",
+        "B) sudo su",
+        "C) su root",
+        "D) login root"
+      ],
+      "answer": "B",
+      "explanation": "'sudo su' vraagt je eigen wachtwoord en geeft dan een root-shell. 'su -' vraagt het rootwachtwoord zelf."
+    },
+    {
+      "question": "Wat is de rootmap van het Linux-bestandssysteem?",
+      "type": "mc",
+      "choices": [
+        "A) /home",
+        "B) /root",
+        "C) /",
+        "D) C:\\"
+      ],
+      "answer": "C",
+      "explanation": "In Linux is er één rootmap: /. Alle andere mappen hangen hieronder. Dit is fundamenteel anders dan Windows, dat meerdere schijfletter-roots heeft (C:, D:, ...)."
+    },
+    {
+      "question": "In welke map staan configuratiebestanden van het systeem?",
+      "type": "mc",
+      "choices": [
+        "A) /bin",
+        "B) /etc",
+        "C) /var",
+        "D) /usr"
+      ],
+      "answer": "B",
+      "explanation": "/etc bevat systeemconfiguratiebestanden zoals /etc/passwd, /etc/hosts en /etc/fstab."
+    },
+    {
+      "question": "Wat is het doel van de map /tmp?",
+      "type": "open",
+      "choices": [],
+      "answer": "Tijdelijke bestanden die bij herstart van het systeem verwijderd worden.",
+      "explanation": "/tmp dient voor tijdelijke bestanden. De inhoud wordt gewoonlijk gewist bij het herstarten van het systeem."
+    },
+    {
+      "question": "Wat is het verschil tussen /bin en /usr/bin?",
+      "type": "mc",
+      "choices": [
+        "A) /bin is voor systeembeheerders, /usr/bin voor gewone gebruikers.",
+        "B) /bin bevat essentiële systeemcommando's die bij het opstarten nodig zijn; /usr/bin bevat extra gebruikerssoftware.",
+        "C) Er is geen verschil.",
+        "D) /usr/bin is alleen beschikbaar na inloggen."
+      ],
+      "answer": "B",
+      "explanation": "/bin bevat de minimale commando's nodig voor het opstarten en herstel (ls, cat, bash). /usr/bin bevat geïnstalleerde programma's die pas na het opstarten beschikbaar zijn."
+    },
+    {
+      "question": "Wat stelt het tilde-teken (~) voor in een Linux-pad?",
+      "type": "mc",
+      "choices": [
+        "A) De rootmap /",
+        "B) De huidige map",
+        "C) De thuismap van de huidige gebruiker",
+        "D) De bovenliggende map"
+      ],
+      "answer": "C",
+      "explanation": "~ verwijst naar de thuismap van de huidige gebruiker, bijv. /home/alice. Je kunt schrijven ~/Documents in plaats van /home/alice/Documents."
+    },
+    {
+      "question": "Wat betekent .. in een pad?",
+      "type": "open",
+      "choices": [],
+      "answer": "De bovenliggende map (één niveau omhoog in de mappenstructuur).",
+      "explanation": ".. verwijst naar de bovenliggende map. cd .. gaat één niveau omhoog. cd ../.. gaat twee niveaus omhoog."
+    },
+    {
+      "question": "Wat is het verschil tussen een absoluut en een relatief pad?",
+      "type": "open",
+      "choices": [],
+      "answer": "Een absoluut pad begint altijd met / en beschrijft het volledige pad vanaf de root. Een relatief pad is relatief aan de huidige werkmap en begint niet met /.",
+      "explanation": "Voorbeeld absoluut: /home/alice/Documents. Voorbeeld relatief (vanuit /home/alice): Documents of ../bob."
+    },
+    {
+      "question": "Welk commando toont je huidige werkmap?",
+      "type": "mc",
+      "choices": [
+        "A) ls",
+        "B) cd",
+        "C) pwd",
+        "D) dir"
+      ],
+      "answer": "C",
+      "explanation": "pwd (Print Working Directory) toont het volledige pad van de map waarin je momenteel werkt."
+    },
+    {
+      "question": "Hoe navigeer je naar de vorige map waar je was?",
+      "type": "mc",
+      "choices": [
+        "A) cd ..",
+        "B) cd ~",
+        "C) cd -",
+        "D) cd /"
+      ],
+      "answer": "C",
+      "explanation": "cd - keert terug naar de vorige werkmap. Dit is handig wanneer je veel heen en weer schakelt tussen twee mappen."
+    },
+    {
+      "question": "Welke vlag van ls toont ook verborgen bestanden?",
+      "type": "mc",
+      "choices": [
+        "A) -l",
+        "B) -h",
+        "C) -a",
+        "D) -v"
+      ],
+      "answer": "C",
+      "explanation": "ls -a toont ook bestanden en mappen die beginnen met een punt (.), zoals .bashrc en .profile. Dit zijn verborgen bestanden in Linux."
+    },
+    {
+      "question": "Wat doet het commando 'touch bestand.txt'?",
+      "type": "mc",
+      "choices": [
+        "A) Verwijdert bestand.txt",
+        "B) Opent bestand.txt in een editor",
+        "C) Maakt een leeg bestand aan of past de tijdstempel aan als het al bestaat",
+        "D) Toont de inhoud van bestand.txt"
+      ],
+      "answer": "C",
+      "explanation": "touch maakt een leeg bestand aan als het nog niet bestaat. Als het bestand al bestaat, wordt enkel de tijdstempel bijgewerkt."
+    },
+    {
+      "question": "Welke vlag van mkdir maakt automatisch tussenliggende mappen aan?",
+      "type": "mc",
+      "choices": [
+        "A) -r",
+        "B) -p",
+        "C) -f",
+        "D) -v"
+      ],
+      "answer": "B",
+      "explanation": "mkdir -p maakt de volledige padstructuur aan, ook als tussenliggende mappen nog niet bestaan. Bijv. mkdir -p a/b/c maakt a, a/b én a/b/c aan."
+    },
+    {
+      "question": "Wat is het gevaar van het commando 'rm -rf'?",
+      "type": "open",
+      "choices": [],
+      "answer": "Het verwijdert mappen en hun inhoud definitief en geforceerd, zonder bevestiging te vragen. Er is geen prullenbak in Linux.",
+      "explanation": "rm -rf is onomkeerbaar: bestanden worden niet naar een prullenbak verplaatst maar definitief gewist. Gebruik het met grote voorzichtigheid, nooit met wildcards in de buurt van rootpad."
+    },
+    {
+      "question": "Wat is het verschil tussen 'less' en 'more' voor het bekijken van bestanden?",
+      "type": "mc",
+      "choices": [
+        "A) Ze doen hetzelfde.",
+        "B) less is moderner en laat ook omhoog bladeren; more is ouder en gaat alleen naar beneden.",
+        "C) more is moderner dan less.",
+        "D) less toont alleen de eerste 10 regels."
+      ],
+      "answer": "B",
+      "explanation": "less is de modernere pager die zowel omhoog als omlaag bladeren ondersteunt. more is de oudere versie die enkel naar beneden gaat. 'less is more' is dan ook een bekende Linux-grap."
+    },
+    {
+      "question": "Hoe verlaat je een man-pagina?",
+      "type": "mc",
+      "choices": [
+        "A) Ctrl+C",
+        "B) Escape",
+        "C) q",
+        "D) x"
+      ],
+      "answer": "C",
+      "explanation": "Druk op 'q' (quit) om een man-pagina te verlaten. Dit werkt ook in less en other pager-programma's."
+    },
+    {
+      "question": "Wat is het verschil tussen 'man ls' en 'ls --help'?",
+      "type": "open",
+      "choices": [],
+      "answer": "'man ls' toont de volledige, gedetailleerde handleiding met alle opties en voorbeelden. 'ls --help' geeft een korte samenvatting van de meest gebruikte opties.",
+      "explanation": "Gebruik --help voor een snel geheugensteuntje, gebruik man voor diepgaande documentatie met uitleg en voorbeelden."
+    },
+    {
+      "question": "Wat doet 'cp -r directory1 directory2'?",
+      "type": "mc",
+      "choices": [
+        "A) Hernoemt directory1 naar directory2",
+        "B) Kopieert alleen de inhoud van directory1",
+        "C) Kopieert directory1 en alle inhoud recursief naar directory2",
+        "D) Verwijdert directory1 en maakt directory2 aan"
+      ],
+      "answer": "C",
+      "explanation": "cp -r staat voor recursief kopiëren: de volledige mapstructuur inclusief alle submappen en bestanden wordt gekopieerd."
+    },
+    {
+      "question": "Wat is de omgevingsvariabele die naar je thuismap verwijst?",
+      "type": "mc",
+      "choices": [
+        "A) $PATH",
+        "B) $HOME",
+        "C) $USER",
+        "D) $SHELL"
+      ],
+      "answer": "B",
+      "explanation": "$HOME bevat het pad naar je thuismap, bijv. /home/alice. Je kunt het gebruiken in commando's: cd $HOME is gelijk aan cd ~."
+    },
+    {
+      "question": "Welke mappen zijn beschikbaar in de Linux FHS onder / (noem er vijf)?",
+      "type": "open",
+      "choices": [],
+      "answer": "/bin, /etc, /home, /usr, /var, /tmp, /dev, /proc, /root, /lib, /sbin, /opt, /media, /mnt (kies er vijf)",
+      "explanation": "De Filesystem Hierarchy Standard (FHS) definieert de standaard mappenstructuur. Elke map heeft een specifiek doel: /etc voor configuratie, /var voor variabele data, /tmp voor tijdelijke bestanden, etc."
+    },
+    {
+      "question": "Wat is het doel van /proc in Linux?",
+      "type": "mc",
+      "choices": [
+        "A) Programma's opslaan",
+        "B) Procesinfo als virtueel bestandssysteem tonen (aangemaakt door de kernel)",
+        "C) Configuratiebestanden bevatten",
+        "D) Tijdelijke bestanden opslaan"
+      ],
+      "answer": "B",
+      "explanation": "/proc is een virtueel bestandssysteem dat door de kernel aangemaakt wordt en informatie over draaiende processen en systeemstatus bevat. De bestanden bestaan niet echt op schijf."
+    },
+    {
+      "question": "Hoe zoek je naar man-pagina's die te maken hebben met een bepaald sleutelwoord?",
+      "type": "open",
+      "choices": [],
+      "answer": "Gebruik 'man -k sleutelwoord' of 'apropos sleutelwoord'.",
+      "explanation": "Beide commando's doorzoeken de beschrijvingen van alle man-pagina's op het opgegeven sleutelwoord en tonen de gevonden commando's."
+    },
+    {
+      "question": "Wat zijn de drie soorten rechten (permissions) in Linux?",
+      "type": "open",
+      "choices": [],
+      "answer": "Read (r): lezen/bekijken. Write (w): schrijven/wijzigen. Execute (x): uitvoeren (voor bestanden) of betreden (voor mappen).",
+      "explanation": "In Linux heeft elk bestand of map drie rechtencategorieën (eigenaar, groep, overigen) met telkens r/w/x-bits. Je ziet dit bij ls -l, bijv. -rw-r--r--."
+    }
+  ]
+}

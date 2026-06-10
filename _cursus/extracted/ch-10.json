@@ -1,0 +1,1119 @@
+{
+  "chapterId": "10",
+  "chapterTitle": "Permissies",
+  "summary": "Dit hoofdstuk behandelt het Linux-permissiesysteem: lees-, schrijf- en uitvoerrechten voor eigenaar, groep en anderen. Je leert werken met chmod, chown en chgrp om rechten en eigenaarschap in te stellen, speciale bits (SUID, SGID, sticky bit) te gebruiken, standaardpermissies via umask te beheren, en het krachtige find-commando in te zetten voor bestandsbeheer en beveiligingsaudits.",
+  "commands": [
+    {
+      "name": "ls",
+      "category": "Permissies",
+      "short": "Toont bestanden en mappen, inclusief permissies bij gebruik van -l.",
+      "synopsis": "ls [OPTIE]... [BESTAND]...",
+      "flags": [
+        { "flag": "-l", "desc": "Lange notatie: toont permissies, eigenaar, groep, grootte en datum." },
+        { "flag": "-a", "desc": "Toont ook verborgen bestanden (die beginnen met een punt)." },
+        { "flag": "-la", "desc": "Combinatie: lange notatie inclusief verborgen bestanden." },
+        { "flag": "-ld", "desc": "Toont de eigenschappen van de map zelf in plaats van de inhoud." }
+      ],
+      "examples": [
+        { "cmd": "ls -l bestand.txt", "desc": "Toont de permissiestring van één bestand." },
+        { "cmd": "ls -la", "desc": "Toont alle bestanden (ook verborgen) met permissies in de huidige map." },
+        { "cmd": "ls -ld /tmp", "desc": "Toont de permissies van de map /tmp zelf." }
+      ],
+      "related": ["chmod", "stat", "find"],
+      "tags": ["permissies", "bestanden"]
+    },
+    {
+      "name": "chmod",
+      "category": "Permissies",
+      "short": "Wijzigt de toegangsrechten (permissies) van bestanden en mappen.",
+      "synopsis": "chmod [OPTIE]... MODUS BESTAND...",
+      "flags": [
+        { "flag": "-R", "desc": "Past permissies recursief toe op alle bestanden en submappen." }
+      ],
+      "examples": [
+        { "cmd": "chmod 755 script.sh", "desc": "Stelt rwxr-xr-x in: eigenaar heeft alle rechten, anderen kunnen lezen en uitvoeren." },
+        { "cmd": "chmod 644 bestand.txt", "desc": "Stelt rw-r--r-- in: eigenaar kan lezen/schrijven, anderen alleen lezen." },
+        { "cmd": "chmod 600 privé.txt", "desc": "Stelt rw------- in: alleen de eigenaar kan lezen en schrijven." },
+        { "cmd": "chmod u+x script.sh", "desc": "Voegt uitvoerrecht toe voor de eigenaar." },
+        { "cmd": "chmod g-w bestand.txt", "desc": "Verwijdert schrijfrecht voor de groep." },
+        { "cmd": "chmod o= bestand.txt", "desc": "Verwijdert alle rechten voor anderen." },
+        { "cmd": "chmod a+x bestand.txt", "desc": "Voegt uitvoerrecht toe voor iedereen (eigenaar, groep, anderen)." },
+        { "cmd": "chmod u+rw,g+r,o-rwx bestand.txt", "desc": "Combineert meerdere wijzigingen in één commando." },
+        { "cmd": "chmod -R 755 map/", "desc": "Past 755-permissies recursief toe op de hele mapstructuur." },
+        { "cmd": "chmod 4755 programma", "desc": "Stelt SUID-bit in: het programma draait met de rechten van de eigenaar." },
+        { "cmd": "chmod 2775 gedeelde_map/", "desc": "Stelt SGID-bit in: nieuwe bestanden erven de groep van de map." },
+        { "cmd": "chmod 1777 temp/", "desc": "Stelt sticky bit in: alleen de eigenaar kan zijn eigen bestanden verwijderen." },
+        { "cmd": "chmod u+s programma", "desc": "Voegt SUID-bit symbolisch toe." },
+        { "cmd": "chmod g+s map/", "desc": "Voegt SGID-bit symbolisch toe aan een map." },
+        { "cmd": "chmod +t map/", "desc": "Voegt sticky bit symbolisch toe aan een map." }
+      ],
+      "related": ["chown", "chgrp", "umask", "ls", "stat"],
+      "tags": ["permissies", "beveiliging"]
+    },
+    {
+      "name": "chown",
+      "category": "Permissies",
+      "short": "Wijzigt de eigenaar (en optioneel de groep) van bestanden en mappen.",
+      "synopsis": "chown [OPTIE]... [EIGENAAR][:[GROEP]] BESTAND...",
+      "flags": [
+        { "flag": "-R", "desc": "Wijzigt eigenaarschap recursief voor alle bestanden en submappen." },
+        { "flag": "--from=HUIDIG_EIGENAAR", "desc": "Wijzigt alleen als de huidige eigenaar overeenkomt." }
+      ],
+      "examples": [
+        { "cmd": "chown alice bestand.txt", "desc": "Maakt alice de eigenaar van het bestand." },
+        { "cmd": "chown alice:developers bestand.txt", "desc": "Wijzigt eigenaar naar alice en groep naar developers." },
+        { "cmd": "chown -R www-data:www-data /var/www/html/", "desc": "Stelt webservereigenaarschap recursief in." },
+        { "cmd": "sudo chown root:root /etc/passwd", "desc": "Herstelt eigenaarschap van systeembestand." }
+      ],
+      "related": ["chgrp", "chmod", "ls", "stat"],
+      "tags": ["permissies", "eigenaarschap", "beveiliging"]
+    },
+    {
+      "name": "chgrp",
+      "category": "Permissies",
+      "short": "Wijzigt de groepseigenaar van bestanden en mappen.",
+      "synopsis": "chgrp [OPTIE]... GROEP BESTAND...",
+      "flags": [
+        { "flag": "-R", "desc": "Wijzigt groep recursief voor alle bestanden en submappen." },
+        { "flag": "--reference=REFBESTAND", "desc": "Gebruikt de groep van het referentiebestand." }
+      ],
+      "examples": [
+        { "cmd": "chgrp developers project/", "desc": "Stelt de groep van de projectmap in op developers." },
+        { "cmd": "chgrp -R developers /opt/project/", "desc": "Wijzigt recursief de groep van de volledige projectmap." },
+        { "cmd": "chgrp --reference=ref.txt doel.txt", "desc": "Kopieert de groep van ref.txt naar doel.txt." }
+      ],
+      "related": ["chown", "chmod", "ls"],
+      "tags": ["permissies", "eigenaarschap"]
+    },
+    {
+      "name": "umask",
+      "category": "Permissies",
+      "short": "Toont of stelt de standaard permissiemasker in voor nieuw aangemaakte bestanden en mappen.",
+      "synopsis": "umask [OPTIE]... [MODUS]",
+      "flags": [
+        { "flag": "-S", "desc": "Toont de umask in symbolische notatie (bijv. u=rwx,g=rx,o=rx)." }
+      ],
+      "examples": [
+        { "cmd": "umask", "desc": "Toont de huidige umask-waarde (bijv. 022)." },
+        { "cmd": "umask -S", "desc": "Toont de huidige umask symbolisch." },
+        { "cmd": "umask 022", "desc": "Stelt standaard umask in: nieuwe bestanden krijgen 644, mappen 755." },
+        { "cmd": "umask 002", "desc": "Groepsvriendelijke umask: nieuwe bestanden krijgen 664." },
+        { "cmd": "umask 077", "desc": "Strikte umask: nieuwe bestanden zijn alleen toegankelijk voor de eigenaar (600)." }
+      ],
+      "related": ["chmod", "touch", "mkdir"],
+      "tags": ["permissies", "standaardinstellingen"]
+    },
+    {
+      "name": "find",
+      "category": "Zoeken",
+      "short": "Zoekt recursief naar bestanden en mappen op basis van naam, type, grootte, tijd, permissies of eigenaar.",
+      "synopsis": "find [PAD] [OPTIES] [TESTS] [ACTIES]",
+      "flags": [
+        { "flag": "-name PATROON", "desc": "Zoekt op bestandsnaam (hoofdlettergevoelig, ondersteunt wildcards)." },
+        { "flag": "-iname PATROON", "desc": "Zoekt op bestandsnaam, niet hoofdlettergevoelig." },
+        { "flag": "-type f", "desc": "Zoekt alleen gewone bestanden." },
+        { "flag": "-type d", "desc": "Zoekt alleen mappen." },
+        { "flag": "-type l", "desc": "Zoekt alleen symbolische koppelingen." },
+        { "flag": "-size +N[c|k|M|G]", "desc": "Zoekt bestanden groter dan N (bytes, kilobytes, megabytes, gigabytes)." },
+        { "flag": "-size -N[c|k|M|G]", "desc": "Zoekt bestanden kleiner dan N." },
+        { "flag": "-mtime -N", "desc": "Zoekt bestanden gewijzigd in de afgelopen N dagen." },
+        { "flag": "-mtime +N", "desc": "Zoekt bestanden gewijzigd meer dan N dagen geleden." },
+        { "flag": "-mmin -N", "desc": "Zoekt bestanden gewijzigd in de afgelopen N minuten." },
+        { "flag": "-atime -N", "desc": "Zoekt bestanden die in de afgelopen N dagen geopend zijn." },
+        { "flag": "-ctime -N", "desc": "Zoekt bestanden waarvan de metadata in de afgelopen N dagen gewijzigd is." },
+        { "flag": "-perm MODUS", "desc": "Zoekt bestanden met exact die permissies." },
+        { "flag": "-perm -MODUS", "desc": "Zoekt bestanden met minstens die permissies (bitmask)." },
+        { "flag": "-perm /MODUS", "desc": "Zoekt bestanden met een of meer van die permissies." },
+        { "flag": "-user NAAM", "desc": "Zoekt bestanden van een bepaalde eigenaar." },
+        { "flag": "-group NAAM", "desc": "Zoekt bestanden van een bepaalde groep." },
+        { "flag": "-nouser", "desc": "Zoekt bestanden zonder geldige eigenaar." },
+        { "flag": "-nogroup", "desc": "Zoekt bestanden zonder geldige groep." },
+        { "flag": "-executable", "desc": "Zoekt bestanden die uitvoerbaar zijn voor de huidige gebruiker." },
+        { "flag": "-writable", "desc": "Zoekt bestanden die schrijfbaar zijn voor de huidige gebruiker." },
+        { "flag": "-empty", "desc": "Zoekt lege bestanden of lege mappen." },
+        { "flag": "-delete", "desc": "Verwijdert gevonden bestanden direct." },
+        { "flag": "-exec COMMANDO {} \\;", "desc": "Voert een commando uit op elk gevonden bestand." },
+        { "flag": "-exec COMMANDO {} +", "desc": "Voert een commando efficiënter uit door meerdere bestanden tegelijk te verwerken." },
+        { "flag": "-ok COMMANDO {} \\;", "desc": "Zoals -exec maar vraagt bevestiging voor elke actie." },
+        { "flag": "-printf FORMAAT", "desc": "Drukt gevonden bestanden af met een aangepast formaat." },
+        { "flag": "-maxdepth N", "desc": "Beperkt de zoekdiepte tot N niveaus." },
+        { "flag": "\\( ... -o ... \\)", "desc": "Logische OF-combinatie van zoekcriteria." },
+        { "flag": "! -name PATROON", "desc": "Logische NOT: sluit bestanden met dit patroon uit." }
+      ],
+      "examples": [
+        { "cmd": "find /home -name \"*.txt\"", "desc": "Zoekt alle .txt-bestanden in /home." },
+        { "cmd": "find /home -iname \"BESTAND.TXT\"", "desc": "Hoofdletterongevoelige zoekopdracht." },
+        { "cmd": "find /var/log -type f -name \"*.log\"", "desc": "Zoekt alle logbestanden in /var/log." },
+        { "cmd": "find /home -size +1M", "desc": "Zoekt bestanden groter dan 1 megabyte." },
+        { "cmd": "find /home -mtime -7", "desc": "Zoekt bestanden gewijzigd in de afgelopen 7 dagen." },
+        { "cmd": "find /tmp -mmin -60", "desc": "Zoekt bestanden gewijzigd in het afgelopen uur." },
+        { "cmd": "find /home -perm 644", "desc": "Zoekt bestanden met precies permissie 644." },
+        { "cmd": "find /usr -perm -4000 -type f", "desc": "Zoekt bestanden met de SUID-bit (beveiligingsaudit)." },
+        { "cmd": "find /home -perm -002 -type f", "desc": "Zoekt wereldbeschrijfbare bestanden (beveiligingsrisico)." },
+        { "cmd": "find /home -user alice", "desc": "Zoekt bestanden van de gebruiker alice." },
+        { "cmd": "find /home -nouser", "desc": "Zoekt bestanden zonder geldige eigenaar (wees-bestanden)." },
+        { "cmd": "find /tmp -name \"*.tmp\" -delete", "desc": "Zoekt en verwijdert alle .tmp-bestanden in /tmp." },
+        { "cmd": "find /home -name \"*.bak\" -exec rm {} \\;", "desc": "Verwijdert alle back-upbestanden." },
+        { "cmd": "find /home -name \"*.txt\" -exec ls -l {} +", "desc": "Toont details van alle gevonden tekstbestanden." },
+        { "cmd": "find /tmp -empty -delete", "desc": "Verwijdert alle lege bestanden en mappen in /tmp." },
+        { "cmd": "find . \\( -name \"*.txt\" -o -name \"*.log\" \\)", "desc": "Zoekt .txt- of .log-bestanden." }
+      ],
+      "related": ["locate", "grep", "ls", "stat"],
+      "tags": ["zoeken", "permissies", "beveiliging", "bestandsbeheer"]
+    },
+    {
+      "name": "stat",
+      "category": "Bestanden",
+      "short": "Toont gedetailleerde bestandsinformatie, inclusief permissies in octale notatie.",
+      "synopsis": "stat [OPTIE]... BESTAND...",
+      "flags": [
+        { "flag": "-c FORMAAT", "desc": "Geeft uitvoer in een aangepast formaat. %a = octale permissies, %n = bestandsnaam, %U = eigenaar, %G = groep." }
+      ],
+      "examples": [
+        { "cmd": "stat bestand.txt", "desc": "Toont alle informatie over het bestand." },
+        { "cmd": "stat -c \"%a %n\" bestand.txt", "desc": "Toont octale permissies en bestandsnaam." },
+        { "cmd": "stat -c \"File: %n, Group: %G\" bestand.txt", "desc": "Toont bestandsnaam en groep." }
+      ],
+      "related": ["ls", "chmod", "chown"],
+      "tags": ["bestanden", "permissies", "informatie"]
+    },
+    {
+      "name": "locate",
+      "category": "Zoeken",
+      "short": "Zoekt snel naar bestanden via een vooraf gebouwde database.",
+      "synopsis": "locate [OPTIE]... PATROON...",
+      "flags": [
+        { "flag": "-i", "desc": "Hoofdletterongevoelig zoeken." },
+        { "flag": "-n N", "desc": "Beperkt het aantal resultaten tot N." },
+        { "flag": "-e", "desc": "Toont alleen bestanden die momenteel daadwerkelijk bestaan." }
+      ],
+      "examples": [
+        { "cmd": "locate bestandsnaam", "desc": "Zoekt snel naar een bestand op naam." },
+        { "cmd": "locate -i bestandsnaam", "desc": "Zoekt zonder onderscheid tussen hoofd- en kleine letters." },
+        { "cmd": "locate -n 10 bestandsnaam", "desc": "Toont maximaal 10 resultaten." },
+        { "cmd": "sudo updatedb", "desc": "Vernieuwt de locate-database (nodig na wijzigingen)." }
+      ],
+      "related": ["find", "updatedb"],
+      "tags": ["zoeken", "bestanden"]
+    },
+    {
+      "name": "date",
+      "category": "Systeem",
+      "short": "Toont of stelt de huidige datum en tijd in.",
+      "synopsis": "date [OPTIE]... [+FORMAAT]",
+      "flags": [
+        { "flag": "-u", "desc": "Toont de datum in UTC (gecoördineerde wereldtijd)." },
+        { "flag": "-d TEKENREEKS", "desc": "Toont de datum voor een gegeven tijdstip of beschrijving (bijv. 'yesterday', 'next monday')." }
+      ],
+      "examples": [
+        { "cmd": "date", "desc": "Toont de huidige datum en tijd." },
+        { "cmd": "date \"+%Y-%m-%d %H:%M:%S\"", "desc": "Toont datum en tijd in een aangepast formaat." },
+        { "cmd": "date -u", "desc": "Toont de huidige datum in UTC." },
+        { "cmd": "date -d \"yesterday\"", "desc": "Toont de datum van gisteren." }
+      ],
+      "related": ["cal", "sleep", "time"],
+      "tags": ["systeem", "datum", "tijd"]
+    },
+    {
+      "name": "cal",
+      "category": "Systeem",
+      "short": "Toont een kalender voor de huidige, opgegeven of omliggende maand(en).",
+      "synopsis": "cal [OPTIE]... [[MAAND] JAAR]",
+      "flags": [
+        { "flag": "-3", "desc": "Toont de vorige, huidige en volgende maand." }
+      ],
+      "examples": [
+        { "cmd": "cal", "desc": "Toont de kalender van de huidige maand." },
+        { "cmd": "cal 1 2024", "desc": "Toont januari 2024." },
+        { "cmd": "cal 2024", "desc": "Toont het volledige jaar 2024." },
+        { "cmd": "cal -3", "desc": "Toont drie opeenvolgende maanden." }
+      ],
+      "related": ["date"],
+      "tags": ["systeem", "datum"]
+    },
+    {
+      "name": "sleep",
+      "category": "Systeem",
+      "short": "Pauzeert de uitvoering voor een opgegeven tijdsduur.",
+      "synopsis": "sleep GETAL[ACHTERVOEGSEL]...",
+      "flags": [],
+      "examples": [
+        { "cmd": "sleep 5", "desc": "Wacht 5 seconden." },
+        { "cmd": "sleep 1m", "desc": "Wacht 1 minuut." },
+        { "cmd": "sleep 1h", "desc": "Wacht 1 uur." }
+      ],
+      "related": ["time", "date"],
+      "tags": ["systeem", "timing"]
+    }
+  ],
+  "exercises": [
+    {
+      "title": "Testomgeving voor permissies aanmaken",
+      "difficulty": "easy",
+      "type": "multi-step",
+      "prompt": "Maak een testomgeving aan voor permissies. Maak de map ~/permission_lab en daarin drie submappen: private, shared en public. Maak daarna in elk een tekstbestand: private/secret.txt, shared/team.txt en public/readme.txt.",
+      "solution": "mkdir ~/permission_lab && cd ~/permission_lab && mkdir private shared public && touch private/secret.txt shared/team.txt public/readme.txt",
+      "acceptors": [
+        "mkdir ~/permission_lab && cd ~/permission_lab && mkdir private shared public && touch private/secret.txt shared/team.txt public/readme.txt",
+        "mkdir ~/permission_lab; mkdir ~/permission_lab/private ~/permission_lab/shared ~/permission_lab/public; touch ~/permission_lab/private/secret.txt ~/permission_lab/shared/team.txt ~/permission_lab/public/readme.txt"
+      ],
+      "expectedOutput": [],
+      "hints": [
+        "Gebruik mkdir om mappen aan te maken.",
+        "Je kunt meerdere mappen tegelijk aanmaken: mkdir private shared public.",
+        "touch maakt een leeg bestand aan."
+      ],
+      "tags": ["permissies", "mkdir", "touch"],
+      "commandsUsed": ["mkdir", "touch", "cd"],
+      "steps": [
+        {
+          "prompt": "Maak de map ~/permission_lab aan.",
+          "acceptors": ["mkdir ~/permission_lab", "mkdir -p ~/permission_lab"],
+          "solution": "mkdir ~/permission_lab",
+          "expectedOutput": [],
+          "hints": ["Gebruik mkdir met het volledige pad."]
+        },
+        {
+          "prompt": "Ga naar ~/permission_lab en maak de drie submappen private, shared en public aan.",
+          "acceptors": ["cd ~/permission_lab && mkdir private shared public", "mkdir private shared public"],
+          "solution": "cd ~/permission_lab && mkdir private shared public",
+          "expectedOutput": [],
+          "hints": ["Je kunt meerdere mappen tegelijk meegeven aan mkdir."]
+        },
+        {
+          "prompt": "Maak in elke submap een tekstbestand aan: private/secret.txt, shared/team.txt en public/readme.txt.",
+          "acceptors": [
+            "touch private/secret.txt shared/team.txt public/readme.txt",
+            "touch private/secret.txt; touch shared/team.txt; touch public/readme.txt"
+          ],
+          "solution": "touch private/secret.txt shared/team.txt public/readme.txt",
+          "expectedOutput": [],
+          "hints": ["touch kan meerdere bestanden tegelijk aanmaken."]
+        }
+      ]
+    },
+    {
+      "title": "Privé-map beveiligen met chmod",
+      "difficulty": "easy",
+      "type": "multi-step",
+      "prompt": "Stel de juiste permissies in voor een privé-omgeving: de map private/ krijgt permissie 700 (alleen eigenaar heeft toegang) en het bestand private/secret.txt krijgt permissie 600 (alleen eigenaar kan lezen en schrijven).",
+      "solution": "chmod 700 private/ && chmod 600 private/secret.txt",
+      "acceptors": [
+        "chmod 700 private/ && chmod 600 private/secret.txt",
+        "chmod 700 private/; chmod 600 private/secret.txt",
+        "chmod 700 private && chmod 600 private/secret.txt"
+      ],
+      "expectedOutput": [],
+      "hints": [
+        "700 = rwx------: alleen de eigenaar heeft alle rechten.",
+        "600 = rw-------: alleen de eigenaar kan lezen en schrijven."
+      ],
+      "tags": ["permissies", "chmod", "beveiliging"],
+      "commandsUsed": ["chmod"],
+      "steps": [
+        {
+          "prompt": "Stel permissie 700 in op de map private/.",
+          "acceptors": ["chmod 700 private/", "chmod 700 private"],
+          "solution": "chmod 700 private/",
+          "expectedOutput": [],
+          "hints": ["700 staat voor rwx------ : alleen de eigenaar heeft toegang."]
+        },
+        {
+          "prompt": "Stel permissie 600 in op het bestand private/secret.txt.",
+          "acceptors": ["chmod 600 private/secret.txt"],
+          "solution": "chmod 600 private/secret.txt",
+          "expectedOutput": [],
+          "hints": ["600 staat voor rw------- : alleen de eigenaar kan lezen/schrijven."]
+        }
+      ]
+    },
+    {
+      "title": "Gedeelde map instellen",
+      "difficulty": "easy",
+      "type": "multi-step",
+      "prompt": "Stel permissies in voor een gedeelde omgeving: de map shared/ krijgt permissie 770 (eigenaar en groep hebben volledige toegang) en shared/team.txt krijgt permissie 660 (eigenaar en groep kunnen lezen en schrijven).",
+      "solution": "chmod 770 shared/ && chmod 660 shared/team.txt",
+      "acceptors": [
+        "chmod 770 shared/ && chmod 660 shared/team.txt",
+        "chmod 770 shared; chmod 660 shared/team.txt"
+      ],
+      "expectedOutput": [],
+      "hints": [
+        "770 = rwxrwx---: eigenaar en groep hebben alle rechten.",
+        "660 = rw-rw----: eigenaar en groep kunnen lezen en schrijven."
+      ],
+      "tags": ["permissies", "chmod"],
+      "commandsUsed": ["chmod"],
+      "steps": [
+        {
+          "prompt": "Stel permissie 770 in op de map shared/.",
+          "acceptors": ["chmod 770 shared/", "chmod 770 shared"],
+          "solution": "chmod 770 shared/",
+          "expectedOutput": [],
+          "hints": ["770 = rwxrwx---."]
+        },
+        {
+          "prompt": "Stel permissie 660 in op shared/team.txt.",
+          "acceptors": ["chmod 660 shared/team.txt"],
+          "solution": "chmod 660 shared/team.txt",
+          "expectedOutput": [],
+          "hints": ["660 = rw-rw----."]
+        }
+      ]
+    },
+    {
+      "title": "Publieke map instellen",
+      "difficulty": "easy",
+      "type": "multi-step",
+      "prompt": "Stel permissies in voor een publieke omgeving: de map public/ krijgt permissie 755 en public/readme.txt krijgt permissie 644. Controleer daarna de permissies met ls -la.",
+      "solution": "chmod 755 public/ && chmod 644 public/readme.txt && ls -la",
+      "acceptors": [
+        "chmod 755 public/ && chmod 644 public/readme.txt && ls -la",
+        "chmod 755 public && chmod 644 public/readme.txt && ls -la",
+        "chmod 755 public/; chmod 644 public/readme.txt; ls -la"
+      ],
+      "expectedOutput": [],
+      "hints": [
+        "755 = rwxr-xr-x: iedereen kan lezen en mappen betreden, eigenaar kan schrijven.",
+        "644 = rw-r--r--: eigenaar schrijft, anderen lezen."
+      ],
+      "tags": ["permissies", "chmod", "ls"],
+      "commandsUsed": ["chmod", "ls"],
+      "steps": [
+        {
+          "prompt": "Stel permissie 755 in op public/ en 644 op public/readme.txt.",
+          "acceptors": [
+            "chmod 755 public/ && chmod 644 public/readme.txt",
+            "chmod 755 public && chmod 644 public/readme.txt"
+          ],
+          "solution": "chmod 755 public/ && chmod 644 public/readme.txt",
+          "expectedOutput": [],
+          "hints": ["755 voor mappen, 644 voor gewone bestanden is een veelgebruikte combinatie."]
+        },
+        {
+          "prompt": "Controleer de permissies met ls -la.",
+          "acceptors": ["ls -la", "ls -la ."],
+          "solution": "ls -la",
+          "expectedOutput": [],
+          "hints": ["ls -la toont alle bestanden inclusief verborgen bestanden met permissies."]
+        }
+      ]
+    },
+    {
+      "title": "Script uitvoerbaar maken",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Maak het bestand script.sh uitvoerbaar voor iedereen met behulp van de symbolische notatie van chmod.",
+      "solution": "chmod +x script.sh",
+      "acceptors": [
+        "chmod +x script.sh",
+        "chmod a+x script.sh",
+        "chmod 755 script.sh",
+        "chmod u+x,g+x,o+x script.sh"
+      ],
+      "expectedOutput": [],
+      "hints": [
+        "+x voegt het uitvoerrecht toe voor alle categorieën (eigenaar, groep, anderen).",
+        "a+x is gelijk aan +x."
+      ],
+      "tags": ["permissies", "chmod", "scripts"],
+      "commandsUsed": ["chmod"]
+    },
+    {
+      "title": "Permissies lezen en begrijpen",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Toon een gedetailleerde lijst van alle bestanden (ook verborgen) in de huidige map, zodat je de permissies, eigenaar en groep kunt zien.",
+      "solution": "ls -la",
+      "acceptors": ["ls -la", "ls -al", "ls -la .", "ls -al ."],
+      "expectedOutput": [],
+      "hints": [
+        "Gebruik de vlag -l voor lange notatie en -a voor verborgen bestanden.",
+        "Je kunt vlaggen combineren: -la of -al."
+      ],
+      "tags": ["permissies", "ls"],
+      "commandsUsed": ["ls"]
+    },
+    {
+      "title": "Gedeelde projectmap met SGID instellen",
+      "difficulty": "medium",
+      "type": "multi-step",
+      "prompt": "Stel een gedeelde projectmap in zodat alle nieuwe bestanden automatisch de groepseigenaar van de map erven. Maak de map /opt/shared_project aan, stel de groep in op developers, en activeer de SGID-bit met permissie 2775.",
+      "solution": "sudo mkdir /opt/shared_project && sudo chgrp developers /opt/shared_project && sudo chmod 2775 /opt/shared_project",
+      "acceptors": [
+        "sudo mkdir /opt/shared_project && sudo chgrp developers /opt/shared_project && sudo chmod 2775 /opt/shared_project",
+        "sudo mkdir -p /opt/shared_project && sudo chgrp developers /opt/shared_project && sudo chmod 2775 /opt/shared_project",
+        "sudo mkdir /opt/shared_project; sudo chgrp developers /opt/shared_project; sudo chmod 2775 /opt/shared_project"
+      ],
+      "expectedOutput": [],
+      "hints": [
+        "mkdir maakt de map aan, chgrp wijzigt de groep.",
+        "2775 = SGID-bit (2000) + rwxrwxr-x (775).",
+        "De SGID-bit zorg je dat nieuwe bestanden de groep van de map erven."
+      ],
+      "tags": ["permissies", "chmod", "chgrp", "SGID", "beveiliging"],
+      "commandsUsed": ["mkdir", "chgrp", "chmod"],
+      "steps": [
+        {
+          "prompt": "Maak de map /opt/shared_project aan met sudo.",
+          "acceptors": ["sudo mkdir /opt/shared_project", "sudo mkdir -p /opt/shared_project"],
+          "solution": "sudo mkdir /opt/shared_project",
+          "expectedOutput": [],
+          "hints": ["Je hebt sudo nodig om mappen in /opt aan te maken."]
+        },
+        {
+          "prompt": "Stel de groep van /opt/shared_project in op developers.",
+          "acceptors": ["sudo chgrp developers /opt/shared_project"],
+          "solution": "sudo chgrp developers /opt/shared_project",
+          "expectedOutput": [],
+          "hints": ["chgrp wijzigt de groepseigenaar."]
+        },
+        {
+          "prompt": "Activeer de SGID-bit op de map met permissie 2775.",
+          "acceptors": [
+            "sudo chmod 2775 /opt/shared_project",
+            "sudo chmod g+s /opt/shared_project"
+          ],
+          "solution": "sudo chmod 2775 /opt/shared_project",
+          "expectedOutput": [],
+          "hints": ["2775 = SGID-bit + rwxrwxr-x. De 's' staat in de groepsuitvoerpositie."]
+        }
+      ]
+    },
+    {
+      "title": "Sticky bit instellen op gedeelde map",
+      "difficulty": "medium",
+      "type": "multi-step",
+      "prompt": "Maak een gedeelde tijdelijke map ~/temp_shared aan met permissie 1777, zodat gebruikers bestanden kunnen aanmaken maar alleen hun eigen bestanden kunnen verwijderen (vergelijkbaar met /tmp). Controleer daarna de permissies.",
+      "solution": "mkdir ~/temp_shared && chmod 1777 ~/temp_shared && ls -ld ~/temp_shared",
+      "acceptors": [
+        "mkdir ~/temp_shared && chmod 1777 ~/temp_shared && ls -ld ~/temp_shared",
+        "mkdir ~/temp_shared; chmod 1777 ~/temp_shared; ls -ld ~/temp_shared",
+        "mkdir ~/temp_shared && chmod +t ~/temp_shared && ls -ld ~/temp_shared"
+      ],
+      "expectedOutput": ["drwxrwxrwt"],
+      "hints": [
+        "1777 = sticky bit (1000) + rwxrwxrwx (777).",
+        "De 't' in de uitvoerpositie van others toont dat de sticky bit actief is.",
+        "+t is de symbolische manier om de sticky bit in te stellen."
+      ],
+      "tags": ["permissies", "chmod", "sticky bit"],
+      "commandsUsed": ["mkdir", "chmod", "ls"],
+      "steps": [
+        {
+          "prompt": "Maak de map ~/temp_shared aan.",
+          "acceptors": ["mkdir ~/temp_shared"],
+          "solution": "mkdir ~/temp_shared",
+          "expectedOutput": [],
+          "hints": ["mkdir met het volledige pad."]
+        },
+        {
+          "prompt": "Stel permissie 1777 (sticky bit + rwxrwxrwx) in op ~/temp_shared.",
+          "acceptors": ["chmod 1777 ~/temp_shared", "chmod +t ~/temp_shared"],
+          "solution": "chmod 1777 ~/temp_shared",
+          "expectedOutput": [],
+          "hints": ["De sticky bit is de '1' voor de drie permissiecijfers."]
+        },
+        {
+          "prompt": "Controleer de permissies van de map met ls -ld. De uitvoer toont een 't' aan het einde.",
+          "acceptors": ["ls -ld ~/temp_shared"],
+          "solution": "ls -ld ~/temp_shared",
+          "expectedOutput": ["drwxrwxrwt"],
+          "hints": ["ls -ld toont de properties van de map zelf, niet de inhoud."]
+        }
+      ]
+    },
+    {
+      "title": "Bestanden zoeken met find op naam",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Zoek alle .txt-bestanden in ~/find_lab.",
+      "solution": "find ~/find_lab -name \"*.txt\"",
+      "acceptors": [
+        "find ~/find_lab -name \"*.txt\"",
+        "find ~/find_lab -name '*.txt'"
+      ],
+      "expectedOutput": [],
+      "hints": [
+        "De basisvorm is: find PAD -name PATROON.",
+        "Gebruik wildcards: *.txt staat voor elk bestand dat eindigt op .txt."
+      ],
+      "tags": ["find", "zoeken"],
+      "commandsUsed": ["find"]
+    },
+    {
+      "title": "Uitvoerbare bestanden zoeken met find",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Zoek alle uitvoerbare gewone bestanden in ~/find_lab.",
+      "solution": "find ~/find_lab -executable -type f",
+      "acceptors": [
+        "find ~/find_lab -executable -type f",
+        "find ~/find_lab -type f -executable",
+        "find ~/find_lab -type f -perm -111"
+      ],
+      "expectedOutput": [],
+      "hints": [
+        "-executable zoekt bestanden die uitvoerbaar zijn voor de huidige gebruiker.",
+        "-type f beperkt de zoekresultaten tot gewone bestanden (geen mappen)."
+      ],
+      "tags": ["find", "zoeken", "permissies"],
+      "commandsUsed": ["find"]
+    },
+    {
+      "title": "Grote bestanden opsporen",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Zoek alle bestanden in /var die groter zijn dan 100 megabyte en toon ze met details.",
+      "solution": "find /var -type f -size +100M -exec ls -lh {} \\;",
+      "acceptors": [
+        "find /var -type f -size +100M -exec ls -lh {} \\;",
+        "find /var -size +100M -type f -exec ls -lh {} \\;",
+        "find /var -type f -size +100M -exec ls -lh {} +"
+      ],
+      "expectedOutput": [],
+      "hints": [
+        "+100M staat voor groter dan 100 megabyte.",
+        "-exec ls -lh {} \\; voert ls -lh uit op elk gevonden bestand."
+      ],
+      "tags": ["find", "zoeken", "bestandsbeheer"],
+      "commandsUsed": ["find", "ls"]
+    },
+    {
+      "title": "SUID-bestanden opsporen (beveiligingsaudit)",
+      "difficulty": "medium",
+      "type": "command",
+      "prompt": "Zoek alle bestanden met de SUID-bit in /usr en toon ze met hun details. Stuur foutmeldingen weg naar /dev/null.",
+      "solution": "find /usr -perm -4000 -type f -exec ls -l {} \\; 2>/dev/null",
+      "acceptors": [
+        "find /usr -perm -4000 -type f -exec ls -l {} \\; 2>/dev/null",
+        "sudo find /usr -perm -4000 -type f 2>/dev/null",
+        "find /usr -perm -4000 -type f 2>/dev/null | head -10"
+      ],
+      "expectedOutput": [],
+      "hints": [
+        "-perm -4000 zoekt op de SUID-bit (4000).",
+        "2>/dev/null stuurt foutmeldingen (bijv. 'Permission denied') weg."
+      ],
+      "tags": ["find", "permissies", "beveiliging", "SUID"],
+      "commandsUsed": ["find"]
+    },
+    {
+      "title": "Testomgeving aanmaken voor find",
+      "difficulty": "easy",
+      "type": "multi-step",
+      "prompt": "Maak een testomgeving aan voor het oefenen van find. Maak de mapstructuur ~/find_lab met submappen docs, images, scripts en logs. Maak de volgende bestanden aan: docs/file1.txt t/m docs/file5.txt, images/photo1.jpg t/m images/photo3.jpg, scripts/script1.sh en scripts/script2.sh, en logs/app.log en logs/error.log. Maak de shellscripts uitvoerbaar.",
+      "solution": "mkdir -p ~/find_lab/{docs,images,scripts,logs} && touch ~/find_lab/docs/file{1..5}.txt && touch ~/find_lab/images/photo{1..3}.jpg && touch ~/find_lab/scripts/script{1..2}.sh && touch ~/find_lab/logs/app.log ~/find_lab/logs/error.log && chmod +x ~/find_lab/scripts/*.sh",
+      "acceptors": [
+        "mkdir -p ~/find_lab/{docs,images,scripts,logs} && touch ~/find_lab/docs/file{1..5}.txt && touch ~/find_lab/images/photo{1..3}.jpg && touch ~/find_lab/scripts/script{1..2}.sh && touch ~/find_lab/logs/app.log ~/find_lab/logs/error.log && chmod +x ~/find_lab/scripts/*.sh"
+      ],
+      "expectedOutput": [],
+      "hints": [
+        "mkdir -p met accolades maakt meerdere submappen tegelijk aan: mkdir -p map/{a,b,c}.",
+        "Nummerbereiken werken met {1..5}.",
+        "chmod +x maakt bestanden uitvoerbaar."
+      ],
+      "tags": ["mkdir", "touch", "chmod", "find"],
+      "commandsUsed": ["mkdir", "touch", "chmod"],
+      "steps": [
+        {
+          "prompt": "Maak de mapstructuur ~/find_lab aan met submappen docs, images, scripts en logs.",
+          "acceptors": ["mkdir -p ~/find_lab/{docs,images,scripts,logs}"],
+          "solution": "mkdir -p ~/find_lab/{docs,images,scripts,logs}",
+          "expectedOutput": [],
+          "hints": ["Accolades-uitbreiding maakt meerdere submappen in één commando."]
+        },
+        {
+          "prompt": "Maak de bestanden aan in alle submappen.",
+          "acceptors": [
+            "touch ~/find_lab/docs/file{1..5}.txt && touch ~/find_lab/images/photo{1..3}.jpg && touch ~/find_lab/scripts/script{1..2}.sh && touch ~/find_lab/logs/app.log ~/find_lab/logs/error.log"
+          ],
+          "solution": "touch ~/find_lab/docs/file{1..5}.txt && touch ~/find_lab/images/photo{1..3}.jpg && touch ~/find_lab/scripts/script{1..2}.sh && touch ~/find_lab/logs/app.log ~/find_lab/logs/error.log",
+          "expectedOutput": [],
+          "hints": ["Nummerbereiken {1..5} in touch genereren automatisch vijf bestanden."]
+        },
+        {
+          "prompt": "Maak alle shellscripts uitvoerbaar.",
+          "acceptors": ["chmod +x ~/find_lab/scripts/*.sh"],
+          "solution": "chmod +x ~/find_lab/scripts/*.sh",
+          "expectedOutput": [],
+          "hints": ["De wildcard *.sh verwijst naar alle bestanden met extensie .sh."]
+        }
+      ]
+    },
+    {
+      "title": "find met acties: permissies instellen",
+      "difficulty": "medium",
+      "type": "command",
+      "prompt": "Gebruik find om alle shellscripts (.sh) in ~/find_lab te zoeken en hun permissies in te stellen op 755.",
+      "solution": "find ~/find_lab -name \"*.sh\" -exec chmod 755 {} \\;",
+      "acceptors": [
+        "find ~/find_lab -name \"*.sh\" -exec chmod 755 {} \\;",
+        "find ~/find_lab -name '*.sh' -exec chmod 755 {} \\;",
+        "find ~/find_lab -name \"*.sh\" -exec chmod 755 {} +"
+      ],
+      "expectedOutput": [],
+      "hints": [
+        "-exec voert een commando uit op elk gevonden bestand.",
+        "{} is een plaatshouder voor het gevonden bestand.",
+        "\\; sluit de -exec-actie af."
+      ],
+      "tags": ["find", "chmod", "scripts"],
+      "commandsUsed": ["find", "chmod"]
+    },
+    {
+      "title": "Logbestanden tonen met find en exec",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Zoek alle .log-bestanden in ~/find_lab en toon ze met gedetailleerde informatie via ls -la.",
+      "solution": "find ~/find_lab -name \"*.log\" -exec ls -la {} \\;",
+      "acceptors": [
+        "find ~/find_lab -name \"*.log\" -exec ls -la {} \\;",
+        "find ~/find_lab -name '*.log' -exec ls -la {} \\;",
+        "find ~/find_lab -name \"*.log\" -exec ls -la {} +"
+      ],
+      "expectedOutput": [],
+      "hints": [
+        "Combineer -name met -exec om gevonden bestanden direct te verwerken.",
+        "{} is de plaatshouder voor elk gevonden bestand."
+      ],
+      "tags": ["find", "ls"],
+      "commandsUsed": ["find", "ls"]
+    },
+    {
+      "title": "Recente bestanden zoeken",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Zoek alle bestanden in ~/find_lab die in de afgelopen minuut zijn gewijzigd.",
+      "solution": "find ~/find_lab -type f -mmin -1",
+      "acceptors": [
+        "find ~/find_lab -type f -mmin -1",
+        "find ~/find_lab -mmin -1 -type f",
+        "find ~/find_lab -mmin -1"
+      ],
+      "expectedOutput": [],
+      "hints": [
+        "-mmin -1 staat voor 'gewijzigd minder dan 1 minuut geleden'.",
+        "Het minteken betekent 'minder dan': -mmin -60 = gewijzigd in de afgelopen 60 minuten."
+      ],
+      "tags": ["find", "tijd"],
+      "commandsUsed": ["find"]
+    },
+    {
+      "title": "Beveiligingsaudit: kritieke bestandspermissies controleren",
+      "difficulty": "medium",
+      "type": "multi-step",
+      "prompt": "Voer een basisbeveiligingsaudit uit. Zoek SUID-bestanden in /usr (beperk tot 10 resultaten). Controleer daarna de permissies van de kritieke systeembestanden /etc/passwd, /etc/shadow en /etc/sudoers.",
+      "solution": "sudo find /usr -perm -4000 -type f 2>/dev/null | head -10 && ls -la /etc/passwd /etc/shadow /etc/sudoers",
+      "acceptors": [
+        "sudo find /usr -perm -4000 -type f 2>/dev/null | head -10 && ls -la /etc/passwd /etc/shadow /etc/sudoers",
+        "sudo find /usr -perm -4000 -type f 2>/dev/null | head -10; ls -la /etc/passwd /etc/shadow /etc/sudoers"
+      ],
+      "expectedOutput": [],
+      "hints": [
+        "-perm -4000 zoekt de SUID-bit.",
+        "| head -10 beperkt de uitvoer tot 10 regels.",
+        "ls -la toont de permissies van meerdere bestanden tegelijk."
+      ],
+      "tags": ["find", "beveiliging", "ls", "SUID"],
+      "commandsUsed": ["find", "ls"],
+      "steps": [
+        {
+          "prompt": "Zoek SUID-bestanden in /usr en beperk de uitvoer tot 10 regels.",
+          "acceptors": [
+            "sudo find /usr -perm -4000 -type f 2>/dev/null | head -10",
+            "find /usr -perm -4000 -type f 2>/dev/null | head -10"
+          ],
+          "solution": "sudo find /usr -perm -4000 -type f 2>/dev/null | head -10",
+          "expectedOutput": [],
+          "hints": ["-perm -4000 zoekt de SUID-bit; 2>/dev/null verbergt foutmeldingen."]
+        },
+        {
+          "prompt": "Controleer de permissies van /etc/passwd, /etc/shadow en /etc/sudoers.",
+          "acceptors": ["ls -la /etc/passwd /etc/shadow /etc/sudoers"],
+          "solution": "ls -la /etc/passwd /etc/shadow /etc/sudoers",
+          "expectedOutput": [],
+          "hints": ["ls -la accepteert meerdere bestandspaden als argumenten."]
+        }
+      ]
+    },
+    {
+      "title": "Umask controleren en testen",
+      "difficulty": "medium",
+      "type": "multi-step",
+      "prompt": "Bekijk de huidige umask-waarde in zowel numerieke als symbolische notatie. Maak daarna een testbestand en een testmap aan en controleer hun permissies.",
+      "solution": "umask && umask -S && touch test_umask_file && mkdir test_umask_dir && ls -la test_umask_file test_umask_dir",
+      "acceptors": [
+        "umask && umask -S && touch test_umask_file && mkdir test_umask_dir && ls -la test_umask_file test_umask_dir",
+        "umask; umask -S; touch test_umask_file; mkdir test_umask_dir; ls -la test_umask_file test_umask_dir"
+      ],
+      "expectedOutput": [],
+      "hints": [
+        "umask zonder argumenten toont de numerieke waarde.",
+        "umask -S toont de symbolische waarde.",
+        "Met umask 022 krijgen nieuwe bestanden permissie 644, mappen 755."
+      ],
+      "tags": ["umask", "permissies"],
+      "commandsUsed": ["umask", "touch", "mkdir", "ls"],
+      "steps": [
+        {
+          "prompt": "Toon de huidige umask in numerieke notatie.",
+          "acceptors": ["umask"],
+          "solution": "umask",
+          "expectedOutput": ["0022"],
+          "hints": ["umask zonder vlaggen toont de numerieke waarde."]
+        },
+        {
+          "prompt": "Toon de huidige umask in symbolische notatie.",
+          "acceptors": ["umask -S"],
+          "solution": "umask -S",
+          "expectedOutput": ["u=rwx,g=rx,o=rx"],
+          "hints": ["-S staat voor symbolisch."]
+        },
+        {
+          "prompt": "Maak een testbestand (test_umask_file) en een testmap (test_umask_dir) aan.",
+          "acceptors": [
+            "touch test_umask_file && mkdir test_umask_dir",
+            "touch test_umask_file; mkdir test_umask_dir"
+          ],
+          "solution": "touch test_umask_file && mkdir test_umask_dir",
+          "expectedOutput": [],
+          "hints": ["touch voor bestanden, mkdir voor mappen."]
+        },
+        {
+          "prompt": "Toon de permissies van het testbestand en de testmap.",
+          "acceptors": ["ls -la test_umask_file test_umask_dir", "ls -la test_umask_*"],
+          "solution": "ls -la test_umask_file test_umask_dir",
+          "expectedOutput": [],
+          "hints": ["ls -la toont de permissies in lange notatie."]
+        }
+      ]
+    },
+    {
+      "title": "Wereldbeschrijfbare bestanden zoeken",
+      "difficulty": "medium",
+      "type": "command",
+      "prompt": "Zoek alle wereldbeschrijfbare gewone bestanden in /tmp (bestanden die door iedereen geschreven kunnen worden, een potentieel beveiligingsrisico). Stuur foutmeldingen weg.",
+      "solution": "find /tmp -perm -002 -type f 2>/dev/null",
+      "acceptors": [
+        "find /tmp -perm -002 -type f 2>/dev/null",
+        "find /tmp -type f -perm -002 2>/dev/null",
+        "find /tmp -perm -002 -type f 2>/dev/null | head -10"
+      ],
+      "expectedOutput": [],
+      "hints": [
+        "-perm -002 zoekt bestanden waarbij de schrijfbit voor others is ingesteld.",
+        "Dit is een typische beveiligingsaudit-zoekopdracht."
+      ],
+      "tags": ["find", "beveiliging", "permissies"],
+      "commandsUsed": ["find"]
+    },
+    {
+      "title": "Eigenaarschap wijzigen met chown",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Wijzig de eigenaar van het bestand bestand.txt naar alice en stel tegelijk de groep in op developers.",
+      "solution": "chown alice:developers bestand.txt",
+      "acceptors": [
+        "chown alice:developers bestand.txt",
+        "sudo chown alice:developers bestand.txt"
+      ],
+      "expectedOutput": [],
+      "hints": [
+        "De syntaxis is: chown eigenaar:groep bestand.",
+        "Je hebt mogelijk sudo-rechten nodig."
+      ],
+      "tags": ["chown", "eigenaarschap", "permissies"],
+      "commandsUsed": ["chown"]
+    },
+    {
+      "title": "Groepseigenaar recursief wijzigen",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Wijzig recursief de groepseigenaar van de map /opt/project naar developers.",
+      "solution": "sudo chgrp -R developers /opt/project",
+      "acceptors": [
+        "sudo chgrp -R developers /opt/project",
+        "sudo chown -R :developers /opt/project",
+        "sudo chgrp -R developers /opt/project/"
+      ],
+      "expectedOutput": [],
+      "hints": [
+        "-R past de wijziging toe op alle bestanden en submappen.",
+        "Met chown kun je ook alleen de groep wijzigen: chown :groep."
+      ],
+      "tags": ["chgrp", "eigenaarschap", "permissies"],
+      "commandsUsed": ["chgrp"]
+    },
+    {
+      "title": "Octale waarde van permissiestring berekenen",
+      "difficulty": "easy",
+      "type": "predict",
+      "prompt": "Wat is de octale waarde van de permissiestring 'rwxr-xr-x'?",
+      "solution": "755",
+      "acceptors": ["755"],
+      "expectedOutput": ["755"],
+      "hints": [
+        "r=4, w=2, x=1.",
+        "Eigenaar: r(4)+w(2)+x(1)=7. Groep: r(4)+x(1)=5. Anderen: r(4)+x(1)=5.",
+        "Resultaat: 755."
+      ],
+      "tags": ["permissies", "octal"],
+      "commandsUsed": []
+    },
+    {
+      "title": "find met OR-logica",
+      "difficulty": "medium",
+      "type": "command",
+      "prompt": "Zoek in ~/find_lab alle bestanden die eindigen op .txt of op .log.",
+      "solution": "find ~/find_lab \\( -name \"*.txt\" -o -name \"*.log\" \\)",
+      "acceptors": [
+        "find ~/find_lab \\( -name \"*.txt\" -o -name \"*.log\" \\)",
+        "find ~/find_lab \\( -name '*.txt' -o -name '*.log' \\)",
+        "find ~/find_lab -name \"*.txt\" -o -name \"*.log\""
+      ],
+      "expectedOutput": [],
+      "hints": [
+        "Gebruik \\( ... -o ... \\) voor logische OF.",
+        "-o is de OR-operator in find.",
+        "De haakjes moeten ge-escaped worden met backslash."
+      ],
+      "tags": ["find", "zoeken"],
+      "commandsUsed": ["find"]
+    },
+    {
+      "title": "Bestanden zoeken op eigenaar",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Zoek alle bestanden in /home die toebehoren aan de gebruiker john.",
+      "solution": "find /home -user john",
+      "acceptors": ["find /home -user john", "find /home -user john -type f"],
+      "expectedOutput": [],
+      "hints": [
+        "-user zoekt op gebruikersnaam.",
+        "Je kunt ook -uid gebruiken met het gebruikers-ID."
+      ],
+      "tags": ["find", "eigenaarschap"],
+      "commandsUsed": ["find"]
+    }
+  ],
+  "theory": [
+    {
+      "question": "Wat betekent de permissie '755' in octale notatie?",
+      "type": "mc",
+      "choices": [
+        "A. Eigenaar: alle rechten; groep en anderen: lezen en uitvoeren",
+        "B. Eigenaar: lezen en schrijven; groep en anderen: lezen",
+        "C. Iedereen heeft alle rechten",
+        "D. Eigenaar: alle rechten; groep: lezen en schrijven; anderen: niets"
+      ],
+      "answer": "A",
+      "explanation": "755 = rwxr-xr-x. Eigenaar (7) = r(4)+w(2)+x(1). Groep (5) = r(4)+x(1). Anderen (5) = r(4)+x(1). De eigenaar heeft alle rechten, groep en anderen kunnen lezen en uitvoeren."
+    },
+    {
+      "question": "Wat is de symbolische permissiestring voor octale waarde 644?",
+      "type": "mc",
+      "choices": [
+        "A. rwxr-xr-x",
+        "B. rw-rw-rw-",
+        "C. rw-r--r--",
+        "D. rwx------"
+      ],
+      "answer": "C",
+      "explanation": "644 = rw-r--r--. Eigenaar (6) = r(4)+w(2). Groep (4) = r. Anderen (4) = r. De eigenaar kan lezen en schrijven, groep en anderen kunnen alleen lezen."
+    },
+    {
+      "question": "Welk commando pas je toe om een script uitvoerbaar te maken?",
+      "type": "mc",
+      "choices": [
+        "A. chmod +w script.sh",
+        "B. chmod +x script.sh",
+        "C. chown +x script.sh",
+        "D. chmod -r script.sh"
+      ],
+      "answer": "B",
+      "explanation": "+x voegt het uitvoerrecht (execute) toe. Dit is nodig om een bestand als programma te kunnen draaien."
+    },
+    {
+      "question": "Wat is het verschil tussen 'chmod 644' en 'chmod u=rw,g=r,o=r'?",
+      "type": "open",
+      "choices": [],
+      "answer": "Geen verschil: beide stellen exact dezelfde permissies in (rw-r--r--).",
+      "explanation": "644 in octale notatie staat voor rw-r--r--. De symbolische notatie u=rw,g=r,o=r betekent hetzelfde: eigenaar lezen+schrijven, groep lezen, anderen lezen. Beide methoden zijn gelijkwaardig."
+    },
+    {
+      "question": "Hoe maak je een map waarbij alle nieuw aangemaakte bestanden automatisch de groepseigenaar van de map erven?",
+      "type": "open",
+      "choices": [],
+      "answer": "Stel de SGID-bit in op de map: chmod g+s map/ of chmod 2775 map/",
+      "explanation": "De SGID-bit (Set Group ID) op een map zorgt ervoor dat alle nieuw aangemaakte bestanden en submappen automatisch de groep van de map erven in plaats van de primaire groep van de gebruiker die het bestand aanmaakt."
+    },
+    {
+      "question": "Wat doet de sticky bit op een map?",
+      "type": "mc",
+      "choices": [
+        "A. Bestanden worden onwijzigbaar (immutable)",
+        "B. Alleen de eigenaar van een bestand kan zijn eigen bestanden verwijderen",
+        "C. De map erft automatisch de groep van de bovenliggende map",
+        "D. Bestanden worden bij elke toegang automatisch vergrendeld"
+      ],
+      "answer": "B",
+      "explanation": "De sticky bit op een map (zoals /tmp) zorgt ervoor dat gebruikers weliswaar bestanden kunnen aanmaken in de map, maar dat ze alleen hun eigen bestanden kunnen verwijderen. Je kunt dus geen bestanden van anderen wissen."
+    },
+    {
+      "question": "Wat is de werking van umask?",
+      "type": "open",
+      "choices": [],
+      "answer": "umask bepaalt welke permissies worden weggenomen van nieuw aangemaakte bestanden en mappen.",
+      "explanation": "De maximale permissies zonder umask zijn 666 voor bestanden en 777 voor mappen. Met umask 022 worden de schrijfbits voor groep en anderen weggehaald: bestanden krijgen 644 (666-022) en mappen 755 (777-022)."
+    },
+    {
+      "question": "Welke umask-waarde geeft nieuwe bestanden permissie 600?",
+      "type": "mc",
+      "choices": [
+        "A. 022",
+        "B. 002",
+        "C. 077",
+        "D. 044"
+      ],
+      "answer": "C",
+      "explanation": "Met umask 077 worden alle bits voor groep en anderen weggehaald: 666 - 077 = 600 (rw-------). Dit is een strenge instelling voor privégebruik."
+    },
+    {
+      "question": "Wat is een beveiligingsimplicatie van SUID-bestanden?",
+      "type": "open",
+      "choices": [],
+      "answer": "Een SUID-bestand draait met de rechten van de eigenaar (vaak root) in plaats van de rechten van de gebruiker die het uitvoert.",
+      "explanation": "Als een SUID-bestand eigendom is van root, kan elke gebruiker het bestand uitvoeren met root-rechten. Dit is bewust toegepast bij commando's als passwd, maar vormt een risico als kwaadaardige software SUID-rechten verkrijgt. Regelmatige audits met find zijn daarom essentieel."
+    },
+    {
+      "question": "Welk commando zoekt alle bestanden groter dan 100MB in de map /home?",
+      "type": "mc",
+      "choices": [
+        "A. find /home -size +100MB",
+        "B. find /home -size +100M",
+        "C. find /home -bigger 100M",
+        "D. find /home -type f -size 100M"
+      ],
+      "answer": "B",
+      "explanation": "De juiste syntaxis is -size +100M. Het plus-teken betekent 'groter dan'. M staat voor megabytes. Andere eenheden zijn c (bytes), k (kilobytes), G (gigabytes)."
+    },
+    {
+      "question": "Welk commando wijzigt de eigenaar van bestand.txt naar bob en de groep naar staff?",
+      "type": "mc",
+      "choices": [
+        "A. chmod bob:staff bestand.txt",
+        "B. chown bob staff bestand.txt",
+        "C. chown bob:staff bestand.txt",
+        "D. chgrp bob:staff bestand.txt"
+      ],
+      "answer": "C",
+      "explanation": "chown eigenaar:groep bestand is de correcte syntaxis. De dubbele punt scheidt eigenaar en groep. chgrp wijzigt alleen de groep, niet de eigenaar."
+    },
+    {
+      "question": "Hoe voeg je met één symbolisch commando het uitvoerrecht toe voor ALLE categorieën (eigenaar, groep, anderen)?",
+      "type": "mc",
+      "choices": [
+        "A. chmod u+x bestand",
+        "B. chmod +x bestand",
+        "C. chmod x=a bestand",
+        "D. chmod 111 bestand"
+      ],
+      "answer": "B",
+      "explanation": "+x zonder een categorie-aanduiding (u, g, o of a) is gelijk aan a+x en voegt het uitvoerrecht toe voor iedereen. chmod 111 doet hetzelfde in octale notatie."
+    },
+    {
+      "question": "Wat toont 'ls -ld /tmp' als de sticky bit actief is?",
+      "type": "mc",
+      "choices": [
+        "A. drwxrwxrws",
+        "B. drwxrwxrwt",
+        "C. drwxrwxrwx",
+        "D. drwsrwxrwx"
+      ],
+      "answer": "B",
+      "explanation": "De sticky bit verschijnt als 't' in de uitvoerpositie van others (laatste karakter van de permissiestring). Dus drwxrwxrwt toont dat de sticky bit actief is op de map."
+    },
+    {
+      "question": "Welk commando zoekt alle bestanden in /home die in de afgelopen 7 dagen zijn gewijzigd?",
+      "type": "mc",
+      "choices": [
+        "A. find /home -time -7",
+        "B. find /home -mtime -7",
+        "C. find /home -mmin -7",
+        "D. find /home -atime +7"
+      ],
+      "answer": "B",
+      "explanation": "-mtime staat voor modification time in dagen. -mtime -7 zoekt bestanden die minder dan 7 dagen geleden zijn gewijzigd. -mmin werkt met minuten, -atime met toegangstijd."
+    },
+    {
+      "question": "Wat is de permissie 700 in symbolische notatie?",
+      "type": "open",
+      "choices": [],
+      "answer": "rwx------",
+      "explanation": "700 = 7 (rwx) voor eigenaar, 0 (---) voor groep, 0 (---) voor anderen. Alleen de eigenaar heeft alle rechten; groep en anderen hebben geen enkele toegang."
+    },
+    {
+      "question": "Welk type bestand heeft 'd' als eerste karakter in de permissiestring?",
+      "type": "mc",
+      "choices": [
+        "A. Een symbolische koppeling",
+        "B. Een regulier bestand",
+        "C. Een map",
+        "D. Een apparaatbestand"
+      ],
+      "answer": "C",
+      "explanation": "Het eerste karakter van de permissiestring geeft het bestandstype aan: '-' voor een gewoon bestand, 'd' voor een map (directory), 'l' voor een symbolische koppeling."
+    },
+    {
+      "question": "Hoe verwijder je het schrijfrecht voor de groep op bestand.txt met symbolische notatie?",
+      "type": "mc",
+      "choices": [
+        "A. chmod g+w bestand.txt",
+        "B. chmod g-w bestand.txt",
+        "C. chmod o-w bestand.txt",
+        "D. chmod u-w bestand.txt"
+      ],
+      "answer": "B",
+      "explanation": "g staat voor group (groep), het minteken verwijdert de permissie, w staat voor write (schrijven). Dus chmod g-w verwijdert het schrijfrecht voor de groep."
+    },
+    {
+      "question": "Wat doet 'find /home -nouser'?",
+      "type": "open",
+      "choices": [],
+      "answer": "Zoekt bestanden waarvan de eigenaar niet meer bestaat in het systeem (wees-bestanden).",
+      "explanation": "Als een gebruiker verwijderd wordt maar diens bestanden niet, zijn die bestanden 'eigendomsloos'. find -nouser is een belangrijk hulpmiddel bij beveiligingsaudits om zulke wees-bestanden op te sporen."
+    },
+    {
+      "question": "Wat is de beste permissie voor SSH-privésleutels?",
+      "type": "mc",
+      "choices": [
+        "A. 644",
+        "B. 755",
+        "C. 600",
+        "D. 700"
+      ],
+      "answer": "C",
+      "explanation": "SSH-privésleutels moeten alleen leesbaar zijn voor de eigenaar: chmod 600 ~/.ssh/id_rsa. SSH weigert in te loggen als de privésleutel te open permissies heeft."
+    },
+    {
+      "question": "Welk speciaal permissiebit is er actief als je 's' ziet op de positie van het uitvoerrecht van de eigenaar?",
+      "type": "mc",
+      "choices": [
+        "A. Sticky bit",
+        "B. SGID",
+        "C. SUID",
+        "D. Immutable bit"
+      ],
+      "answer": "C",
+      "explanation": "De 's' op de uitvoerpositie van de eigenaar (user execute) geeft de SUID-bit aan. De 's' op de groepsuitvoerpositie geeft de SGID-bit aan. De 't' op de others-uitvoerpositie is de sticky bit."
+    },
+    {
+      "question": "Wat is het principe van 'least privilege' in de context van bestandspermissies?",
+      "type": "open",
+      "choices": [],
+      "answer": "Geef gebruikers en processen alleen de minimale permissies die ze nodig hebben voor hun taak, en niet meer.",
+      "explanation": "Door het principe van minimale rechten toe te passen, beperk je de schade die kan worden aangericht door fouten, kwaadaardige software of gehackte accounts. Vermijd 777, gebruik passende rechten zoals 644 voor bestanden en 755 voor mappen."
+    }
+  ]
+}

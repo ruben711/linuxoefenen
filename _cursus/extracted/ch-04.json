@@ -1,0 +1,1050 @@
+{
+  "chapterId": "04",
+  "chapterTitle": "I/O-omleiding en pipes",
+  "summary": "In dit hoofdstuk leer je de drie standaardstromen van Linux (stdin, stdout, stderr) en hoe je die kunt omleiden met operatoren als >, >>, 2> en &>. Je ontdekt hoe pipes (|) commando's aan elkaar koppelen zodat de uitvoer van het ene commando meteen de invoer wordt van het volgende. Tot slot combineer je omleiding en pipes in krachtige pipelines voor tekstverwerking en systeemmonitoring.",
+  "commands": [
+    {
+      "name": ">",
+      "category": "I/O & pipes",
+      "short": "Leidt stdout van een commando om naar een bestand (overschrijft).",
+      "synopsis": "commando > bestand",
+      "flags": [],
+      "examples": [
+        { "cmd": "ls > directory_listing.txt", "desc": "Schrijft de uitvoer van ls naar directory_listing.txt; bestaand bestand wordt overschreven." },
+        { "cmd": "echo \"Hallo\" > bestand.txt", "desc": "Maakt bestand.txt aan met de tekst 'Hallo'." }
+      ],
+      "related": [">>", "2>", "&>"],
+      "tags": ["omleiding", "stdout"]
+    },
+    {
+      "name": ">>",
+      "category": "I/O & pipes",
+      "short": "Voegt stdout van een commando toe aan een bestand (append).",
+      "synopsis": "commando >> bestand",
+      "flags": [],
+      "examples": [
+        { "cmd": "echo \"Banana\" >> fruits.txt", "desc": "Voegt 'Banana' toe aan fruits.txt zonder de bestaande inhoud te wissen." },
+        { "cmd": "date >> log.txt", "desc": "Voegt de huidige datum/tijd toe aan log.txt." }
+      ],
+      "related": [">", "2>>"],
+      "tags": ["omleiding", "append", "stdout"]
+    },
+    {
+      "name": "2>",
+      "category": "I/O & pipes",
+      "short": "Leidt stderr (bestandsdescriptor 2) om naar een bestand.",
+      "synopsis": "commando 2> foutbestand",
+      "flags": [],
+      "examples": [
+        { "cmd": "ls /bestaat_niet 2> errors.txt", "desc": "Stuurt de foutmelding naar errors.txt; de terminal blijft leeg." },
+        { "cmd": "find / -name \"*.txt\" 2> /dev/null", "desc": "Negeert alle foutmeldingen van find." }
+      ],
+      "related": ["2>>", "&>", ">"],
+      "tags": ["omleiding", "stderr"]
+    },
+    {
+      "name": "2>>",
+      "category": "I/O & pipes",
+      "short": "Voegt stderr toe aan een bestand (append).",
+      "synopsis": "commando 2>> foutbestand",
+      "flags": [],
+      "examples": [
+        { "cmd": "ls /bestaat_niet 2>> errors.txt", "desc": "Voegt de foutmelding toe aan het bestaande errors.txt." }
+      ],
+      "related": ["2>", ">>"],
+      "tags": ["omleiding", "stderr", "append"]
+    },
+    {
+      "name": "&>",
+      "category": "I/O & pipes",
+      "short": "Leidt zowel stdout als stderr tegelijk om naar een bestand (bash-afkorting).",
+      "synopsis": "commando &> bestand",
+      "flags": [],
+      "examples": [
+        { "cmd": "ls /bestaat_niet fruits.txt &> combined.txt", "desc": "Schrijft zowel normale uitvoer als foutmeldingen naar combined.txt." },
+        { "cmd": "commando &> /dev/null", "desc": "Gooit alle uitvoer weg." }
+      ],
+      "related": [">", "2>", "2>&1"],
+      "tags": ["omleiding", "stdout", "stderr"]
+    },
+    {
+      "name": "2>&1",
+      "category": "I/O & pipes",
+      "short": "Stuurt stderr naar dezelfde bestemming als stdout.",
+      "synopsis": "commando > bestand 2>&1",
+      "flags": [],
+      "examples": [
+        { "cmd": "ls /bestaat_niet fruits.txt > combined.txt 2>&1", "desc": "Schrijft stdout naar combined.txt en voegt stderr daar ook aan toe." },
+        { "cmd": "commando > /dev/null 2>&1", "desc": "Gooit alle uitvoer (stdout én stderr) weg." }
+      ],
+      "related": ["&>", ">", "2>"],
+      "tags": ["omleiding", "stderr", "stdout"]
+    },
+    {
+      "name": "<",
+      "category": "I/O & pipes",
+      "short": "Leidt de inhoud van een bestand om als stdin voor een commando.",
+      "synopsis": "commando < invoerbestand",
+      "flags": [],
+      "examples": [
+        { "cmd": "sort < unsorted.txt", "desc": "Geeft de inhoud van unsorted.txt als invoer aan sort." },
+        { "cmd": "wc < textfile.txt", "desc": "Telt regels, woorden en tekens in textfile.txt via stdin." }
+      ],
+      "related": ["<<", "<<<", "|"],
+      "tags": ["omleiding", "stdin"]
+    },
+    {
+      "name": "<<",
+      "category": "I/O & pipes",
+      "short": "Here document: geeft meerdere regels inline als stdin mee aan een commando.",
+      "synopsis": "commando << DELIMITER\ntekst\nDELIMITER",
+      "flags": [],
+      "examples": [
+        { "cmd": "cat << EOF > poem.txt\nRoses are red\nEOF", "desc": "Maakt poem.txt aan met de opgegeven tekst; alles tot EOF is de invoer." },
+        { "cmd": "wc -w << EOF\nDit is een test\nEOF", "desc": "Telt woorden in de inline tekst." }
+      ],
+      "related": ["<", "<<<"],
+      "tags": ["omleiding", "stdin", "heredoc"]
+    },
+    {
+      "name": "<<<",
+      "category": "I/O & pipes",
+      "short": "Here string: geeft één tekstregel als stdin mee aan een commando.",
+      "synopsis": "commando <<< \"tekst\"",
+      "flags": [],
+      "examples": [
+        { "cmd": "wc -w <<< \"hallo wereld\"", "desc": "Telt de woorden in de string 'hallo wereld'." }
+      ],
+      "related": ["<<", "<"],
+      "tags": ["omleiding", "stdin"]
+    },
+    {
+      "name": "|",
+      "category": "I/O & pipes",
+      "short": "Koppelt de stdout van het ene commando aan de stdin van het volgende.",
+      "synopsis": "commando1 | commando2 [| commando3 ...]",
+      "flags": [],
+      "examples": [
+        { "cmd": "ls | wc -l", "desc": "Telt het aantal bestanden in de huidige map." },
+        { "cmd": "ps aux | grep firefox", "desc": "Zoekt naar Firefox-processen." },
+        { "cmd": "history | tail -10", "desc": "Toont de laatste 10 commando's uit de geschiedenis." },
+        { "cmd": "cat /etc/passwd | wc -l", "desc": "Telt het aantal gebruikers in het systeem." }
+      ],
+      "related": [">", "<", "tee"],
+      "tags": ["pipe", "koppeling"]
+    },
+    {
+      "name": "head",
+      "category": "Bekijken",
+      "short": "Toont de eerste regels van een bestand (standaard 10).",
+      "synopsis": "head [OPTIE]... [BESTAND]...",
+      "flags": [
+        { "flag": "-n GETAL", "desc": "Toont de eerste GETAL regels in plaats van 10." },
+        { "flag": "-GETAL", "desc": "Verkorte schrijfwijze voor -n GETAL (bijv. -5)." }
+      ],
+      "examples": [
+        { "cmd": "head /etc/passwd", "desc": "Toont de eerste 10 regels van /etc/passwd." },
+        { "cmd": "head -n 5 bestand.txt", "desc": "Toont de eerste 5 regels van bestand.txt." },
+        { "cmd": "ps aux | head -20", "desc": "Toont de eerste 20 procesregels." }
+      ],
+      "related": ["tail", "cat", "less"],
+      "tags": ["tekstverwerking", "bekijken"]
+    },
+    {
+      "name": "tail",
+      "category": "Bekijken",
+      "short": "Toont de laatste regels van een bestand (standaard 10).",
+      "synopsis": "tail [OPTIE]... [BESTAND]...",
+      "flags": [
+        { "flag": "-n GETAL", "desc": "Toont de laatste GETAL regels." },
+        { "flag": "-GETAL", "desc": "Verkorte schrijfwijze voor -n GETAL (bijv. -20)." },
+        { "flag": "-f", "desc": "Volgt het bestand live: toont nieuwe regels zodra ze verschijnen (handig voor logs)." }
+      ],
+      "examples": [
+        { "cmd": "tail /var/log/syslog", "desc": "Toont de laatste 10 regels van syslog." },
+        { "cmd": "tail -n 20 bestand.txt", "desc": "Toont de laatste 20 regels." },
+        { "cmd": "tail -f /var/log/syslog", "desc": "Toont nieuwe logregels live terwijl ze binnenkomen." },
+        { "cmd": "history | tail -15", "desc": "Toont de laatste 15 commando's uit de geschiedenis." }
+      ],
+      "related": ["head", "cat", "less"],
+      "tags": ["tekstverwerking", "bekijken", "logs"]
+    },
+    {
+      "name": "cat",
+      "category": "Bekijken",
+      "short": "Toont de inhoud van een of meerdere bestanden.",
+      "synopsis": "cat [OPTIE]... [BESTAND]...",
+      "flags": [
+        { "flag": "-n", "desc": "Nummert elke uitvoeregel." },
+        { "flag": "-A", "desc": "Toont niet-afdrukbare tekens (tabs, regeleinden enz.)." }
+      ],
+      "examples": [
+        { "cmd": "cat bestand.txt", "desc": "Toont de volledige inhoud van bestand.txt." },
+        { "cmd": "cat -n bestand.txt", "desc": "Toont bestand.txt met regelnummers." },
+        { "cmd": "cat file1.txt file2.txt", "desc": "Toont beide bestanden achter elkaar." }
+      ],
+      "related": ["tac", "less", "more", "head", "tail"],
+      "tags": ["bekijken", "tekstverwerking"]
+    },
+    {
+      "name": "tac",
+      "category": "Bekijken",
+      "short": "Toont de regels van een bestand in omgekeerde volgorde (cat achterstevoren).",
+      "synopsis": "tac [BESTAND]...",
+      "flags": [],
+      "examples": [
+        { "cmd": "tac bestand.txt", "desc": "Toont de regels van bestand.txt van onder naar boven." },
+        { "cmd": "seq 1 10 | tac", "desc": "Drukt de getallen 10 tot 1 af." },
+        { "cmd": "cat fruits.txt | sort | tac", "desc": "Sorteert de vruchten en keert de volgorde daarna om." }
+      ],
+      "related": ["cat", "sort"],
+      "tags": ["tekstverwerking", "bekijken"]
+    },
+    {
+      "name": "less",
+      "category": "Bekijken",
+      "short": "Bladert door een bestand of pipe-uitvoer met zoekfunctie.",
+      "synopsis": "less [BESTAND]",
+      "flags": [],
+      "examples": [
+        { "cmd": "less bestand.txt", "desc": "Opent bestand.txt in de less-viewer." },
+        { "cmd": "ps aux | less", "desc": "Bladert door de lijst van processen." },
+        { "cmd": "man ls | less", "desc": "Toont de man-pagina van ls in less." }
+      ],
+      "related": ["more", "head", "tail", "cat"],
+      "tags": ["bekijken", "pager"]
+    },
+    {
+      "name": "more",
+      "category": "Bekijken",
+      "short": "Bladert door een bestand pagina per pagina (ouder alternatief voor less).",
+      "synopsis": "more [BESTAND]",
+      "flags": [],
+      "examples": [
+        { "cmd": "more bestand.txt", "desc": "Toont bestand.txt pagina per pagina; spatiebalk = volgende pagina, q = afsluiten." }
+      ],
+      "related": ["less", "head", "tail"],
+      "tags": ["bekijken", "pager"]
+    },
+    {
+      "name": "tee",
+      "category": "I/O & pipes",
+      "short": "Stuurt stdin tegelijk naar stdout en naar een bestand.",
+      "synopsis": "tee [OPTIE]... [BESTAND]...",
+      "flags": [
+        { "flag": "-a", "desc": "Voegt toe aan het bestand in plaats van te overschrijven." }
+      ],
+      "examples": [
+        { "cmd": "ps aux | tee processes.txt | grep firefox", "desc": "Slaat de volledige proceslijst op in processes.txt en geeft ook de firefox-regels door." },
+        { "cmd": "cat data.txt | sort | tee sorted.txt | uniq > unique.txt", "desc": "Slaat gesorteerde data op in sorted.txt en stuurt ook unieke regels naar unique.txt." },
+        { "cmd": "who | tee current_users.txt | wc -l", "desc": "Slaat ingelogde gebruikers op en telt ze meteen." }
+      ],
+      "related": ["|", ">", ">>"],
+      "tags": ["I/O & pipes", "tekstverwerking"]
+    },
+    {
+      "name": "sort",
+      "category": "Tekst",
+      "short": "Sorteert regels van tekstinvoer of bestanden.",
+      "synopsis": "sort [OPTIE]... [BESTAND]...",
+      "flags": [
+        { "flag": "-n", "desc": "Sorteert numeriek in plaats van alfabetisch." },
+        { "flag": "-r", "desc": "Keert de sorteervolgorde om (omgekeerd)." },
+        { "flag": "-h", "desc": "Sorteert op mensvriendelijke getallen (bijv. 1K, 10M)." },
+        { "flag": "-k KOLOM", "desc": "Sorteert op de opgegeven kolom (bijv. -k4 voor kolom 4)." },
+        { "flag": "-nr", "desc": "Numeriek en omgekeerd gecombineerd." }
+      ],
+      "examples": [
+        { "cmd": "sort < unsorted.txt", "desc": "Sorteert de regels van unsorted.txt alfabetisch." },
+        { "cmd": "cat numbers.txt | sort -n", "desc": "Sorteert getallen numeriek." },
+        { "cmd": "ps aux | sort -k4 -nr | head -5", "desc": "Toont de 5 processen met het hoogste geheugengebruik." },
+        { "cmd": "du -sh */ | sort -hr", "desc": "Toont mapsgroottes gesorteerd van groot naar klein." }
+      ],
+      "related": ["uniq", "tac", "|"],
+      "tags": ["tekstverwerking", "sorteren"]
+    },
+    {
+      "name": "uniq",
+      "category": "Tekst",
+      "short": "Verwijdert opeenvolgende dubbele regels; werkt best na sort.",
+      "synopsis": "uniq [OPTIE]... [INVOER [UITVOER]]",
+      "flags": [
+        { "flag": "-c", "desc": "Telt hoe vaak elke unieke regel voorkomt." },
+        { "flag": "-d", "desc": "Toont alleen regels die meermaals voorkomen (duplicaten)." },
+        { "flag": "-u", "desc": "Toont alleen regels die eenmalig voorkomen." }
+      ],
+      "examples": [
+        { "cmd": "cat numbers.txt | sort -n | uniq", "desc": "Verwijdert duplicaten uit numbers.txt (na sortering)." },
+        { "cmd": "cat numbers.txt | sort -n | uniq -d", "desc": "Toont enkel de getallen die meer dan eenmaal voorkomen." },
+        { "cmd": "history | awk '{print $2}' | sort | uniq -c | sort -nr | head -10", "desc": "Toont de 10 meest gebruikte commando's." }
+      ],
+      "related": ["sort", "|"],
+      "tags": ["tekstverwerking", "duplicaten"]
+    },
+    {
+      "name": "wc",
+      "category": "Tekst",
+      "short": "Telt regels, woorden en/of tekens in een bestand of stdin.",
+      "synopsis": "wc [OPTIE]... [BESTAND]...",
+      "flags": [
+        { "flag": "-l", "desc": "Telt alleen regels." },
+        { "flag": "-w", "desc": "Telt alleen woorden." },
+        { "flag": "-c", "desc": "Telt alleen bytes." }
+      ],
+      "examples": [
+        { "cmd": "wc -l bestand.txt", "desc": "Telt het aantal regels in bestand.txt." },
+        { "cmd": "ls | wc -l", "desc": "Telt het aantal bestanden/mappen in de huidige map." },
+        { "cmd": "cat /etc/passwd | wc -l", "desc": "Telt het aantal gebruikers in het systeem." },
+        { "cmd": "history | wc -l", "desc": "Telt het totale aantal commando's in de geschiedenis." }
+      ],
+      "related": ["cat", "|", "grep"],
+      "tags": ["tekstverwerking", "tellen"]
+    },
+    {
+      "name": "grep",
+      "category": "Zoeken",
+      "short": "Zoekt naar een patroon in tekstinvoer of bestanden en drukt overeenkomende regels af.",
+      "synopsis": "grep [OPTIE]... PATROON [BESTAND]...",
+      "flags": [
+        { "flag": "-v", "desc": "Inverteert: toont regels die NIET overeenkomen met het patroon." },
+        { "flag": "-i", "desc": "Hoofdletterongevoelig zoeken." },
+        { "flag": "-E", "desc": "Gebruikt uitgebreide reguliere expressies." }
+      ],
+      "examples": [
+        { "cmd": "ps aux | grep firefox", "desc": "Toont processen met 'firefox' in de naam." },
+        { "cmd": "history | grep ls", "desc": "Toont alle ls-commando's uit de geschiedenis." },
+        { "cmd": "df -h | grep -v tmpfs", "desc": "Toont schijfgebruik zonder tijdelijke bestandssystemen." },
+        { "cmd": "ls /bestaat_niet 2>&1 | grep \"No such file\"", "desc": "Filtert de foutmelding uit gecombineerde uitvoer." }
+      ],
+      "related": ["sort", "wc", "|", "find"],
+      "tags": ["zoeken", "tekstverwerking"]
+    },
+    {
+      "name": "seq",
+      "category": "Tekst",
+      "short": "Genereert een reeks getallen.",
+      "synopsis": "seq [OPTIE] EERSTE [STAP] LAATSTE",
+      "flags": [],
+      "examples": [
+        { "cmd": "seq 1 100 > numbers.txt", "desc": "Schrijft de getallen 1 tot en met 100 naar numbers.txt." },
+        { "cmd": "seq 50 150 >> numbers.txt", "desc": "Voegt de getallen 50 tot 150 toe aan numbers.txt." },
+        { "cmd": "seq 1 10 | tac", "desc": "Drukt de getallen 10 tot 1 af." }
+      ],
+      "related": [">", ">>", "tac"],
+      "tags": ["genereren", "getallen"]
+    },
+    {
+      "name": "strings",
+      "category": "Bekijken",
+      "short": "Haalt leesbare tekstreeksen op uit binaire bestanden.",
+      "synopsis": "strings [OPTIE]... BESTAND...",
+      "flags": [
+        { "flag": "-n GETAL", "desc": "Stelt de minimumlengte van af te drukken tekstreeksen in (standaard 4)." }
+      ],
+      "examples": [
+        { "cmd": "strings /bin/ls", "desc": "Toont alle leesbare tekst in het binaire bestand /bin/ls." },
+        { "cmd": "strings -n 8 binaryfile", "desc": "Toont alleen tekstreeksen van minimaal 8 tekens lang." },
+        { "cmd": "strings /usr/bin/file | head -20", "desc": "Toont de eerste 20 leesbare strings uit /usr/bin/file." }
+      ],
+      "related": ["file", "cat"],
+      "tags": ["bekijken", "binair"]
+    },
+    {
+      "name": "awk",
+      "category": "Tekst",
+      "short": "Verwerkt en transformeert tekst per regel op basis van veldpatronen.",
+      "synopsis": "awk 'PROGRAMMA' [BESTAND]...",
+      "flags": [],
+      "examples": [
+        { "cmd": "history | awk '{print $2}'", "desc": "Drukt het tweede veld (commando) van elke geschiedenisregel af." },
+        { "cmd": "ps aux | awk '{print $4, $11}'", "desc": "Drukt geheugengebruik en procesnaam af." }
+      ],
+      "related": ["cut", "sort", "|"],
+      "tags": ["tekstverwerking", "velden"]
+    },
+    {
+      "name": "cut",
+      "category": "Tekst",
+      "short": "Knipt kolommen of velden uit elke regel van stdin of een bestand.",
+      "synopsis": "cut OPTIE... [BESTAND]...",
+      "flags": [
+        { "flag": "-d SCHEIDINGSTEKEN", "desc": "Stelt het veldscheidingsteken in (standaard tab)." },
+        { "flag": "-f VELDEN", "desc": "Selecteert de opgegeven velden." }
+      ],
+      "examples": [
+        { "cmd": "who | cut -d' ' -f1", "desc": "Toont alleen de gebruikersnamen van ingelogde gebruikers." },
+        { "cmd": "cat /etc/passwd | cut -d: -f1", "desc": "Toont alle gebruikersnamen uit /etc/passwd." }
+      ],
+      "related": ["awk", "sort", "|"],
+      "tags": ["tekstverwerking", "velden"]
+    },
+    {
+      "name": "ps",
+      "category": "Processen",
+      "short": "Toont een momentopname van de lopende processen.",
+      "synopsis": "ps [OPTIE]...",
+      "flags": [
+        { "flag": "aux", "desc": "Toont alle processen van alle gebruikers met gedetailleerde info (BSD-stijl)." }
+      ],
+      "examples": [
+        { "cmd": "ps aux | grep $USER", "desc": "Toont alleen jouw eigen processen." },
+        { "cmd": "ps aux | sort -k4 -nr | head -5", "desc": "Toont de 5 processen met het hoogste geheugengebruik." },
+        { "cmd": "ps aux | wc -l", "desc": "Telt het aantal lopende processen." }
+      ],
+      "related": ["grep", "sort", "|", "top"],
+      "tags": ["processen", "systeem"]
+    },
+    {
+      "name": "df",
+      "category": "Systeem",
+      "short": "Toont het schijfgebruik van bestandssystemen.",
+      "synopsis": "df [OPTIE]... [BESTAND]...",
+      "flags": [
+        { "flag": "-h", "desc": "Toont groottes in mensvriendelijk formaat (KB, MB, GB)." }
+      ],
+      "examples": [
+        { "cmd": "df -h | grep -v tmpfs > disk_usage.txt", "desc": "Slaat schijfgebruik op zonder tijdelijke bestandssystemen." },
+        { "cmd": "df -h", "desc": "Toont schijfgebruik van alle bestandssystemen in leesbaar formaat." }
+      ],
+      "related": ["du", "|", ">"],
+      "tags": ["systeem", "schijf"]
+    },
+    {
+      "name": "who",
+      "category": "Systeem",
+      "short": "Toont welke gebruikers momenteel ingelogd zijn.",
+      "synopsis": "who [OPTIE]...",
+      "flags": [],
+      "examples": [
+        { "cmd": "who | tee current_users.txt | wc -l", "desc": "Slaat ingelogde gebruikers op en telt ze." },
+        { "cmd": "who | cut -d' ' -f1 | sort | uniq | wc -l", "desc": "Telt het aantal unieke ingelogde gebruikers." }
+      ],
+      "related": ["w", "|", "tee"],
+      "tags": ["systeem", "gebruikers"]
+    },
+    {
+      "name": "/dev/null",
+      "category": "I/O & pipes",
+      "short": "Speciale 'zwart gat'-bestemming: alle uitvoer die ernaartoe gaat verdwijnt.",
+      "synopsis": "commando > /dev/null",
+      "flags": [],
+      "examples": [
+        { "cmd": "ls > /dev/null", "desc": "Voert ls uit maar gooit de uitvoer weg." },
+        { "cmd": "ls /bestaat_niet 2> /dev/null", "desc": "Negeert foutmeldingen." },
+        { "cmd": "commando &> /dev/null", "desc": "Negeert zowel stdout als stderr." }
+      ],
+      "related": [">", "2>", "&>"],
+      "tags": ["omleiding", "null"]
+    }
+  ],
+  "exercises": [
+    {
+      "title": "Maak een fruitenlijst met omleiding",
+      "difficulty": "easy",
+      "type": "multi-step",
+      "prompt": "Maak een bestand fruits.txt aan. Schrijf eerst 'Apple' naar het bestand (maak het aan/overschrijf), voeg daarna 'Banana', 'Cherry' en 'Date' toe met append. Controleer de inhoud ten slotte met cat.",
+      "solution": "echo \"Apple\" > fruits.txt && echo \"Banana\" >> fruits.txt && echo \"Cherry\" >> fruits.txt && echo \"Date\" >> fruits.txt && cat fruits.txt",
+      "acceptors": [
+        "echo \"Apple\" > fruits.txt",
+        "echo 'Apple' > fruits.txt"
+      ],
+      "expectedOutput": ["Apple", "Banana", "Cherry", "Date"],
+      "hints": [
+        "Gebruik > om het bestand aan te maken of te overschrijven.",
+        "Gebruik >> om regels toe te voegen zonder de bestaande inhoud te wissen.",
+        "cat fruits.txt toont de inhoud."
+      ],
+      "tags": ["omleiding", "append"],
+      "commandsUsed": ["echo", ">", ">>", "cat"],
+      "steps": [
+        {
+          "prompt": "Schrijf 'Apple' naar fruits.txt (maak het bestand aan/overschrijf).",
+          "acceptors": ["echo \"Apple\" > fruits.txt", "echo 'Apple' > fruits.txt"],
+          "solution": "echo \"Apple\" > fruits.txt",
+          "expectedOutput": [],
+          "hints": ["Gebruik de > operator."]
+        },
+        {
+          "prompt": "Voeg 'Banana' toe aan fruits.txt.",
+          "acceptors": ["echo \"Banana\" >> fruits.txt", "echo 'Banana' >> fruits.txt"],
+          "solution": "echo \"Banana\" >> fruits.txt",
+          "expectedOutput": [],
+          "hints": ["Gebruik >> om toe te voegen zonder te overschrijven."]
+        },
+        {
+          "prompt": "Voeg 'Cherry' toe aan fruits.txt.",
+          "acceptors": ["echo \"Cherry\" >> fruits.txt", "echo 'Cherry' >> fruits.txt"],
+          "solution": "echo \"Cherry\" >> fruits.txt",
+          "expectedOutput": [],
+          "hints": ["Gebruik >> opnieuw."]
+        },
+        {
+          "prompt": "Voeg 'Date' toe aan fruits.txt.",
+          "acceptors": ["echo \"Date\" >> fruits.txt", "echo 'Date' >> fruits.txt"],
+          "solution": "echo \"Date\" >> fruits.txt",
+          "expectedOutput": [],
+          "hints": ["Nog een keer >> gebruiken."]
+        },
+        {
+          "prompt": "Toon de inhoud van fruits.txt.",
+          "acceptors": ["cat fruits.txt"],
+          "solution": "cat fruits.txt",
+          "expectedOutput": ["Apple", "Banana", "Cherry", "Date"],
+          "hints": ["Gebruik cat om de inhoud te tonen."]
+        }
+      ]
+    },
+    {
+      "title": "Stdout en stderr scheiden",
+      "difficulty": "easy",
+      "type": "multi-step",
+      "prompt": "Voer ls uit op zowel een bestaand bestand (fruits.txt) als een niet-bestaand pad (/bestaat_niet). Stuur stdout naar output.txt en stderr naar errors.txt. Controleer daarna de inhoud van beide bestanden.",
+      "solution": "ls /bestaat_niet fruits.txt > output.txt 2> errors.txt",
+      "acceptors": [
+        "ls /bestaat_niet fruits.txt > output.txt 2> errors.txt",
+        "ls fruits.txt /bestaat_niet > output.txt 2> errors.txt"
+      ],
+      "expectedOutput": [],
+      "hints": [
+        "Gebruik > voor stdout en 2> voor stderr.",
+        "De volgorde van het opgeven van de bestanden aan ls mag omgekeerd zijn.",
+        "cat output.txt zou 'fruits.txt' moeten tonen; cat errors.txt de foutmelding."
+      ],
+      "tags": ["omleiding", "stderr", "stdout"],
+      "commandsUsed": ["ls", ">", "2>", "cat"],
+      "steps": [
+        {
+          "prompt": "Voer ls uit op /bestaat_niet en fruits.txt; stuur stdout naar output.txt en stderr naar errors.txt.",
+          "acceptors": ["ls /bestaat_niet fruits.txt > output.txt 2> errors.txt", "ls fruits.txt /bestaat_niet > output.txt 2> errors.txt"],
+          "solution": "ls /bestaat_niet fruits.txt > output.txt 2> errors.txt",
+          "expectedOutput": [],
+          "hints": ["Zet de omleiding voor stdout (>) en stderr (2>) na het commando."]
+        },
+        {
+          "prompt": "Toon de inhoud van output.txt.",
+          "acceptors": ["cat output.txt"],
+          "solution": "cat output.txt",
+          "expectedOutput": ["fruits.txt"],
+          "hints": ["output.txt zou enkel de naam van het gevonden bestand moeten bevatten."]
+        },
+        {
+          "prompt": "Toon de inhoud van errors.txt.",
+          "acceptors": ["cat errors.txt"],
+          "solution": "cat errors.txt",
+          "expectedOutput": ["ls: cannot access '/bestaat_niet': No such file or directory"],
+          "hints": ["errors.txt bevat de foutmelding van ls."]
+        }
+      ]
+    },
+    {
+      "title": "Stdout en stderr combineren",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Voer ls uit op zowel /bestaat_niet als fruits.txt en stuur zowel stdout als stderr samen naar combined.txt.",
+      "solution": "ls /bestaat_niet fruits.txt > combined.txt 2>&1",
+      "acceptors": [
+        "ls /bestaat_niet fruits.txt > combined.txt 2>&1",
+        "ls fruits.txt /bestaat_niet > combined.txt 2>&1",
+        "ls /bestaat_niet fruits.txt &> combined.txt",
+        "ls fruits.txt /bestaat_niet &> combined.txt"
+      ],
+      "expectedOutput": [],
+      "hints": [
+        "Je kan 2>&1 gebruiken om stderr naar dezelfde bestemming als stdout te sturen.",
+        "Of gebruik de kortere bash-afkorting &>."
+      ],
+      "tags": ["omleiding", "stderr", "stdout", "2>&1"],
+      "commandsUsed": ["ls", ">", "2>&1", "&>"]
+    },
+    {
+      "title": "Bestanden tellen met pipe",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Tel het aantal bestanden en mappen in de huidige map met behulp van een pipe.",
+      "solution": "ls | wc -l",
+      "acceptors": ["ls | wc -l"],
+      "expectedOutput": [],
+      "hints": [
+        "Koppel de uitvoer van ls aan wc met een pipe (|).",
+        "De optie -l van wc telt regels."
+      ],
+      "tags": ["pipe", "wc"],
+      "commandsUsed": ["ls", "|", "wc"]
+    },
+    {
+      "title": "Vruchten sorteren met pipe",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Toon de inhoud van fruits.txt gesorteerd in alfabetische volgorde via een pipe.",
+      "solution": "cat fruits.txt | sort",
+      "acceptors": ["cat fruits.txt | sort", "sort fruits.txt", "sort < fruits.txt"],
+      "expectedOutput": ["Apple", "Banana", "Cherry", "Date"],
+      "hints": [
+        "Gebruik cat om het bestand te lezen en stuur de uitvoer via | naar sort.",
+        "Je kan ook direct sort fruits.txt of sort < fruits.txt gebruiken."
+      ],
+      "tags": ["pipe", "sort"],
+      "commandsUsed": ["cat", "|", "sort"]
+    },
+    {
+      "title": "Vruchten sorteren en omkeren",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Toon de inhoud van fruits.txt gesorteerd en daarna in omgekeerde volgorde via een pipeline.",
+      "solution": "cat fruits.txt | sort | tac",
+      "acceptors": ["cat fruits.txt | sort | tac", "sort fruits.txt | tac", "sort < fruits.txt | tac"],
+      "expectedOutput": ["Date", "Cherry", "Banana", "Apple"],
+      "hints": [
+        "Koppel cat, sort en tac aan elkaar met pipes.",
+        "tac keert de volgorde van regels om."
+      ],
+      "tags": ["pipe", "sort", "tac"],
+      "commandsUsed": ["cat", "|", "sort", "tac"]
+    },
+    {
+      "title": "Processen filteren",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Toon enkel jouw eigen processen door ps aux te koppelen aan grep via een pipe. Gebruik de variabele $USER.",
+      "solution": "ps aux | grep $USER",
+      "acceptors": ["ps aux | grep $USER"],
+      "expectedOutput": [],
+      "hints": [
+        "Gebruik ps aux om alle processen te tonen.",
+        "Filter de uitvoer met grep $USER via een pipe."
+      ],
+      "tags": ["pipe", "processen", "grep"],
+      "commandsUsed": ["ps", "|", "grep"]
+    },
+    {
+      "title": "Getallen aanmaken en verwerken",
+      "difficulty": "medium",
+      "type": "multi-step",
+      "prompt": "Maak numbers.txt aan met de getallen 1 tot 100 via seq. Voeg daarna de getallen 50 tot 150 toe. Schrijf vervolgens alle unieke getallen (gesorteerd) naar unique_numbers.txt en alle duplicaten naar duplicate_numbers.txt.",
+      "solution": "seq 1 100 > numbers.txt && seq 50 150 >> numbers.txt && cat numbers.txt | sort -n | uniq > unique_numbers.txt && cat numbers.txt | sort -n | uniq -d > duplicate_numbers.txt",
+      "acceptors": [],
+      "expectedOutput": [],
+      "hints": [
+        "seq 1 100 genereert de getallen 1–100.",
+        "Gebruik >> om de tweede reeks toe te voegen.",
+        "sort -n sorteert numeriek; uniq verwijdert opeenvolgende duplicaten.",
+        "uniq -d toont alleen de duplicaten."
+      ],
+      "tags": ["omleiding", "pipe", "sort", "uniq", "seq"],
+      "commandsUsed": ["seq", ">", ">>", "sort", "uniq"],
+      "steps": [
+        {
+          "prompt": "Maak numbers.txt aan met de getallen 1 tot 100.",
+          "acceptors": ["seq 1 100 > numbers.txt"],
+          "solution": "seq 1 100 > numbers.txt",
+          "expectedOutput": [],
+          "hints": ["Gebruik seq 1 100 en leid de uitvoer om naar numbers.txt."]
+        },
+        {
+          "prompt": "Voeg de getallen 50 tot 150 toe aan numbers.txt.",
+          "acceptors": ["seq 50 150 >> numbers.txt"],
+          "solution": "seq 50 150 >> numbers.txt",
+          "expectedOutput": [],
+          "hints": ["Gebruik >> om toe te voegen zonder te overschrijven."]
+        },
+        {
+          "prompt": "Schrijf alle unieke getallen gesorteerd naar unique_numbers.txt.",
+          "acceptors": ["cat numbers.txt | sort -n | uniq > unique_numbers.txt", "sort -n numbers.txt | uniq > unique_numbers.txt"],
+          "solution": "cat numbers.txt | sort -n | uniq > unique_numbers.txt",
+          "expectedOutput": [],
+          "hints": ["Sorteer numeriek met sort -n, verwijder duplicaten met uniq."]
+        },
+        {
+          "prompt": "Schrijf alleen de dubbele getallen naar duplicate_numbers.txt.",
+          "acceptors": ["cat numbers.txt | sort -n | uniq -d > duplicate_numbers.txt", "sort -n numbers.txt | uniq -d > duplicate_numbers.txt"],
+          "solution": "cat numbers.txt | sort -n | uniq -d > duplicate_numbers.txt",
+          "expectedOutput": [],
+          "hints": ["uniq -d toont alleen regels die meer dan eenmaal voorkomen."]
+        }
+      ]
+    },
+    {
+      "title": "Meest frequente getallen vinden",
+      "difficulty": "medium",
+      "type": "command",
+      "prompt": "Schrijf de 10 meest voorkomende getallen uit numbers.txt (met hun aantal) naar most_frequent.txt. Gebruik een pipeline met sort, uniq -c en head.",
+      "solution": "cat numbers.txt | sort -n | uniq -c | sort -nr | head -10 > most_frequent.txt",
+      "acceptors": [
+        "cat numbers.txt | sort -n | uniq -c | sort -nr | head -10 > most_frequent.txt",
+        "sort -n numbers.txt | uniq -c | sort -nr | head -10 > most_frequent.txt"
+      ],
+      "expectedOutput": [],
+      "hints": [
+        "Sorteer numeriek eerst om uniq correct te laten werken.",
+        "uniq -c voegt een telling toe aan elke unieke regel.",
+        "sort -nr sorteert op de telling (numeriek, omgekeerd).",
+        "head -10 beperkt de uitvoer tot de 10 hoogst scorende regels."
+      ],
+      "tags": ["pipeline", "uniq", "sort", "head"],
+      "commandsUsed": ["cat", "|", "sort", "uniq", "head", ">"]
+    },
+    {
+      "title": "Sorteren opslaan en tellen met tee",
+      "difficulty": "medium",
+      "type": "command",
+      "prompt": "Sorteer numbers.txt numeriek, sla het gesorteerde resultaat op in sorted_numbers.txt via tee, en tel tegelijkertijd het aantal regels.",
+      "solution": "cat numbers.txt | sort -n | tee sorted_numbers.txt | wc -l",
+      "acceptors": [
+        "cat numbers.txt | sort -n | tee sorted_numbers.txt | wc -l",
+        "sort -n numbers.txt | tee sorted_numbers.txt | wc -l"
+      ],
+      "expectedOutput": ["151"],
+      "hints": [
+        "tee stuurt de uitvoer zowel naar het opgegeven bestand als naar stdout.",
+        "Koppel wc -l na tee om de regels te tellen."
+      ],
+      "tags": ["tee", "pipeline", "sort"],
+      "commandsUsed": ["cat", "|", "sort", "tee", "wc"]
+    },
+    {
+      "title": "Topprocessen op geheugen opslaan",
+      "difficulty": "medium",
+      "type": "command",
+      "prompt": "Haal de 5 processen met het hoogste geheugengebruik op en sla ze op in top_memory_processes.txt.",
+      "solution": "ps aux | sort -k4 -nr | head -5 > top_memory_processes.txt",
+      "acceptors": [
+        "ps aux | sort -k4 -nr | head -5 > top_memory_processes.txt",
+        "ps aux | sort -k4 -nr | head -n 5 > top_memory_processes.txt"
+      ],
+      "expectedOutput": [],
+      "hints": [
+        "ps aux geeft alle processen terug.",
+        "-k4 sorteert op kolom 4 (geheugengebruik), -nr = numeriek omgekeerd.",
+        "head -5 beperkt tot de 5 hoogste."
+      ],
+      "tags": ["pipeline", "processen", "sort"],
+      "commandsUsed": ["ps", "|", "sort", "head", ">"]
+    },
+    {
+      "title": "Schijfgebruik zonder tmpfs opslaan",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Toon en sla het schijfgebruik op in disk_usage.txt, maar laat tmpfs-bestandssystemen weg.",
+      "solution": "df -h | grep -v tmpfs > disk_usage.txt",
+      "acceptors": ["df -h | grep -v tmpfs > disk_usage.txt"],
+      "expectedOutput": [],
+      "hints": [
+        "df -h toont schijfgebruik in leesbaar formaat.",
+        "grep -v tmpfs filtert de regels met 'tmpfs' eruit."
+      ],
+      "tags": ["pipeline", "grep", "df"],
+      "commandsUsed": ["df", "|", "grep", ">"]
+    },
+    {
+      "title": "Ingelogde gebruikers tellen en opslaan",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Sla de lijst van ingelogde gebruikers op in current_users.txt en tel tegelijkertijd hoeveel gebruikers er ingelogd zijn, in één commando.",
+      "solution": "who | tee current_users.txt | wc -l",
+      "acceptors": ["who | tee current_users.txt | wc -l"],
+      "expectedOutput": [],
+      "hints": [
+        "Gebruik tee om de uitvoer van who naar een bestand te schrijven én tegelijk door te sturen.",
+        "Koppel wc -l na tee om te tellen."
+      ],
+      "tags": ["tee", "who", "wc"],
+      "commandsUsed": ["who", "|", "tee", "wc"]
+    },
+    {
+      "title": "Meest gebruikte commando's analyseren",
+      "difficulty": "medium",
+      "type": "command",
+      "prompt": "Analyseer je commandogeschiedenis en sla de 10 meest gebruikte commando's (met telling) op in command_frequency.txt.",
+      "solution": "history | awk '{print $2}' | sort | uniq -c | sort -nr | head -10 > command_frequency.txt",
+      "acceptors": [
+        "history | awk '{print $2}' | sort | uniq -c | sort -nr | head -10 > command_frequency.txt"
+      ],
+      "expectedOutput": [],
+      "hints": [
+        "history toont de geschiedenis; awk '{print $2}' haalt het commando (2e veld) eruit.",
+        "Sorteer, tel unieke instanties met uniq -c, sorteer de telling omgekeerd en beperk tot 10."
+      ],
+      "tags": ["pipeline", "awk", "history", "uniq"],
+      "commandsUsed": ["history", "|", "awk", "sort", "uniq", "head", ">"]
+    },
+    {
+      "title": "Foutmelding via pipe filteren",
+      "difficulty": "medium",
+      "type": "command",
+      "prompt": "Voer ls uit op /bestaat_niet, leid de foutmelding om naar stdout en filter dan via een pipe op 'No such file'.",
+      "solution": "ls /bestaat_niet 2>&1 | grep \"No such file\"",
+      "acceptors": [
+        "ls /bestaat_niet 2>&1 | grep \"No such file\"",
+        "ls /bestaat_niet 2>&1 | grep 'No such file'"
+      ],
+      "expectedOutput": ["ls: cannot access '/bestaat_niet': No such file or directory"],
+      "hints": [
+        "2>&1 stuurt stderr naar stdout zodat je het door een pipe kunt filteren.",
+        "grep zoekt daarna naar de foutmeldingstekst."
+      ],
+      "tags": ["omleiding", "pipe", "grep", "stderr"],
+      "commandsUsed": ["ls", "2>&1", "|", "grep"]
+    },
+    {
+      "title": "Input omleiden vanuit een bestand",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Sorteer de inhoud van unsorted.txt door de bestandsinhoud via stdin-omleiding aan sort te geven (gebruik <).",
+      "solution": "sort < unsorted.txt",
+      "acceptors": ["sort < unsorted.txt", "sort unsorted.txt"],
+      "expectedOutput": [],
+      "hints": [
+        "Gebruik < om de bestandsinhoud als stdin door te geven.",
+        "sort leest dan van stdin in plaats van van een bestandsargument."
+      ],
+      "tags": ["omleiding", "stdin", "sort"],
+      "commandsUsed": ["sort", "<"]
+    },
+    {
+      "title": "Largest files vinden",
+      "difficulty": "medium",
+      "type": "command",
+      "prompt": "Toon de 10 grootste bestanden in de huidige map door ls -la te koppelen aan sort en head via pipes.",
+      "solution": "ls -la | sort -k5 -nr | head -10",
+      "acceptors": ["ls -la | sort -k5 -nr | head -10", "ls -la | sort -k5 -nr | head -n 10"],
+      "expectedOutput": [],
+      "hints": [
+        "ls -la toont gedetailleerde info inclusief bestandsgrootte.",
+        "Kolom 5 is de bestandsgrootte; sorteer numeriek omgekeerd.",
+        "head -10 beperkt tot de 10 grootste."
+      ],
+      "tags": ["pipeline", "sort", "ls"],
+      "commandsUsed": ["ls", "|", "sort", "head"]
+    },
+    {
+      "title": "Geschiedenis doorzoeken",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Zoek in je commandogeschiedenis naar alle commando's die 'ls' bevatten.",
+      "solution": "history | grep ls",
+      "acceptors": ["history | grep ls", "history | grep 'ls'", "history | grep \"ls\""],
+      "expectedOutput": [],
+      "hints": [
+        "Gebruik history om de geschiedenis te tonen.",
+        "Filter de uitvoer met grep via een pipe."
+      ],
+      "tags": ["history", "grep", "pipe"],
+      "commandsUsed": ["history", "|", "grep"]
+    },
+    {
+      "title": "Uitvoer weggooien naar /dev/null",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Voer ls uit op /etc maar gooi alle uitvoer (stdout én stderr) weg.",
+      "solution": "ls /etc &> /dev/null",
+      "acceptors": [
+        "ls /etc &> /dev/null",
+        "ls /etc > /dev/null 2>&1"
+      ],
+      "expectedOutput": [],
+      "hints": [
+        "Gebruik &> om zowel stdout als stderr te omleiden.",
+        "/dev/null is de 'prullenmand' van Linux: alles wat er naartoe gaat verdwijnt."
+      ],
+      "tags": ["omleiding", "/dev/null"],
+      "commandsUsed": ["ls", "&>", "/dev/null"]
+    }
+  ],
+  "theory": [
+    {
+      "question": "Wat zijn de drie standaardstromen die elk Linux-proces heeft?",
+      "type": "mc",
+      "choices": [
+        "A. stdin, stdout, stdlog",
+        "B. stdin, stdout, stderr",
+        "C. input, output, error",
+        "D. fd0, fd1, fd3"
+      ],
+      "answer": "B",
+      "explanation": "Elk Linux-proces heeft drie standaardstromen: stdin (0) voor invoer, stdout (1) voor normale uitvoer en stderr (2) voor foutmeldingen."
+    },
+    {
+      "question": "Welk bestandsdescriptornummer hoort bij stderr?",
+      "type": "mc",
+      "choices": [
+        "A. 0",
+        "B. 1",
+        "C. 2",
+        "D. 3"
+      ],
+      "answer": "C",
+      "explanation": "stdin = 0, stdout = 1, stderr = 2. Het getal 2 is het bestandsdescriptornummer van de standaardfoutstroom."
+    },
+    {
+      "question": "Wat is het verschil tussen > en >> bij uitvoer-omleiding?",
+      "type": "open",
+      "choices": [],
+      "answer": "> overschrijft het bestand (of maakt het aan); >> voegt toe aan het bestaande bestand (append).",
+      "explanation": "> maakt een nieuw bestand aan of wist de bestaande inhoud volledig. >> voegt de uitvoer achteraan toe zodat bestaande inhoud bewaard blijft."
+    },
+    {
+      "question": "Hoe leid je zowel stdout als stderr om naar hetzelfde bestand output.txt?",
+      "type": "mc",
+      "choices": [
+        "A. commando > output.txt 2> output.txt",
+        "B. commando > output.txt 2>&1",
+        "C. commando 2> output.txt 1>&2",
+        "D. commando | output.txt"
+      ],
+      "answer": "B",
+      "explanation": "commando > output.txt 2>&1 stuurt stdout naar output.txt en daarna stderr naar dezelfde bestemming als stdout. De kortere bash-afkorting &> werkt ook."
+    },
+    {
+      "question": "Hoe werkt een pipe (|) en wat is het voordeel?",
+      "type": "open",
+      "choices": [],
+      "answer": "Een pipe koppelt de stdout van het ene commando aan de stdin van het volgende, zodat je krachtige ketens van commando's kunt bouwen zonder tijdelijke bestanden.",
+      "explanation": "Data stroomt in geheugen van commando naar commando. Dit maakt complexe tekstverwerking mogelijk met kleine, gespecialiseerde commando's die elk één taak doen."
+    },
+    {
+      "question": "Wat is het verschil tussen cat en tac?",
+      "type": "open",
+      "choices": [],
+      "answer": "cat toont de regels van een bestand in normale volgorde; tac toont ze in omgekeerde volgorde (laatste regel eerst).",
+      "explanation": "tac is letterlijk cat achterstevoren. Het is handig om de meest recente regels van een log bovenaan te tonen."
+    },
+    {
+      "question": "Hoe sla je de uitvoer van een commando op in een bestand en toon je ze tegelijkertijd op het scherm?",
+      "type": "mc",
+      "choices": [
+        "A. commando > bestand && cat bestand",
+        "B. commando | tee bestand",
+        "C. commando 2> bestand",
+        "D. commando < bestand"
+      ],
+      "answer": "B",
+      "explanation": "tee leest van stdin en schrijft gelijktijdig naar stdout (het scherm) en naar het opgegeven bestand. Zo zie je de uitvoer én heb je een kopie in een bestand."
+    },
+    {
+      "question": "Wat is /dev/null en wanneer gebruik je het?",
+      "type": "open",
+      "choices": [],
+      "answer": "/dev/null is een speciaal bestand dat alle uitvoer die ernaartoe wordt gestuurd, weggooit. Je gebruikt het om ongewenste uitvoer of foutmeldingen te onderdrukken.",
+      "explanation": "Veelgebruikte voorbeelden: commando > /dev/null (stdout negeren), commando 2> /dev/null (stderr negeren), commando &> /dev/null (alles negeren)."
+    },
+    {
+      "question": "Welk commando gebruik je om de eerste 10 regels van een bestand te tonen?",
+      "type": "mc",
+      "choices": [
+        "A. tail bestand.txt",
+        "B. head bestand.txt",
+        "C. top bestand.txt",
+        "D. first bestand.txt"
+      ],
+      "answer": "B",
+      "explanation": "head toont standaard de eerste 10 regels van een bestand. Met -n kun je het aantal aanpassen, bijv. head -n 5."
+    },
+    {
+      "question": "Wat doet de optie -f bij het tail-commando?",
+      "type": "open",
+      "choices": [],
+      "answer": "tail -f volgt een bestand live: elke nieuwe regel die aan het bestand wordt toegevoegd, wordt meteen getoond. Ideaal voor het monitoren van logbestanden.",
+      "explanation": "Dit is bijzonder nuttig bij logbestanden als /var/log/syslog: je ziet nieuwe berichten meteen verschijnen zonder het commando opnieuw uit te voeren."
+    },
+    {
+      "question": "Welke operator gebruik je om de stdin van een commando uit een bestand te lezen?",
+      "type": "mc",
+      "choices": [
+        "A. >",
+        "B. >>",
+        "C. <",
+        "D. |"
+      ],
+      "answer": "C",
+      "explanation": "De < operator leidt de inhoud van een bestand om als stdin voor het commando. Bijv. sort < bestand.txt geeft de bestandsinhoud als invoer aan sort."
+    },
+    {
+      "question": "Wat is een 'here document' en hoe gebruik je het?",
+      "type": "open",
+      "choices": [],
+      "answer": "Een here document (<<) laat je meerdere regels tekst inline meegeven als stdin, tot een opgegeven scheidingsteken. Bijv: cat << EOF > bestand.txt ... EOF",
+      "explanation": "De << operator maakt een tijdelijke invoerstroom van alle tekst tot het scheidingsteken (bijv. EOF). Handig om bestanden aan te maken of multiregelige invoer te geven zonder externe bestanden."
+    },
+    {
+      "question": "Wat is het verschil tussen een pipe (|) en omleiding (> of <)?",
+      "type": "open",
+      "choices": [],
+      "answer": "Een pipe laat data in het geheugen stromen tussen twee commando's. Omleiding stuurt data van of naar bestanden op schijf.",
+      "explanation": "Pipes verbinden commando's met elkaar in real time; omleidingen verbinden commando's met bestanden. Beide technieken kunnen gecombineerd worden."
+    },
+    {
+      "question": "Welk commando is het meest aanbevolen om door grote bestanden te bladeren?",
+      "type": "mc",
+      "choices": [
+        "A. more",
+        "B. cat",
+        "C. less",
+        "D. head"
+      ],
+      "answer": "C",
+      "explanation": "less is de aanbevolen pager omdat je er zowel vooruit als achteruit in kunt bladeren, en omdat je kunt zoeken met / (vooruit) en ? (achteruit). more kan alleen vooruit bladeren."
+    },
+    {
+      "question": "Hoe tel je het aantal regels in een bestand met wc?",
+      "type": "mc",
+      "choices": [
+        "A. wc -w bestand.txt",
+        "B. wc -c bestand.txt",
+        "C. wc -l bestand.txt",
+        "D. wc -n bestand.txt"
+      ],
+      "answer": "C",
+      "explanation": "wc -l telt het aantal regels. -w telt woorden, -c telt bytes."
+    },
+    {
+      "question": "Welk commando gebruik je om duplicaten te verwijderen uit een gesorteerde lijst?",
+      "type": "mc",
+      "choices": [
+        "A. sort -u",
+        "B. uniq",
+        "C. grep -v",
+        "D. A en B zijn beide correct"
+      ],
+      "answer": "D",
+      "explanation": "Zowel sort -u als een combinatie van sort | uniq verwijderen duplicaten. uniq werkt enkel correct op opeenvolgende duplicaten, vandaar dat je eerst sorteert."
+    },
+    {
+      "question": "Wat doet het commando 'cat numbers.txt | sort -n | uniq -d'?",
+      "type": "open",
+      "choices": [],
+      "answer": "Het toont alle getallen uit numbers.txt die minstens twee keer voorkomen (duplicaten), gesorteerd numeriek.",
+      "explanation": "sort -n sorteert numeriek zodat opeenvolgende duplicaten naast elkaar staan. uniq -d toont dan enkel de regels die meerdere keren voorkomen."
+    },
+    {
+      "question": "Waarom is het beter om filters vroeg in een pipeline te plaatsen?",
+      "type": "open",
+      "choices": [],
+      "answer": "Door vroeg te filteren verklein je de hoeveelheid data die door latere commando's verwerkt moet worden, wat de pipeline sneller en efficiënter maakt.",
+      "explanation": "Bijv. grep pattern bestand.txt | head -10 is efficiënter dan cat bestand.txt | grep pattern | head -10, omdat grep dan minder data doorgeeft."
+    },
+    {
+      "question": "Welke pipe-variant laat je de uitvoer van een commando als bestandsinvoer gebruiken voor een ander commando (processubstitutie)?",
+      "type": "mc",
+      "choices": [
+        "A. commando1 | commando2",
+        "B. commando < <(andere_commando)",
+        "C. diff <(ls /bin) <(ls /usr/bin)",
+        "D. B en C zijn beide correct"
+      ],
+      "answer": "D",
+      "explanation": "Processubstitutie met <(commando) laat je de uitvoer van een commando gebruiken als tijdelijk bestand. diff <(ls /bin) <(ls /usr/bin) vergelijkt de uitvoer van twee ls-commando's."
+    },
+    {
+      "question": "Hoe kun je de uitvoer van ps aux filteren om enkel Firefox-processen te tonen (en de grep-regel zelf te verbergen)?",
+      "type": "mc",
+      "choices": [
+        "A. ps aux | grep firefox",
+        "B. ps aux | grep -v grep | grep firefox",
+        "C. ps aux | grep -v grep firefox",
+        "D. ps aux | grep firefox | grep -v grep"
+      ],
+      "answer": "D",
+      "explanation": "ps aux | grep firefox | grep -v grep toont Firefox-processen en verwijdert de grep-regel zelf uit de resultaten. Alternatief: ps aux | grep '[f]irefox'."
+    }
+  ]
+}

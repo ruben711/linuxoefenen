@@ -1,0 +1,6616 @@
+[
+  {
+    "name": ">",
+    "category": "I/O & pipes",
+    "short": "Leidt stdout van een commando om naar een bestand (overschrijft).",
+    "synopsis": "commando > bestand",
+    "flags": [],
+    "examples": [
+      {
+        "cmd": "ls > lijst.txt",
+        "desc": "Schrijft de uitvoer van ls naar lijst.txt."
+      },
+      {
+        "cmd": "echo \"hallo\" > bestand.txt",
+        "desc": "Maakt bestand.txt aan met de tekst hallo."
+      }
+    ],
+    "related": [
+      ">>",
+      "2>",
+      "&>"
+    ],
+    "chapter": "H4 Redirects & pipes"
+  },
+  {
+    "name": ">>",
+    "category": "I/O & pipes",
+    "short": "Voegt stdout toe aan een bestand (append) zonder te overschrijven.",
+    "synopsis": "commando >> bestand",
+    "flags": [],
+    "examples": [
+      {
+        "cmd": "echo \"regel\" >> log.txt",
+        "desc": "Voegt een regel toe aan log.txt."
+      },
+      {
+        "cmd": "date >> log.txt",
+        "desc": "Voegt de huidige datum/tijd toe aan log.txt."
+      }
+    ],
+    "related": [
+      ">",
+      "2>>"
+    ],
+    "chapter": "H4 Redirects & pipes"
+  },
+  {
+    "name": "2>",
+    "category": "I/O & pipes",
+    "short": "Leidt stderr (bestandsdescriptor 2) om naar een bestand.",
+    "synopsis": "commando 2> foutbestand",
+    "flags": [],
+    "examples": [
+      {
+        "cmd": "ls /bestaat_niet 2> errors.txt",
+        "desc": "Stuurt de foutmelding naar errors.txt."
+      },
+      {
+        "cmd": "find / -name x 2> /dev/null",
+        "desc": "Negeert alle foutmeldingen van find."
+      }
+    ],
+    "related": [
+      ">",
+      "&>",
+      "2>>"
+    ],
+    "chapter": "H4 Redirects & pipes"
+  },
+  {
+    "name": "2>>",
+    "category": "I/O & pipes",
+    "short": "Voegt stderr toe aan een bestand (append).",
+    "synopsis": "commando 2>> foutbestand",
+    "flags": [],
+    "examples": [
+      {
+        "cmd": "ls /bestaat_niet 2>> errors.txt",
+        "desc": "Voegt de foutmelding toe aan het bestaande errors.txt."
+      }
+    ],
+    "related": [
+      "2>",
+      ">>"
+    ],
+    "chapter": "H4 Redirects & pipes"
+  },
+  {
+    "name": "&>",
+    "category": "I/O & pipes",
+    "short": "Leidt zowel stdout als stderr tegelijk om naar een bestand.",
+    "synopsis": "commando &> bestand",
+    "flags": [],
+    "examples": [
+      {
+        "cmd": "commando &> alles.txt",
+        "desc": "Schrijft zowel normale uitvoer als foutmeldingen naar alles.txt."
+      },
+      {
+        "cmd": "commando &> /dev/null",
+        "desc": "Gooit alle uitvoer weg."
+      }
+    ],
+    "related": [
+      ">",
+      "2>",
+      "2>&1"
+    ],
+    "chapter": "H4 Redirects & pipes"
+  },
+  {
+    "name": "2>&1",
+    "category": "I/O & pipes",
+    "short": "Stuurt stderr naar dezelfde bestemming als stdout.",
+    "synopsis": "commando > bestand 2>&1",
+    "flags": [],
+    "examples": [
+      {
+        "cmd": "ls /x > out.txt 2>&1",
+        "desc": "Schrijft stdout en stderr naar out.txt."
+      },
+      {
+        "cmd": "commando > /dev/null 2>&1",
+        "desc": "Gooit alle uitvoer weg."
+      }
+    ],
+    "related": [
+      "&>",
+      ">"
+    ],
+    "chapter": "H4 Redirects & pipes"
+  },
+  {
+    "name": "<",
+    "category": "I/O & pipes",
+    "short": "Leidt de inhoud van een bestand om als stdin voor een commando.",
+    "synopsis": "commando < invoerbestand",
+    "flags": [],
+    "examples": [
+      {
+        "cmd": "sort < namen.txt",
+        "desc": "Geeft de inhoud van namen.txt als invoer aan sort."
+      },
+      {
+        "cmd": "tr a-z A-Z < bestand.txt",
+        "desc": "Leest bestand.txt als invoer voor tr."
+      }
+    ],
+    "related": [
+      "<<",
+      "<<<",
+      "|"
+    ],
+    "chapter": "H4 Redirects & pipes"
+  },
+  {
+    "name": "|",
+    "category": "I/O & pipes",
+    "short": "Koppelt de stdout van het ene commando aan de stdin van het volgende.",
+    "synopsis": "commando1 | commando2 [| commando3 ...]",
+    "flags": [],
+    "examples": [
+      {
+        "cmd": "ls | wc -l",
+        "desc": "Telt het aantal bestanden in de huidige map."
+      },
+      {
+        "cmd": "ps aux | grep firefox",
+        "desc": "Zoekt naar Firefox-processen."
+      },
+      {
+        "cmd": "history | tail -10",
+        "desc": "Toont de laatste 10 commando's uit de geschiedenis."
+      }
+    ],
+    "related": [
+      ">",
+      "tee"
+    ],
+    "chapter": "H4 Redirects & pipes"
+  },
+  {
+    "name": "/dev/null",
+    "category": "I/O & pipes",
+    "short": "Speciale bestemming die alle uitvoer weggooit (zwart gat).",
+    "synopsis": "commando > /dev/null",
+    "flags": [],
+    "examples": [
+      {
+        "cmd": "commando > /dev/null",
+        "desc": "Gooit stdout weg."
+      },
+      {
+        "cmd": "commando 2> /dev/null",
+        "desc": "Negeert foutmeldingen."
+      },
+      {
+        "cmd": "commando &> /dev/null",
+        "desc": "Gooit alle uitvoer weg."
+      }
+    ],
+    "related": [
+      ">",
+      "2>",
+      "&>"
+    ],
+    "chapter": "H4 Redirects & pipes"
+  },
+  {
+    "name": "pwd",
+    "category": "Navigatie",
+    "short": "Toont het volledige pad van de huidige map.",
+    "synopsis": "pwd",
+    "chapter": "H2 Shell & navigatie",
+    "examples": [
+      {
+        "cmd": "pwd",
+        "desc": "Toont je huidige werkmap, bijv. /home/alice."
+      }
+    ],
+    "related": [
+      "cd",
+      "ls"
+    ],
+    "tags": [
+      "navigatie",
+      "locatie"
+    ]
+  },
+  {
+    "name": "cd",
+    "category": "Navigatie",
+    "short": "Verplaats je naar een andere map.",
+    "synopsis": "cd [MAP]",
+    "chapter": "H2 Shell & navigatie",
+    "examples": [
+      {
+        "cmd": "cd /etc",
+        "desc": "Ga naar /etc via absoluut pad."
+      },
+      {
+        "cmd": "cd ..",
+        "desc": "Ga één niveau omhoog naar de bovenliggende map."
+      },
+      {
+        "cmd": "cd ~",
+        "desc": "Ga naar je thuismap."
+      },
+      {
+        "cmd": "cd",
+        "desc": "Ga naar je thuismap (zonder argument)."
+      },
+      {
+        "cmd": "cd $HOME",
+        "desc": "Ga naar je thuismap via de omgevingsvariabele."
+      },
+      {
+        "cmd": "cd -",
+        "desc": "Ga terug naar de vorige map."
+      },
+      {
+        "cmd": "cd /",
+        "desc": "Ga naar de rootmap."
+      }
+    ],
+    "related": [
+      "pwd",
+      "ls"
+    ],
+    "tags": [
+      "navigatie",
+      "map"
+    ]
+  },
+  {
+    "name": "ls",
+    "category": "Navigatie",
+    "short": "Geeft de inhoud van een map weer, inclusief bestanden die overeenkomen met globbing-patronen.",
+    "synopsis": "ls [OPTIE]... [BESTAND/PATROON]...",
+    "chapter": "H2 Shell & navigatie",
+    "flags": [
+      {
+        "flag": "-l",
+        "desc": "Lang formaat: toont rechten, eigenaar, grootte en datum."
+      },
+      {
+        "flag": "-a",
+        "desc": "Toont ook verborgen bestanden (beginnen met .)."
+      },
+      {
+        "flag": "-h",
+        "desc": "Toont bestandsgroottes in leesbaar formaat (KB, MB)."
+      },
+      {
+        "flag": "-la",
+        "desc": "Combinatie van lang formaat en verborgen bestanden."
+      },
+      {
+        "flag": "-lh",
+        "desc": "Lang formaat met menselijk leesbare groottes."
+      },
+      {
+        "flag": "-lah",
+        "desc": "Lang formaat + verborgen bestanden + leesbare groottes."
+      },
+      {
+        "flag": "-i",
+        "desc": "Toont het inode-nummer voor elk bestand."
+      },
+      {
+        "flag": "-li",
+        "desc": "Combineert lange weergave met inode-nummers."
+      },
+      {
+        "flag": "-ld",
+        "desc": "Toont de eigenschappen van de map zelf in plaats van de inhoud."
+      },
+      {
+        "flag": "-S",
+        "desc": "Sorteert op bestandsgrootte (grootste eerst)."
+      },
+      {
+        "flag": "-t",
+        "desc": "Sorteert op wijzigingstijd (nieuwste eerst)."
+      },
+      {
+        "flag": "-r",
+        "desc": "Keert de sorteervolgorde om."
+      }
+    ],
+    "examples": [
+      {
+        "cmd": "ls",
+        "desc": "Toont de inhoud van de huidige map."
+      },
+      {
+        "cmd": "ls -l",
+        "desc": "Toont details zoals rechten, eigenaar en datum."
+      },
+      {
+        "cmd": "ls -la",
+        "desc": "Toont alle bestanden inclusief verborgen bestanden."
+      },
+      {
+        "cmd": "ls -lh",
+        "desc": "Toont bestanden met leesbare bestandsgrootten."
+      },
+      {
+        "cmd": "ls /usr/bin",
+        "desc": "Toont de inhoud van /usr/bin."
+      },
+      {
+        "cmd": "ls *.txt",
+        "desc": "Toont alle bestanden met extensie .txt in de huidige map."
+      },
+      {
+        "cmd": "ls file[1-5].txt",
+        "desc": "Toont file1.txt t/m file5.txt via een tekenbereikpatroon."
+      },
+      {
+        "cmd": "ls *.{jpg,png}",
+        "desc": "Toont alle jpg- én png-bestanden via accolade-uitbreiding."
+      },
+      {
+        "cmd": "ls -li",
+        "desc": "Lange weergave met inode-nummers, handig om hard links te herkennen."
+      },
+      {
+        "cmd": "ls -lh *.file",
+        "desc": "Toont bestanden die eindigen op .file met mensvriendelijke groottes."
+      },
+      {
+        "cmd": "ls -l bestand.txt",
+        "desc": "Toont de permissiestring van één bestand."
+      },
+      {
+        "cmd": "ls -ld /tmp",
+        "desc": "Toont de permissies van de map /tmp zelf."
+      },
+      {
+        "cmd": "ls -lha /usr/share",
+        "desc": "Lange opmaak, mensvriendelijke groottes en verborgen bestanden in /usr/share."
+      },
+      {
+        "cmd": "ls -li /tmp",
+        "desc": "Lange opmaak met inode-nummers voor elke bestand in /tmp."
+      },
+      {
+        "cmd": "ls -lS /var/log | head -n 11",
+        "desc": "De 10 grootste bestanden in /var/log (gesorteerd op grootte)."
+      },
+      {
+        "cmd": "ls -ltr /tmp",
+        "desc": "Bestanden in /tmp gesorteerd op wijzigingstijd, oudste eerst."
+      }
+    ],
+    "related": [
+      "pwd",
+      "cd",
+      "stat",
+      "find",
+      "chmod",
+      "sort"
+    ],
+    "tags": [
+      "navigatie",
+      "bestanden",
+      "mappen"
+    ]
+  },
+  {
+    "name": "touch",
+    "category": "Bestanden",
+    "short": "Maakt lege bestanden aan of past de tijdstempel van bestaande bestanden aan.",
+    "synopsis": "touch [OPTIE]... BESTAND...",
+    "chapter": "H2 Shell & navigatie",
+    "examples": [
+      {
+        "cmd": "touch notes.txt",
+        "desc": "Maakt het lege bestand notes.txt aan."
+      },
+      {
+        "cmd": "touch file1.txt file2.txt file3.txt",
+        "desc": "Maakt meerdere bestanden tegelijk aan."
+      },
+      {
+        "cmd": "touch file{1..10}.txt",
+        "desc": "Maakt file1.txt t/m file10.txt aan via accolade-uitbreiding."
+      },
+      {
+        "cmd": "touch {backup,config,temp}.log",
+        "desc": "Maakt backup.log, config.log en temp.log tegelijk aan."
+      },
+      {
+        "cmd": "touch image{01..05}.{jpg,png}",
+        "desc": "Maakt 10 afbeeldingsbestanden aan (jpg en png, genummerd 01-05)."
+      }
+    ],
+    "related": [
+      "mkdir",
+      "ls",
+      "cp"
+    ],
+    "tags": [
+      "bestanden",
+      "aanmaken"
+    ]
+  },
+  {
+    "name": "mkdir",
+    "category": "Bestanden",
+    "short": "Maakt een nieuwe map aan.",
+    "synopsis": "mkdir [OPTIE]... MAP...",
+    "chapter": "H2 Shell & navigatie",
+    "flags": [
+      {
+        "flag": "-p",
+        "desc": "Maakt ook tussenliggende mappen aan als die nog niet bestaan."
+      }
+    ],
+    "examples": [
+      {
+        "cmd": "mkdir project",
+        "desc": "Maakt de map 'project' aan in de huidige map."
+      },
+      {
+        "cmd": "mkdir -p project/src/main/java",
+        "desc": "Maakt een geneste mappenstructuur aan."
+      }
+    ],
+    "related": [
+      "rmdir",
+      "touch",
+      "ls"
+    ],
+    "tags": [
+      "mappen",
+      "aanmaken"
+    ]
+  },
+  {
+    "name": "cp",
+    "category": "Bestanden",
+    "short": "Kopieert bestanden of mappen.",
+    "synopsis": "cp [OPTIE]... BRON... DOEL",
+    "chapter": "H2 Shell & navigatie",
+    "flags": [
+      {
+        "flag": "-r",
+        "desc": "Kopieert mappen recursief (inclusief inhoud)."
+      },
+      {
+        "flag": "-i",
+        "desc": "Vraagt bevestiging voor overschrijven."
+      },
+      {
+        "flag": "-v",
+        "desc": "Toont wat er gekopieerd wordt (uitgebreid)."
+      }
+    ],
+    "examples": [
+      {
+        "cmd": "cp report.txt backup.txt",
+        "desc": "Kopieert report.txt naar backup.txt."
+      },
+      {
+        "cmd": "cp -r project project-backup",
+        "desc": "Kopieert de volledige map project."
+      },
+      {
+        "cmd": "cp *.txt backup/",
+        "desc": "Kopieert alle .txt-bestanden naar de map backup."
+      }
+    ],
+    "related": [
+      "mv",
+      "rm",
+      "ls"
+    ],
+    "tags": [
+      "bestanden",
+      "kopiëren"
+    ]
+  },
+  {
+    "name": "mv",
+    "category": "Bestanden",
+    "short": "Verplaatst of hernoemt bestanden en mappen.",
+    "synopsis": "mv [OPTIE]... BRON... DOEL",
+    "chapter": "H2 Shell & navigatie",
+    "examples": [
+      {
+        "cmd": "mv oldname.txt newname.txt",
+        "desc": "Hernoemt oldname.txt naar newname.txt."
+      },
+      {
+        "cmd": "mv document.txt ~/Documents/",
+        "desc": "Verplaatst document.txt naar ~/Documents/."
+      }
+    ],
+    "related": [
+      "cp",
+      "rm"
+    ],
+    "tags": [
+      "bestanden",
+      "verplaatsen",
+      "hernoemen"
+    ]
+  },
+  {
+    "name": "rm",
+    "category": "Bestanden",
+    "short": "Verwijdert bestanden of mappen definitief.",
+    "synopsis": "rm [OPTIE]... BESTAND...",
+    "chapter": "H2 Shell & navigatie",
+    "flags": [
+      {
+        "flag": "-i",
+        "desc": "Vraagt bevestiging voor elk bestand dat verwijderd wordt."
+      },
+      {
+        "flag": "-r",
+        "desc": "Verwijdert mappen en hun inhoud recursief."
+      },
+      {
+        "flag": "-f",
+        "desc": "Forceert verwijdering zonder waarschuwingen."
+      },
+      {
+        "flag": "-rf",
+        "desc": "Combineert recursief en geforceerd: gevaarlijk!"
+      }
+    ],
+    "examples": [
+      {
+        "cmd": "rm filename.txt",
+        "desc": "Verwijdert het bestand filename.txt."
+      },
+      {
+        "cmd": "rm -i filename.txt",
+        "desc": "Vraagt bevestiging voor verwijdering."
+      },
+      {
+        "cmd": "rm -r directory_with_contents",
+        "desc": "Verwijdert een map inclusief inhoud."
+      },
+      {
+        "cmd": "rm -rf directory",
+        "desc": "Geforceerd en recursief verwijderen (voorzichtig!)."
+      }
+    ],
+    "related": [
+      "rmdir",
+      "mv"
+    ],
+    "tags": [
+      "bestanden",
+      "verwijderen"
+    ],
+    "danger": true
+  },
+  {
+    "name": "rmdir",
+    "category": "Bestanden",
+    "short": "Verwijdert een lege map.",
+    "synopsis": "rmdir MAP...",
+    "chapter": "H2 Shell & navigatie",
+    "examples": [
+      {
+        "cmd": "rmdir empty_directory",
+        "desc": "Verwijdert de lege map empty_directory."
+      }
+    ],
+    "related": [
+      "rm",
+      "mkdir"
+    ],
+    "tags": [
+      "mappen",
+      "verwijderen"
+    ]
+  },
+  {
+    "name": "cat",
+    "category": "Bekijken",
+    "short": "Toont de inhoud van bestanden en kan meerdere bestanden samenvoegen.",
+    "synopsis": "cat [OPTIE]... [BESTAND]...",
+    "chapter": "H2 Shell & navigatie",
+    "flags": [
+      {
+        "flag": "-n",
+        "desc": "Nummert elke uitvoeregel."
+      },
+      {
+        "flag": "-A",
+        "desc": "Toont niet-afdrukbare tekens (tabs, regeleinden enz.)."
+      },
+      {
+        "flag": "-s",
+        "desc": "Comprimeert meerdere lege regels tot één lege regel."
+      },
+      {
+        "flag": "-b",
+        "desc": "Nummeert alleen niet-lege regels."
+      }
+    ],
+    "examples": [
+      {
+        "cmd": "cat filename.txt",
+        "desc": "Toont de volledige inhoud van filename.txt."
+      },
+      {
+        "cmd": "cat bestand.txt",
+        "desc": "Toont de volledige inhoud van bestand.txt."
+      },
+      {
+        "cmd": "cat -n bestand.txt",
+        "desc": "Toont bestand.txt met regelnummers."
+      },
+      {
+        "cmd": "cat file1.txt file2.txt",
+        "desc": "Toont beide bestanden achter elkaar."
+      },
+      {
+        "cmd": "cat bestand1.txt bestand2.txt > gecombineerd.txt",
+        "desc": "Voegt twee bestanden samen in een nieuw bestand."
+      },
+      {
+        "cmd": "cat -A bestand.txt",
+        "desc": "Toont regeleindes en tabs zichtbaar."
+      }
+    ],
+    "related": [
+      "less",
+      "head",
+      "tail",
+      "tac",
+      "more",
+      "tee"
+    ],
+    "tags": [
+      "bekijken",
+      "bestanden"
+    ]
+  },
+  {
+    "name": "less",
+    "category": "Bekijken",
+    "short": "Toont bestandsinhoud met bladermogelijkheid (moderne pager).",
+    "synopsis": "less [OPTIE]... BESTAND",
+    "chapter": "H2 Shell & navigatie",
+    "examples": [
+      {
+        "cmd": "less filename.txt",
+        "desc": "Opent filename.txt in de pager; gebruik Space/b/q om te navigeren."
+      },
+      {
+        "cmd": "less bestand.txt",
+        "desc": "Opent bestand.txt in de less-viewer."
+      },
+      {
+        "cmd": "ps aux | less",
+        "desc": "Bladert door de lijst van processen."
+      },
+      {
+        "cmd": "man ls | less",
+        "desc": "Toont de man-pagina van ls in less."
+      }
+    ],
+    "related": [
+      "more",
+      "cat",
+      "head",
+      "tail"
+    ],
+    "tags": [
+      "bekijken",
+      "bestanden",
+      "pager"
+    ]
+  },
+  {
+    "name": "more",
+    "category": "Bekijken",
+    "short": "Bladert door een bestand pagina per pagina (ouder alternatief voor less).",
+    "synopsis": "more [BESTAND]",
+    "chapter": "H2 Shell & navigatie",
+    "examples": [
+      {
+        "cmd": "more filename.txt",
+        "desc": "Toont filename.txt pagina per pagina."
+      },
+      {
+        "cmd": "more bestand.txt",
+        "desc": "Toont bestand.txt pagina per pagina; spatiebalk = volgende pagina, q = afsluiten."
+      }
+    ],
+    "related": [
+      "less",
+      "cat",
+      "head",
+      "tail"
+    ],
+    "tags": [
+      "bekijken",
+      "bestanden",
+      "pager"
+    ]
+  },
+  {
+    "name": "head",
+    "category": "Bekijken",
+    "short": "Toont de eerste regels van een bestand (standaard 10).",
+    "synopsis": "head [OPTIE]... [BESTAND]...",
+    "chapter": "H2 Shell & navigatie",
+    "flags": [
+      {
+        "flag": "-n GETAL",
+        "desc": "Toont het opgegeven aantal regels."
+      },
+      {
+        "flag": "-GETAL",
+        "desc": "Verkorte schrijfwijze voor -n GETAL (bijv. -5)."
+      },
+      {
+        "flag": "-n N",
+        "desc": "Toont de eerste N regels (standaard 10)."
+      }
+    ],
+    "examples": [
+      {
+        "cmd": "head filename.txt",
+        "desc": "Toont de eerste 10 regels van filename.txt."
+      },
+      {
+        "cmd": "head -20 filename.txt",
+        "desc": "Toont de eerste 20 regels."
+      },
+      {
+        "cmd": "head /etc/passwd",
+        "desc": "Toont de eerste 10 regels van /etc/passwd."
+      },
+      {
+        "cmd": "head -n 5 bestand.txt",
+        "desc": "Toont de eerste 5 regels van bestand.txt."
+      },
+      {
+        "cmd": "ps aux | head -20",
+        "desc": "Toont de eerste 20 procesregels."
+      },
+      {
+        "cmd": "head -n 5 file.txt",
+        "desc": "Toont de eerste 5 regels van file.txt."
+      }
+    ],
+    "related": [
+      "tail",
+      "cat",
+      "less",
+      "grep"
+    ],
+    "tags": [
+      "bekijken",
+      "bestanden"
+    ]
+  },
+  {
+    "name": "tail",
+    "category": "Bekijken",
+    "short": "Toont de laatste regels van een bestand (standaard 10).",
+    "synopsis": "tail [OPTIE]... [BESTAND]...",
+    "chapter": "H2 Shell & navigatie",
+    "flags": [
+      {
+        "flag": "-n GETAL",
+        "desc": "Toont het opgegeven aantal laatste regels."
+      },
+      {
+        "flag": "-GETAL",
+        "desc": "Verkorte schrijfwijze voor -n GETAL (bijv. -20)."
+      },
+      {
+        "flag": "-f",
+        "desc": "Volgt het bestand live: toont nieuwe regels zodra ze verschijnen (handig voor logs)."
+      },
+      {
+        "flag": "-n N",
+        "desc": "Toont de laatste N regels (standaard 10)."
+      },
+      {
+        "flag": "-n +N",
+        "desc": "Toont alle regels vanaf regel N (slaat eerste N-1 regels over)."
+      }
+    ],
+    "examples": [
+      {
+        "cmd": "tail filename.txt",
+        "desc": "Toont de laatste 10 regels van filename.txt."
+      },
+      {
+        "cmd": "tail -20 filename.txt",
+        "desc": "Toont de laatste 20 regels."
+      },
+      {
+        "cmd": "tail /var/log/syslog",
+        "desc": "Toont de laatste 10 regels van syslog."
+      },
+      {
+        "cmd": "tail -n 20 bestand.txt",
+        "desc": "Toont de laatste 20 regels."
+      },
+      {
+        "cmd": "tail -f /var/log/syslog",
+        "desc": "Toont nieuwe logregels live terwijl ze binnenkomen."
+      },
+      {
+        "cmd": "history | tail -15",
+        "desc": "Toont de laatste 15 commando's uit de geschiedenis."
+      },
+      {
+        "cmd": "tail -n 3 /var/log/dpkg.log",
+        "desc": "Toont de laatste 3 regels van het dpkg-logbestand."
+      },
+      {
+        "cmd": "ls -ltr /tmp | tail -n +2",
+        "desc": "Slaat de 'total'-koptekstregel over en toont de rest."
+      }
+    ],
+    "related": [
+      "head",
+      "cat",
+      "less",
+      "grep"
+    ],
+    "tags": [
+      "bekijken",
+      "bestanden",
+      "logbestanden"
+    ]
+  },
+  {
+    "name": "nano",
+    "category": "Tekst",
+    "short": "Eenvoudige teksteditor in de terminal voor het bewerken van bestanden.",
+    "synopsis": "nano [OPTIE]... [BESTAND]...",
+    "chapter": "H2 Shell & navigatie",
+    "examples": [
+      {
+        "cmd": "nano filename.txt",
+        "desc": "Opent filename.txt in de nano-editor; Ctrl+O om op te slaan, Ctrl+X om af te sluiten."
+      },
+      {
+        "cmd": "nano ~/.bashrc",
+        "desc": "Opent ~/.bashrc in de nano-editor om het te bewerken."
+      }
+    ],
+    "related": [
+      "cat",
+      "touch",
+      "source",
+      "vi"
+    ],
+    "tags": [
+      "tekst",
+      "editor"
+    ]
+  },
+  {
+    "name": "man",
+    "category": "Systeem",
+    "short": "Toont de volledige handleiding van een commando.",
+    "synopsis": "man [OPTIE]... COMMANDO",
+    "chapter": "H2 Shell & navigatie",
+    "flags": [
+      {
+        "flag": "-k SLEUTELWOORD",
+        "desc": "Doorzoekt alle man-pagina's op sleutelwoord (zelfde als apropos)."
+      }
+    ],
+    "examples": [
+      {
+        "cmd": "man ls",
+        "desc": "Toont de volledige handleiding van ls."
+      },
+      {
+        "cmd": "man cp",
+        "desc": "Toont de volledige handleiding van cp."
+      },
+      {
+        "cmd": "man -k copy",
+        "desc": "Zoekt alle man-pagina's die te maken hebben met 'copy'."
+      },
+      {
+        "cmd": "man 5 passwd",
+        "desc": "Toont sectie 5 van de passwd-handleiding (bestandsformaat)."
+      }
+    ],
+    "related": [
+      "apropos",
+      "--help"
+    ],
+    "tags": [
+      "hulp",
+      "documentatie"
+    ]
+  },
+  {
+    "name": "apropos",
+    "category": "Systeem",
+    "short": "Zoekt man-pagina's op sleutelwoord (synoniem voor man -k).",
+    "synopsis": "apropos SLEUTELWOORD",
+    "chapter": "H2 Shell & navigatie",
+    "examples": [
+      {
+        "cmd": "apropos file",
+        "desc": "Toont alle commando's die met 'file' te maken hebben."
+      },
+      {
+        "cmd": "apropos \"list directory\"",
+        "desc": "Zoekt op de omschrijving 'list directory'."
+      }
+    ],
+    "related": [
+      "man"
+    ],
+    "tags": [
+      "hulp",
+      "documentatie"
+    ]
+  },
+  {
+    "name": "whoami",
+    "category": "Gebruikers",
+    "short": "Toont de naam van de momenteel ingelogde gebruiker.",
+    "synopsis": "whoami",
+    "chapter": "H2 Shell & navigatie",
+    "examples": [
+      {
+        "cmd": "whoami",
+        "desc": "Toont bijv. 'alice' als je als alice bent ingelogd."
+      }
+    ],
+    "related": [
+      "who",
+      "w",
+      "id"
+    ],
+    "tags": [
+      "gebruikers",
+      "sessie"
+    ]
+  },
+  {
+    "name": "who",
+    "category": "Gebruikers",
+    "short": "Toont wie er op dit moment ingelogd is op het systeem.",
+    "synopsis": "who [OPTIE]...",
+    "chapter": "H2 Shell & navigatie",
+    "examples": [
+      {
+        "cmd": "who",
+        "desc": "Toont alle ingelogde gebruikers met terminal en tijdstip."
+      },
+      {
+        "cmd": "who am i",
+        "desc": "Toont informatie over de huidige sessie."
+      },
+      {
+        "cmd": "who | tee current_users.txt | wc -l",
+        "desc": "Slaat ingelogde gebruikers op en telt ze."
+      },
+      {
+        "cmd": "who | cut -d' ' -f1 | sort | uniq | wc -l",
+        "desc": "Telt het aantal unieke ingelogde gebruikers."
+      }
+    ],
+    "related": [
+      "whoami",
+      "w",
+      "|",
+      "tee",
+      "last"
+    ],
+    "tags": [
+      "gebruikers",
+      "sessie"
+    ]
+  },
+  {
+    "name": "w",
+    "category": "Gebruikers",
+    "short": "Toont gedetailleerde informatie over ingelogde gebruikers en hun activiteit.",
+    "synopsis": "w [OPTIE]... [GEBRUIKER]",
+    "chapter": "H2 Shell & navigatie",
+    "examples": [
+      {
+        "cmd": "w",
+        "desc": "Toont alle ingelogde gebruikers met login-tijdstip, idle-tijd en actief commando."
+      }
+    ],
+    "related": [
+      "who",
+      "whoami",
+      "last",
+      "uptime"
+    ],
+    "tags": [
+      "gebruikers",
+      "sessie"
+    ]
+  },
+  {
+    "name": "su",
+    "category": "Gebruikers",
+    "short": "Wisselt naar een andere gebruiker (substitute user).",
+    "synopsis": "su [OPTIE] [GEBRUIKER]",
+    "chapter": "H2 Shell & navigatie",
+    "flags": [
+      {
+        "flag": "-",
+        "desc": "Laadt ook de omgevingsvariabelen van de doelgebruiker (volledig wisselen)."
+      }
+    ],
+    "examples": [
+      {
+        "cmd": "su - alice",
+        "desc": "Wisselt naar gebruiker alice met haar omgeving."
+      },
+      {
+        "cmd": "su -",
+        "desc": "Wisselt naar root (vraagt om rootwachtwoord)."
+      },
+      {
+        "cmd": "sudo su",
+        "desc": "Wisselt naar root met je eigen wachtwoord (via sudo)."
+      }
+    ],
+    "related": [
+      "sudo",
+      "whoami"
+    ],
+    "tags": [
+      "gebruikers",
+      "rechten"
+    ]
+  },
+  {
+    "name": "sudo",
+    "category": "Gebruikers",
+    "short": "Voert een commando uit met verhoogde (root)rechten.",
+    "synopsis": "sudo [OPTIE]... COMMANDO",
+    "chapter": "H2 Shell & navigatie",
+    "flags": [
+      {
+        "flag": "-i",
+        "desc": "Start een interactieve root-shell met de root-omgeving."
+      },
+      {
+        "flag": "-s",
+        "desc": "Start een interactieve root-shell met de huidige gebruikersomgeving."
+      },
+      {
+        "flag": "-u GEBRUIKER",
+        "desc": "Voert het commando uit als de opgegeven gebruiker."
+      },
+      {
+        "flag": "-l",
+        "desc": "Toont de lijst van commando's die de huidige gebruiker via sudo mag uitvoeren."
+      },
+      {
+        "flag": "-v",
+        "desc": "Vernieuwt de sudo-authenticatietimer zonder een commando uit te voeren."
+      }
+    ],
+    "examples": [
+      {
+        "cmd": "sudo apt update",
+        "desc": "Voert apt update uit als root."
+      },
+      {
+        "cmd": "sudo -i",
+        "desc": "Start een root-shell met root-omgeving."
+      },
+      {
+        "cmd": "sudo -u postgres psql",
+        "desc": "Voert psql uit als gebruiker postgres."
+      },
+      {
+        "cmd": "sudo -u alice whoami",
+        "desc": "Voert whoami uit als gebruiker alice."
+      },
+      {
+        "cmd": "sudo -l",
+        "desc": "Toont welke commando's je via sudo mag uitvoeren."
+      }
+    ],
+    "related": [
+      "su",
+      "whoami",
+      "visudo"
+    ],
+    "tags": [
+      "gebruikers",
+      "rechten",
+      "beheer"
+    ]
+  },
+  {
+    "name": "wget",
+    "category": "Netwerk",
+    "short": "Downloadt bestanden van het internet.",
+    "synopsis": "wget [OPTIE]... URL",
+    "chapter": "H2 Shell & navigatie",
+    "flags": [
+      {
+        "flag": "-O NAAM",
+        "desc": "Slaat het gedownloade bestand op onder de opgegeven naam."
+      },
+      {
+        "flag": "--progress=bar",
+        "desc": "Toont een voortgangsbalk tijdens het downloaden."
+      }
+    ],
+    "examples": [
+      {
+        "cmd": "wget https://example.com/file.txt",
+        "desc": "Downloadt file.txt van de opgegeven URL."
+      },
+      {
+        "cmd": "wget -O newname.txt https://example.com/file.txt",
+        "desc": "Downloadt en slaat op als newname.txt."
+      }
+    ],
+    "related": [
+      "curl"
+    ],
+    "tags": [
+      "netwerk",
+      "downloaden"
+    ]
+  },
+  {
+    "name": "env",
+    "category": "Systeem",
+    "short": "Toont alle omgevingsvariabelen van de huidige shell-sessie.",
+    "synopsis": "env [OPTIE]... [NAAM=WAARDE]... [COMMANDO]...",
+    "chapter": "H3 History & variabelen",
+    "examples": [
+      {
+        "cmd": "env",
+        "desc": "Toont alle omgevingsvariabelen."
+      },
+      {
+        "cmd": "env | head -20",
+        "desc": "Toont de eerste 20 omgevingsvariabelen."
+      },
+      {
+        "cmd": "env | grep MY_COURSE",
+        "desc": "Controleert of MY_COURSE geëxporteerd is."
+      }
+    ],
+    "related": [
+      "printenv",
+      "set",
+      "export"
+    ],
+    "tags": [
+      "variabelen",
+      "omgeving"
+    ]
+  },
+  {
+    "name": "printenv",
+    "category": "Systeem",
+    "short": "Drukt de waarde van een of meerdere omgevingsvariabelen af.",
+    "synopsis": "printenv [VARIABELE]...",
+    "chapter": "H3 History & variabelen",
+    "examples": [
+      {
+        "cmd": "printenv",
+        "desc": "Toont alle omgevingsvariabelen (alternatief voor env)."
+      },
+      {
+        "cmd": "printenv HOME",
+        "desc": "Toont enkel de waarde van HOME."
+      }
+    ],
+    "related": [
+      "env",
+      "echo"
+    ],
+    "tags": [
+      "variabelen",
+      "omgeving"
+    ]
+  },
+  {
+    "name": "set",
+    "category": "Shell scripting",
+    "short": "Toont alle shell-variabelen en functies (inclusief lokale variabelen).",
+    "synopsis": "set [OPTIE]...",
+    "chapter": "H3 History & variabelen",
+    "flags": [
+      {
+        "flag": "-e",
+        "desc": "Sluit het script af bij de eerste fout."
+      },
+      {
+        "flag": "-u",
+        "desc": "Behandelt niet-gedefinieerde variabelen als fout."
+      },
+      {
+        "flag": "-o pipefail",
+        "desc": "Mislukte opdrachten in een pipe geven een niet-nul exitcode terug."
+      },
+      {
+        "flag": "-x",
+        "desc": "Tracemodus: elk commando wordt afgedrukt voor uitvoering."
+      }
+    ],
+    "examples": [
+      {
+        "cmd": "set",
+        "desc": "Toont alle shell-variabelen (inclusief lokale variabelen, in tegenstelling tot env)."
+      },
+      {
+        "cmd": "set | grep MY_VAR",
+        "desc": "Zoekt naar een specifieke variabele in de lijst."
+      },
+      {
+        "cmd": "set -euo pipefail",
+        "desc": "Schakelt strikte foutafhandeling in aan het begin van een script."
+      },
+      {
+        "cmd": "set -x",
+        "desc": "Zet tracemodus aan voor debuggen."
+      }
+    ],
+    "related": [
+      "env",
+      "export",
+      "bash",
+      "trap"
+    ],
+    "tags": [
+      "variabelen",
+      "shell"
+    ]
+  },
+  {
+    "name": "export",
+    "category": "Shell scripting",
+    "short": "Exporteert een variabele zodat ze beschikbaar is voor kind-processen.",
+    "synopsis": "export [NAAM[=WAARDE]]...",
+    "chapter": "H3 History & variabelen",
+    "examples": [
+      {
+        "cmd": "export MY_GLOBAL_VAR=\"Hello\"",
+        "desc": "Maakt de variabele in één stap aan en exporteert ze."
+      },
+      {
+        "cmd": "MY_VAR=test && export MY_VAR",
+        "desc": "Maakt eerst een lokale variabele aan, daarna exporteer je ze."
+      },
+      {
+        "cmd": "export PATH=\"$HOME/mybin:$PATH\"",
+        "desc": "Voegt ~/mybin toe aan het begin van de PATH-variabele."
+      },
+      {
+        "cmd": "export MIJN_VAR=\"hallo\"",
+        "desc": "Stelt een omgevingsvariabele in die beschikbaar is voor kindprocessen."
+      },
+      {
+        "cmd": "export PATH=$PATH:/usr/local/bin",
+        "desc": "Voegt een map toe aan het zoekpad."
+      }
+    ],
+    "related": [
+      "env",
+      "set"
+    ],
+    "tags": [
+      "variabelen",
+      "omgeving",
+      "PATH"
+    ]
+  },
+  {
+    "name": "echo",
+    "category": "Tekst",
+    "short": "Drukt tekst of de waarde van een variabele af naar de standaard uitvoer.",
+    "synopsis": "echo [OPTIE]... [STRING]...",
+    "chapter": "H3 History & variabelen",
+    "flags": [
+      {
+        "flag": "-n",
+        "desc": "Drukt geen newline af aan het einde."
+      },
+      {
+        "flag": "-e",
+        "desc": "Interpreteert escape-sequences zoals \\n en \\t."
+      }
+    ],
+    "examples": [
+      {
+        "cmd": "echo $HOME",
+        "desc": "Toont de waarde van de HOME-variabele."
+      },
+      {
+        "cmd": "echo \"Mijn naam is $NAME\"",
+        "desc": "Toont tekst met een variabele geïnterpoleerd."
+      },
+      {
+        "cmd": "echo $PATH | tr ':' '\\n'",
+        "desc": "Toont elke map in PATH op een aparte regel."
+      },
+      {
+        "cmd": "echo \"Hallo $USER\"",
+        "desc": "Drukt 'Hallo' gevolgd door de waarde van $USER af."
+      },
+      {
+        "cmd": "echo 'Hallo $USER'",
+        "desc": "Drukt letterlijk 'Hallo $USER' af zonder variabele-uitbreiding."
+      },
+      {
+        "cmd": "echo -e \"Regel 1\\nRegel 2\"",
+        "desc": "Drukt twee regels af door \\n als newline te interpreteren."
+      },
+      {
+        "cmd": "echo -n \"Geen newline\"",
+        "desc": "Drukt tekst af zonder de cursor naar de volgende regel te verplaatsen."
+      },
+      {
+        "cmd": "echo -e \"\\033[31mRode tekst\\033[0m\"",
+        "desc": "Drukt tekst in het rood af via ANSI-kleurcodes."
+      },
+      {
+        "cmd": "echo \"Hello, $USER\"",
+        "desc": "Drukt een begroeting af met de huidige gebruikersnaam."
+      },
+      {
+        "cmd": "echo \"Vandaag is: $(date)\"",
+        "desc": "Gebruikt command substitution in een echo."
+      },
+      {
+        "cmd": "echo $SHELL",
+        "desc": "Toont de huidige shell, bijv. /bin/bash."
+      },
+      {
+        "cmd": "echo $(hostname)",
+        "desc": "Toont de servernaam via commandosubstitutie."
+      },
+      {
+        "cmd": "echo \"Shell: $(basename $SHELL)\"",
+        "desc": "Toont alleen de naam van de shell (niet het volledige pad)."
+      },
+      {
+        "cmd": "echo \"$(date): gestart\" >> log.txt",
+        "desc": "Voegt een tijdstempel met tekst toe aan log.txt."
+      }
+    ],
+    "related": [
+      "printf",
+      "env",
+      "cat",
+      "read",
+      "tee"
+    ],
+    "tags": [
+      "variabelen",
+      "output"
+    ]
+  },
+  {
+    "name": "history",
+    "category": "Shell scripting",
+    "short": "Toont de lijst van eerder ingevoerde commando's in de huidige shell.",
+    "synopsis": "history [N]",
+    "chapter": "H3 History & variabelen",
+    "flags": [
+      {
+        "flag": "-c",
+        "desc": "Verwijdert de volledige commandogeschiedenis."
+      },
+      {
+        "flag": "-d offset",
+        "desc": "Verwijdert de geschiedenisregel op positie offset."
+      }
+    ],
+    "examples": [
+      {
+        "cmd": "history",
+        "desc": "Toont alle bewaard commando's met nummers."
+      },
+      {
+        "cmd": "history 10",
+        "desc": "Toont de laatste 10 commando's."
+      },
+      {
+        "cmd": "history | grep ls",
+        "desc": "Doorzoekt de geschiedenis op commando's met 'ls'."
+      },
+      {
+        "cmd": "history | tail -5",
+        "desc": "Toont de laatste 5 commando's via pipe."
+      },
+      {
+        "cmd": "history -c",
+        "desc": "Wist de volledige commandogeschiedenis."
+      }
+    ],
+    "related": [
+      "!!",
+      "!n",
+      "Ctrl+R"
+    ],
+    "tags": [
+      "geschiedenis",
+      "shell"
+    ]
+  },
+  {
+    "name": "which",
+    "category": "Systeem",
+    "short": "Toont het volledige pad van een uitvoerbaar commando dat gevonden wordt in PATH.",
+    "synopsis": "which COMMANDO...",
+    "chapter": "H3 History & variabelen",
+    "examples": [
+      {
+        "cmd": "which ls",
+        "desc": "Toont het pad naar het ls-programma, bv. /bin/ls."
+      },
+      {
+        "cmd": "which python",
+        "desc": "Toont het pad naar de python-interpreter."
+      },
+      {
+        "cmd": "which bash",
+        "desc": "Toont het pad naar de bash-shell."
+      },
+      {
+        "cmd": "which python3",
+        "desc": "Toont het pad naar Python 3, of niets als het niet geïnstalleerd is."
+      }
+    ],
+    "related": [
+      "type",
+      "whereis",
+      "command"
+    ],
+    "tags": [
+      "PATH",
+      "commando's"
+    ]
+  },
+  {
+    "name": "type",
+    "category": "Shell scripting",
+    "short": "Geeft aan hoe de shell een opgegeven naam zou interpreteren (ingebouwd, extern, alias, functie).",
+    "synopsis": "type [OPTIE] naam...",
+    "chapter": "H3 History & variabelen",
+    "flags": [
+      {
+        "flag": "-a",
+        "desc": "Toont alle locaties van het commando, inclusief aliassen en builtins."
+      },
+      {
+        "flag": "-t",
+        "desc": "Drukt alleen het type af: alias, keyword, function, builtin of file."
+      }
+    ],
+    "examples": [
+      {
+        "cmd": "type ls",
+        "desc": "Toont: 'ls is /bin/ls' of een alias indien aanwezig."
+      },
+      {
+        "cmd": "type cd",
+        "desc": "Toont: 'cd is a shell builtin'."
+      },
+      {
+        "cmd": "type -a ls",
+        "desc": "Toont alle instanties van ls (alias, bestand, enz.)."
+      },
+      {
+        "cmd": "type ll",
+        "desc": "Toont dat ll een alias is van ls -la (indien gedefinieerd)."
+      },
+      {
+        "cmd": "type -a echo",
+        "desc": "Toont alle implementaties van echo (builtin én /bin/echo)."
+      }
+    ],
+    "related": [
+      "which",
+      "whereis",
+      "command"
+    ],
+    "tags": [
+      "PATH",
+      "commando's",
+      "shell"
+    ]
+  },
+  {
+    "name": "source",
+    "category": "Shell scripting",
+    "short": "Voert een script uit in de huidige shell-omgeving (variabelen blijven beschikbaar).",
+    "synopsis": "source BESTAND   of   . BESTAND",
+    "chapter": "H3 History & variabelen",
+    "examples": [
+      {
+        "cmd": "source ~/.bashrc",
+        "desc": "Laadt ~/.bashrc opnieuw zonder een nieuwe terminal te openen."
+      },
+      {
+        "cmd": ". ~/.bashrc",
+        "desc": "Kortere notatie voor source, werkt identiek."
+      },
+      {
+        "cmd": ". ./config.sh",
+        "desc": "Laadt variabelen uit config.sh in de huidige shell."
+      }
+    ],
+    "related": [
+      "export",
+      "nano",
+      "alias",
+      "bash"
+    ],
+    "tags": [
+      "configuratie",
+      "shell"
+    ]
+  },
+  {
+    "name": "tr",
+    "category": "Tekst",
+    "short": "Vertaalt of verwijdert tekens van de standaard invoer.",
+    "synopsis": "tr [OPTIE]... TEKENSET1 [TEKENSET2]",
+    "chapter": "H3 History & variabelen",
+    "flags": [
+      {
+        "flag": "-d",
+        "desc": "Verwijdert tekens die voorkomen in TEKENS1."
+      },
+      {
+        "flag": "-s",
+        "desc": "Comprimeert opeenvolgende identieke tekens tot één exemplaar."
+      },
+      {
+        "flag": "-c",
+        "desc": "Gebruikt het complement van REEKS1 (alles behalve die tekens)."
+      }
+    ],
+    "examples": [
+      {
+        "cmd": "echo $PATH | tr ':' '\\n'",
+        "desc": "Vervangt dubbele punten door newlines zodat elke PATH-map op een aparte regel staat."
+      },
+      {
+        "cmd": "echo \"hello world\" | tr 'a-z' 'A-Z'",
+        "desc": "Zet alle kleine letters om naar hoofdletters."
+      },
+      {
+        "cmd": "echo \"HELLO\" | tr 'A-Z' 'a-z'",
+        "desc": "Zet alle hoofdletters om naar kleine letters."
+      },
+      {
+        "cmd": "echo \"hello world\" | tr ' ' '_'",
+        "desc": "Vervangt spaties door underscores."
+      },
+      {
+        "cmd": "echo \"hello world\" | tr -d ' '",
+        "desc": "Verwijdert alle spaties."
+      },
+      {
+        "cmd": "echo \"abc123def\" | tr -d '0-9'",
+        "desc": "Verwijdert alle cijfers."
+      },
+      {
+        "cmd": "echo \"hello    world\" | tr -s ' '",
+        "desc": "Comprimeert meerdere spaties tot één."
+      },
+      {
+        "cmd": "cat data.txt | tr -d '\\r'",
+        "desc": "Verwijdert Windows-regeleindes (CR)."
+      },
+      {
+        "cmd": "cat data.txt | tr '\\t' ','",
+        "desc": "Vervangt TAB-tekens door komma's."
+      },
+      {
+        "cmd": "echo \"Hello, World! 123\" | tr -cd '[:alnum:]'",
+        "desc": "Behoudt alleen alfanumerieke tekens."
+      },
+      {
+        "cmd": "tr '[:lower:]' '[:upper:]' < mixed_data.txt",
+        "desc": "Zet alle kleine letters om via omleiding (invoerbestand)."
+      },
+      {
+        "cmd": "tr 'a-z' 'A-Z' < file.txt",
+        "desc": "Converteert alle kleine letters naar hoofdletters."
+      },
+      {
+        "cmd": "tr ' ' '_' < file.txt",
+        "desc": "Vervangt spaties door underscores."
+      },
+      {
+        "cmd": "tr -d '\\n' < file.txt",
+        "desc": "Verwijdert alle regeleinden (voegt alle regels samen)."
+      },
+      {
+        "cmd": "tr -d '\\n' < sentence.txt | tr ' ' '_' > oneline.txt",
+        "desc": "Verwijdert eerst regeleinden, vervangt dan spaties door underscores."
+      }
+    ],
+    "related": [
+      "echo",
+      "sed",
+      "cut",
+      "grep",
+      "awk"
+    ],
+    "tags": [
+      "tekst",
+      "PATH"
+    ]
+  },
+  {
+    "name": "chmod",
+    "category": "Permissies",
+    "short": "Wijzigt de toegangsrechten (permissies) van bestanden en mappen.",
+    "synopsis": "chmod [OPTIE]... MODUS BESTAND...",
+    "chapter": "H3 History & variabelen",
+    "flags": [
+      {
+        "flag": "+x",
+        "desc": "Voegt uitvoerrechten toe voor alle gebruikers."
+      },
+      {
+        "flag": "-R",
+        "desc": "Wijzigt rechten recursief in alle submappen."
+      },
+      {
+        "flag": "-x",
+        "desc": "Verwijdert uitvoerrecht."
+      },
+      {
+        "flag": "755",
+        "desc": "Stelt octal permissies in: eigenaar rwx, groep/overig rx."
+      },
+      {
+        "flag": "u+x",
+        "desc": "Voegt uitvoerrecht toe voor de eigenaar."
+      },
+      {
+        "flag": "g-w",
+        "desc": "Verwijdert schrijfrecht van de groep."
+      },
+      {
+        "flag": "o=",
+        "desc": "Wist alle rechten voor anderen."
+      },
+      {
+        "flag": "a+x",
+        "desc": "Voegt uitvoerrecht toe voor iedereen (eigenaar, groep, anderen)."
+      }
+    ],
+    "examples": [
+      {
+        "cmd": "chmod +x hello.sh",
+        "desc": "Maakt hello.sh uitvoerbaar."
+      },
+      {
+        "cmd": "ls -la hello.sh",
+        "desc": "Controleert of de uitvoerrechten correct ingesteld zijn."
+      },
+      {
+        "cmd": "chmod +x script.sh",
+        "desc": "Maakt script.sh uitvoerbaar."
+      },
+      {
+        "cmd": "chmod 755 script.sh",
+        "desc": "Zet permissies op rwxr-xr-x voor script.sh."
+      },
+      {
+        "cmd": "chmod 644 bestand.txt",
+        "desc": "Stelt rw-r--r-- in: eigenaar kan lezen/schrijven, anderen alleen lezen."
+      },
+      {
+        "cmd": "chmod 600 privé.txt",
+        "desc": "Stelt rw------- in: alleen de eigenaar kan lezen en schrijven."
+      },
+      {
+        "cmd": "chmod u+x script.sh",
+        "desc": "Voegt uitvoerrecht toe voor de eigenaar."
+      },
+      {
+        "cmd": "chmod g-w bestand.txt",
+        "desc": "Verwijdert schrijfrecht voor de groep."
+      },
+      {
+        "cmd": "chmod o= bestand.txt",
+        "desc": "Verwijdert alle rechten voor anderen."
+      },
+      {
+        "cmd": "chmod a+x bestand.txt",
+        "desc": "Voegt uitvoerrecht toe voor iedereen (eigenaar, groep, anderen)."
+      },
+      {
+        "cmd": "chmod u+rw,g+r,o-rwx bestand.txt",
+        "desc": "Combineert meerdere wijzigingen in één commando."
+      },
+      {
+        "cmd": "chmod -R 755 map/",
+        "desc": "Past 755-permissies recursief toe op de hele mapstructuur."
+      },
+      {
+        "cmd": "chmod 4755 programma",
+        "desc": "Stelt SUID-bit in: het programma draait met de rechten van de eigenaar."
+      },
+      {
+        "cmd": "chmod 2775 gedeelde_map/",
+        "desc": "Stelt SGID-bit in: nieuwe bestanden erven de groep van de map."
+      },
+      {
+        "cmd": "chmod 1777 temp/",
+        "desc": "Stelt sticky bit in: alleen de eigenaar kan zijn eigen bestanden verwijderen."
+      },
+      {
+        "cmd": "chmod u+s programma",
+        "desc": "Voegt SUID-bit symbolisch toe."
+      },
+      {
+        "cmd": "chmod g+s map/",
+        "desc": "Voegt SGID-bit symbolisch toe aan een map."
+      },
+      {
+        "cmd": "chmod +t map/",
+        "desc": "Voegt sticky bit symbolisch toe aan een map."
+      },
+      {
+        "cmd": "chmod u=,g=r,o=rx examenscript.sh",
+        "desc": "Eigenaar: geen rechten; groep: lezen; anderen: lezen en uitvoeren."
+      },
+      {
+        "cmd": "chmod u+x *.sh",
+        "desc": "Voegt uitvoerrecht toe voor de eigenaar op alle .sh-bestanden."
+      },
+      {
+        "cmd": "chmod 644 file.txt",
+        "desc": "Octaal: eigenaar rw-, groep r--, anderen r--."
+      },
+      {
+        "cmd": "chmod 502 report.txt",
+        "desc": "Octaal: eigenaar r-x, groep ---, anderen -w-."
+      },
+      {
+        "cmd": "chmod 634 ~/executables/*",
+        "desc": "Octaal op alle inhoud van de map (niet de map zelf)."
+      },
+      {
+        "cmd": "find ~/project -type f -exec chmod 644 {} \\;",
+        "desc": "Zet recursief alle gewone bestanden op 644."
+      }
+    ],
+    "related": [
+      "ls",
+      "which",
+      "stat",
+      "chown",
+      "chgrp",
+      "umask",
+      "find"
+    ],
+    "tags": [
+      "permissies",
+      "script"
+    ]
+  },
+  {
+    "name": "whereis",
+    "category": "Systeem",
+    "short": "Toont de locaties van binaire bestanden, bronbestanden en man-pagina's voor een commando.",
+    "synopsis": "whereis COMMANDO...",
+    "chapter": "H3 History & variabelen",
+    "examples": [
+      {
+        "cmd": "whereis ls",
+        "desc": "Toont alle locaties van ls (binair, bron, manpagina)."
+      }
+    ],
+    "related": [
+      "which",
+      "type"
+    ],
+    "tags": [
+      "PATH",
+      "commando's"
+    ]
+  },
+  {
+    "name": "<<",
+    "category": "I/O & pipes",
+    "short": "Here document: geeft meerdere regels inline als stdin mee aan een commando.",
+    "synopsis": "commando << DELIMITER\ntekst\nDELIMITER",
+    "chapter": "H4 Redirects & pipes",
+    "examples": [
+      {
+        "cmd": "cat << EOF > poem.txt\nRoses are red\nEOF",
+        "desc": "Maakt poem.txt aan met de opgegeven tekst; alles tot EOF is de invoer."
+      },
+      {
+        "cmd": "wc -w << EOF\nDit is een test\nEOF",
+        "desc": "Telt woorden in de inline tekst."
+      }
+    ],
+    "related": [
+      "<",
+      "<<<"
+    ],
+    "tags": [
+      "omleiding",
+      "stdin",
+      "heredoc"
+    ]
+  },
+  {
+    "name": "<<<",
+    "category": "I/O & pipes",
+    "short": "Here string: geeft één tekstregel als stdin mee aan een commando.",
+    "synopsis": "commando <<< \"tekst\"",
+    "chapter": "H4 Redirects & pipes",
+    "examples": [
+      {
+        "cmd": "wc -w <<< \"hallo wereld\"",
+        "desc": "Telt de woorden in de string 'hallo wereld'."
+      }
+    ],
+    "related": [
+      "<<",
+      "<"
+    ],
+    "tags": [
+      "omleiding",
+      "stdin"
+    ]
+  },
+  {
+    "name": "tac",
+    "category": "Bekijken",
+    "short": "Toont de regels van een bestand in omgekeerde volgorde (cat achterstevoren).",
+    "synopsis": "tac [BESTAND]...",
+    "chapter": "H4 Redirects & pipes",
+    "examples": [
+      {
+        "cmd": "tac bestand.txt",
+        "desc": "Toont de regels van bestand.txt van onder naar boven."
+      },
+      {
+        "cmd": "seq 1 10 | tac",
+        "desc": "Drukt de getallen 10 tot 1 af."
+      },
+      {
+        "cmd": "cat fruits.txt | sort | tac",
+        "desc": "Sorteert de vruchten en keert de volgorde daarna om."
+      }
+    ],
+    "related": [
+      "cat",
+      "sort"
+    ],
+    "tags": [
+      "tekstverwerking",
+      "bekijken"
+    ]
+  },
+  {
+    "name": "tee",
+    "category": "I/O & pipes",
+    "short": "Leest van stdin en schrijft tegelijk naar stdout én naar een of meerdere bestanden.",
+    "synopsis": "commando | tee [OPTIE]... BESTAND",
+    "chapter": "H4 Redirects & pipes",
+    "flags": [
+      {
+        "flag": "-a",
+        "desc": "Voegt toe aan het bestand in plaats van te overschrijven."
+      }
+    ],
+    "examples": [
+      {
+        "cmd": "ps aux | tee processes.txt | grep firefox",
+        "desc": "Slaat de volledige proceslijst op in processes.txt en geeft ook de firefox-regels door."
+      },
+      {
+        "cmd": "cat data.txt | sort | tee sorted.txt | uniq > unique.txt",
+        "desc": "Slaat gesorteerde data op in sorted.txt en stuurt ook unieke regels naar unique.txt."
+      },
+      {
+        "cmd": "who | tee current_users.txt | wc -l",
+        "desc": "Slaat ingelogde gebruikers op en telt ze meteen."
+      },
+      {
+        "cmd": "ls -la | tee overzicht.txt",
+        "desc": "Toont de uitvoer op het scherm en slaat ze ook op in overzicht.txt."
+      },
+      {
+        "cmd": "ls -la | tee bestand1.txt bestand2.txt",
+        "desc": "Slaat de uitvoer op in meerdere bestanden tegelijk."
+      },
+      {
+        "cmd": "commando | tee -a logbestand.txt",
+        "desc": "Voegt de uitvoer toe aan een logbestand."
+      },
+      {
+        "cmd": "ps aux | tee processen.txt | grep firefox",
+        "desc": "Slaat de volledige proceslijst op en filtert tegelijk op firefox."
+      },
+      {
+        "cmd": "ls -la /usr/share | tee details.txt | sort -k5 -n",
+        "desc": "Slaat ls-uitvoer op in details.txt en geeft tegelijk de gesorteerde versie op het scherm."
+      },
+      {
+        "cmd": "find /etc -name '*.conf' 2>/dev/null | tee conf_files.txt | wc -l",
+        "desc": "Slaat de lijst van .conf-bestanden op en telt ze tegelijk."
+      }
+    ],
+    "related": [
+      "|",
+      ">",
+      ">>",
+      "cat",
+      "pipe",
+      "redirect",
+      "echo",
+      "sort",
+      "wc"
+    ],
+    "tags": [
+      "I/O & pipes",
+      "tekstverwerking"
+    ]
+  },
+  {
+    "name": "sort",
+    "category": "Tekst",
+    "short": "Sorteert regels van tekstinvoer of bestanden.",
+    "synopsis": "sort [OPTIE]... [BESTAND]...",
+    "chapter": "H4 Redirects & pipes",
+    "flags": [
+      {
+        "flag": "-n",
+        "desc": "Sorteert numeriek in plaats van alfabetisch."
+      },
+      {
+        "flag": "-r",
+        "desc": "Keert de sorteervolgorde om (omgekeerd)."
+      },
+      {
+        "flag": "-h",
+        "desc": "Sorteert op mensvriendelijke getallen (bijv. 1K, 10M)."
+      },
+      {
+        "flag": "-k KOLOM",
+        "desc": "Sorteert op de opgegeven kolom (bijv. -k4 voor kolom 4)."
+      },
+      {
+        "flag": "-nr",
+        "desc": "Numeriek en omgekeerd gecombineerd."
+      },
+      {
+        "flag": "-k veld",
+        "desc": "Sorteert op een specifiek veld (kolom)."
+      },
+      {
+        "flag": "-t scheidingsteken",
+        "desc": "Geeft het kolomscheidingsteken op."
+      },
+      {
+        "flag": "-u",
+        "desc": "Verwijdert duplicaten na het sorteren."
+      },
+      {
+        "flag": "-i",
+        "desc": "Negeert hoofdletters bij het sorteren."
+      },
+      {
+        "flag": "-k N",
+        "desc": "Sorteert op kolom N (witruimte als scheidingsteken)."
+      },
+      {
+        "flag": "-t 'SCHEIDINGSTEKEN'",
+        "desc": "Geeft een aangepast veldscheidingsteken op."
+      }
+    ],
+    "examples": [
+      {
+        "cmd": "sort < unsorted.txt",
+        "desc": "Sorteert de regels van unsorted.txt alfabetisch."
+      },
+      {
+        "cmd": "cat numbers.txt | sort -n",
+        "desc": "Sorteert getallen numeriek."
+      },
+      {
+        "cmd": "ps aux | sort -k4 -nr | head -5",
+        "desc": "Toont de 5 processen met het hoogste geheugengebruik."
+      },
+      {
+        "cmd": "du -sh */ | sort -hr",
+        "desc": "Toont mapsgroottes gesorteerd van groot naar klein."
+      },
+      {
+        "cmd": "sort bestand.txt",
+        "desc": "Sorteert het bestand alfabetisch."
+      },
+      {
+        "cmd": "sort -r bestand.txt",
+        "desc": "Sorteert in omgekeerde alfabetische volgorde."
+      },
+      {
+        "cmd": "sort -n getallen.txt",
+        "desc": "Sorteert numeriek."
+      },
+      {
+        "cmd": "sort -k2 bestand.txt",
+        "desc": "Sorteert op het tweede veld."
+      },
+      {
+        "cmd": "sort -t: -k3 -n /etc/passwd",
+        "desc": "Sorteert /etc/passwd numerisch op UID (derde veld)."
+      },
+      {
+        "cmd": "sort -u bestand.txt",
+        "desc": "Sorteert en verwijdert duplicaten."
+      },
+      {
+        "cmd": "ls -l | sort -k5 -n",
+        "desc": "Sorteert bestanden op grootte (oplopend)."
+      },
+      {
+        "cmd": "ls -l | sort -k5 -nr",
+        "desc": "Sorteert bestanden op grootte (aflopend)."
+      },
+      {
+        "cmd": "ps aux | sort -k4 -nr | head -10",
+        "desc": "Toont de 10 processen met het hoogste geheugengebruik."
+      },
+      {
+        "cmd": "sort file.txt | uniq -c | sort -nr",
+        "desc": "Telt unieke regels en sorteert van meest naar minst frequent."
+      },
+      {
+        "cmd": "ls -l /tmp | sort -k5 -n",
+        "desc": "Sorteert de ls-uitvoer op bestandsgrootte (kolom 5) numeriek."
+      },
+      {
+        "cmd": "sort -t':' -k3 -n /etc/passwd",
+        "desc": "Sorteert /etc/passwd op UID (veld 3) numeriek."
+      }
+    ],
+    "related": [
+      "uniq",
+      "tac",
+      "|",
+      "grep",
+      "cut"
+    ],
+    "tags": [
+      "tekstverwerking",
+      "sorteren"
+    ]
+  },
+  {
+    "name": "uniq",
+    "category": "Tekst",
+    "short": "Filtert of telt opeenvolgende identieke regels; werkt het best op gesorteerde invoer.",
+    "synopsis": "uniq [OPTIE]... [INVOER [UITVOER]]",
+    "chapter": "H4 Redirects & pipes",
+    "flags": [
+      {
+        "flag": "-c",
+        "desc": "Telt hoe vaak elke unieke regel voorkomt."
+      },
+      {
+        "flag": "-d",
+        "desc": "Toont alleen regels die meermaals voorkomen (duplicaten)."
+      },
+      {
+        "flag": "-u",
+        "desc": "Toont alleen regels die eenmalig voorkomen."
+      },
+      {
+        "flag": "-i",
+        "desc": "Negeert hoofdletters bij vergelijking."
+      },
+      {
+        "flag": "-f n",
+        "desc": "Slaat de eerste n velden over bij vergelijking."
+      }
+    ],
+    "examples": [
+      {
+        "cmd": "cat numbers.txt | sort -n | uniq",
+        "desc": "Verwijdert duplicaten uit numbers.txt (na sortering)."
+      },
+      {
+        "cmd": "cat numbers.txt | sort -n | uniq -d",
+        "desc": "Toont enkel de getallen die meer dan eenmaal voorkomen."
+      },
+      {
+        "cmd": "history | awk '{print $2}' | sort | uniq -c | sort -nr | head -10",
+        "desc": "Toont de 10 meest gebruikte commando's."
+      },
+      {
+        "cmd": "sort bestand.txt | uniq",
+        "desc": "Verwijdert duplicaten na sorteren."
+      },
+      {
+        "cmd": "sort bestand.txt | uniq -c",
+        "desc": "Telt hoe vaak elke unieke regel voorkomt."
+      },
+      {
+        "cmd": "sort bestand.txt | uniq -d",
+        "desc": "Toont alleen de regels die meer dan eens voorkomen."
+      },
+      {
+        "cmd": "sort bestand.txt | uniq -u",
+        "desc": "Toont alleen de regels die exact één keer voorkomen."
+      },
+      {
+        "cmd": "sort bestand.txt | uniq -c | sort -nr",
+        "desc": "Toont de meest voorkomende regels bovenaan."
+      },
+      {
+        "cmd": "cut -d: -f1 /etc/passwd | sort | uniq | wc -l",
+        "desc": "Telt het aantal unieke gebruikersnamen."
+      },
+      {
+        "cmd": "sort words.txt | uniq -c | sort -nr",
+        "desc": "Telt elke uniek woord en sorteert van meest naar minst frequent."
+      }
+    ],
+    "related": [
+      "sort",
+      "|",
+      "grep",
+      "wc"
+    ],
+    "tags": [
+      "tekstverwerking",
+      "duplicaten"
+    ]
+  },
+  {
+    "name": "wc",
+    "category": "Tekst",
+    "short": "Telt regels, woorden en/of tekens in een bestand of stdin.",
+    "synopsis": "wc [OPTIE]... [BESTAND]...",
+    "chapter": "H4 Redirects & pipes",
+    "flags": [
+      {
+        "flag": "-l",
+        "desc": "Telt alleen regels."
+      },
+      {
+        "flag": "-w",
+        "desc": "Telt alleen woorden."
+      },
+      {
+        "flag": "-c",
+        "desc": "Telt alleen bytes."
+      },
+      {
+        "flag": "-m",
+        "desc": "Telt alleen het aantal tekens (rekening houdend met multibyte)."
+      }
+    ],
+    "examples": [
+      {
+        "cmd": "wc -l bestand.txt",
+        "desc": "Telt het aantal regels in bestand.txt."
+      },
+      {
+        "cmd": "ls | wc -l",
+        "desc": "Telt het aantal bestanden/mappen in de huidige map."
+      },
+      {
+        "cmd": "cat /etc/passwd | wc -l",
+        "desc": "Telt het aantal gebruikers in het systeem."
+      },
+      {
+        "cmd": "history | wc -l",
+        "desc": "Telt het totale aantal commando's in de geschiedenis."
+      },
+      {
+        "cmd": "wc bestand.txt",
+        "desc": "Toont het aantal regels, woorden en bytes."
+      },
+      {
+        "cmd": "wc -w bestand.txt",
+        "desc": "Telt het aantal woorden."
+      },
+      {
+        "cmd": "ps aux | wc -l",
+        "desc": "Telt het aantal actieve processen."
+      },
+      {
+        "cmd": "grep \"error\" log.txt | wc -l",
+        "desc": "Telt het aantal foutregels in een logbestand."
+      },
+      {
+        "cmd": "ls /etc | wc -l",
+        "desc": "Telt hoeveel items er in /etc staan."
+      },
+      {
+        "cmd": "ps -e --no-headers | wc -l",
+        "desc": "Telt het aantal actieve processen."
+      },
+      {
+        "cmd": "find /etc -type f 2>/dev/null | wc -l",
+        "desc": "Telt gewone bestanden in /etc."
+      }
+    ],
+    "related": [
+      "cat",
+      "|",
+      "grep",
+      "sort",
+      "uniq",
+      "find"
+    ],
+    "tags": [
+      "tekstverwerking",
+      "tellen"
+    ]
+  },
+  {
+    "name": "grep",
+    "category": "Zoeken",
+    "short": "Zoekt naar een patroon in tekstinvoer of bestanden en drukt overeenkomende regels af.",
+    "synopsis": "grep [OPTIE]... PATROON [BESTAND]...",
+    "chapter": "H4 Redirects & pipes",
+    "flags": [
+      {
+        "flag": "-v",
+        "desc": "Inverteert: toont regels die NIET overeenkomen met het patroon."
+      },
+      {
+        "flag": "-i",
+        "desc": "Hoofdletterongevoelig zoeken."
+      },
+      {
+        "flag": "-E",
+        "desc": "Gebruikt uitgebreide reguliere expressies."
+      },
+      {
+        "flag": "-n",
+        "desc": "Toont het regelnummer van elke overeenkomst."
+      },
+      {
+        "flag": "-c",
+        "desc": "Telt het aantal overeenkomende regels (geen inhoud)."
+      },
+      {
+        "flag": "-l",
+        "desc": "Toont alleen de bestandsnamen die een overeenkomst bevatten."
+      },
+      {
+        "flag": "-L",
+        "desc": "Toont alleen de bestandsnamen zonder overeenkomst."
+      },
+      {
+        "flag": "-r",
+        "desc": "Zoekt recursief door mappen."
+      },
+      {
+        "flag": "-w",
+        "desc": "Zoekt alleen naar volledige woorden."
+      },
+      {
+        "flag": "-F",
+        "desc": "Behandelt het patroon als letterlijke tekst (geen regex)."
+      },
+      {
+        "flag": "-o",
+        "desc": "Toont alleen het overeenkomende deel van de regel."
+      },
+      {
+        "flag": "-A n",
+        "desc": "Toont n regels na elke overeenkomst."
+      },
+      {
+        "flag": "-B n",
+        "desc": "Toont n regels voor elke overeenkomst."
+      },
+      {
+        "flag": "-C n",
+        "desc": "Toont n regels voor én na elke overeenkomst."
+      },
+      {
+        "flag": "-e",
+        "desc": "Geeft een patroon op; bruikbaar voor meerdere patronen."
+      },
+      {
+        "flag": "-m N",
+        "desc": "Stopt na N overeenkomsten."
+      },
+      {
+        "flag": "-ci",
+        "desc": "Telt overeenkomsten, hoofdletteronafhankelijk."
+      }
+    ],
+    "examples": [
+      {
+        "cmd": "ps aux | grep firefox",
+        "desc": "Toont processen met 'firefox' in de naam."
+      },
+      {
+        "cmd": "history | grep ls",
+        "desc": "Toont alle ls-commando's uit de geschiedenis."
+      },
+      {
+        "cmd": "df -h | grep -v tmpfs",
+        "desc": "Toont schijfgebruik zonder tijdelijke bestandssystemen."
+      },
+      {
+        "cmd": "ls /bestaat_niet 2>&1 | grep \"No such file\"",
+        "desc": "Filtert de foutmelding uit gecombineerde uitvoer."
+      },
+      {
+        "cmd": "grep \"ERROR\" /var/log/syslog",
+        "desc": "Zoekt naar de tekst ERROR in het syslog-bestand."
+      },
+      {
+        "cmd": "grep -i \"error\" logbestand.txt",
+        "desc": "Hoofdletterongevoelig zoeken naar error."
+      },
+      {
+        "cmd": "grep -n \"INFO\" sample.log",
+        "desc": "Toont regels met INFO samen met hun regelnummer."
+      },
+      {
+        "cmd": "grep -c \"2024-01-15\" sample.log",
+        "desc": "Telt hoeveel regels de datum 2024-01-15 bevatten."
+      },
+      {
+        "cmd": "grep -v \"INFO\" sample.log",
+        "desc": "Toont alle regels die GEEN INFO bevatten."
+      },
+      {
+        "cmd": "grep -E \"(ERROR|WARNING)\" sample.log",
+        "desc": "Zoekt naar regels met ERROR of WARNING via uitgebreide regex."
+      },
+      {
+        "cmd": "grep \"^2024\" sample.log",
+        "desc": "Toont regels die beginnen met 2024."
+      },
+      {
+        "cmd": "grep \"completed$\" sample.log",
+        "desc": "Toont regels die eindigen op completed."
+      },
+      {
+        "cmd": "grep -r \"TODO\" ~/code/",
+        "desc": "Zoekt recursief naar TODO in alle bestanden in ~/code/."
+      },
+      {
+        "cmd": "grep -v \"^#\" config.txt",
+        "desc": "Verwijdert commentaarregels (regels die beginnen met #)."
+      },
+      {
+        "cmd": "grep -o '[a-zA-Z0-9._%+-]\\+@[a-zA-Z0-9.-]\\+\\.[a-zA-Z]\\{2,\\}' mixed_data.txt",
+        "desc": "Extraheert e-mailadressen met een regex."
+      },
+      {
+        "cmd": "grep -i 'error' /var/log/dpkg.log",
+        "desc": "Zoekt naar 'error' (hoofdletteronafhankelijk) in het logbestand."
+      },
+      {
+        "cmd": "grep -v 'nologin' /etc/passwd",
+        "desc": "Toont alle regels in /etc/passwd die nologin NIET bevatten."
+      },
+      {
+        "cmd": "grep -m 1 -i 'error' /var/log/dpkg.log",
+        "desc": "Toont alleen de eerste overeenkomst voor 'error'."
+      },
+      {
+        "cmd": "grep '/bin/bash' /etc/passwd | cut -d':' -f6",
+        "desc": "Toont de homedirectory van elke gebruiker met bash als shell."
+      }
+    ],
+    "related": [
+      "sort",
+      "wc",
+      "|",
+      "find",
+      "sed",
+      "awk",
+      "cut"
+    ],
+    "tags": [
+      "zoeken",
+      "tekstverwerking"
+    ]
+  },
+  {
+    "name": "seq",
+    "category": "Tekst",
+    "short": "Genereert een reeks getallen.",
+    "synopsis": "seq [OPTIE] EERSTE [STAP] LAATSTE",
+    "chapter": "H4 Redirects & pipes",
+    "examples": [
+      {
+        "cmd": "seq 1 100 > numbers.txt",
+        "desc": "Schrijft de getallen 1 tot en met 100 naar numbers.txt."
+      },
+      {
+        "cmd": "seq 50 150 >> numbers.txt",
+        "desc": "Voegt de getallen 50 tot 150 toe aan numbers.txt."
+      },
+      {
+        "cmd": "seq 1 10 | tac",
+        "desc": "Drukt de getallen 10 tot 1 af."
+      }
+    ],
+    "related": [
+      ">",
+      ">>",
+      "tac"
+    ],
+    "tags": [
+      "genereren",
+      "getallen"
+    ]
+  },
+  {
+    "name": "strings",
+    "category": "Bekijken",
+    "short": "Haalt leesbare tekstreeksen op uit binaire bestanden.",
+    "synopsis": "strings [OPTIE]... BESTAND...",
+    "chapter": "H4 Redirects & pipes",
+    "flags": [
+      {
+        "flag": "-n GETAL",
+        "desc": "Stelt de minimumlengte van af te drukken tekstreeksen in (standaard 4)."
+      }
+    ],
+    "examples": [
+      {
+        "cmd": "strings /bin/ls",
+        "desc": "Toont alle leesbare tekst in het binaire bestand /bin/ls."
+      },
+      {
+        "cmd": "strings -n 8 binaryfile",
+        "desc": "Toont alleen tekstreeksen van minimaal 8 tekens lang."
+      },
+      {
+        "cmd": "strings /usr/bin/file | head -20",
+        "desc": "Toont de eerste 20 leesbare strings uit /usr/bin/file."
+      }
+    ],
+    "related": [
+      "file",
+      "cat"
+    ],
+    "tags": [
+      "bekijken",
+      "binair"
+    ]
+  },
+  {
+    "name": "awk",
+    "category": "Tekst",
+    "short": "Verwerkt en transformeert tekst per regel op basis van veldpatronen.",
+    "synopsis": "awk [OPTIE]... 'PROGRAMMA' [BESTAND]...",
+    "chapter": "H4 Redirects & pipes",
+    "flags": [
+      {
+        "flag": "-F 'SCHEIDINGSTEKEN'",
+        "desc": "Geeft het veldscheidingsteken op (standaard: witruimte)."
+      }
+    ],
+    "examples": [
+      {
+        "cmd": "history | awk '{print $2}'",
+        "desc": "Drukt het tweede veld (commando) van elke geschiedenisregel af."
+      },
+      {
+        "cmd": "ps aux | awk '{print $4, $11}'",
+        "desc": "Drukt geheugengebruik en procesnaam af."
+      },
+      {
+        "cmd": "awk '{print $1}' file.txt",
+        "desc": "Drukt het eerste veld van elke regel af (witruimte als scheidingsteken)."
+      },
+      {
+        "cmd": "awk -F',' '{print NR, $2}' data.csv",
+        "desc": "Drukt regelnummer en tweede kolom af uit een CSV-bestand."
+      },
+      {
+        "cmd": "awk -F':' '{print $1 \" -> \" $7}' /etc/passwd",
+        "desc": "Toont gebruikersnaam en shell per gebruiker in het formaat 'user -> shell'."
+      }
+    ],
+    "related": [
+      "cut",
+      "sort",
+      "|",
+      "grep"
+    ],
+    "tags": [
+      "tekstverwerking",
+      "velden"
+    ]
+  },
+  {
+    "name": "cut",
+    "category": "Tekst",
+    "short": "Extraheert specifieke kolommen of tekens uit elke regel van een bestand of stdin.",
+    "synopsis": "cut [OPTIE]... [BESTAND]...",
+    "chapter": "H4 Redirects & pipes",
+    "flags": [
+      {
+        "flag": "-d SCHEIDINGSTEKEN",
+        "desc": "Stelt het veldscheidingsteken in (standaard tab)."
+      },
+      {
+        "flag": "-f VELDEN",
+        "desc": "Selecteert de opgegeven velden."
+      },
+      {
+        "flag": "-c bereik",
+        "desc": "Selecteert tekens op positie (bijv. -c1-5 of -c1,3,5)."
+      },
+      {
+        "flag": "-f velden",
+        "desc": "Selecteert velden op basis van een scheidingsteken."
+      },
+      {
+        "flag": "-d scheidingsteken",
+        "desc": "Geeft het scheidingsteken op (standaard is een TAB)."
+      },
+      {
+        "flag": "--complement",
+        "desc": "Selecteert alles behalve de opgegeven velden of tekens."
+      },
+      {
+        "flag": "-d 'SCHEIDINGSTEKEN'",
+        "desc": "Geeft het veldscheidingsteken op."
+      },
+      {
+        "flag": "-f N",
+        "desc": "Selecteert veld N (of een reeks met komma's of koppelteken)."
+      },
+      {
+        "flag": "-c N-M",
+        "desc": "Selecteert tekens van positie N tot M."
+      }
+    ],
+    "examples": [
+      {
+        "cmd": "who | cut -d' ' -f1",
+        "desc": "Toont alleen de gebruikersnamen van ingelogde gebruikers."
+      },
+      {
+        "cmd": "cat /etc/passwd | cut -d: -f1",
+        "desc": "Toont alle gebruikersnamen uit /etc/passwd."
+      },
+      {
+        "cmd": "cut -d: -f1 /etc/passwd",
+        "desc": "Extraheert alle gebruikersnamen uit /etc/passwd."
+      },
+      {
+        "cmd": "cut -d, -f2 data.csv",
+        "desc": "Extraheert de tweede kolom uit een CSV-bestand."
+      },
+      {
+        "cmd": "cut -c1-5 bestand.txt",
+        "desc": "Toont de eerste 5 tekens van elke regel."
+      },
+      {
+        "cmd": "cut -d: -f1,3 /etc/passwd",
+        "desc": "Extraheert gebruikersnaam (veld 1) en UID (veld 3)."
+      },
+      {
+        "cmd": "echo \"2024-01-15\" | cut -d- -f1",
+        "desc": "Extraheert het jaar uit een datum."
+      },
+      {
+        "cmd": "cut -d, -f2- data.csv",
+        "desc": "Extraheert alle kolommen vanaf de tweede."
+      },
+      {
+        "cmd": "cut -d':' -f1 /etc/passwd",
+        "desc": "Haalt de gebruikersnaam op (veld 1, scheidingsteken :)."
+      },
+      {
+        "cmd": "cut -d':' -f1,6 /etc/passwd",
+        "desc": "Haalt gebruikersnaam en homedirectory op."
+      }
+    ],
+    "related": [
+      "awk",
+      "sort",
+      "|",
+      "grep",
+      "tr"
+    ],
+    "tags": [
+      "tekstverwerking",
+      "velden"
+    ]
+  },
+  {
+    "name": "ps",
+    "category": "Processen",
+    "short": "Toont een momentopname van de lopende processen.",
+    "synopsis": "ps [OPTIE]...",
+    "chapter": "H4 Redirects & pipes",
+    "flags": [
+      {
+        "flag": "aux",
+        "desc": "Toont alle processen van alle gebruikers met gedetailleerde info (BSD-stijl)."
+      },
+      {
+        "flag": "-ef",
+        "desc": "Toont alle processen in uitgebreid formaat (alternatief voor aux)."
+      },
+      {
+        "flag": "--forest",
+        "desc": "Toont een boomstructuur van proces-kind-relaties."
+      },
+      {
+        "flag": "-u gebruiker",
+        "desc": "Toont processen die door een specifieke gebruiker draaien."
+      },
+      {
+        "flag": "--sort=-%cpu",
+        "desc": "Sorteert resultaten op CPU-gebruik (hoogste eerst)."
+      },
+      {
+        "flag": "--sort=-%mem",
+        "desc": "Sorteert resultaten op geheugengebruik (hoogste eerst)."
+      }
+    ],
+    "examples": [
+      {
+        "cmd": "ps aux | grep $USER",
+        "desc": "Toont alleen jouw eigen processen."
+      },
+      {
+        "cmd": "ps aux | sort -k4 -nr | head -5",
+        "desc": "Toont de 5 processen met het hoogste geheugengebruik."
+      },
+      {
+        "cmd": "ps aux | wc -l",
+        "desc": "Telt het aantal lopende processen."
+      },
+      {
+        "cmd": "ps aux",
+        "desc": "Toont alle processen van alle gebruikers."
+      },
+      {
+        "cmd": "ps -ef",
+        "desc": "Toont alle processen in volledig formaat."
+      },
+      {
+        "cmd": "ps aux --forest",
+        "desc": "Toont processenlijst als boomstructuur."
+      },
+      {
+        "cmd": "ps aux --sort=-%cpu | head -10",
+        "desc": "Toont de 10 processen met hoogste CPU-gebruik."
+      }
+    ],
+    "related": [
+      "grep",
+      "sort",
+      "|",
+      "top",
+      "htop",
+      "pgrep",
+      "kill"
+    ],
+    "tags": [
+      "processen",
+      "systeem"
+    ]
+  },
+  {
+    "name": "df",
+    "category": "Systeem",
+    "short": "Toont het schijfgebruik van bestandssystemen.",
+    "synopsis": "df [OPTIE]... [BESTANDSSYSTEEM]...",
+    "chapter": "H4 Redirects & pipes",
+    "flags": [
+      {
+        "flag": "-h",
+        "desc": "Toont groottes in mensvriendelijk formaat (KB, MB, GB)."
+      },
+      {
+        "flag": "-i",
+        "desc": "Toont inode-gebruik in plaats van blokgebruik."
+      }
+    ],
+    "examples": [
+      {
+        "cmd": "df -h | grep -v tmpfs > disk_usage.txt",
+        "desc": "Slaat schijfgebruik op zonder tijdelijke bestandssystemen."
+      },
+      {
+        "cmd": "df -h",
+        "desc": "Toont schijfgebruik van alle bestandssystemen in leesbaar formaat."
+      },
+      {
+        "cmd": "df -i",
+        "desc": "Toont het inode-gebruik per bestandssysteem; handig om te zien of er inodes op raken."
+      }
+    ],
+    "related": [
+      "du",
+      "|",
+      ">",
+      "lsblk",
+      "iostat"
+    ],
+    "tags": [
+      "systeem",
+      "schijf"
+    ]
+  },
+  {
+    "name": "command",
+    "category": "Shell scripting",
+    "short": "Voert een commando uit of controleert of het bestaat, zonder aliassen te gebruiken.",
+    "synopsis": "command [-v] naam [argumenten]",
+    "chapter": "H5 Echo, alias & operatoren",
+    "flags": [
+      {
+        "flag": "-v",
+        "desc": "Drukt het pad of de definitie van het commando af (draagbaar alternatief voor which)."
+      }
+    ],
+    "examples": [
+      {
+        "cmd": "command -v git",
+        "desc": "Toont het pad naar git, of niets als het ontbreekt."
+      },
+      {
+        "cmd": "command -v docker && echo \"Docker beschikbaar\"",
+        "desc": "Controleert of Docker aanwezig is en drukt bevestiging af."
+      }
+    ],
+    "related": [
+      "type",
+      "which"
+    ],
+    "tags": [
+      "ontdekking",
+      "controle"
+    ]
+  },
+  {
+    "name": "alias",
+    "category": "Shell scripting",
+    "short": "Maakt een snelkoppeling (alias) voor een commando of toont bestaande aliassen.",
+    "synopsis": "alias [naam[='commando']]",
+    "chapter": "H5 Echo, alias & operatoren",
+    "examples": [
+      {
+        "cmd": "alias ll='ls -la'",
+        "desc": "Maakt een alias ll aan die ls -la uitvoert."
+      },
+      {
+        "cmd": "alias",
+        "desc": "Toont alle gedefinieerde aliassen in de huidige sessie."
+      },
+      {
+        "cmd": "alias ll",
+        "desc": "Toont de definitie van de alias ll."
+      },
+      {
+        "cmd": "alias grep='grep --color=auto'",
+        "desc": "Maakt grep standaard met gekleurde uitvoer."
+      },
+      {
+        "cmd": "alias ..='cd ..'",
+        "desc": "Maakt een snelkoppeling om één map omhoog te gaan."
+      },
+      {
+        "cmd": "alias ll='ls -lh'",
+        "desc": "Maakt een tijdelijke alias ll aan."
+      },
+      {
+        "cmd": "unalias ll",
+        "desc": "Verwijdert de alias ll."
+      },
+      {
+        "cmd": "echo \"alias mygrep='grep -i --color'\" >> ~/.bashrc && source ~/.bashrc",
+        "desc": "Voegt een permanente alias toe aan ~/.bashrc en laadt de configuratie opnieuw."
+      }
+    ],
+    "related": [
+      "unalias",
+      "source",
+      "bash"
+    ],
+    "tags": [
+      "snelkoppeling",
+      "productiviteit"
+    ]
+  },
+  {
+    "name": "unalias",
+    "category": "Shell scripting",
+    "short": "Verwijdert een of meer aliassen.",
+    "synopsis": "unalias [-a] naam...",
+    "chapter": "H5 Echo, alias & operatoren",
+    "flags": [
+      {
+        "flag": "-a",
+        "desc": "Verwijdert alle gedefinieerde aliassen in één keer."
+      }
+    ],
+    "examples": [
+      {
+        "cmd": "unalias ll",
+        "desc": "Verwijdert de alias ll."
+      },
+      {
+        "cmd": "unalias -a",
+        "desc": "Verwijdert alle aliassen."
+      },
+      {
+        "cmd": "unalias ll h",
+        "desc": "Verwijdert de aliassen ll en h tegelijk."
+      }
+    ],
+    "related": [
+      "alias"
+    ],
+    "tags": [
+      "snelkoppeling",
+      "beheer"
+    ]
+  },
+  {
+    "name": "jobs",
+    "category": "Processen",
+    "short": "Toont de actieve achtergrondprocessen in de huidige shell-sessie.",
+    "synopsis": "jobs [-l]",
+    "chapter": "H5 Echo, alias & operatoren",
+    "flags": [
+      {
+        "flag": "-l",
+        "desc": "Toont ook de proces-ID (PID) van elk achtergrondproces."
+      }
+    ],
+    "examples": [
+      {
+        "cmd": "jobs",
+        "desc": "Toont alle actieve achtergrondtaken."
+      },
+      {
+        "cmd": "jobs -l",
+        "desc": "Toont taken met hun PID."
+      }
+    ],
+    "related": [
+      "fg",
+      "bg",
+      "kill",
+      "nohup"
+    ],
+    "tags": [
+      "processen",
+      "achtergrond"
+    ]
+  },
+  {
+    "name": "fg",
+    "category": "Processen",
+    "short": "Brengt een achtergrondproces terug naar de voorgrond.",
+    "synopsis": "fg [%taaknummer]",
+    "chapter": "H5 Echo, alias & operatoren",
+    "examples": [
+      {
+        "cmd": "fg %1",
+        "desc": "Brengt taak 1 terug naar de voorgrond."
+      }
+    ],
+    "related": [
+      "bg",
+      "jobs"
+    ],
+    "tags": [
+      "processen",
+      "achtergrond"
+    ]
+  },
+  {
+    "name": "bg",
+    "category": "Processen",
+    "short": "Hervat een gestopte taak als achtergrondproces.",
+    "synopsis": "bg [%taaknummer]",
+    "chapter": "H5 Echo, alias & operatoren",
+    "examples": [
+      {
+        "cmd": "bg %1",
+        "desc": "Laat taak 1 verder lopen op de achtergrond."
+      }
+    ],
+    "related": [
+      "fg",
+      "jobs"
+    ],
+    "tags": [
+      "processen",
+      "achtergrond"
+    ]
+  },
+  {
+    "name": "shopt",
+    "category": "Shell scripting",
+    "short": "Schakelt shell-opties in of uit, zoals uitgebreide globbing en recursief matchen.",
+    "synopsis": "shopt [-s|-u] OPTIE",
+    "chapter": "H6 Globbing, archiveren & links",
+    "flags": [
+      {
+        "flag": "-s",
+        "desc": "Zet de opgegeven shell-optie aan (set)."
+      },
+      {
+        "flag": "-u",
+        "desc": "Zet de opgegeven shell-optie uit (unset)."
+      }
+    ],
+    "examples": [
+      {
+        "cmd": "shopt -s extglob",
+        "desc": "Schakelt uitgebreide globbing in: patronen zoals +(*.txt|*.doc)."
+      },
+      {
+        "cmd": "shopt -s globstar",
+        "desc": "Schakelt ** in voor recursief matchen door alle submappen heen."
+      },
+      {
+        "cmd": "shopt -s nullglob",
+        "desc": "Zorgt dat een patroon zonder overeenkomsten gewoon verdwijnt i.p.v. letterlijk blijft staan."
+      }
+    ],
+    "related": [
+      "bash",
+      "ls"
+    ],
+    "tags": [
+      "shell",
+      "globbing"
+    ]
+  },
+  {
+    "name": "dd",
+    "category": "Systeem",
+    "short": "Kopieert en converteert gegevensblokken; wordt gebruikt voor schijfback-ups, het aanmaken van testbestanden en het schrijven van bootbare media.",
+    "synopsis": "dd if=INVOER of=UITVOER [OPTIE]...",
+    "chapter": "H6 Globbing, archiveren & links",
+    "flags": [
+      {
+        "flag": "bs=GROOTTE",
+        "desc": "Blokgrootte, bijv. 1K, 1M, 4M. Grotere blokken zijn doorgaans sneller."
+      },
+      {
+        "flag": "count=N",
+        "desc": "Aantal blokken dat gekopieerd wordt."
+      },
+      {
+        "flag": "skip=N",
+        "desc": "Sla N blokken over aan het begin van de invoer."
+      },
+      {
+        "flag": "seek=N",
+        "desc": "Sla N blokken over aan het begin van de uitvoer."
+      },
+      {
+        "flag": "status=progress",
+        "desc": "Toont voortgang tijdens de bewerking."
+      },
+      {
+        "flag": "conv=noerror",
+        "desc": "Gaat door na lees-/schrijffouten."
+      },
+      {
+        "flag": "oflag=direct",
+        "desc": "Schrijft direct naar schijf, omzeilt de cache (voor prestatietests)."
+      },
+      {
+        "flag": "if=BESTAND",
+        "desc": "Invoerbestand of apparaat."
+      },
+      {
+        "flag": "of=BESTAND",
+        "desc": "Uitvoerbestand of apparaat."
+      },
+      {
+        "flag": "bs=BLOKGROOTTE",
+        "desc": "Blokgrootte (bv. 4M voor 4 megabyte per blok)."
+      }
+    ],
+    "examples": [
+      {
+        "cmd": "dd if=/dev/zero of=1MB.file bs=1M count=1",
+        "desc": "Maakt een bestand van 1 MB gevuld met nullen aan."
+      },
+      {
+        "cmd": "dd if=/dev/urandom of=random.dat bs=1K count=5",
+        "desc": "Maakt een bestand van 5 KB met willekeurige data aan."
+      },
+      {
+        "cmd": "dd if=linux.iso of=/dev/sdX bs=4M status=progress",
+        "desc": "Schrijft een ISO-bestand naar een USB-stick (pas op: apparaatnaam goed controleren!)."
+      },
+      {
+        "cmd": "dd if=1MB.file of=copy.file bs=4K",
+        "desc": "Kopieert een bestand blok voor blok met een blokgrootte van 4K."
+      },
+      {
+        "cmd": "sudo dd if=/dev/sda of=/backup/disk_image.img bs=4M status=progress",
+        "desc": "Maakt een volledige schijfimage van /dev/sda."
+      },
+      {
+        "cmd": "sudo gunzip -c /backup/disk.img.gz | dd of=/dev/sda bs=4M",
+        "desc": "Herstelt een gecomprimeerde schijfimage naar /dev/sda."
+      }
+    ],
+    "related": [
+      "lsblk",
+      "sync",
+      "fdisk",
+      "tar",
+      "rsync"
+    ],
+    "tags": [
+      "schijf",
+      "blokken",
+      "back-up"
+    ],
+    "danger": true
+  },
+  {
+    "name": "lsblk",
+    "category": "Systeem",
+    "short": "Toont een boomoverzicht van alle blokapparaten (schijven en partities).",
+    "synopsis": "lsblk [OPTIE]... [APPARAAT]...",
+    "chapter": "H6 Globbing, archiveren & links",
+    "flags": [
+      {
+        "flag": "-f",
+        "desc": "Toont bestandssysteemtype en UUID."
+      },
+      {
+        "flag": "-o NAME,SIZE,TYPE,MOUNTPOINT",
+        "desc": "Kiest specifieke kolommen om te tonen."
+      }
+    ],
+    "examples": [
+      {
+        "cmd": "lsblk",
+        "desc": "Toont een overzicht van alle schijven en partities."
+      },
+      {
+        "cmd": "lsblk -f",
+        "desc": "Inclusief bestandssysteemtype en UUID, handig voor identificatie."
+      }
+    ],
+    "related": [
+      "fdisk",
+      "parted",
+      "dd"
+    ],
+    "tags": [
+      "schijf",
+      "systeem"
+    ]
+  },
+  {
+    "name": "tar",
+    "category": "Archieven",
+    "short": "Bundelt bestanden en mappen in één archiefbestand, eventueel met compressie.",
+    "synopsis": "tar [OPTIES] ARCHIEF [BESTAND]...",
+    "chapter": "H6 Globbing, archiveren & links",
+    "flags": [
+      {
+        "flag": "-c",
+        "desc": "Maakt een nieuw archief aan (create)."
+      },
+      {
+        "flag": "-x",
+        "desc": "Pakt een archief uit (extract)."
+      },
+      {
+        "flag": "-t",
+        "desc": "Toont de inhoud van een archief (list)."
+      },
+      {
+        "flag": "-f BESTAND",
+        "desc": "Geeft de bestandsnaam van het archief op."
+      },
+      {
+        "flag": "-z",
+        "desc": "Gebruikt gzip-compressie (.tar.gz / .tgz)."
+      },
+      {
+        "flag": "-j",
+        "desc": "Gebruikt bzip2-compressie (.tar.bz2), betere compressie dan gzip."
+      },
+      {
+        "flag": "-J",
+        "desc": "Gebruikt xz-compressie (.tar.xz), de beste compressie."
+      },
+      {
+        "flag": "-v",
+        "desc": "Verbose: toont de bestanden die verwerkt worden."
+      },
+      {
+        "flag": "-p",
+        "desc": "Behoudt originele permissies bij het uitpakken."
+      },
+      {
+        "flag": "-C PAD",
+        "desc": "Pakt uit naar een specifieke map."
+      },
+      {
+        "flag": "--exclude=PATROON",
+        "desc": "Sluit bestanden die overeenkomen met het patroon uit van het archief."
+      }
+    ],
+    "examples": [
+      {
+        "cmd": "tar -cf archive.tar file1 file2 dir/",
+        "desc": "Maakt een niet-gecomprimeerd archief van bestanden en een map."
+      },
+      {
+        "cmd": "tar -czf archive.tar.gz project/",
+        "desc": "Maakt een gzip-gecomprimeerd archief van de map project/."
+      },
+      {
+        "cmd": "tar -cjf archive.tar.bz2 project/",
+        "desc": "Maakt een bzip2-gecomprimeerd archief (betere compressie)."
+      },
+      {
+        "cmd": "tar -cJf archive.tar.xz project/",
+        "desc": "Maakt een xz-gecomprimeerd archief (beste compressie)."
+      },
+      {
+        "cmd": "tar -tzf archive.tar.gz",
+        "desc": "Toont de inhoud van een gecomprimeerd archief zonder het uit te pakken."
+      },
+      {
+        "cmd": "tar -xzf archive.tar.gz -C /pad/naar/doel/",
+        "desc": "Pakt een gzip-archief uit naar een specifieke map."
+      },
+      {
+        "cmd": "tar -czf backup.tar.gz --exclude='*.tmp' --exclude='*.log' /home/user/",
+        "desc": "Maakt een archief met uitzondering van tijdelijke en logbestanden."
+      },
+      {
+        "cmd": "tar -czf home_backup_$(date +%Y%m%d).tar.gz ~",
+        "desc": "Maakt een back-up van de thuismap met de datum in de bestandsnaam."
+      }
+    ],
+    "related": [
+      "gzip",
+      "bzip2",
+      "zip",
+      "unzip"
+    ],
+    "tags": [
+      "archief",
+      "compressie",
+      "back-up"
+    ]
+  },
+  {
+    "name": "gzip",
+    "category": "Archieven",
+    "short": "Comprimeert bestanden met het gzip-algoritme; vervangt het origineel door een .gz-bestand.",
+    "synopsis": "gzip [OPTIE]... BESTAND...",
+    "chapter": "H6 Globbing, archiveren & links",
+    "flags": [
+      {
+        "flag": "-k",
+        "desc": "Behoudt het originele bestand naast het gecomprimeerde bestand."
+      },
+      {
+        "flag": "-d",
+        "desc": "Decomprimeert (gelijk aan gunzip)."
+      }
+    ],
+    "examples": [
+      {
+        "cmd": "gzip file.txt",
+        "desc": "Comprimeert file.txt naar file.txt.gz en verwijdert het origineel."
+      },
+      {
+        "cmd": "gzip -k file.txt",
+        "desc": "Comprimeert maar behoudt ook het originele bestand."
+      },
+      {
+        "cmd": "zcat file.txt.gz",
+        "desc": "Toont de inhoud van een gzip-bestand zonder het uit te pakken."
+      }
+    ],
+    "related": [
+      "gunzip",
+      "bzip2",
+      "tar"
+    ],
+    "tags": [
+      "compressie",
+      "archief"
+    ]
+  },
+  {
+    "name": "gunzip",
+    "category": "Archieven",
+    "short": "Decomprimeert gzip-bestanden en herstelt het originele bestand.",
+    "synopsis": "gunzip [OPTIE]... BESTAND.gz...",
+    "chapter": "H6 Globbing, archiveren & links",
+    "flags": [
+      {
+        "flag": "-k",
+        "desc": "Behoudt het gecomprimeerde bestand naast het gedecomprimeerde."
+      }
+    ],
+    "examples": [
+      {
+        "cmd": "gunzip file.txt.gz",
+        "desc": "Decomprimeert file.txt.gz en herstelt file.txt."
+      }
+    ],
+    "related": [
+      "gzip",
+      "zcat"
+    ],
+    "tags": [
+      "compressie",
+      "archief"
+    ]
+  },
+  {
+    "name": "bzip2",
+    "category": "Archieven",
+    "short": "Comprimeert bestanden met het bzip2-algoritme; betere compressie dan gzip maar langzamer.",
+    "synopsis": "bzip2 [OPTIE]... BESTAND...",
+    "chapter": "H6 Globbing, archiveren & links",
+    "flags": [
+      {
+        "flag": "-k",
+        "desc": "Behoudt het originele bestand naast het gecomprimeerde bestand."
+      },
+      {
+        "flag": "-d",
+        "desc": "Decomprimeert (gelijk aan bunzip2)."
+      }
+    ],
+    "examples": [
+      {
+        "cmd": "bzip2 file.txt",
+        "desc": "Comprimeert file.txt naar file.txt.bz2."
+      },
+      {
+        "cmd": "bzcat file.txt.bz2",
+        "desc": "Toont de inhoud van een bzip2-bestand zonder het uit te pakken."
+      }
+    ],
+    "related": [
+      "bunzip2",
+      "gzip",
+      "tar"
+    ],
+    "tags": [
+      "compressie",
+      "archief"
+    ]
+  },
+  {
+    "name": "zip",
+    "category": "Archieven",
+    "short": "Maakt zip-archieven aan, het cross-platform standaardformaat.",
+    "synopsis": "zip [OPTIE]... ARCHIEF.zip BESTAND...",
+    "chapter": "H6 Globbing, archiveren & links",
+    "flags": [
+      {
+        "flag": "-r",
+        "desc": "Recursief: voegt ook de inhoud van submappen toe."
+      },
+      {
+        "flag": "-9",
+        "desc": "Maximale compressie (trager, kleiner bestand)."
+      }
+    ],
+    "examples": [
+      {
+        "cmd": "zip archive.zip file1 file2 dir/",
+        "desc": "Maakt een zip-archief van bestanden en een map."
+      },
+      {
+        "cmd": "zip -r project.zip project/",
+        "desc": "Maakt recursief een zip-archief van een volledige map."
+      },
+      {
+        "cmd": "unzip -l archive.zip",
+        "desc": "Toont de inhoud van een zip-archief zonder het uit te pakken."
+      },
+      {
+        "cmd": "unzip archive.zip -d doel/",
+        "desc": "Pakt een zip-archief uit naar een specifieke map."
+      }
+    ],
+    "related": [
+      "unzip",
+      "tar",
+      "gzip"
+    ],
+    "tags": [
+      "archief",
+      "compressie",
+      "cross-platform"
+    ]
+  },
+  {
+    "name": "unzip",
+    "category": "Archieven",
+    "short": "Pakt zip-archieven uit.",
+    "synopsis": "unzip [OPTIE]... ARCHIEF.zip [BESTANDEN]...",
+    "chapter": "H6 Globbing, archiveren & links",
+    "flags": [
+      {
+        "flag": "-d PAD",
+        "desc": "Pakt uit naar het opgegeven pad."
+      },
+      {
+        "flag": "-l",
+        "desc": "Toont de inhoud van het archief zonder uit te pakken."
+      },
+      {
+        "flag": "-t",
+        "desc": "Controleert de integriteit van het archief."
+      }
+    ],
+    "examples": [
+      {
+        "cmd": "unzip archive.zip",
+        "desc": "Pakt het archief uit in de huidige map."
+      },
+      {
+        "cmd": "unzip archive.zip -d doel/",
+        "desc": "Pakt uit naar de opgegeven doelmap."
+      }
+    ],
+    "related": [
+      "zip",
+      "tar"
+    ],
+    "tags": [
+      "archief",
+      "compressie"
+    ]
+  },
+  {
+    "name": "ln",
+    "category": "Bestanden",
+    "short": "Maakt harde links of symbolische links (softlinks) aan naar bestanden of mappen.",
+    "synopsis": "ln [OPTIE]... DOEL [LINKNAAM]",
+    "chapter": "H6 Globbing, archiveren & links",
+    "flags": [
+      {
+        "flag": "-s",
+        "desc": "Maakt een symbolische link (softlink) aan in plaats van een harde link."
+      }
+    ],
+    "examples": [
+      {
+        "cmd": "ln original.txt hardlink.txt",
+        "desc": "Maakt een harde link naar original.txt; beide namen verwijzen naar hetzelfde inode."
+      },
+      {
+        "cmd": "ln -s original.txt softlink.txt",
+        "desc": "Maakt een symbolische link naar original.txt."
+      },
+      {
+        "cmd": "ln -s /pad/naar/map linkname",
+        "desc": "Maakt een symbolische link naar een map (kan ook cross-filesystem)."
+      },
+      {
+        "cmd": "ln -s ../config/app.conf current_config",
+        "desc": "Maakt een relatieve symbolische link aan."
+      },
+      {
+        "cmd": "ln -s /bin/bash ~/myShell",
+        "desc": "Maakt een symlink myShell in ~ die naar /bin/bash wijst."
+      },
+      {
+        "cmd": "ln /etc/hostname ~/backup.conf",
+        "desc": "Maakt een hardlink backup.conf in ~ voor /etc/hostname."
+      },
+      {
+        "cmd": "ls -li ~/backup.conf /etc/hostname",
+        "desc": "Controleert of beide hetzelfde inode-nummer delen."
+      }
+    ],
+    "related": [
+      "ls -li",
+      "stat",
+      "find",
+      "unlink",
+      "readlink",
+      "ls"
+    ],
+    "tags": [
+      "links",
+      "inodes",
+      "bestandssysteem"
+    ]
+  },
+  {
+    "name": "stat",
+    "category": "Bestanden",
+    "short": "Toont gedetailleerde informatie over een bestand of map, inclusief inode-nummer, eigenaar, permissies en tijdstempels.",
+    "synopsis": "stat [OPTIE]... BESTAND...",
+    "chapter": "H6 Globbing, archiveren & links",
+    "flags": [
+      {
+        "flag": "-c FORMAT",
+        "desc": "Geeft uitvoer in een aangepast formaat, bijv. -c%i voor het inode-nummer."
+      },
+      {
+        "flag": "-c FORMAAT",
+        "desc": "Geeft uitvoer in een aangepast formaat. %a = octale permissies, %n = bestandsnaam, %U = eigenaar, %G = groep."
+      }
+    ],
+    "examples": [
+      {
+        "cmd": "stat original.txt",
+        "desc": "Toont alle metadata van original.txt, waaronder inode-nummer en link-telling."
+      },
+      {
+        "cmd": "stat -c%s *.file",
+        "desc": "Toont de exacte bestandsgrootte in bytes voor alle .file-bestanden."
+      },
+      {
+        "cmd": "stat bestand.txt",
+        "desc": "Toont alle informatie over het bestand."
+      },
+      {
+        "cmd": "stat -c \"%a %n\" bestand.txt",
+        "desc": "Toont octale permissies en bestandsnaam."
+      },
+      {
+        "cmd": "stat -c \"File: %n, Group: %G\" bestand.txt",
+        "desc": "Toont bestandsnaam en groep."
+      }
+    ],
+    "related": [
+      "ls -li",
+      "file",
+      "find",
+      "ls",
+      "chmod",
+      "chown"
+    ],
+    "tags": [
+      "inodes",
+      "metadata",
+      "bestanden"
+    ]
+  },
+  {
+    "name": "find",
+    "category": "Zoeken",
+    "short": "Zoekt recursief naar bestanden en mappen op basis van naam, type, grootte, tijd, permissies of eigenaar.",
+    "synopsis": "find [PAD] [OPTIES] [TESTS] [ACTIES]",
+    "chapter": "H6 Globbing, archiveren & links",
+    "flags": [
+      {
+        "flag": "-inum N",
+        "desc": "Zoekt bestanden met het opgegeven inode-nummer."
+      },
+      {
+        "flag": "-type l",
+        "desc": "Zoekt alleen symbolische links."
+      },
+      {
+        "flag": "-type f",
+        "desc": "Zoekt alleen reguliere bestanden."
+      },
+      {
+        "flag": "-links +1",
+        "desc": "Zoekt bestanden met meer dan 1 harde link."
+      },
+      {
+        "flag": "-name PATROON",
+        "desc": "Zoekt op bestandsnaam (hoofdlettergevoelig, ondersteunt wildcards)."
+      },
+      {
+        "flag": "-iname PATROON",
+        "desc": "Zoekt op bestandsnaam, niet hoofdlettergevoelig."
+      },
+      {
+        "flag": "-type d",
+        "desc": "Zoekt alleen mappen."
+      },
+      {
+        "flag": "-size +N[c|k|M|G]",
+        "desc": "Zoekt bestanden groter dan N (bytes, kilobytes, megabytes, gigabytes)."
+      },
+      {
+        "flag": "-size -N[c|k|M|G]",
+        "desc": "Zoekt bestanden kleiner dan N."
+      },
+      {
+        "flag": "-mtime -N",
+        "desc": "Zoekt bestanden gewijzigd in de afgelopen N dagen."
+      },
+      {
+        "flag": "-mtime +N",
+        "desc": "Zoekt bestanden gewijzigd meer dan N dagen geleden."
+      },
+      {
+        "flag": "-mmin -N",
+        "desc": "Zoekt bestanden gewijzigd in de afgelopen N minuten."
+      },
+      {
+        "flag": "-atime -N",
+        "desc": "Zoekt bestanden die in de afgelopen N dagen geopend zijn."
+      },
+      {
+        "flag": "-ctime -N",
+        "desc": "Zoekt bestanden waarvan de metadata in de afgelopen N dagen gewijzigd is."
+      },
+      {
+        "flag": "-perm MODUS",
+        "desc": "Zoekt bestanden met exact die permissies."
+      },
+      {
+        "flag": "-perm -MODUS",
+        "desc": "Zoekt bestanden met minstens die permissies (bitmask)."
+      },
+      {
+        "flag": "-perm /MODUS",
+        "desc": "Zoekt bestanden met een of meer van die permissies."
+      },
+      {
+        "flag": "-user NAAM",
+        "desc": "Zoekt bestanden van een bepaalde eigenaar."
+      },
+      {
+        "flag": "-group NAAM",
+        "desc": "Zoekt bestanden van een bepaalde groep."
+      },
+      {
+        "flag": "-nouser",
+        "desc": "Zoekt bestanden zonder geldige eigenaar."
+      },
+      {
+        "flag": "-nogroup",
+        "desc": "Zoekt bestanden zonder geldige groep."
+      },
+      {
+        "flag": "-executable",
+        "desc": "Zoekt bestanden die uitvoerbaar zijn voor de huidige gebruiker."
+      },
+      {
+        "flag": "-writable",
+        "desc": "Zoekt bestanden die schrijfbaar zijn voor de huidige gebruiker."
+      },
+      {
+        "flag": "-empty",
+        "desc": "Zoekt lege bestanden of lege mappen."
+      },
+      {
+        "flag": "-delete",
+        "desc": "Verwijdert gevonden bestanden direct."
+      },
+      {
+        "flag": "-exec COMMANDO {} \\;",
+        "desc": "Voert een commando uit op elk gevonden bestand."
+      },
+      {
+        "flag": "-exec COMMANDO {} +",
+        "desc": "Voert een commando efficiënter uit door meerdere bestanden tegelijk te verwerken."
+      },
+      {
+        "flag": "-ok COMMANDO {} \\;",
+        "desc": "Zoals -exec maar vraagt bevestiging voor elke actie."
+      },
+      {
+        "flag": "-printf FORMAAT",
+        "desc": "Drukt gevonden bestanden af met een aangepast formaat."
+      },
+      {
+        "flag": "-maxdepth N",
+        "desc": "Beperkt de zoekdiepte tot N niveaus."
+      },
+      {
+        "flag": "\\( ... -o ... \\)",
+        "desc": "Logische OF-combinatie van zoekcriteria."
+      },
+      {
+        "flag": "! -name PATROON",
+        "desc": "Logische NOT: sluit bestanden met dit patroon uit."
+      },
+      {
+        "flag": "-name 'patroon'",
+        "desc": "Naam komt overeen met globpatroon (hoofdlettergevoelig)."
+      },
+      {
+        "flag": "-iname 'patroon'",
+        "desc": "Naam komt overeen, niet hoofdlettergevoelig."
+      },
+      {
+        "flag": "-size Nc",
+        "desc": "Precies N bytes groot (c = bytes)."
+      },
+      {
+        "flag": "-size +Nk",
+        "desc": "Groter dan N kilobytes."
+      },
+      {
+        "flag": "-exec cmd {} \\;",
+        "desc": "Voert cmd uit voor elk gevonden bestand ({} = bestandspad)."
+      }
+    ],
+    "examples": [
+      {
+        "cmd": "find . -inum $(stat -c %i original.txt)",
+        "desc": "Vindt alle harde links naar hetzelfde inode als original.txt."
+      },
+      {
+        "cmd": "find . -type l ! -exec test -e {} \\; -print",
+        "desc": "Vindt gebroken symbolische links."
+      },
+      {
+        "cmd": "find . -type f -links +1",
+        "desc": "Vindt bestanden die meer dan één harde link hebben."
+      },
+      {
+        "cmd": "find /home -name \"*.txt\"",
+        "desc": "Zoekt alle .txt-bestanden in /home."
+      },
+      {
+        "cmd": "find /home -iname \"BESTAND.TXT\"",
+        "desc": "Hoofdletterongevoelige zoekopdracht."
+      },
+      {
+        "cmd": "find /var/log -type f -name \"*.log\"",
+        "desc": "Zoekt alle logbestanden in /var/log."
+      },
+      {
+        "cmd": "find /home -size +1M",
+        "desc": "Zoekt bestanden groter dan 1 megabyte."
+      },
+      {
+        "cmd": "find /home -mtime -7",
+        "desc": "Zoekt bestanden gewijzigd in de afgelopen 7 dagen."
+      },
+      {
+        "cmd": "find /tmp -mmin -60",
+        "desc": "Zoekt bestanden gewijzigd in het afgelopen uur."
+      },
+      {
+        "cmd": "find /home -perm 644",
+        "desc": "Zoekt bestanden met precies permissie 644."
+      },
+      {
+        "cmd": "find /usr -perm -4000 -type f",
+        "desc": "Zoekt bestanden met de SUID-bit (beveiligingsaudit)."
+      },
+      {
+        "cmd": "find /home -perm -002 -type f",
+        "desc": "Zoekt wereldbeschrijfbare bestanden (beveiligingsrisico)."
+      },
+      {
+        "cmd": "find /home -user alice",
+        "desc": "Zoekt bestanden van de gebruiker alice."
+      },
+      {
+        "cmd": "find /home -nouser",
+        "desc": "Zoekt bestanden zonder geldige eigenaar (wees-bestanden)."
+      },
+      {
+        "cmd": "find /tmp -name \"*.tmp\" -delete",
+        "desc": "Zoekt en verwijdert alle .tmp-bestanden in /tmp."
+      },
+      {
+        "cmd": "find /home -name \"*.bak\" -exec rm {} \\;",
+        "desc": "Verwijdert alle back-upbestanden."
+      },
+      {
+        "cmd": "find /home -name \"*.txt\" -exec ls -l {} +",
+        "desc": "Toont details van alle gevonden tekstbestanden."
+      },
+      {
+        "cmd": "find /tmp -empty -delete",
+        "desc": "Verwijdert alle lege bestanden en mappen in /tmp."
+      },
+      {
+        "cmd": "find . \\( -name \"*.txt\" -o -name \"*.log\" \\)",
+        "desc": "Zoekt .txt- of .log-bestanden."
+      },
+      {
+        "cmd": "find /etc -type f -size 16c 2>/dev/null",
+        "desc": "Alle gewone bestanden in /etc van precies 16 bytes; foutmeldingen onderdrukt."
+      },
+      {
+        "cmd": "find /etc -inum 98765",
+        "desc": "Bestand in /etc opzoeken op basis van inode-nummer."
+      },
+      {
+        "cmd": "find ~ -maxdepth 1 -type f -name '[A-Z]*.txt'",
+        "desc": "Gewone bestanden in de homedirectory waarvan de naam met een hoofdletter begint en eindigt op .txt."
+      },
+      {
+        "cmd": "find /boot -type f -name '*.cfg' 2>/dev/null",
+        "desc": "Alle bestanden in /boot die eindigen op .cfg, fouten onderdrukt."
+      },
+      {
+        "cmd": "find ~/project -type f -exec chmod 644 {} \\;",
+        "desc": "Zet permissies op 644 voor alle gewone bestanden in ~/project recursief."
+      }
+    ],
+    "related": [
+      "stat",
+      "ls -li",
+      "locate",
+      "grep",
+      "ls",
+      "xargs"
+    ],
+    "tags": [
+      "zoeken",
+      "inodes",
+      "links"
+    ]
+  },
+  {
+    "name": "readlink",
+    "category": "Bestanden",
+    "short": "Toont het doelpad van een symbolische link.",
+    "synopsis": "readlink [OPTIE]... LINK",
+    "chapter": "H6 Globbing, archiveren & links",
+    "flags": [
+      {
+        "flag": "-f",
+        "desc": "Volgt alle links en toont het absolute canonieke pad."
+      }
+    ],
+    "examples": [
+      {
+        "cmd": "readlink softlink.txt",
+        "desc": "Toont het pad waarnaar softlink.txt wijst."
+      }
+    ],
+    "related": [
+      "ln -s",
+      "stat",
+      "file"
+    ],
+    "tags": [
+      "links",
+      "symlinks"
+    ]
+  },
+  {
+    "name": "file",
+    "category": "Bestanden",
+    "short": "Bepaalt het type van een bestand door de inhoud te analyseren.",
+    "synopsis": "file BESTAND...",
+    "chapter": "H6 Globbing, archiveren & links",
+    "examples": [
+      {
+        "cmd": "file softlink.txt",
+        "desc": "Toont dat softlink.txt een symbolische link is en naar welk bestand het wijst."
+      },
+      {
+        "cmd": "file *.file *.dat",
+        "desc": "Controleert het type van meerdere bestanden tegelijk."
+      }
+    ],
+    "related": [
+      "stat",
+      "ls"
+    ],
+    "tags": [
+      "bestanden",
+      "links"
+    ]
+  },
+  {
+    "name": "sync",
+    "category": "Systeem",
+    "short": "Schrijft alle gebufferde schijfdata definitief naar de schijf; altijd uitvoeren na dd-bewerkingen.",
+    "synopsis": "sync",
+    "chapter": "H6 Globbing, archiveren & links",
+    "examples": [
+      {
+        "cmd": "sync",
+        "desc": "Dwingt het besturingssysteem alle schijfbuffers direct te schrijven."
+      },
+      {
+        "cmd": "dd if=linux.iso of=/dev/sdX bs=4M status=progress && sync",
+        "desc": "Schrijft een ISO naar een apparaat en synchroniseert daarna de schijfbuffers."
+      }
+    ],
+    "related": [
+      "dd"
+    ],
+    "tags": [
+      "schijf",
+      "systeem"
+    ]
+  },
+  {
+    "name": "comm",
+    "category": "Tekst",
+    "short": "Vergelijkt twee gesorteerde bestanden regel voor regel en toont gemeenschappelijke en unieke regels.",
+    "synopsis": "comm [OPTIE]... BESTAND1 BESTAND2",
+    "chapter": "H7 Filters & pipelines",
+    "flags": [
+      {
+        "flag": "-1",
+        "desc": "Onderdrukt kolom 1 (regels uniek voor BESTAND1)."
+      },
+      {
+        "flag": "-2",
+        "desc": "Onderdrukt kolom 2 (regels uniek voor BESTAND2)."
+      },
+      {
+        "flag": "-3",
+        "desc": "Onderdrukt kolom 3 (regels gemeenschappelijk voor beide bestanden)."
+      },
+      {
+        "flag": "-12",
+        "desc": "Onderdrukt kolommen 1 en 2: toont alleen regels die in BEIDE bestanden voorkomen."
+      },
+      {
+        "flag": "-23",
+        "desc": "Toont alleen regels die UITSLUITEND in bestand1 voorkomen."
+      },
+      {
+        "flag": "-13",
+        "desc": "Toont alleen regels die UITSLUITEND in bestand2 voorkomen."
+      }
+    ],
+    "examples": [
+      {
+        "cmd": "comm gesorteerd1.txt gesorteerd2.txt",
+        "desc": "Toont 3 kolommen: uniek voor bestand1, uniek voor bestand2, gemeenschappelijk."
+      },
+      {
+        "cmd": "comm -23 gesorteerd1.txt gesorteerd2.txt",
+        "desc": "Toont alleen de regels uniek voor bestand1."
+      },
+      {
+        "cmd": "comm -13 gesorteerd1.txt gesorteerd2.txt",
+        "desc": "Toont alleen de regels uniek voor bestand2."
+      },
+      {
+        "cmd": "comm -12 gesorteerd1.txt gesorteerd2.txt",
+        "desc": "Toont alleen de regels die in beide bestanden voorkomen."
+      },
+      {
+        "cmd": "comm -12 list_a.txt list_b.txt",
+        "desc": "Toont regels die in beide gesorteerde bestanden voorkomen."
+      },
+      {
+        "cmd": "comm -23 list_a.txt list_b.txt",
+        "desc": "Toont regels die in list_a.txt maar niet in list_b.txt staan."
+      }
+    ],
+    "related": [
+      "diff",
+      "sort",
+      "uniq"
+    ],
+    "tags": [
+      "vergelijking",
+      "bestanden",
+      "tekstverwerking"
+    ]
+  },
+  {
+    "name": "sed",
+    "category": "Tekst",
+    "short": "Stroomeditor die tekst filtert en transformeert via scripts of regeladressen.",
+    "synopsis": "sed [OPTIE]... SCRIPT [BESTAND]...",
+    "chapter": "H7 Filters & pipelines",
+    "flags": [
+      {
+        "flag": "-n",
+        "desc": "Onderdrukt automatische uitvoer; combineer met p om selectief te printen."
+      },
+      {
+        "flag": "-i",
+        "desc": "Bewerkt het bestand direct (in-place)."
+      },
+      {
+        "flag": "-i.bak",
+        "desc": "Bewerkt het bestand direct en maakt een back-up met de extensie .bak."
+      },
+      {
+        "flag": "-e script",
+        "desc": "Voert meerdere sed-instructies uit."
+      }
+    ],
+    "examples": [
+      {
+        "cmd": "sed 's/oud/nieuw/' bestand.txt",
+        "desc": "Vervangt de eerste instantie van 'oud' door 'nieuw' op elke regel."
+      },
+      {
+        "cmd": "sed 's/oud/nieuw/g' bestand.txt",
+        "desc": "Vervangt alle instanties van 'oud' door 'nieuw' (globaal)."
+      },
+      {
+        "cmd": "sed 's/oud/nieuw/gi' bestand.txt",
+        "desc": "Vervangt hoofdletterongevoelig en globaal."
+      },
+      {
+        "cmd": "sed '/patroon/d' bestand.txt",
+        "desc": "Verwijdert alle regels die het patroon bevatten."
+      },
+      {
+        "cmd": "sed '1d' bestand.txt",
+        "desc": "Verwijdert de eerste regel."
+      },
+      {
+        "cmd": "sed '1,5d' bestand.txt",
+        "desc": "Verwijdert de regels 1 tot en met 5."
+      },
+      {
+        "cmd": "sed -n '1,5p' bestand.txt",
+        "desc": "Toont alleen de regels 1 tot en met 5."
+      },
+      {
+        "cmd": "sed -i 's/oud/nieuw/g' bestand.txt",
+        "desc": "Past het bestand direct aan zonder tussenbestand."
+      },
+      {
+        "cmd": "sed -i.bak 's/oud/nieuw/g' bestand.txt",
+        "desc": "Past het bestand aan en maakt een back-up als bestand.txt.bak."
+      },
+      {
+        "cmd": "sed -e 's/oud1/nieuw1/g' -e 's/oud2/nieuw2/g' bestand.txt",
+        "desc": "Voert meerdere vervangingen uit in één commando."
+      },
+      {
+        "cmd": "sed 's|/oud/pad|/nieuw/pad|g' bestand.txt",
+        "desc": "Gebruikt | als scheidingsteken (handig bij paden met /)."
+      }
+    ],
+    "related": [
+      "grep",
+      "tr",
+      "awk",
+      "cut"
+    ],
+    "tags": [
+      "tekstverwerking",
+      "vervangen",
+      "verwijderen",
+      "stream"
+    ]
+  },
+  {
+    "name": "bash",
+    "category": "Shell scripting",
+    "short": "Voert een shell script uit zonder het uitvoerbaar te maken.",
+    "synopsis": "bash [OPTIE]... SCRIPT [ARGUMENT]...",
+    "chapter": "H8 Shell scripting",
+    "flags": [
+      {
+        "flag": "-x",
+        "desc": "Debugmodus: toont elk commando voor uitvoering (trace)."
+      },
+      {
+        "flag": "-e",
+        "desc": "Stopt het script bij de eerste fout."
+      },
+      {
+        "flag": "-u",
+        "desc": "Behandelt niet-gedefinieerde variabelen als fout."
+      },
+      {
+        "flag": "-o pipefail",
+        "desc": "Laat de pipe-exitcode de eerste mislukte opdracht weerspiegelen."
+      }
+    ],
+    "examples": [
+      {
+        "cmd": "bash script.sh",
+        "desc": "Voert script.sh uit via bash zonder uitvoerrecht nodig."
+      },
+      {
+        "cmd": "bash -x script.sh",
+        "desc": "Voert script.sh uit in debugmodus."
+      },
+      {
+        "cmd": "bash -euo pipefail script.sh",
+        "desc": "Voert script uit met strikte foutafhandeling."
+      }
+    ],
+    "related": [
+      "sh",
+      "chmod"
+    ],
+    "tags": [
+      "scripting",
+      "uitvoering"
+    ]
+  },
+  {
+    "name": "read",
+    "category": "Shell scripting",
+    "short": "Leest invoer van de gebruiker of van een bestand in een variabele.",
+    "synopsis": "read [OPTIE]... [VARIABELE]...",
+    "chapter": "H8 Shell scripting",
+    "flags": [
+      {
+        "flag": "-p PROMPT",
+        "desc": "Toont een prompttekst voor de invoer."
+      },
+      {
+        "flag": "-s",
+        "desc": "Stille invoer: tekens worden niet getoond (geschikt voor wachtwoorden)."
+      },
+      {
+        "flag": "-r",
+        "desc": "Raw modus: backslash wordt niet als escape-teken behandeld."
+      },
+      {
+        "flag": "-t SECONDEN",
+        "desc": "Wacht maximaal het opgegeven aantal seconden op invoer."
+      }
+    ],
+    "examples": [
+      {
+        "cmd": "read -p \"Jouw naam: \" naam",
+        "desc": "Vraagt de gebruiker om een naam in te voeren."
+      },
+      {
+        "cmd": "read -s -p \"Wachtwoord: \" ww",
+        "desc": "Vraagt een wachtwoord zonder het op het scherm te tonen."
+      },
+      {
+        "cmd": "while read -r line; do echo \"$line\"; done < bestand.txt",
+        "desc": "Leest een bestand regel voor regel in een while-lus."
+      }
+    ],
+    "related": [
+      "echo",
+      "printf"
+    ],
+    "tags": [
+      "invoer",
+      "scripting",
+      "interactief"
+    ]
+  },
+  {
+    "name": "exit",
+    "category": "Shell scripting",
+    "short": "Beëindigt het script met een opgegeven exitcode.",
+    "synopsis": "exit [EXITCODE]",
+    "chapter": "H8 Shell scripting",
+    "examples": [
+      {
+        "cmd": "exit 0",
+        "desc": "Sluit het script af als geslaagd (exitcode 0)."
+      },
+      {
+        "cmd": "exit 1",
+        "desc": "Sluit het script af met foutcode 1."
+      }
+    ],
+    "related": [
+      "$?"
+    ],
+    "tags": [
+      "scripting",
+      "foutafhandeling"
+    ]
+  },
+  {
+    "name": "readonly",
+    "category": "Shell scripting",
+    "short": "Markeert een variabele als alleen-lezen (constante).",
+    "synopsis": "readonly [NAAM[=WAARDE]]...",
+    "chapter": "H8 Shell scripting",
+    "examples": [
+      {
+        "cmd": "readonly PI=3.14159",
+        "desc": "Definieert PI als constante die niet gewijzigd kan worden."
+      },
+      {
+        "cmd": "readonly CONFIG_FILE=\"/etc/app.conf\"",
+        "desc": "Maakt het configuratiebestandspad onveranderlijk."
+      }
+    ],
+    "related": [
+      "export",
+      "declare"
+    ],
+    "tags": [
+      "variabelen",
+      "scripting"
+    ]
+  },
+  {
+    "name": "test",
+    "category": "Shell scripting",
+    "short": "Evalueert een conditie en geeft exitcode 0 (waar) of 1 (onwaar) terug.",
+    "synopsis": "test EXPRESSIE   of   [ EXPRESSIE ]",
+    "chapter": "H8 Shell scripting",
+    "flags": [
+      {
+        "flag": "-f BESTAND",
+        "desc": "Waar als het bestand bestaat en een gewoon bestand is."
+      },
+      {
+        "flag": "-d MAP",
+        "desc": "Waar als de map bestaat."
+      },
+      {
+        "flag": "-e PAD",
+        "desc": "Waar als het pad bestaat (ongeacht type)."
+      },
+      {
+        "flag": "-r BESTAND",
+        "desc": "Waar als het bestand leesbaar is."
+      },
+      {
+        "flag": "-w BESTAND",
+        "desc": "Waar als het bestand beschrijfbaar is."
+      },
+      {
+        "flag": "-x BESTAND",
+        "desc": "Waar als het bestand uitvoerbaar is."
+      },
+      {
+        "flag": "-s BESTAND",
+        "desc": "Waar als het bestand niet leeg is."
+      },
+      {
+        "flag": "-L BESTAND",
+        "desc": "Waar als het een symbolische koppeling is."
+      },
+      {
+        "flag": "-z STRING",
+        "desc": "Waar als de tekenreeks leeg is."
+      },
+      {
+        "flag": "-n STRING",
+        "desc": "Waar als de tekenreeks niet leeg is."
+      },
+      {
+        "flag": "-eq",
+        "desc": "Getal: gelijk aan."
+      },
+      {
+        "flag": "-ne",
+        "desc": "Getal: niet gelijk aan."
+      },
+      {
+        "flag": "-lt",
+        "desc": "Getal: kleiner dan."
+      },
+      {
+        "flag": "-le",
+        "desc": "Getal: kleiner dan of gelijk aan."
+      },
+      {
+        "flag": "-gt",
+        "desc": "Getal: groter dan."
+      },
+      {
+        "flag": "-ge",
+        "desc": "Getal: groter dan of gelijk aan."
+      }
+    ],
+    "examples": [
+      {
+        "cmd": "[ -f /etc/passwd ]",
+        "desc": "Controleert of /etc/passwd een gewoon bestand is."
+      },
+      {
+        "cmd": "[ -d /home ] && echo \"map bestaat\"",
+        "desc": "Drukt een bericht af als /home een map is."
+      },
+      {
+        "cmd": "[ \"$leeftijd\" -ge 18 ]",
+        "desc": "Controleert of leeftijd groter of gelijk is aan 18."
+      }
+    ],
+    "related": [
+      "if",
+      "bash"
+    ],
+    "tags": [
+      "conditie",
+      "scripting"
+    ]
+  },
+  {
+    "name": "if",
+    "category": "Shell scripting",
+    "short": "Voert een blok commando's uit als een conditie waar is.",
+    "synopsis": "if CONDITIE; then COMMANDO's [elif CONDITIE; then COMMANDO's] [else COMMANDO's] fi",
+    "chapter": "H8 Shell scripting",
+    "examples": [
+      {
+        "cmd": "if [ -f \"$BESTAND\" ]; then echo \"bestaat\"; fi",
+        "desc": "Controleert of een bestand bestaat en drukt dit af."
+      },
+      {
+        "cmd": "if [ \"$#\" -lt 2 ]; then echo \"Te weinig argumenten\"; exit 1; fi",
+        "desc": "Stopt het script als er te weinig argumenten zijn."
+      },
+      {
+        "cmd": "if [ \"$naam\" = \"admin\" ]; then echo \"Welkom, beheerder!\"; else echo \"Welkom, $naam\"; fi",
+        "desc": "Begroet op basis van gebruikersnaam."
+      }
+    ],
+    "related": [
+      "test",
+      "case",
+      "else",
+      "elif"
+    ],
+    "tags": [
+      "conditie",
+      "scripting"
+    ]
+  },
+  {
+    "name": "case",
+    "category": "Shell scripting",
+    "short": "Vergelijkt een waarde met meerdere patronen en voert het overeenkomende blok uit.",
+    "synopsis": "case WAARDE in PATROON) COMMANDO's ;; ... esac",
+    "chapter": "H8 Shell scripting",
+    "examples": [
+      {
+        "cmd": "case $keuze in 1) date ;; 2) who ;; *) echo \"Ongeldig\" ;; esac",
+        "desc": "Voert een commando uit op basis van de menuoptie."
+      },
+      {
+        "cmd": "case $ext in txt|doc) echo \"document\" ;; jpg|png) echo \"afbeelding\" ;; esac",
+        "desc": "Matcht meerdere extensies per patroon."
+      }
+    ],
+    "related": [
+      "if",
+      "elif"
+    ],
+    "tags": [
+      "conditie",
+      "scripting",
+      "patroon"
+    ]
+  },
+  {
+    "name": "for",
+    "category": "Shell scripting",
+    "short": "Herhaalt een reeks commando's voor elk element in een lijst of reeks.",
+    "synopsis": "for VARIABELE in LIJST; do COMMANDO's; done",
+    "chapter": "H8 Shell scripting",
+    "examples": [
+      {
+        "cmd": "for i in {1..5}; do echo \"Nummer: $i\"; done",
+        "desc": "Telt van 1 tot en met 5."
+      },
+      {
+        "cmd": "for bestand in *.txt; do wc -l \"$bestand\"; done",
+        "desc": "Telt regels in alle tekstbestanden."
+      },
+      {
+        "cmd": "for ((i=1; i<=10; i++)); do echo $i; done",
+        "desc": "C-stijl for-lus van 1 tot 10."
+      },
+      {
+        "cmd": "for i in {0..20..2}; do echo $i; done",
+        "desc": "Telt even getallen van 0 tot 20 met stap 2."
+      }
+    ],
+    "related": [
+      "while",
+      "until",
+      "break",
+      "continue"
+    ],
+    "tags": [
+      "lus",
+      "scripting"
+    ]
+  },
+  {
+    "name": "while",
+    "category": "Shell scripting",
+    "short": "Herhaalt een reeks commando's zolang een conditie waar is.",
+    "synopsis": "while CONDITIE; do COMMANDO's; done",
+    "chapter": "H8 Shell scripting",
+    "examples": [
+      {
+        "cmd": "while [ $teller -le 5 ]; do echo $teller; teller=$((teller+1)); done",
+        "desc": "Telt van 1 tot 5 met een while-lus."
+      },
+      {
+        "cmd": "while read -r regel; do echo \"$regel\"; done < /etc/passwd",
+        "desc": "Leest /etc/passwd regel voor regel."
+      },
+      {
+        "cmd": "while true; do read -p \"Typ 'stop' om te stoppen: \" inp; [ \"$inp\" = \"stop\" ] && break; done",
+        "desc": "Eindeloze lus die stopt bij invoer 'stop'."
+      }
+    ],
+    "related": [
+      "for",
+      "until",
+      "break"
+    ],
+    "tags": [
+      "lus",
+      "scripting"
+    ]
+  },
+  {
+    "name": "until",
+    "category": "Shell scripting",
+    "short": "Herhaalt een reeks commando's totdat een conditie waar wordt (omgekeerde while).",
+    "synopsis": "until CONDITIE; do COMMANDO's; done",
+    "chapter": "H8 Shell scripting",
+    "examples": [
+      {
+        "cmd": "until [ $teller -gt 5 ]; do echo $teller; teller=$((teller+1)); done",
+        "desc": "Telt tot de teller groter dan 5 is."
+      },
+      {
+        "cmd": "until [ -f \"/tmp/klaar.flag\" ]; do echo \"wachten...\"; sleep 1; done",
+        "desc": "Wacht tot een bestand aangemaakt wordt."
+      }
+    ],
+    "related": [
+      "while",
+      "for"
+    ],
+    "tags": [
+      "lus",
+      "scripting"
+    ]
+  },
+  {
+    "name": "break",
+    "category": "Shell scripting",
+    "short": "Verlaat de huidige lus onmiddellijk.",
+    "synopsis": "break [N]",
+    "chapter": "H8 Shell scripting",
+    "examples": [
+      {
+        "cmd": "if [ \"$invoer\" = \"stop\" ]; then break; fi",
+        "desc": "Verlaat de lus als de gebruiker 'stop' typt."
+      }
+    ],
+    "related": [
+      "continue",
+      "while",
+      "for"
+    ],
+    "tags": [
+      "lus",
+      "scripting"
+    ]
+  },
+  {
+    "name": "continue",
+    "category": "Shell scripting",
+    "short": "Slaat de rest van de huidige lusiteratie over en gaat naar de volgende.",
+    "synopsis": "continue [N]",
+    "chapter": "H8 Shell scripting",
+    "examples": [
+      {
+        "cmd": "if [ $i -eq 3 ]; then continue; fi",
+        "desc": "Slaat iteratie 3 over maar gaat door met de rest."
+      }
+    ],
+    "related": [
+      "break",
+      "while",
+      "for"
+    ],
+    "tags": [
+      "lus",
+      "scripting"
+    ]
+  },
+  {
+    "name": "trap",
+    "category": "Shell scripting",
+    "short": "Voert een commando uit wanneer het script een signaal of fout ontvangt.",
+    "synopsis": "trap 'COMMANDO' SIGNAAL",
+    "chapter": "H8 Shell scripting",
+    "examples": [
+      {
+        "cmd": "trap 'echo \"Fout op regel $LINENO\"' ERR",
+        "desc": "Drukt het regelnummer af bij een scriptfout."
+      },
+      {
+        "cmd": "trap 'rm -f /tmp/tijdelijk.txt' EXIT",
+        "desc": "Verwijdert een tijdelijk bestand bij afsluiten van het script."
+      }
+    ],
+    "related": [
+      "set",
+      "exit"
+    ],
+    "tags": [
+      "scripting",
+      "foutafhandeling",
+      "signalen"
+    ]
+  },
+  {
+    "name": "getopts",
+    "category": "Shell scripting",
+    "short": "Verwerkt opdrachtregelopties in een shell script.",
+    "synopsis": "getopts OPTSTRING VARIABELE",
+    "chapter": "H8 Shell scripting",
+    "examples": [
+      {
+        "cmd": "while getopts \"dh\" opt; do case $opt in d) DEBUG=true ;; h) echo \"Help\" ;; esac; done",
+        "desc": "Verwerkt vlaggen -d (debug) en -h (help) uit de opdrachtregelargumenten."
+      }
+    ],
+    "related": [
+      "case",
+      "while"
+    ],
+    "tags": [
+      "scripting",
+      "argumenten"
+    ]
+  },
+  {
+    "name": "id",
+    "category": "Gebruikers",
+    "short": "Toont de gebruikers-ID (UID) en groeps-ID's (GID) van een gebruiker.",
+    "synopsis": "id [OPTIE]... [GEBRUIKER]",
+    "chapter": "H9 Gebruikers & groepen",
+    "examples": [
+      {
+        "cmd": "id",
+        "desc": "Toont UID, GID en groepen van de huidige gebruiker."
+      },
+      {
+        "cmd": "id alice",
+        "desc": "Toont UID, GID en groepen van gebruiker alice."
+      }
+    ],
+    "related": [
+      "whoami",
+      "groups",
+      "getent"
+    ],
+    "tags": [
+      "gebruikers",
+      "informatie"
+    ]
+  },
+  {
+    "name": "last",
+    "category": "Gebruikers",
+    "short": "Toont een geschiedenis van in- en uitloggebeurtenissen.",
+    "synopsis": "last [OPTIE]... [GEBRUIKER]",
+    "chapter": "H9 Gebruikers & groepen",
+    "flags": [
+      {
+        "flag": "-n N",
+        "desc": "Toont de laatste N inlogpogingen."
+      },
+      {
+        "flag": "-n AANTAL",
+        "desc": "Beperkt de uitvoer tot de laatste N regels."
+      }
+    ],
+    "examples": [
+      {
+        "cmd": "last",
+        "desc": "Toont de volledige inloggeschiedenis."
+      },
+      {
+        "cmd": "last | head -10",
+        "desc": "Toont de 10 meest recente inlogpogingen."
+      },
+      {
+        "cmd": "last alice",
+        "desc": "Toont de inloggeschiedenis van gebruiker alice."
+      },
+      {
+        "cmd": "last -n 5",
+        "desc": "Toont de laatste 5 aanmeldingen."
+      }
+    ],
+    "related": [
+      "lastlog",
+      "lastb",
+      "who",
+      "w"
+    ],
+    "tags": [
+      "gebruikers",
+      "beveiliging",
+      "logging"
+    ]
+  },
+  {
+    "name": "groups",
+    "category": "Gebruikers",
+    "short": "Toont de groepen waartoe een gebruiker behoort.",
+    "synopsis": "groups [GEBRUIKER]...",
+    "chapter": "H9 Gebruikers & groepen",
+    "examples": [
+      {
+        "cmd": "groups",
+        "desc": "Toont de groepen van de huidige gebruiker."
+      },
+      {
+        "cmd": "groups alice",
+        "desc": "Toont de groepen van gebruiker alice."
+      }
+    ],
+    "related": [
+      "id",
+      "getent"
+    ],
+    "tags": [
+      "groepen",
+      "informatie"
+    ]
+  },
+  {
+    "name": "getent",
+    "category": "Gebruikers",
+    "short": "Haalt vermeldingen op uit systeembeheerdatabanken zoals passwd en group.",
+    "synopsis": "getent DATABANK [SLEUTEL]...",
+    "chapter": "H9 Gebruikers & groepen",
+    "examples": [
+      {
+        "cmd": "getent passwd alice",
+        "desc": "Toont de passwd-vermelding van gebruiker alice."
+      },
+      {
+        "cmd": "getent group developers",
+        "desc": "Toont de vermelding van groep developers inclusief leden."
+      },
+      {
+        "cmd": "getent group",
+        "desc": "Toont alle groepen op het systeem."
+      }
+    ],
+    "related": [
+      "id",
+      "groups",
+      "cat"
+    ],
+    "tags": [
+      "gebruikers",
+      "groepen",
+      "informatie"
+    ]
+  },
+  {
+    "name": "useradd",
+    "category": "Gebruikers",
+    "short": "Maakt een nieuwe gebruikersaccount aan op de opdrachtregel.",
+    "synopsis": "useradd [OPTIE]... GEBRUIKER",
+    "chapter": "H9 Gebruikers & groepen",
+    "flags": [
+      {
+        "flag": "-m",
+        "desc": "Maakt de home-map aan voor de nieuwe gebruiker."
+      },
+      {
+        "flag": "-s SHELL",
+        "desc": "Stelt de standaard login-shell in."
+      },
+      {
+        "flag": "-g GROEP",
+        "desc": "Stelt de primaire groep in."
+      },
+      {
+        "flag": "-G GROEPEN",
+        "desc": "Stelt secundaire (extra) groepen in (kommagescheiden)."
+      },
+      {
+        "flag": "-u UID",
+        "desc": "Stelt een specifiek gebruikers-ID in."
+      },
+      {
+        "flag": "-c COMMENTAAR",
+        "desc": "Stelt het GECOS-veld in (bijv. volledige naam)."
+      },
+      {
+        "flag": "-e DATUM",
+        "desc": "Stelt de vervaldatum van het account in (YYYY-MM-DD)."
+      },
+      {
+        "flag": "-r",
+        "desc": "Maakt een systeemaccount aan (geen home-map, UID < 1000)."
+      }
+    ],
+    "examples": [
+      {
+        "cmd": "sudo useradd -m -s /bin/bash alice",
+        "desc": "Maakt gebruiker alice aan met home-map en bash als shell."
+      },
+      {
+        "cmd": "sudo useradd -m -s /bin/bash -G sudo,adm alice",
+        "desc": "Maakt alice aan met home-map, bash-shell en secondaire groepen sudo en adm."
+      },
+      {
+        "cmd": "sudo useradd -m -u 1500 -g users newuser",
+        "desc": "Maakt een gebruiker aan met specifiek UID 1500 en primaire groep users."
+      },
+      {
+        "cmd": "sudo useradd -r systemuser",
+        "desc": "Maakt een systeemgebruiker aan zonder home-map."
+      }
+    ],
+    "related": [
+      "adduser",
+      "userdel",
+      "usermod",
+      "passwd"
+    ],
+    "tags": [
+      "gebruikers",
+      "beheer"
+    ]
+  },
+  {
+    "name": "adduser",
+    "category": "Gebruikers",
+    "short": "Interactief commando om een nieuwe gebruiker aan te maken (Debian/Ubuntu).",
+    "synopsis": "adduser [OPTIE]... GEBRUIKER",
+    "chapter": "H9 Gebruikers & groepen",
+    "examples": [
+      {
+        "cmd": "sudo adduser newuser",
+        "desc": "Start een interactieve wizard voor het aanmaken van een gebruiker (vraagt wachtwoord, volledige naam, enz.)."
+      }
+    ],
+    "related": [
+      "useradd",
+      "deluser",
+      "passwd"
+    ],
+    "tags": [
+      "gebruikers",
+      "beheer",
+      "debian"
+    ]
+  },
+  {
+    "name": "passwd",
+    "category": "Gebruikers",
+    "short": "Wijzigt het wachtwoord van een gebruiker of beheert het wachtwoordbeleid.",
+    "synopsis": "passwd [OPTIE]... [GEBRUIKER]",
+    "chapter": "H9 Gebruikers & groepen",
+    "flags": [
+      {
+        "flag": "-e",
+        "desc": "Verloopt het wachtwoord onmiddellijk: gebruiker moet bij volgende inlog wachtwoord wijzigen."
+      },
+      {
+        "flag": "-l",
+        "desc": "Vergrendelt het account (login niet mogelijk)."
+      },
+      {
+        "flag": "-u",
+        "desc": "Ontgrendelt het account."
+      },
+      {
+        "flag": "-S",
+        "desc": "Toont de status van het wachtwoord."
+      }
+    ],
+    "examples": [
+      {
+        "cmd": "passwd",
+        "desc": "Wijzigt het wachtwoord van de huidige gebruiker."
+      },
+      {
+        "cmd": "sudo passwd alice",
+        "desc": "Stelt een nieuw wachtwoord in voor gebruiker alice."
+      },
+      {
+        "cmd": "sudo passwd -l alice",
+        "desc": "Vergrendelt het account van alice."
+      },
+      {
+        "cmd": "sudo passwd -u alice",
+        "desc": "Ontgrendelt het account van alice."
+      },
+      {
+        "cmd": "sudo passwd -S alice",
+        "desc": "Toont de wachtwoordstatus van alice."
+      },
+      {
+        "cmd": "sudo passwd -e alice",
+        "desc": "Dwingt alice bij volgende inlog haar wachtwoord te wijzigen."
+      }
+    ],
+    "related": [
+      "chage",
+      "usermod",
+      "useradd"
+    ],
+    "tags": [
+      "gebruikers",
+      "wachtwoord",
+      "beveiliging"
+    ]
+  },
+  {
+    "name": "usermod",
+    "category": "Gebruikers",
+    "short": "Wijzigt de eigenschappen van een bestaande gebruikersaccount.",
+    "synopsis": "usermod [OPTIE]... GEBRUIKER",
+    "chapter": "H9 Gebruikers & groepen",
+    "flags": [
+      {
+        "flag": "-l NIEUWNAAM",
+        "desc": "Wijzigt de inlognaam van de gebruiker."
+      },
+      {
+        "flag": "-g GROEP",
+        "desc": "Wijzigt de primaire groep van de gebruiker."
+      },
+      {
+        "flag": "-aG GROEPEN",
+        "desc": "Voegt de gebruiker toe aan extra groepen (gebruik altijd -a om bestaande groepen te behouden)."
+      },
+      {
+        "flag": "-G GROEPEN",
+        "desc": "Vervangt alle secundaire groepen (gevaarlijk zonder -a)."
+      },
+      {
+        "flag": "-d MAP",
+        "desc": "Wijzigt de home-map."
+      },
+      {
+        "flag": "-m",
+        "desc": "Verplaatst de inhoud van de home-map naar de nieuwe locatie (gebruik samen met -d)."
+      },
+      {
+        "flag": "-s SHELL",
+        "desc": "Wijzigt de standaard login-shell."
+      },
+      {
+        "flag": "-L",
+        "desc": "Vergrendelt het account."
+      },
+      {
+        "flag": "-U",
+        "desc": "Ontgrendelt het account."
+      },
+      {
+        "flag": "-e DATUM",
+        "desc": "Stelt de vervaldatum in (YYYY-MM-DD)."
+      },
+      {
+        "flag": "-c COMMENTAAR",
+        "desc": "Wijzigt het GECOS-veld (volledige naam)."
+      }
+    ],
+    "examples": [
+      {
+        "cmd": "sudo usermod -aG sudo bob",
+        "desc": "Voegt bob toe aan de sudo-groep (behoudt bestaande groepen)."
+      },
+      {
+        "cmd": "sudo usermod -aG developers,testers alice",
+        "desc": "Voegt alice toe aan de groepen developers en testers."
+      },
+      {
+        "cmd": "sudo usermod -c \"Alice Johnson\" alice",
+        "desc": "Stelt de volledige naam van alice in."
+      },
+      {
+        "cmd": "sudo usermod -s /bin/zsh charlie",
+        "desc": "Wijzigt de standaard shell van charlie naar zsh."
+      },
+      {
+        "cmd": "sudo usermod -L alice",
+        "desc": "Vergrendelt het account van alice."
+      },
+      {
+        "cmd": "sudo usermod -e 2024-12-31 tempuser",
+        "desc": "Stelt de vervaldatum van tempuser in op 31 december 2024."
+      }
+    ],
+    "related": [
+      "useradd",
+      "userdel",
+      "passwd",
+      "chsh"
+    ],
+    "tags": [
+      "gebruikers",
+      "beheer"
+    ]
+  },
+  {
+    "name": "userdel",
+    "category": "Gebruikers",
+    "short": "Verwijdert een gebruikersaccount van het systeem.",
+    "synopsis": "userdel [OPTIE]... GEBRUIKER",
+    "chapter": "H9 Gebruikers & groepen",
+    "flags": [
+      {
+        "flag": "-r",
+        "desc": "Verwijdert ook de home-map en mailspool van de gebruiker."
+      },
+      {
+        "flag": "-f",
+        "desc": "Dwingt verwijdering, ook als de gebruiker nog ingelogd is."
+      }
+    ],
+    "examples": [
+      {
+        "cmd": "sudo userdel alice",
+        "desc": "Verwijdert gebruiker alice maar behoudt de home-map."
+      },
+      {
+        "cmd": "sudo userdel -r alice",
+        "desc": "Verwijdert gebruiker alice inclusief home-map."
+      }
+    ],
+    "related": [
+      "deluser",
+      "useradd",
+      "usermod"
+    ],
+    "tags": [
+      "gebruikers",
+      "beheer"
+    ]
+  },
+  {
+    "name": "chsh",
+    "category": "Gebruikers",
+    "short": "Wijzigt de standaard login-shell van een gebruiker.",
+    "synopsis": "chsh [OPTIE]... [GEBRUIKER]",
+    "chapter": "H9 Gebruikers & groepen",
+    "flags": [
+      {
+        "flag": "-s SHELL",
+        "desc": "Stelt de opgegeven shell in als standaard."
+      }
+    ],
+    "examples": [
+      {
+        "cmd": "chsh",
+        "desc": "Start een interactieve vraag om de shell te wijzigen voor de huidige gebruiker."
+      },
+      {
+        "cmd": "sudo chsh -s /bin/zsh alice",
+        "desc": "Wijzigt de standaard shell van alice naar zsh."
+      }
+    ],
+    "related": [
+      "usermod",
+      "cat /etc/shells"
+    ],
+    "tags": [
+      "gebruikers",
+      "shell"
+    ]
+  },
+  {
+    "name": "chfn",
+    "category": "Gebruikers",
+    "short": "Wijzigt de GECOS-informatie (volledige naam en contactgegevens) van een gebruiker.",
+    "synopsis": "chfn [OPTIE]... [GEBRUIKER]",
+    "chapter": "H9 Gebruikers & groepen",
+    "examples": [
+      {
+        "cmd": "chfn",
+        "desc": "Interactief wijzigen van persoonlijke informatie van de huidige gebruiker."
+      },
+      {
+        "cmd": "sudo chfn alice",
+        "desc": "Wijzigt de GECOS-informatie van gebruiker alice."
+      }
+    ],
+    "related": [
+      "usermod",
+      "getent"
+    ],
+    "tags": [
+      "gebruikers",
+      "informatie"
+    ]
+  },
+  {
+    "name": "groupadd",
+    "category": "Gebruikers",
+    "short": "Maakt een nieuwe groep aan op het systeem.",
+    "synopsis": "groupadd [OPTIE]... GROEP",
+    "chapter": "H9 Gebruikers & groepen",
+    "flags": [
+      {
+        "flag": "-g GID",
+        "desc": "Stelt een specifiek groeps-ID in."
+      },
+      {
+        "flag": "-r",
+        "desc": "Maakt een systeemgroep aan (GID < 1000)."
+      }
+    ],
+    "examples": [
+      {
+        "cmd": "sudo groupadd developers",
+        "desc": "Maakt een nieuwe groep 'developers' aan."
+      },
+      {
+        "cmd": "sudo groupadd -g 2000 project",
+        "desc": "Maakt een groep aan met GID 2000."
+      }
+    ],
+    "related": [
+      "groupdel",
+      "groupmod",
+      "gpasswd"
+    ],
+    "tags": [
+      "groepen",
+      "beheer"
+    ]
+  },
+  {
+    "name": "groupmod",
+    "category": "Gebruikers",
+    "short": "Wijzigt de eigenschappen van een bestaande groep.",
+    "synopsis": "groupmod [OPTIE]... GROEP",
+    "chapter": "H9 Gebruikers & groepen",
+    "flags": [
+      {
+        "flag": "-n NIEUWNAAM",
+        "desc": "Wijzigt de naam van de groep."
+      },
+      {
+        "flag": "-g GID",
+        "desc": "Wijzigt het GID van de groep."
+      }
+    ],
+    "examples": [
+      {
+        "cmd": "sudo groupmod -n newname oldname",
+        "desc": "Hernoemt groep 'oldname' naar 'newname'."
+      },
+      {
+        "cmd": "sudo groupmod -g 2500 developers",
+        "desc": "Wijzigt het GID van groep developers naar 2500."
+      }
+    ],
+    "related": [
+      "groupadd",
+      "groupdel",
+      "gpasswd"
+    ],
+    "tags": [
+      "groepen",
+      "beheer"
+    ]
+  },
+  {
+    "name": "groupdel",
+    "category": "Gebruikers",
+    "short": "Verwijdert een groep van het systeem.",
+    "synopsis": "groupdel GROEP",
+    "chapter": "H9 Gebruikers & groepen",
+    "examples": [
+      {
+        "cmd": "sudo groupdel developers",
+        "desc": "Verwijdert de groep 'developers'."
+      }
+    ],
+    "related": [
+      "groupadd",
+      "groupmod",
+      "delgroup"
+    ],
+    "tags": [
+      "groepen",
+      "beheer"
+    ]
+  },
+  {
+    "name": "gpasswd",
+    "category": "Gebruikers",
+    "short": "Beheert groepswachtwoorden en groepsleden.",
+    "synopsis": "gpasswd [OPTIE]... GROEP",
+    "chapter": "H9 Gebruikers & groepen",
+    "flags": [
+      {
+        "flag": "-a GEBRUIKER",
+        "desc": "Voegt een gebruiker toe aan de groep."
+      },
+      {
+        "flag": "-d GEBRUIKER",
+        "desc": "Verwijdert een gebruiker uit de groep."
+      },
+      {
+        "flag": "-A BEHEERDERS",
+        "desc": "Stelt groepadministrators in (kommagescheiden)."
+      },
+      {
+        "flag": "-M LEDEN",
+        "desc": "Vervangt de volledige ledenlijst (kommagescheiden)."
+      }
+    ],
+    "examples": [
+      {
+        "cmd": "sudo gpasswd -a alice developers",
+        "desc": "Voegt alice toe aan de groep developers."
+      },
+      {
+        "cmd": "sudo gpasswd -d bob developers",
+        "desc": "Verwijdert bob uit de groep developers."
+      },
+      {
+        "cmd": "sudo gpasswd -A alice developers",
+        "desc": "Maakt alice beheerder van de groep developers."
+      }
+    ],
+    "related": [
+      "usermod",
+      "groupadd",
+      "groups"
+    ],
+    "tags": [
+      "groepen",
+      "beheer"
+    ]
+  },
+  {
+    "name": "visudo",
+    "category": "Gebruikers",
+    "short": "Bewerkt het sudoers-configuratiebestand op een veilige manier (met syntaxcontrole).",
+    "synopsis": "visudo [OPTIE]",
+    "chapter": "H9 Gebruikers & groepen",
+    "flags": [
+      {
+        "flag": "-c",
+        "desc": "Controleert de syntaxis van het sudoers-bestand zonder het te bewerken."
+      }
+    ],
+    "examples": [
+      {
+        "cmd": "sudo visudo",
+        "desc": "Opent /etc/sudoers in een editor met automatische syntaxcontrole."
+      },
+      {
+        "cmd": "sudo visudo -c",
+        "desc": "Controleert enkel de syntaxis van het sudoers-bestand."
+      }
+    ],
+    "related": [
+      "sudo"
+    ],
+    "tags": [
+      "beveiliging",
+      "sudo",
+      "configuratie"
+    ]
+  },
+  {
+    "name": "chage",
+    "category": "Gebruikers",
+    "short": "Beheert het wachtwoordvervalbeleid van een gebruiker.",
+    "synopsis": "chage [OPTIE]... GEBRUIKER",
+    "chapter": "H9 Gebruikers & groepen",
+    "flags": [
+      {
+        "flag": "-l",
+        "desc": "Toont de wachtwoordvervalinformatie van een gebruiker."
+      },
+      {
+        "flag": "-M DAGEN",
+        "desc": "Stelt het maximum aantal dagen in dat een wachtwoord geldig is."
+      },
+      {
+        "flag": "-m DAGEN",
+        "desc": "Stelt het minimum aantal dagen in tussen wachtwoordwijzigingen."
+      },
+      {
+        "flag": "-W DAGEN",
+        "desc": "Stelt het aantal waarschuwingsdagen voor verval in."
+      },
+      {
+        "flag": "-d 0",
+        "desc": "Verloopt het wachtwoord onmiddellijk, forceert wijziging bij volgende inlog."
+      }
+    ],
+    "examples": [
+      {
+        "cmd": "sudo chage -l alice",
+        "desc": "Toont de wachtwoordvervalpolicies van alice."
+      },
+      {
+        "cmd": "sudo chage -M 90 -m 7 -W 7 alice",
+        "desc": "Stelt maximale geldigheid op 90 dagen, minimum 7 dagen, waarschuwing 7 dagen voor alice."
+      },
+      {
+        "cmd": "sudo chage -d 0 alice",
+        "desc": "Dwingt alice bij volgende inlog het wachtwoord te wijzigen."
+      }
+    ],
+    "related": [
+      "passwd",
+      "usermod"
+    ],
+    "tags": [
+      "gebruikers",
+      "wachtwoord",
+      "beveiliging"
+    ]
+  },
+  {
+    "name": "lastlog",
+    "category": "Gebruikers",
+    "short": "Toont de meest recente inlogtijd van alle gebruikers.",
+    "synopsis": "lastlog [OPTIE]",
+    "chapter": "H9 Gebruikers & groepen",
+    "examples": [
+      {
+        "cmd": "lastlog",
+        "desc": "Toont de laatste inlogtijden van alle gebruikers op het systeem."
+      }
+    ],
+    "related": [
+      "last",
+      "who",
+      "w"
+    ],
+    "tags": [
+      "gebruikers",
+      "logging",
+      "beveiliging"
+    ]
+  },
+  {
+    "name": "newgrp",
+    "category": "Gebruikers",
+    "short": "Schakelt in de huidige sessie naar een andere primaire groep zonder opnieuw in te loggen.",
+    "synopsis": "newgrp [GROEP]",
+    "chapter": "H9 Gebruikers & groepen",
+    "examples": [
+      {
+        "cmd": "newgrp developers",
+        "desc": "Schakelt de actieve groep naar 'developers' in de huidige sessie."
+      }
+    ],
+    "related": [
+      "groups",
+      "id",
+      "gpasswd"
+    ],
+    "tags": [
+      "groepen",
+      "sessie"
+    ]
+  },
+  {
+    "name": "chown",
+    "category": "Permissies",
+    "short": "Wijzigt de eigenaar (en optioneel de groep) van bestanden en mappen.",
+    "synopsis": "chown [OPTIE]... [EIGENAAR][:[GROEP]] BESTAND...",
+    "chapter": "H10 Permissies",
+    "flags": [
+      {
+        "flag": "-R",
+        "desc": "Wijzigt eigenaarschap recursief voor alle bestanden en submappen."
+      },
+      {
+        "flag": "--from=HUIDIG_EIGENAAR",
+        "desc": "Wijzigt alleen als de huidige eigenaar overeenkomt."
+      }
+    ],
+    "examples": [
+      {
+        "cmd": "chown alice bestand.txt",
+        "desc": "Maakt alice de eigenaar van het bestand."
+      },
+      {
+        "cmd": "chown alice:developers bestand.txt",
+        "desc": "Wijzigt eigenaar naar alice en groep naar developers."
+      },
+      {
+        "cmd": "chown -R www-data:www-data /var/www/html/",
+        "desc": "Stelt webservereigenaarschap recursief in."
+      },
+      {
+        "cmd": "sudo chown root:root /etc/passwd",
+        "desc": "Herstelt eigenaarschap van systeembestand."
+      }
+    ],
+    "related": [
+      "chgrp",
+      "chmod",
+      "ls",
+      "stat"
+    ],
+    "tags": [
+      "permissies",
+      "eigenaarschap",
+      "beveiliging"
+    ]
+  },
+  {
+    "name": "chgrp",
+    "category": "Permissies",
+    "short": "Wijzigt de groepseigenaar van bestanden en mappen.",
+    "synopsis": "chgrp [OPTIE]... GROEP BESTAND...",
+    "chapter": "H10 Permissies",
+    "flags": [
+      {
+        "flag": "-R",
+        "desc": "Wijzigt groep recursief voor alle bestanden en submappen."
+      },
+      {
+        "flag": "--reference=REFBESTAND",
+        "desc": "Gebruikt de groep van het referentiebestand."
+      }
+    ],
+    "examples": [
+      {
+        "cmd": "chgrp developers project/",
+        "desc": "Stelt de groep van de projectmap in op developers."
+      },
+      {
+        "cmd": "chgrp -R developers /opt/project/",
+        "desc": "Wijzigt recursief de groep van de volledige projectmap."
+      },
+      {
+        "cmd": "chgrp --reference=ref.txt doel.txt",
+        "desc": "Kopieert de groep van ref.txt naar doel.txt."
+      }
+    ],
+    "related": [
+      "chown",
+      "chmod",
+      "ls"
+    ],
+    "tags": [
+      "permissies",
+      "eigenaarschap"
+    ]
+  },
+  {
+    "name": "umask",
+    "category": "Permissies",
+    "short": "Toont of stelt de standaard permissiemasker in voor nieuw aangemaakte bestanden en mappen.",
+    "synopsis": "umask [OPTIE]... [MODUS]",
+    "chapter": "H10 Permissies",
+    "flags": [
+      {
+        "flag": "-S",
+        "desc": "Toont de umask in symbolische notatie (bijv. u=rwx,g=rx,o=rx)."
+      }
+    ],
+    "examples": [
+      {
+        "cmd": "umask",
+        "desc": "Toont de huidige umask-waarde (bijv. 022)."
+      },
+      {
+        "cmd": "umask -S",
+        "desc": "Toont de huidige umask symbolisch."
+      },
+      {
+        "cmd": "umask 022",
+        "desc": "Stelt standaard umask in: nieuwe bestanden krijgen 644, mappen 755."
+      },
+      {
+        "cmd": "umask 002",
+        "desc": "Groepsvriendelijke umask: nieuwe bestanden krijgen 664."
+      },
+      {
+        "cmd": "umask 077",
+        "desc": "Strikte umask: nieuwe bestanden zijn alleen toegankelijk voor de eigenaar (600)."
+      }
+    ],
+    "related": [
+      "chmod",
+      "touch",
+      "mkdir"
+    ],
+    "tags": [
+      "permissies",
+      "standaardinstellingen"
+    ]
+  },
+  {
+    "name": "locate",
+    "category": "Zoeken",
+    "short": "Zoekt snel naar bestanden via een vooraf gebouwde database.",
+    "synopsis": "locate [OPTIE]... PATROON...",
+    "chapter": "H10 Permissies",
+    "flags": [
+      {
+        "flag": "-i",
+        "desc": "Hoofdletterongevoelig zoeken."
+      },
+      {
+        "flag": "-n N",
+        "desc": "Beperkt het aantal resultaten tot N."
+      },
+      {
+        "flag": "-e",
+        "desc": "Toont alleen bestanden die momenteel daadwerkelijk bestaan."
+      }
+    ],
+    "examples": [
+      {
+        "cmd": "locate bestandsnaam",
+        "desc": "Zoekt snel naar een bestand op naam."
+      },
+      {
+        "cmd": "locate -i bestandsnaam",
+        "desc": "Zoekt zonder onderscheid tussen hoofd- en kleine letters."
+      },
+      {
+        "cmd": "locate -n 10 bestandsnaam",
+        "desc": "Toont maximaal 10 resultaten."
+      },
+      {
+        "cmd": "sudo updatedb",
+        "desc": "Vernieuwt de locate-database (nodig na wijzigingen)."
+      }
+    ],
+    "related": [
+      "find",
+      "updatedb"
+    ],
+    "tags": [
+      "zoeken",
+      "bestanden"
+    ]
+  },
+  {
+    "name": "date",
+    "category": "Systeem",
+    "short": "Toont of stelt de huidige datum en tijd in.",
+    "synopsis": "date [OPTIE]... [+FORMAAT]",
+    "chapter": "H10 Permissies",
+    "flags": [
+      {
+        "flag": "-u",
+        "desc": "Toont de datum in UTC (gecoördineerde wereldtijd)."
+      },
+      {
+        "flag": "-d TEKENREEKS",
+        "desc": "Toont de datum voor een gegeven tijdstip of beschrijving (bijv. 'yesterday', 'next monday')."
+      }
+    ],
+    "examples": [
+      {
+        "cmd": "date",
+        "desc": "Toont de huidige datum en tijd."
+      },
+      {
+        "cmd": "date \"+%Y-%m-%d %H:%M:%S\"",
+        "desc": "Toont datum en tijd in een aangepast formaat."
+      },
+      {
+        "cmd": "date -u",
+        "desc": "Toont de huidige datum in UTC."
+      },
+      {
+        "cmd": "date -d \"yesterday\"",
+        "desc": "Toont de datum van gisteren."
+      }
+    ],
+    "related": [
+      "cal",
+      "sleep",
+      "time"
+    ],
+    "tags": [
+      "systeem",
+      "datum",
+      "tijd"
+    ]
+  },
+  {
+    "name": "cal",
+    "category": "Systeem",
+    "short": "Toont een kalender voor de huidige, opgegeven of omliggende maand(en).",
+    "synopsis": "cal [OPTIE]... [[MAAND] JAAR]",
+    "chapter": "H10 Permissies",
+    "flags": [
+      {
+        "flag": "-3",
+        "desc": "Toont de vorige, huidige en volgende maand."
+      }
+    ],
+    "examples": [
+      {
+        "cmd": "cal",
+        "desc": "Toont de kalender van de huidige maand."
+      },
+      {
+        "cmd": "cal 1 2024",
+        "desc": "Toont januari 2024."
+      },
+      {
+        "cmd": "cal 2024",
+        "desc": "Toont het volledige jaar 2024."
+      },
+      {
+        "cmd": "cal -3",
+        "desc": "Toont drie opeenvolgende maanden."
+      }
+    ],
+    "related": [
+      "date"
+    ],
+    "tags": [
+      "systeem",
+      "datum"
+    ]
+  },
+  {
+    "name": "sleep",
+    "category": "Systeem",
+    "short": "Pauzeert de uitvoering voor een opgegeven tijdsduur.",
+    "synopsis": "sleep GETAL[ACHTERVOEGSEL]...",
+    "chapter": "H10 Permissies",
+    "examples": [
+      {
+        "cmd": "sleep 5",
+        "desc": "Wacht 5 seconden."
+      },
+      {
+        "cmd": "sleep 1m",
+        "desc": "Wacht 1 minuut."
+      },
+      {
+        "cmd": "sleep 1h",
+        "desc": "Wacht 1 uur."
+      }
+    ],
+    "related": [
+      "time",
+      "date"
+    ],
+    "tags": [
+      "systeem",
+      "timing"
+    ]
+  },
+  {
+    "name": "top",
+    "category": "Processen",
+    "short": "Interactieve weergave van lopende processen en systeemresources.",
+    "synopsis": "top [OPTIE]...",
+    "chapter": "H11 Serverbeheer",
+    "flags": [
+      {
+        "flag": "-bn1",
+        "desc": "Niet-interactieve modus, één iteratie (nuttig in scripts)."
+      },
+      {
+        "flag": "-o %CPU",
+        "desc": "Sorteert op CPU-gebruik."
+      }
+    ],
+    "examples": [
+      {
+        "cmd": "top",
+        "desc": "Start de interactieve procesmonitor."
+      },
+      {
+        "cmd": "top -bn1 | grep 'Cpu(s)'",
+        "desc": "Toont CPU-gebruik eenmalig voor gebruik in een script."
+      }
+    ],
+    "related": [
+      "htop",
+      "ps",
+      "vmstat"
+    ],
+    "tags": [
+      "processen",
+      "monitoring",
+      "systeem"
+    ]
+  },
+  {
+    "name": "htop",
+    "category": "Processen",
+    "short": "Uitgebreide interactieve procesmonitor (moet apart geïnstalleerd worden).",
+    "synopsis": "htop",
+    "chapter": "H11 Serverbeheer",
+    "examples": [
+      {
+        "cmd": "htop",
+        "desc": "Start de uitgebreide interactieve procesmonitor."
+      }
+    ],
+    "related": [
+      "top",
+      "ps"
+    ],
+    "tags": [
+      "processen",
+      "monitoring"
+    ]
+  },
+  {
+    "name": "pgrep",
+    "category": "Processen",
+    "short": "Zoekt processen op naam en geeft hun PID terug.",
+    "synopsis": "pgrep [OPTIE]... PATROON",
+    "chapter": "H11 Serverbeheer",
+    "flags": [
+      {
+        "flag": "-l",
+        "desc": "Toont ook de procesnaam naast de PID."
+      }
+    ],
+    "examples": [
+      {
+        "cmd": "pgrep firefox",
+        "desc": "Geeft de PID van het firefox-proces terug."
+      },
+      {
+        "cmd": "pgrep -l ssh",
+        "desc": "Toont PID en naam van ssh-processen."
+      }
+    ],
+    "related": [
+      "ps",
+      "kill",
+      "pkill"
+    ],
+    "tags": [
+      "processen"
+    ]
+  },
+  {
+    "name": "kill",
+    "category": "Processen",
+    "short": "Stuurt een signaal naar een proces op basis van PID.",
+    "synopsis": "kill [SIGNAAL] PID",
+    "chapter": "H11 Serverbeheer",
+    "flags": [
+      {
+        "flag": "-9",
+        "desc": "Stuurt het KILL-signaal (onmiddellijk beëindigen, kan niet genegeerd worden)."
+      },
+      {
+        "flag": "-STOP",
+        "desc": "Pauzeert het proces."
+      },
+      {
+        "flag": "-CONT",
+        "desc": "Hervat een gepauzeerd proces."
+      }
+    ],
+    "examples": [
+      {
+        "cmd": "kill 1234",
+        "desc": "Stuurt TERM-signaal (vriendelijk afsluiten) naar PID 1234."
+      },
+      {
+        "cmd": "kill -9 1234",
+        "desc": "Dwingt PID 1234 onmiddellijk te stoppen."
+      },
+      {
+        "cmd": "kill -STOP 1234",
+        "desc": "Pauzeert het proces met PID 1234."
+      }
+    ],
+    "related": [
+      "killall",
+      "pkill",
+      "pgrep"
+    ],
+    "tags": [
+      "processen",
+      "signalen"
+    ]
+  },
+  {
+    "name": "killall",
+    "category": "Processen",
+    "short": "Beëindigt alle processen met een bepaalde naam.",
+    "synopsis": "killall [OPTIE]... NAAM",
+    "chapter": "H11 Serverbeheer",
+    "examples": [
+      {
+        "cmd": "killall firefox",
+        "desc": "Beëindigt alle processen met de naam firefox."
+      }
+    ],
+    "related": [
+      "kill",
+      "pkill"
+    ],
+    "tags": [
+      "processen"
+    ]
+  },
+  {
+    "name": "pkill",
+    "category": "Processen",
+    "short": "Beëindigt processen op basis van naam of patroon.",
+    "synopsis": "pkill [OPTIE]... PATROON",
+    "chapter": "H11 Serverbeheer",
+    "flags": [
+      {
+        "flag": "-u gebruiker",
+        "desc": "Beëindigt alle processen van een specifieke gebruiker."
+      }
+    ],
+    "examples": [
+      {
+        "cmd": "pkill firefox",
+        "desc": "Beëindigt alle processen die overeenkomen met 'firefox'."
+      },
+      {
+        "cmd": "sudo pkill -u alice",
+        "desc": "Beëindigt alle processen van gebruiker alice."
+      }
+    ],
+    "related": [
+      "kill",
+      "killall",
+      "pgrep"
+    ],
+    "tags": [
+      "processen"
+    ]
+  },
+  {
+    "name": "nohup",
+    "category": "Processen",
+    "short": "Voert een commando uit dat blijft draaien na afmelden (immuun voor HUP-signaal).",
+    "synopsis": "nohup COMMANDO [ARG]... &",
+    "chapter": "H11 Serverbeheer",
+    "examples": [
+      {
+        "cmd": "nohup ./script.sh &",
+        "desc": "Voert script.sh uit in de achtergrond, ook na afmelden."
+      }
+    ],
+    "related": [
+      "jobs",
+      "bg"
+    ],
+    "tags": [
+      "processen",
+      "achtergrond"
+    ]
+  },
+  {
+    "name": "nice",
+    "category": "Processen",
+    "short": "Voert een commando uit met een aangepaste prioriteit (nice-waarde).",
+    "synopsis": "nice [-n PRIORITEIT] COMMANDO",
+    "chapter": "H11 Serverbeheer",
+    "flags": [
+      {
+        "flag": "-n WAARDE",
+        "desc": "Stelt de nice-waarde in (-20 = hoogste prioriteit, 19 = laagste prioriteit)."
+      }
+    ],
+    "examples": [
+      {
+        "cmd": "nice -n 10 ./backup.sh",
+        "desc": "Voert backup.sh uit met lage prioriteit (10)."
+      },
+      {
+        "cmd": "nice -n -5 ./kritisch.sh",
+        "desc": "Voert kritisch.sh uit met hogere prioriteit (vereist rechten)."
+      }
+    ],
+    "related": [
+      "renice",
+      "top"
+    ],
+    "tags": [
+      "processen",
+      "prioriteit"
+    ]
+  },
+  {
+    "name": "renice",
+    "category": "Processen",
+    "short": "Wijzigt de prioriteit van een al lopend proces.",
+    "synopsis": "renice PRIORITEIT PID",
+    "chapter": "H11 Serverbeheer",
+    "flags": [
+      {
+        "flag": "-u gebruiker",
+        "desc": "Wijzigt de prioriteit van alle processen van een gebruiker."
+      }
+    ],
+    "examples": [
+      {
+        "cmd": "renice 5 1234",
+        "desc": "Stelt de nice-waarde van PID 1234 in op 5."
+      },
+      {
+        "cmd": "renice -5 -u alice",
+        "desc": "Verhoogt de prioriteit van alle processen van alice."
+      }
+    ],
+    "related": [
+      "nice",
+      "ps"
+    ],
+    "tags": [
+      "processen",
+      "prioriteit"
+    ]
+  },
+  {
+    "name": "vmstat",
+    "category": "Systeem",
+    "short": "Toont statistieken over geheugen, swap, I/O en CPU.",
+    "synopsis": "vmstat [INTERVAL] [AANTAL]",
+    "chapter": "H11 Serverbeheer",
+    "flags": [
+      {
+        "flag": "-m",
+        "desc": "Toont geheugen-slab-statistieken."
+      }
+    ],
+    "examples": [
+      {
+        "cmd": "vmstat 1",
+        "desc": "Toont systeemstatistieken elke seconde."
+      },
+      {
+        "cmd": "vmstat 1 10",
+        "desc": "Toont statistieken 10 keer met interval van 1 seconde."
+      }
+    ],
+    "related": [
+      "top",
+      "free",
+      "iostat"
+    ],
+    "tags": [
+      "systeem",
+      "monitoring",
+      "geheugen"
+    ]
+  },
+  {
+    "name": "iostat",
+    "category": "Systeem",
+    "short": "Toont I/O-statistieken van schijven en partities.",
+    "synopsis": "iostat [OPTIE]... [INTERVAL] [AANTAL]",
+    "chapter": "H11 Serverbeheer",
+    "flags": [
+      {
+        "flag": "-x",
+        "desc": "Toont uitgebreide statistieken per schijf."
+      }
+    ],
+    "examples": [
+      {
+        "cmd": "iostat 1",
+        "desc": "Toont I/O-statistieken elke seconde."
+      },
+      {
+        "cmd": "iostat -x 1 10",
+        "desc": "Uitgebreide I/O-statistieken, 10 keer elke seconde."
+      }
+    ],
+    "related": [
+      "vmstat",
+      "df",
+      "du"
+    ],
+    "tags": [
+      "systeem",
+      "schijf",
+      "monitoring"
+    ]
+  },
+  {
+    "name": "free",
+    "category": "Systeem",
+    "short": "Toont het geheugengebruik van het systeem.",
+    "synopsis": "free [OPTIE]",
+    "chapter": "H11 Serverbeheer",
+    "flags": [
+      {
+        "flag": "-h",
+        "desc": "Toont geheugenwaarden in leesbaar formaat (KB, MB, GB)."
+      }
+    ],
+    "examples": [
+      {
+        "cmd": "free -h",
+        "desc": "Toont RAM- en swap-gebruik in leesbaar formaat."
+      }
+    ],
+    "related": [
+      "vmstat",
+      "top"
+    ],
+    "tags": [
+      "systeem",
+      "geheugen",
+      "monitoring"
+    ]
+  },
+  {
+    "name": "uptime",
+    "category": "Systeem",
+    "short": "Toont hoe lang het systeem draait en de gemiddelde belasting.",
+    "synopsis": "uptime",
+    "chapter": "H11 Serverbeheer",
+    "flags": [
+      {
+        "flag": "-p",
+        "desc": "Toont de uptime in een leesbaar formaat (bv. 'up 2 hours, 15 minutes')."
+      }
+    ],
+    "examples": [
+      {
+        "cmd": "uptime",
+        "desc": "Toont uptime en load average van het systeem."
+      },
+      {
+        "cmd": "uptime -p",
+        "desc": "Toont de uptime in mensvriendelijk formaat."
+      }
+    ],
+    "related": [
+      "w",
+      "top"
+    ],
+    "tags": [
+      "systeem",
+      "monitoring"
+    ]
+  },
+  {
+    "name": "systemctl",
+    "category": "Systeem",
+    "short": "Beheert systemd-services en het systeem.",
+    "synopsis": "systemctl [COMMANDO] [SERVICE]",
+    "chapter": "H11 Serverbeheer",
+    "flags": [
+      {
+        "flag": "status SERVICE",
+        "desc": "Toont de status van een service."
+      },
+      {
+        "flag": "start SERVICE",
+        "desc": "Start een service."
+      },
+      {
+        "flag": "stop SERVICE",
+        "desc": "Stopt een service."
+      },
+      {
+        "flag": "restart SERVICE",
+        "desc": "Herstart een service."
+      },
+      {
+        "flag": "reload SERVICE",
+        "desc": "Herlaadt de configuratie van een service zonder te herstarten."
+      },
+      {
+        "flag": "enable SERVICE",
+        "desc": "Schakelt de service in om automatisch te starten bij het opstarten."
+      },
+      {
+        "flag": "disable SERVICE",
+        "desc": "Schakelt automatisch starten bij het opstarten uit."
+      },
+      {
+        "flag": "enable --now SERVICE",
+        "desc": "Schakelt in én start de service meteen."
+      },
+      {
+        "flag": "list-units --type=service",
+        "desc": "Toont alle geladen service-units."
+      },
+      {
+        "flag": "list-units --state=failed",
+        "desc": "Toont alle mislukte services."
+      },
+      {
+        "flag": "list-unit-files --type=service",
+        "desc": "Toont alle beschikbare service-bestanden."
+      },
+      {
+        "flag": "daemon-reload",
+        "desc": "Herlaadt de systemd-configuratie na wijzigingen."
+      },
+      {
+        "flag": "get-default",
+        "desc": "Toont het standaard runlevel (target)."
+      },
+      {
+        "flag": "set-default TARGET",
+        "desc": "Stelt het standaard runlevel in."
+      },
+      {
+        "flag": "isolate TARGET",
+        "desc": "Schakelt tijdelijk naar een ander target (runlevel)."
+      },
+      {
+        "flag": "is-active SERVICE",
+        "desc": "Controleert of een service actief is (exitcode 0 = ja)."
+      }
+    ],
+    "examples": [
+      {
+        "cmd": "systemctl status ssh",
+        "desc": "Toont de status van de SSH-service."
+      },
+      {
+        "cmd": "sudo systemctl restart nginx",
+        "desc": "Herstart de nginx-webserver."
+      },
+      {
+        "cmd": "sudo systemctl enable --now ssh",
+        "desc": "Schakelt SSH in en start het meteen."
+      },
+      {
+        "cmd": "systemctl list-units --state=failed",
+        "desc": "Toont alle mislukte services."
+      },
+      {
+        "cmd": "sudo systemctl daemon-reload",
+        "desc": "Herlaadt systemd na een wijziging aan een service-bestand."
+      }
+    ],
+    "related": [
+      "journalctl",
+      "service"
+    ],
+    "tags": [
+      "systeem",
+      "services",
+      "systemd"
+    ]
+  },
+  {
+    "name": "journalctl",
+    "category": "Systeem",
+    "short": "Toont logs van het systemd-journaal.",
+    "synopsis": "journalctl [OPTIE]...",
+    "chapter": "H11 Serverbeheer",
+    "flags": [
+      {
+        "flag": "-u SERVICE",
+        "desc": "Toont logs van een specifieke service."
+      },
+      {
+        "flag": "-f",
+        "desc": "Volgt het journaal in realtime (zoals tail -f)."
+      },
+      {
+        "flag": "--since \"TIJDSTIP\"",
+        "desc": "Toont logs vanaf een bepaald tijdstip (bv. '1 hour ago')."
+      }
+    ],
+    "examples": [
+      {
+        "cmd": "sudo journalctl",
+        "desc": "Toont alle systeemlogboeken."
+      },
+      {
+        "cmd": "sudo journalctl -u ssh",
+        "desc": "Toont alleen de logs van de SSH-service."
+      },
+      {
+        "cmd": "sudo journalctl -f",
+        "desc": "Volgt het systeemlogboek in realtime."
+      },
+      {
+        "cmd": "sudo journalctl --since '1 hour ago'",
+        "desc": "Toont logs van het afgelopen uur."
+      }
+    ],
+    "related": [
+      "systemctl",
+      "tail"
+    ],
+    "tags": [
+      "systeem",
+      "logs",
+      "monitoring"
+    ]
+  },
+  {
+    "name": "crontab",
+    "category": "Systeem",
+    "short": "Beheert geplande taken (cron-jobs) voor een gebruiker.",
+    "synopsis": "crontab [OPTIE]",
+    "chapter": "H11 Serverbeheer",
+    "flags": [
+      {
+        "flag": "-e",
+        "desc": "Opent de crontab van de huidige gebruiker voor bewerking."
+      },
+      {
+        "flag": "-l",
+        "desc": "Toont de huidige cron-jobs van de gebruiker."
+      },
+      {
+        "flag": "-r",
+        "desc": "Verwijdert alle cron-jobs van de gebruiker."
+      },
+      {
+        "flag": "-e -u gebruiker",
+        "desc": "Bewerkt de crontab van een andere gebruiker (als root)."
+      }
+    ],
+    "examples": [
+      {
+        "cmd": "crontab -e",
+        "desc": "Opent de crontab-editor om taken toe te voegen of te wijzigen."
+      },
+      {
+        "cmd": "crontab -l",
+        "desc": "Toont een lijst van alle geplande taken."
+      },
+      {
+        "cmd": "crontab -r",
+        "desc": "Verwijdert alle geplande taken van de huidige gebruiker."
+      }
+    ],
+    "related": [
+      "systemctl"
+    ],
+    "tags": [
+      "systeem",
+      "automatisering",
+      "cron"
+    ]
+  },
+  {
+    "name": "ip",
+    "category": "Netwerk",
+    "short": "Toont en beheert netwerkinstellingen (interfaces, routes, adressen).",
+    "synopsis": "ip [SUBCOMMANDO] [OPTIE]...",
+    "chapter": "H11 Serverbeheer",
+    "flags": [
+      {
+        "flag": "addr show",
+        "desc": "Toont alle netwerkadressen van alle interfaces."
+      },
+      {
+        "flag": "a",
+        "desc": "Verkorte versie van 'addr show'."
+      },
+      {
+        "flag": "route show",
+        "desc": "Toont de routeringstabel."
+      },
+      {
+        "flag": "link set INTERFACE up",
+        "desc": "Schakelt een netwerkinterface in."
+      },
+      {
+        "flag": "link set INTERFACE down",
+        "desc": "Schakelt een netwerkinterface uit."
+      },
+      {
+        "flag": "addr add IP/MASK dev INTERFACE",
+        "desc": "Voegt tijdelijk een IP-adres toe aan een interface."
+      }
+    ],
+    "examples": [
+      {
+        "cmd": "ip addr show",
+        "desc": "Toont alle IP-adressen en netwerkinterfaces."
+      },
+      {
+        "cmd": "ip a",
+        "desc": "Korte notatie voor ip addr show."
+      },
+      {
+        "cmd": "ip route show",
+        "desc": "Toont de routeringstabel."
+      },
+      {
+        "cmd": "sudo ip link set eth0 up",
+        "desc": "Schakelt de interface eth0 in."
+      }
+    ],
+    "related": [
+      "ifconfig",
+      "ping",
+      "netstat",
+      "ss"
+    ],
+    "tags": [
+      "netwerk"
+    ]
+  },
+  {
+    "name": "ss",
+    "category": "Netwerk",
+    "short": "Toont socketstatistieken en actieve netwerkverbindingen (moderne vervanger van netstat).",
+    "synopsis": "ss [OPTIE]...",
+    "chapter": "H11 Serverbeheer",
+    "flags": [
+      {
+        "flag": "-t",
+        "desc": "Toont TCP-verbindingen."
+      },
+      {
+        "flag": "-u",
+        "desc": "Toont UDP-verbindingen."
+      },
+      {
+        "flag": "-l",
+        "desc": "Toont alleen luisterende sockets."
+      },
+      {
+        "flag": "-n",
+        "desc": "Toont nummers in plaats van servicenamen."
+      },
+      {
+        "flag": "-p",
+        "desc": "Toont het processenassociatie per socket."
+      }
+    ],
+    "examples": [
+      {
+        "cmd": "ss -tuln",
+        "desc": "Toont alle TCP/UDP-poorten die luisteren."
+      },
+      {
+        "cmd": "ss -tup",
+        "desc": "Toont TCP/UDP-verbindingen met procesnamen."
+      }
+    ],
+    "related": [
+      "netstat",
+      "ip"
+    ],
+    "tags": [
+      "netwerk"
+    ]
+  },
+  {
+    "name": "ping",
+    "category": "Netwerk",
+    "short": "Test de netwerkverbinding met een host.",
+    "synopsis": "ping [OPTIE]... HOST",
+    "chapter": "H11 Serverbeheer",
+    "flags": [
+      {
+        "flag": "-c AANTAL",
+        "desc": "Stuurt een bepaald aantal pakketten in plaats van oneindig."
+      }
+    ],
+    "examples": [
+      {
+        "cmd": "ping google.com",
+        "desc": "Test de verbinding met google.com (oneindig, stop met Ctrl+C)."
+      },
+      {
+        "cmd": "ping -c 4 google.com",
+        "desc": "Stuurt exact 4 pakketten naar google.com."
+      }
+    ],
+    "related": [
+      "traceroute",
+      "ip"
+    ],
+    "tags": [
+      "netwerk"
+    ]
+  },
+  {
+    "name": "traceroute",
+    "category": "Netwerk",
+    "short": "Toont het netwerkpad (hops) naar een bestemming.",
+    "synopsis": "traceroute HOST",
+    "chapter": "H11 Serverbeheer",
+    "examples": [
+      {
+        "cmd": "traceroute google.com",
+        "desc": "Toont elk netwerkstation op weg naar google.com."
+      }
+    ],
+    "related": [
+      "ping",
+      "ip"
+    ],
+    "tags": [
+      "netwerk"
+    ]
+  },
+  {
+    "name": "nslookup",
+    "category": "Netwerk",
+    "short": "Voert een DNS-opzoeking uit voor een hostnaam.",
+    "synopsis": "nslookup HOST",
+    "chapter": "H11 Serverbeheer",
+    "examples": [
+      {
+        "cmd": "nslookup google.com",
+        "desc": "Zoekt het IP-adres van google.com op via DNS."
+      }
+    ],
+    "related": [
+      "dig",
+      "host"
+    ],
+    "tags": [
+      "netwerk",
+      "dns"
+    ]
+  },
+  {
+    "name": "dig",
+    "category": "Netwerk",
+    "short": "Voert uitgebreide DNS-opzoekopdrachten uit.",
+    "synopsis": "dig [OPTIE]... HOST",
+    "chapter": "H11 Serverbeheer",
+    "examples": [
+      {
+        "cmd": "dig google.com",
+        "desc": "Toont gedetailleerde DNS-informatie voor google.com."
+      }
+    ],
+    "related": [
+      "nslookup",
+      "host"
+    ],
+    "tags": [
+      "netwerk",
+      "dns"
+    ]
+  },
+  {
+    "name": "ufw",
+    "category": "Netwerk",
+    "short": "Beheert de eenvoudige firewall (Uncomplicated Firewall) van Ubuntu/Debian.",
+    "synopsis": "ufw [COMMANDO] [REGEL]",
+    "chapter": "H11 Serverbeheer",
+    "flags": [
+      {
+        "flag": "status",
+        "desc": "Toont de huidige firewall-status en regels."
+      },
+      {
+        "flag": "enable",
+        "desc": "Schakelt de firewall in."
+      },
+      {
+        "flag": "allow ssh",
+        "desc": "Staat SSH-verkeer toe."
+      },
+      {
+        "flag": "allow 80/tcp",
+        "desc": "Staat TCP-verkeer op poort 80 toe."
+      },
+      {
+        "flag": "deny 23/tcp",
+        "desc": "Blokkeert TCP-verkeer op poort 23."
+      }
+    ],
+    "examples": [
+      {
+        "cmd": "sudo ufw status",
+        "desc": "Toont of de firewall actief is en welke regels er gelden."
+      },
+      {
+        "cmd": "sudo ufw enable",
+        "desc": "Schakelt de firewall in."
+      },
+      {
+        "cmd": "sudo ufw allow ssh",
+        "desc": "Voegt een regel toe om SSH-verbindingen toe te staan."
+      }
+    ],
+    "related": [
+      "ss",
+      "iptables"
+    ],
+    "tags": [
+      "netwerk",
+      "beveiliging",
+      "firewall"
+    ]
+  },
+  {
+    "name": "apt",
+    "category": "Pakketten",
+    "short": "Beheert softwarepakketten op Debian/Ubuntu-systemen.",
+    "synopsis": "apt [COMMANDO] [PAKKET]",
+    "chapter": "H11 Serverbeheer",
+    "flags": [
+      {
+        "flag": "update",
+        "desc": "Ververst de lijst met beschikbare pakketten."
+      },
+      {
+        "flag": "upgrade",
+        "desc": "Upgrades alle geïnstalleerde pakketten naar de nieuwste versie."
+      },
+      {
+        "flag": "install PAKKET",
+        "desc": "Installeert een pakket."
+      },
+      {
+        "flag": "remove PAKKET",
+        "desc": "Verwijdert een pakket (behoudt configuratiebestanden)."
+      },
+      {
+        "flag": "autoremove",
+        "desc": "Verwijdert automatisch onnodige afhankelijkheden."
+      },
+      {
+        "flag": "search ZOEKTERM",
+        "desc": "Zoekt naar pakketten op naam of omschrijving."
+      }
+    ],
+    "examples": [
+      {
+        "cmd": "sudo apt update",
+        "desc": "Ververst de pakketlijsten van de repositories."
+      },
+      {
+        "cmd": "sudo apt upgrade",
+        "desc": "Upgradet alle geïnstalleerde pakketten."
+      },
+      {
+        "cmd": "sudo apt install nginx",
+        "desc": "Installeert de nginx-webserver."
+      },
+      {
+        "cmd": "sudo apt update && sudo apt upgrade -y",
+        "desc": "Ververs pakketlijsten en upgrade alles zonder bevestiging."
+      }
+    ],
+    "related": [
+      "dpkg",
+      "apt-get"
+    ],
+    "tags": [
+      "pakketten",
+      "systeem"
+    ]
+  },
+  {
+    "name": "rsync",
+    "category": "Archieven",
+    "short": "Synchroniseert bestanden en mappen lokaal of over het netwerk.",
+    "synopsis": "rsync [OPTIE]... BRON DOEL",
+    "chapter": "H11 Serverbeheer",
+    "flags": [
+      {
+        "flag": "-a",
+        "desc": "Archiefmodus: behoudt rechten, eigenaar, tijdstempels en kopieert recursief."
+      },
+      {
+        "flag": "-v",
+        "desc": "Uitgebreide uitvoer (verbose)."
+      },
+      {
+        "flag": "--delete",
+        "desc": "Verwijdert bestanden in de doelmap die niet meer in de bronmap bestaan."
+      }
+    ],
+    "examples": [
+      {
+        "cmd": "rsync -av --delete /home/ /backup/home/",
+        "desc": "Synchroniseert /home naar /backup/home en verwijdert verouderde bestanden."
+      },
+      {
+        "cmd": "rsync -av /home/ user@server:/backups/home/",
+        "desc": "Synchroniseert /home naar een externe server via SSH."
+      }
+    ],
+    "related": [
+      "tar",
+      "scp"
+    ],
+    "tags": [
+      "archieven",
+      "back-up",
+      "netwerk"
+    ]
+  },
+  {
+    "name": "du",
+    "category": "Systeem",
+    "short": "Toont de schijfruimte die mappen en bestanden gebruiken.",
+    "synopsis": "du [OPTIE]... [MAP]...",
+    "chapter": "H11 Serverbeheer",
+    "flags": [
+      {
+        "flag": "-s",
+        "desc": "Toont alleen de totale som van de opgegeven map."
+      },
+      {
+        "flag": "-h",
+        "desc": "Toont groottes in leesbaar formaat."
+      },
+      {
+        "flag": "--max-depth=N",
+        "desc": "Beperkt de rapportage tot N niveaus diep."
+      }
+    ],
+    "examples": [
+      {
+        "cmd": "du -sh /home/",
+        "desc": "Toont de totale grootte van de map /home."
+      },
+      {
+        "cmd": "du -h --max-depth=1 /",
+        "desc": "Toont de grootte van alle submappen onder / (één niveau diep)."
+      }
+    ],
+    "related": [
+      "df",
+      "ls"
+    ],
+    "tags": [
+      "systeem",
+      "schijf"
+    ]
+  },
+  {
+    "name": "lsof",
+    "category": "Processen",
+    "short": "Toont een lijst van alle geopende bestanden en sockets.",
+    "synopsis": "lsof [OPTIE]...",
+    "chapter": "H11 Serverbeheer",
+    "flags": [
+      {
+        "flag": "-p PID",
+        "desc": "Toont bestanden die door een specifiek proces zijn geopend."
+      }
+    ],
+    "examples": [
+      {
+        "cmd": "lsof | grep deleted",
+        "desc": "Zoekt naar bestanden die verwijderd zijn maar nog open staan."
+      },
+      {
+        "cmd": "lsof -p 1234",
+        "desc": "Toont alle bestanden geopend door het proces met PID 1234."
+      }
+    ],
+    "related": [
+      "ps",
+      "fuser"
+    ],
+    "tags": [
+      "processen",
+      "bestanden",
+      "monitoring"
+    ]
+  },
+  {
+    "name": "hostname",
+    "category": "Systeem",
+    "short": "Toont of stelt de hostnaam van het systeem in.",
+    "synopsis": "hostname",
+    "chapter": "H11 Serverbeheer",
+    "examples": [
+      {
+        "cmd": "hostname",
+        "desc": "Toont de huidige hostnaam van het systeem."
+      }
+    ],
+    "related": [
+      "uname",
+      "ip"
+    ],
+    "tags": [
+      "systeem",
+      "netwerk"
+    ]
+  },
+  {
+    "name": "uname",
+    "category": "Systeem",
+    "short": "Toont informatie over het besturingssysteem en de kernel.",
+    "synopsis": "uname [OPTIE]",
+    "chapter": "H11 Serverbeheer",
+    "flags": [
+      {
+        "flag": "-a",
+        "desc": "Toont alle systeem-informatie (kernel, hostnaam, architectuur, etc.)."
+      },
+      {
+        "flag": "-r",
+        "desc": "Toont alleen de kernelversie."
+      }
+    ],
+    "examples": [
+      {
+        "cmd": "uname -a",
+        "desc": "Toont volledige systeem- en kernelinformatie."
+      },
+      {
+        "cmd": "uname -r",
+        "desc": "Toont alleen de kernelversie."
+      }
+    ],
+    "related": [
+      "hostname",
+      "lsb_release"
+    ],
+    "tags": [
+      "systeem"
+    ]
+  },
+  {
+    "name": "xargs",
+    "category": "I/O & pipes",
+    "short": "Leest regels van stdin en geeft ze als argumenten door aan een commando.",
+    "synopsis": "xargs [OPTIE]... [COMMANDO]",
+    "chapter": "H12 Examenrecap",
+    "flags": [
+      {
+        "flag": "-n 1",
+        "desc": "Geeft één argument tegelijk door."
+      },
+      {
+        "flag": "-I{}",
+        "desc": "Gebruikt {} als plaatshouder voor elk argument."
+      }
+    ],
+    "examples": [
+      {
+        "cmd": "cat newfiles.txt | xargs -I{} touch ~/{}",
+        "desc": "Maakt voor elke bestandsnaam in newfiles.txt een leeg bestand in de homedirectory."
+      },
+      {
+        "cmd": "cat dirs_to_remove.txt | xargs rmdir",
+        "desc": "Verwijdert elke map die in dirs_to_remove.txt staat."
+      }
+    ],
+    "related": [
+      "find",
+      "cat"
+    ],
+    "tags": [
+      "i/o",
+      "pipes"
+    ]
+  }
+]

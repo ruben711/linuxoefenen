@@ -1,0 +1,876 @@
+{
+  "chapterId": "06",
+  "chapterTitle": "Globbing, Archiveren en Links",
+  "summary": "In dit hoofdstuk leer je bestanden efficiënt selecteren met globbing-patronen (*, ?, [], {}), bestanden archiveren en comprimeren met tar, gzip, bzip2 en zip, en hardlinks en softlinks aanmaken en beheren. Daarnaast verken je hoe inodes de kern vormen van het Unix-bestandssysteem en gebruik je het krachtige dd-commando voor blokbewerkingen.",
+  "commands": [
+    {
+      "name": "ls",
+      "category": "Navigatie",
+      "short": "Geeft de inhoud van een map weer, inclusief bestanden die overeenkomen met globbing-patronen.",
+      "synopsis": "ls [OPTIE]... [BESTAND/PATROON]...",
+      "flags": [
+        { "flag": "-l", "desc": "Lange weergave met permissies, eigenaar, grootte en datum." },
+        { "flag": "-i", "desc": "Toont het inode-nummer voor elk bestand." },
+        { "flag": "-li", "desc": "Combineert lange weergave met inode-nummers." },
+        { "flag": "-h", "desc": "Mensvriendelijke bestandsgroottes (K, M, G)." },
+        { "flag": "-a", "desc": "Toont ook verborgen bestanden (die beginnen met een punt)." }
+      ],
+      "examples": [
+        { "cmd": "ls *.txt", "desc": "Toont alle bestanden met extensie .txt in de huidige map." },
+        { "cmd": "ls file[1-5].txt", "desc": "Toont file1.txt t/m file5.txt via een tekenbereikpatroon." },
+        { "cmd": "ls *.{jpg,png}", "desc": "Toont alle jpg- én png-bestanden via accolade-uitbreiding." },
+        { "cmd": "ls -li", "desc": "Lange weergave met inode-nummers, handig om hard links te herkennen." },
+        { "cmd": "ls -lh *.file", "desc": "Toont bestanden die eindigen op .file met mensvriendelijke groottes." }
+      ],
+      "related": ["stat", "find"],
+      "tags": ["globbing", "navigatie"]
+    },
+    {
+      "name": "touch",
+      "category": "Bestanden",
+      "short": "Maakt lege bestanden aan of past de tijdstempel van bestaande bestanden aan.",
+      "synopsis": "touch [OPTIE]... BESTAND...",
+      "flags": [],
+      "examples": [
+        { "cmd": "touch file{1..10}.txt", "desc": "Maakt file1.txt t/m file10.txt aan via accolade-uitbreiding." },
+        { "cmd": "touch {backup,config,temp}.log", "desc": "Maakt backup.log, config.log en temp.log tegelijk aan." },
+        { "cmd": "touch image{01..05}.{jpg,png}", "desc": "Maakt 10 afbeeldingsbestanden aan (jpg en png, genummerd 01-05)." }
+      ],
+      "related": ["mkdir", "cp"],
+      "tags": ["bestanden", "globbing"]
+    },
+    {
+      "name": "shopt",
+      "category": "Shell scripting",
+      "short": "Schakelt shell-opties in of uit, zoals uitgebreide globbing en recursief matchen.",
+      "synopsis": "shopt [-s|-u] OPTIE",
+      "flags": [
+        { "flag": "-s", "desc": "Zet de opgegeven shell-optie aan (set)." },
+        { "flag": "-u", "desc": "Zet de opgegeven shell-optie uit (unset)." }
+      ],
+      "examples": [
+        { "cmd": "shopt -s extglob", "desc": "Schakelt uitgebreide globbing in: patronen zoals +(*.txt|*.doc)." },
+        { "cmd": "shopt -s globstar", "desc": "Schakelt ** in voor recursief matchen door alle submappen heen." },
+        { "cmd": "shopt -s nullglob", "desc": "Zorgt dat een patroon zonder overeenkomsten gewoon verdwijnt i.p.v. letterlijk blijft staan." }
+      ],
+      "related": ["bash", "ls"],
+      "tags": ["shell", "globbing"]
+    },
+    {
+      "name": "dd",
+      "category": "Systeem",
+      "short": "Kopieert en converteert gegevensblokken; wordt gebruikt voor schijfback-ups, het aanmaken van testbestanden en het schrijven van bootbare media.",
+      "synopsis": "dd if=INVOER of=UITVOER [OPTIES]",
+      "flags": [
+        { "flag": "bs=GROOTTE", "desc": "Blokgrootte, bijv. 1K, 1M, 4M. Grotere blokken zijn doorgaans sneller." },
+        { "flag": "count=N", "desc": "Aantal blokken dat gekopieerd wordt." },
+        { "flag": "skip=N", "desc": "Sla N blokken over aan het begin van de invoer." },
+        { "flag": "seek=N", "desc": "Sla N blokken over aan het begin van de uitvoer." },
+        { "flag": "status=progress", "desc": "Toont voortgang tijdens de bewerking." },
+        { "flag": "conv=noerror", "desc": "Gaat door na lees-/schrijffouten." },
+        { "flag": "oflag=direct", "desc": "Schrijft direct naar schijf, omzeilt de cache (voor prestatietests)." }
+      ],
+      "examples": [
+        { "cmd": "dd if=/dev/zero of=1MB.file bs=1M count=1", "desc": "Maakt een bestand van 1 MB gevuld met nullen aan." },
+        { "cmd": "dd if=/dev/urandom of=random.dat bs=1K count=5", "desc": "Maakt een bestand van 5 KB met willekeurige data aan." },
+        { "cmd": "dd if=linux.iso of=/dev/sdX bs=4M status=progress", "desc": "Schrijft een ISO-bestand naar een USB-stick (pas op: apparaatnaam goed controleren!)." },
+        { "cmd": "dd if=1MB.file of=copy.file bs=4K", "desc": "Kopieert een bestand blok voor blok met een blokgrootte van 4K." }
+      ],
+      "related": ["lsblk", "sync", "fdisk"],
+      "tags": ["schijf", "blokken", "back-up"]
+    },
+    {
+      "name": "lsblk",
+      "category": "Systeem",
+      "short": "Toont een boomoverzicht van alle blokapparaten (schijven en partities).",
+      "synopsis": "lsblk [OPTIE]... [APPARAAT]...",
+      "flags": [
+        { "flag": "-f", "desc": "Toont bestandssysteemtype en UUID." },
+        { "flag": "-o NAME,SIZE,TYPE,MOUNTPOINT", "desc": "Kiest specifieke kolommen om te tonen." }
+      ],
+      "examples": [
+        { "cmd": "lsblk", "desc": "Toont een overzicht van alle schijven en partities." },
+        { "cmd": "lsblk -f", "desc": "Inclusief bestandssysteemtype en UUID, handig voor identificatie." }
+      ],
+      "related": ["fdisk", "parted", "dd"],
+      "tags": ["schijf", "systeem"]
+    },
+    {
+      "name": "tar",
+      "category": "Archieven",
+      "short": "Bundelt bestanden en mappen in één archiefbestand, eventueel met compressie.",
+      "synopsis": "tar [OPTIES] ARCHIEF [BESTAND]...",
+      "flags": [
+        { "flag": "-c", "desc": "Maakt een nieuw archief aan (create)." },
+        { "flag": "-x", "desc": "Pakt een archief uit (extract)." },
+        { "flag": "-t", "desc": "Toont de inhoud van een archief (list)." },
+        { "flag": "-f BESTAND", "desc": "Geeft de bestandsnaam van het archief op." },
+        { "flag": "-z", "desc": "Gebruikt gzip-compressie (.tar.gz / .tgz)." },
+        { "flag": "-j", "desc": "Gebruikt bzip2-compressie (.tar.bz2), betere compressie dan gzip." },
+        { "flag": "-J", "desc": "Gebruikt xz-compressie (.tar.xz), de beste compressie." },
+        { "flag": "-v", "desc": "Verbose: toont de bestanden die verwerkt worden." },
+        { "flag": "-p", "desc": "Behoudt originele permissies bij het uitpakken." },
+        { "flag": "-C PAD", "desc": "Pakt uit naar een specifieke map." },
+        { "flag": "--exclude=PATROON", "desc": "Sluit bestanden die overeenkomen met het patroon uit van het archief." }
+      ],
+      "examples": [
+        { "cmd": "tar -cf archive.tar file1 file2 dir/", "desc": "Maakt een niet-gecomprimeerd archief van bestanden en een map." },
+        { "cmd": "tar -czf archive.tar.gz project/", "desc": "Maakt een gzip-gecomprimeerd archief van de map project/." },
+        { "cmd": "tar -cjf archive.tar.bz2 project/", "desc": "Maakt een bzip2-gecomprimeerd archief (betere compressie)." },
+        { "cmd": "tar -cJf archive.tar.xz project/", "desc": "Maakt een xz-gecomprimeerd archief (beste compressie)." },
+        { "cmd": "tar -tzf archive.tar.gz", "desc": "Toont de inhoud van een gecomprimeerd archief zonder het uit te pakken." },
+        { "cmd": "tar -xzf archive.tar.gz -C /pad/naar/doel/", "desc": "Pakt een gzip-archief uit naar een specifieke map." },
+        { "cmd": "tar -czf backup.tar.gz --exclude='*.tmp' --exclude='*.log' /home/user/", "desc": "Maakt een archief met uitzondering van tijdelijke en logbestanden." },
+        { "cmd": "tar -czf home_backup_$(date +%Y%m%d).tar.gz ~", "desc": "Maakt een back-up van de thuismap met de datum in de bestandsnaam." }
+      ],
+      "related": ["gzip", "bzip2", "zip", "unzip"],
+      "tags": ["archief", "compressie", "back-up"]
+    },
+    {
+      "name": "gzip",
+      "category": "Archieven",
+      "short": "Comprimeert bestanden met het gzip-algoritme; vervangt het origineel door een .gz-bestand.",
+      "synopsis": "gzip [OPTIE]... BESTAND...",
+      "flags": [
+        { "flag": "-k", "desc": "Behoudt het originele bestand naast het gecomprimeerde bestand." },
+        { "flag": "-d", "desc": "Decomprimeert (gelijk aan gunzip)." }
+      ],
+      "examples": [
+        { "cmd": "gzip file.txt", "desc": "Comprimeert file.txt naar file.txt.gz en verwijdert het origineel." },
+        { "cmd": "gzip -k file.txt", "desc": "Comprimeert maar behoudt ook het originele bestand." },
+        { "cmd": "zcat file.txt.gz", "desc": "Toont de inhoud van een gzip-bestand zonder het uit te pakken." }
+      ],
+      "related": ["gunzip", "bzip2", "tar"],
+      "tags": ["compressie", "archief"]
+    },
+    {
+      "name": "gunzip",
+      "category": "Archieven",
+      "short": "Decomprimeert gzip-bestanden en herstelt het originele bestand.",
+      "synopsis": "gunzip [OPTIE]... BESTAND.gz...",
+      "flags": [
+        { "flag": "-k", "desc": "Behoudt het gecomprimeerde bestand naast het gedecomprimeerde." }
+      ],
+      "examples": [
+        { "cmd": "gunzip file.txt.gz", "desc": "Decomprimeert file.txt.gz en herstelt file.txt." }
+      ],
+      "related": ["gzip", "zcat"],
+      "tags": ["compressie", "archief"]
+    },
+    {
+      "name": "bzip2",
+      "category": "Archieven",
+      "short": "Comprimeert bestanden met het bzip2-algoritme; betere compressie dan gzip maar langzamer.",
+      "synopsis": "bzip2 [OPTIE]... BESTAND...",
+      "flags": [
+        { "flag": "-k", "desc": "Behoudt het originele bestand naast het gecomprimeerde bestand." },
+        { "flag": "-d", "desc": "Decomprimeert (gelijk aan bunzip2)." }
+      ],
+      "examples": [
+        { "cmd": "bzip2 file.txt", "desc": "Comprimeert file.txt naar file.txt.bz2." },
+        { "cmd": "bzcat file.txt.bz2", "desc": "Toont de inhoud van een bzip2-bestand zonder het uit te pakken." }
+      ],
+      "related": ["bunzip2", "gzip", "tar"],
+      "tags": ["compressie", "archief"]
+    },
+    {
+      "name": "zip",
+      "category": "Archieven",
+      "short": "Maakt zip-archieven aan, het cross-platform standaardformaat.",
+      "synopsis": "zip [OPTIE]... ARCHIEF.zip BESTAND...",
+      "flags": [
+        { "flag": "-r", "desc": "Recursief: voegt ook de inhoud van submappen toe." },
+        { "flag": "-9", "desc": "Maximale compressie (trager, kleiner bestand)." }
+      ],
+      "examples": [
+        { "cmd": "zip archive.zip file1 file2 dir/", "desc": "Maakt een zip-archief van bestanden en een map." },
+        { "cmd": "zip -r project.zip project/", "desc": "Maakt recursief een zip-archief van een volledige map." },
+        { "cmd": "unzip -l archive.zip", "desc": "Toont de inhoud van een zip-archief zonder het uit te pakken." },
+        { "cmd": "unzip archive.zip -d doel/", "desc": "Pakt een zip-archief uit naar een specifieke map." }
+      ],
+      "related": ["unzip", "tar", "gzip"],
+      "tags": ["archief", "compressie", "cross-platform"]
+    },
+    {
+      "name": "unzip",
+      "category": "Archieven",
+      "short": "Pakt zip-archieven uit.",
+      "synopsis": "unzip [OPTIE]... ARCHIEF.zip [BESTANDEN]...",
+      "flags": [
+        { "flag": "-d PAD", "desc": "Pakt uit naar het opgegeven pad." },
+        { "flag": "-l", "desc": "Toont de inhoud van het archief zonder uit te pakken." },
+        { "flag": "-t", "desc": "Controleert de integriteit van het archief." }
+      ],
+      "examples": [
+        { "cmd": "unzip archive.zip", "desc": "Pakt het archief uit in de huidige map." },
+        { "cmd": "unzip archive.zip -d doel/", "desc": "Pakt uit naar de opgegeven doelmap." }
+      ],
+      "related": ["zip", "tar"],
+      "tags": ["archief", "compressie"]
+    },
+    {
+      "name": "ln",
+      "category": "Bestanden",
+      "short": "Maakt harde links of symbolische links (softlinks) aan naar bestanden of mappen.",
+      "synopsis": "ln [OPTIE]... DOEL [LINKNAAM]",
+      "flags": [
+        { "flag": "-s", "desc": "Maakt een symbolische link (softlink) aan in plaats van een harde link." }
+      ],
+      "examples": [
+        { "cmd": "ln original.txt hardlink.txt", "desc": "Maakt een harde link naar original.txt; beide namen verwijzen naar hetzelfde inode." },
+        { "cmd": "ln -s original.txt softlink.txt", "desc": "Maakt een symbolische link naar original.txt." },
+        { "cmd": "ln -s /pad/naar/map linkname", "desc": "Maakt een symbolische link naar een map (kan ook cross-filesystem)." },
+        { "cmd": "ln -s ../config/app.conf current_config", "desc": "Maakt een relatieve symbolische link aan." }
+      ],
+      "related": ["ls -li", "stat", "find", "unlink", "readlink"],
+      "tags": ["links", "inodes", "bestandssysteem"]
+    },
+    {
+      "name": "stat",
+      "category": "Bestanden",
+      "short": "Toont gedetailleerde informatie over een bestand of map, inclusief inode-nummer, eigenaar, permissies en tijdstempels.",
+      "synopsis": "stat [OPTIE]... BESTAND...",
+      "flags": [
+        { "flag": "-c FORMAT", "desc": "Geeft uitvoer in een aangepast formaat, bijv. -c%i voor het inode-nummer." }
+      ],
+      "examples": [
+        { "cmd": "stat original.txt", "desc": "Toont alle metadata van original.txt, waaronder inode-nummer en link-telling." },
+        { "cmd": "stat -c%s *.file", "desc": "Toont de exacte bestandsgrootte in bytes voor alle .file-bestanden." }
+      ],
+      "related": ["ls -li", "file", "find"],
+      "tags": ["inodes", "metadata", "bestanden"]
+    },
+    {
+      "name": "find",
+      "category": "Zoeken",
+      "short": "Doorzoekt de bestandsstructuur op bestanden die aan opgegeven criteria voldoen.",
+      "synopsis": "find [PAD] [UITDRUKKING]...",
+      "flags": [
+        { "flag": "-inum N", "desc": "Zoekt bestanden met het opgegeven inode-nummer." },
+        { "flag": "-type l", "desc": "Zoekt alleen symbolische links." },
+        { "flag": "-type f", "desc": "Zoekt alleen reguliere bestanden." },
+        { "flag": "-links +1", "desc": "Zoekt bestanden met meer dan 1 harde link." }
+      ],
+      "examples": [
+        { "cmd": "find . -inum $(stat -c %i original.txt)", "desc": "Vindt alle harde links naar hetzelfde inode als original.txt." },
+        { "cmd": "find . -type l ! -exec test -e {} \\; -print", "desc": "Vindt gebroken symbolische links." },
+        { "cmd": "find . -type f -links +1", "desc": "Vindt bestanden die meer dan één harde link hebben." }
+      ],
+      "related": ["stat", "ls -li"],
+      "tags": ["zoeken", "inodes", "links"]
+    },
+    {
+      "name": "readlink",
+      "category": "Bestanden",
+      "short": "Toont het doelpad van een symbolische link.",
+      "synopsis": "readlink [OPTIE]... LINK",
+      "flags": [
+        { "flag": "-f", "desc": "Volgt alle links en toont het absolute canonieke pad." }
+      ],
+      "examples": [
+        { "cmd": "readlink softlink.txt", "desc": "Toont het pad waarnaar softlink.txt wijst." }
+      ],
+      "related": ["ln -s", "stat", "file"],
+      "tags": ["links", "symlinks"]
+    },
+    {
+      "name": "df",
+      "category": "Systeem",
+      "short": "Toont het schijfgebruik van bestandssystemen.",
+      "synopsis": "df [OPTIE]... [BESTANDSSYSTEEM]...",
+      "flags": [
+        { "flag": "-i", "desc": "Toont inode-gebruik in plaats van blokgebruik." },
+        { "flag": "-h", "desc": "Mensvriendelijke groottes (K, M, G)." }
+      ],
+      "examples": [
+        { "cmd": "df -i", "desc": "Toont het inode-gebruik per bestandssysteem; handig om te zien of er inodes op raken." }
+      ],
+      "related": ["du", "lsblk"],
+      "tags": ["systeem", "inodes", "schijf"]
+    },
+    {
+      "name": "file",
+      "category": "Bestanden",
+      "short": "Bepaalt het type van een bestand door de inhoud te analyseren.",
+      "synopsis": "file BESTAND...",
+      "flags": [],
+      "examples": [
+        { "cmd": "file softlink.txt", "desc": "Toont dat softlink.txt een symbolische link is en naar welk bestand het wijst." },
+        { "cmd": "file *.file *.dat", "desc": "Controleert het type van meerdere bestanden tegelijk." }
+      ],
+      "related": ["stat", "ls"],
+      "tags": ["bestanden", "links"]
+    },
+    {
+      "name": "sync",
+      "category": "Systeem",
+      "short": "Schrijft alle gebufferde schijfdata definitief naar de schijf; altijd uitvoeren na dd-bewerkingen.",
+      "synopsis": "sync",
+      "flags": [],
+      "examples": [
+        { "cmd": "sync", "desc": "Dwingt het besturingssysteem alle schijfbuffers direct te schrijven." },
+        { "cmd": "dd if=linux.iso of=/dev/sdX bs=4M status=progress && sync", "desc": "Schrijft een ISO naar een apparaat en synchroniseert daarna de schijfbuffers." }
+      ],
+      "related": ["dd"],
+      "tags": ["schijf", "systeem"]
+    }
+  ],
+  "exercises": [
+    {
+      "title": "Maak testbestanden aan met accolade-uitbreiding",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Maak in één commando de volgende bestanden aan: file1.txt t/m file10.txt.",
+      "solution": "touch file{1..10}.txt",
+      "acceptors": [
+        "touch file{1..10}.txt",
+        "touch file1.txt file2.txt file3.txt file4.txt file5.txt file6.txt file7.txt file8.txt file9.txt file10.txt"
+      ],
+      "expectedOutput": [],
+      "hints": [
+        "Gebruik accolade-uitbreiding met de notatie {start..einde} om een reeks getallen te genereren."
+      ],
+      "tags": ["globbing", "touch", "accoladuitbreiding"],
+      "commandsUsed": ["touch"]
+    },
+    {
+      "title": "Toon alleen de .txt-bestanden",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Gebruik ls met een globbing-patroon om alle bestanden met de extensie .txt in de huidige map te tonen.",
+      "solution": "ls *.txt",
+      "acceptors": ["ls *.txt"],
+      "expectedOutput": [],
+      "hints": [
+        "Het sterretje (*) matcht nul of meer willekeurige tekens. Combineer het met de extensie."
+      ],
+      "tags": ["globbing", "ls"],
+      "commandsUsed": ["ls"]
+    },
+    {
+      "title": "Toon bestanden met één variabel teken",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Je hebt bestanden als file1.txt, file2.txt, ..., file9.txt. Gebruik het vraagteken-patroon om enkel de bestanden met precies één cijfer (geen file10.txt) te tonen.",
+      "solution": "ls file?.txt",
+      "acceptors": ["ls file?.txt"],
+      "expectedOutput": [],
+      "hints": [
+        "Het vraagteken (?) matcht precies één willekeurig teken. file10.txt heeft twee cijfers en matcht dus niet."
+      ],
+      "tags": ["globbing", "ls", "vraagteken"],
+      "commandsUsed": ["ls"]
+    },
+    {
+      "title": "Toon bestanden met tekenbereik",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Gebruik een vierkante-haakjespatroon om alleen file1.txt t/m file5.txt te tonen.",
+      "solution": "ls file[1-5].txt",
+      "acceptors": ["ls file[1-5].txt", "ls file[12345].txt"],
+      "expectedOutput": [],
+      "hints": [
+        "Gebruik [1-5] om een bereik van tekens op te geven. Dit matcht elk bestand waarbij dat teken 1, 2, 3, 4 of 5 is."
+      ],
+      "tags": ["globbing", "ls", "tekenbereik"],
+      "commandsUsed": ["ls"]
+    },
+    {
+      "title": "Toon bestanden die NIET in een bereik vallen",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Gebruik een negatief tekenbereikpatroon om alle file[N].txt-bestanden te tonen behalve file1.txt, file2.txt en file3.txt.",
+      "solution": "ls file[!1-3].txt",
+      "acceptors": ["ls file[!1-3].txt", "ls file[^1-3].txt"],
+      "expectedOutput": [],
+      "hints": [
+        "Gebruik een uitroepteken (!) binnen de vierkante haakjes om het bereik te negeren: [!1-3]."
+      ],
+      "tags": ["globbing", "ls", "negatie"],
+      "commandsUsed": ["ls"]
+    },
+    {
+      "title": "Toon bestanden met meerdere extensies",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Toon alle .txt- én .log-bestanden in één ls-commando via accolade-uitbreiding.",
+      "solution": "ls *.{txt,log}",
+      "acceptors": ["ls *.{txt,log}", "ls *.txt *.log"],
+      "expectedOutput": [],
+      "hints": [
+        "Gebruik accolade-uitbreiding met een komma om meerdere extensies op te geven: *.{extensie1,extensie2}."
+      ],
+      "tags": ["globbing", "ls", "accoladuitbreiding"],
+      "commandsUsed": ["ls"]
+    },
+    {
+      "title": "Lab 6.1: Globbing volledig doorlopen",
+      "difficulty": "medium",
+      "type": "multi-step",
+      "prompt": "Doorloop de globbing-oefening stap voor stap: maak een testmap aan, vul deze met bestanden en oefen vervolgens met basis-globbing-patronen.",
+      "solution": "mkdir globbing_test && cd globbing_test && touch file{1..10}.txt && touch {backup,config,temp}.log && touch test{a..e}.dat && touch image{01..05}.{jpg,png}",
+      "acceptors": [],
+      "expectedOutput": [],
+      "hints": [
+        "Gebruik accolade-uitbreiding voor het aanmaken van meerdere bestanden tegelijk.",
+        "Controleer nadien met ls *.txt, ls *.log, ls file?.txt of je patronen correct werken."
+      ],
+      "tags": ["globbing", "touch", "mkdir"],
+      "commandsUsed": ["mkdir", "touch", "ls"],
+      "steps": [
+        {
+          "prompt": "Maak een map globbing_test aan en ga er naartoe.",
+          "acceptors": ["mkdir globbing_test && cd globbing_test", "mkdir globbing_test; cd globbing_test"],
+          "solution": "mkdir globbing_test && cd globbing_test",
+          "expectedOutput": [],
+          "hints": ["Gebruik && om beide commando's aan elkaar te koppelen."]
+        },
+        {
+          "prompt": "Maak de bestanden file1.txt t/m file10.txt aan met accolade-uitbreiding.",
+          "acceptors": ["touch file{1..10}.txt"],
+          "solution": "touch file{1..10}.txt",
+          "expectedOutput": [],
+          "hints": ["Gebruik {1..10} als reeks in de bestandsnaam."]
+        },
+        {
+          "prompt": "Maak backup.log, config.log en temp.log aan in één commando.",
+          "acceptors": ["touch {backup,config,temp}.log"],
+          "solution": "touch {backup,config,temp}.log",
+          "expectedOutput": [],
+          "hints": ["Gebruik accolades met komma's: {backup,config,temp}."]
+        },
+        {
+          "prompt": "Toon alle .txt-bestanden via globbing.",
+          "acceptors": ["ls *.txt"],
+          "solution": "ls *.txt",
+          "expectedOutput": ["file1.txt", "file2.txt", "file3.txt", "file4.txt", "file5.txt", "file6.txt", "file7.txt", "file8.txt", "file9.txt", "file10.txt"],
+          "hints": ["Gebruik het sterretje (*) als wildcard voor alle tekens."]
+        },
+        {
+          "prompt": "Toon alleen file1.txt t/m file5.txt via een tekenbereikpatroon.",
+          "acceptors": ["ls file[1-5].txt"],
+          "solution": "ls file[1-5].txt",
+          "expectedOutput": ["file1.txt", "file2.txt", "file3.txt", "file4.txt", "file5.txt"],
+          "hints": ["Gebruik [1-5] om een bereik op te geven."]
+        }
+      ]
+    },
+    {
+      "title": "Lab 6.2: Archief aanmaken en uitpakken",
+      "difficulty": "medium",
+      "type": "multi-step",
+      "prompt": "Maak een projectstructuur aan, archiveer deze op drie manieren (tar, tar.gz, tar.bz2) en pak het gzip-archief uit naar een aparte map.",
+      "solution": "mkdir archive_test && cd archive_test && mkdir -p project/{src,docs,config} && echo 'Source code' > project/src/main.c && echo 'Documentation' > project/docs/README.md && echo 'settings' > project/config/app.conf && tar -cf project.tar project/ && tar -czf project.tar.gz project/ && tar -cjf project.tar.bz2 project/ && mkdir restore_test && tar -xzf project.tar.gz -C restore_test/",
+      "acceptors": [],
+      "expectedOutput": [],
+      "hints": [
+        "Gebruik mkdir -p om mappen én submappen in één commando aan te maken.",
+        "Vergeet de vlag -C niet bij het uitpakken naar een specifieke map."
+      ],
+      "tags": ["archief", "tar", "compressie"],
+      "commandsUsed": ["mkdir", "echo", "tar"],
+      "steps": [
+        {
+          "prompt": "Maak een map archive_test aan en maak daarbinnen de structuur project/src, project/docs en project/config.",
+          "acceptors": ["mkdir archive_test && cd archive_test && mkdir -p project/{src,docs,config}", "mkdir -p archive_test/project/{src,docs,config}"],
+          "solution": "mkdir archive_test && cd archive_test && mkdir -p project/{src,docs,config}",
+          "expectedOutput": [],
+          "hints": ["Gebruik mkdir -p voor het aanmaken van geneste mappen."]
+        },
+        {
+          "prompt": "Maak een niet-gecomprimeerd tar-archief project.tar van de map project/.",
+          "acceptors": ["tar -cf project.tar project/", "tar cf project.tar project/"],
+          "solution": "tar -cf project.tar project/",
+          "expectedOutput": [],
+          "hints": ["Gebruik de vlaggen -c (create) en -f (filename) voor het aanmaken."]
+        },
+        {
+          "prompt": "Maak een gzip-gecomprimeerd archief project.tar.gz van de map project/.",
+          "acceptors": ["tar -czf project.tar.gz project/", "tar czf project.tar.gz project/"],
+          "solution": "tar -czf project.tar.gz project/",
+          "expectedOutput": [],
+          "hints": ["Voeg de vlag -z toe aan -cf voor gzip-compressie."]
+        },
+        {
+          "prompt": "Maak een bzip2-gecomprimeerd archief project.tar.bz2 van de map project/.",
+          "acceptors": ["tar -cjf project.tar.bz2 project/", "tar cjf project.tar.bz2 project/"],
+          "solution": "tar -cjf project.tar.bz2 project/",
+          "expectedOutput": [],
+          "hints": ["Gebruik de vlag -j voor bzip2-compressie in plaats van -z."]
+        },
+        {
+          "prompt": "Vergelijk de groottes van de drie archieven.",
+          "acceptors": ["ls -lh project.tar*", "ls -lh project.tar project.tar.gz project.tar.bz2"],
+          "solution": "ls -lh project.tar*",
+          "expectedOutput": [],
+          "hints": ["Gebruik ls -lh met een globbing-patroon om alle drie de archieven te zien."]
+        },
+        {
+          "prompt": "Pak het gzip-archief uit naar de map restore_test/.",
+          "acceptors": ["tar -xzf project.tar.gz -C restore_test/", "tar xzf project.tar.gz -C restore_test/"],
+          "solution": "tar -xzf project.tar.gz -C restore_test/",
+          "expectedOutput": [],
+          "hints": ["Gebruik -x (extract) en -C gevolgd door de doelmap."]
+        },
+        {
+          "prompt": "Maak een archief clean_project.tar.gz waarbij *.tmp-bestanden uitgesloten worden.",
+          "acceptors": ["tar -czf clean_project.tar.gz --exclude='*.tmp' project/", "tar -czf clean_project.tar.gz --exclude=*.tmp project/"],
+          "solution": "tar -czf clean_project.tar.gz --exclude='*.tmp' project/",
+          "expectedOutput": [],
+          "hints": ["Gebruik de optie --exclude='PATROON' om bestanden uit te sluiten."]
+        }
+      ]
+    },
+    {
+      "title": "Lab 6.3: Harde link en softlink aanmaken",
+      "difficulty": "medium",
+      "type": "multi-step",
+      "prompt": "Maak een testbestand aan, maak er een harde link en een softlink van, bekijk de inode-nummers en test het gedrag bij verwijdering.",
+      "solution": "mkdir links_test && cd links_test && echo 'Original content' > original.txt && ln original.txt hardlink.txt && ln -s original.txt softlink.txt",
+      "acceptors": [],
+      "expectedOutput": [],
+      "hints": [
+        "Gebruik ln zonder -s voor een harde link, met -s voor een symbolische link.",
+        "Vergelijk de inode-nummers met ls -li."
+      ],
+      "tags": ["links", "ln", "inodes"],
+      "commandsUsed": ["mkdir", "echo", "ln", "ls", "stat", "cat", "rm"],
+      "steps": [
+        {
+          "prompt": "Maak een map links_test aan, ga er naartoe en maak het bestand original.txt aan met de inhoud 'Original content'.",
+          "acceptors": ["mkdir links_test && cd links_test && echo 'Original content' > original.txt"],
+          "solution": "mkdir links_test && cd links_test && echo 'Original content' > original.txt",
+          "expectedOutput": [],
+          "hints": ["Gebruik echo met > om tekst naar een bestand te schrijven."]
+        },
+        {
+          "prompt": "Maak een harde link hardlink.txt die naar original.txt wijst.",
+          "acceptors": ["ln original.txt hardlink.txt"],
+          "solution": "ln original.txt hardlink.txt",
+          "expectedOutput": [],
+          "hints": ["ln zonder -s maakt een harde link aan."]
+        },
+        {
+          "prompt": "Maak een symbolische link softlink.txt die naar original.txt wijst.",
+          "acceptors": ["ln -s original.txt softlink.txt"],
+          "solution": "ln -s original.txt softlink.txt",
+          "expectedOutput": [],
+          "hints": ["Gebruik ln -s voor een symbolische link."]
+        },
+        {
+          "prompt": "Bekijk de inode-nummers van alle bestanden. Welke twee bestanden hebben hetzelfde inode-nummer?",
+          "acceptors": ["ls -li", "ls -li original.txt hardlink.txt softlink.txt"],
+          "solution": "ls -li",
+          "expectedOutput": [],
+          "hints": ["ls -li toont het inode-nummer als eerste kolom. original.txt en hardlink.txt moeten hetzelfde nummer hebben."]
+        },
+        {
+          "prompt": "Voeg extra tekst toe via hardlink.txt en controleer of original.txt ook gewijzigd is.",
+          "acceptors": ["echo 'Additional content' >> hardlink.txt && cat original.txt"],
+          "solution": "echo 'Additional content' >> hardlink.txt && cat original.txt",
+          "expectedOutput": ["Original content", "Additional content"],
+          "hints": ["Een harde link en het origineel zijn hetzelfde bestand — wijzigingen zijn in beide te zien."]
+        },
+        {
+          "prompt": "Verwijder original.txt en controleer of hardlink.txt nog steeds werkt.",
+          "acceptors": ["rm original.txt && cat hardlink.txt"],
+          "solution": "rm original.txt && cat hardlink.txt",
+          "expectedOutput": ["Original content", "Additional content"],
+          "hints": ["Na het verwijderen van het origineel werkt de harde link nog; de softlink is echter gebroken."]
+        }
+      ]
+    },
+    {
+      "title": "Lab 6.4: Bestanden aanmaken met dd",
+      "difficulty": "medium",
+      "type": "multi-step",
+      "prompt": "Gebruik dd om bestanden van specifieke grootten aan te maken, ze te kopiëren en willekeurige data te genereren.",
+      "solution": "mkdir dd_test && cd dd_test && dd if=/dev/zero of=1MB.file bs=1M count=1 && dd if=/dev/zero of=10MB.file bs=1M count=10 && ls -lh *.file && dd if=1MB.file of=copy.file bs=4K && dd if=/dev/urandom of=random.dat bs=1K count=5",
+      "acceptors": [],
+      "expectedOutput": [],
+      "hints": [
+        "if= is de invoerbron, of= is het uitvoerbestand.",
+        "/dev/zero levert een stroom van nullen; /dev/urandom levert willekeurige data."
+      ],
+      "tags": ["dd", "blokken", "bestanden"],
+      "commandsUsed": ["mkdir", "dd", "ls"],
+      "steps": [
+        {
+          "prompt": "Maak een bestand 1MB.file aan van precies 1 MB gevuld met nullen.",
+          "acceptors": ["dd if=/dev/zero of=1MB.file bs=1M count=1"],
+          "solution": "dd if=/dev/zero of=1MB.file bs=1M count=1",
+          "expectedOutput": ["1+0 records in", "1+0 records out", "1048576 bytes"],
+          "hints": ["Gebruik /dev/zero als invoer, stel bs=1M en count=1 in."]
+        },
+        {
+          "prompt": "Maak een bestand 10MB.file aan van 10 MB.",
+          "acceptors": ["dd if=/dev/zero of=10MB.file bs=1M count=10"],
+          "solution": "dd if=/dev/zero of=10MB.file bs=1M count=10",
+          "expectedOutput": [],
+          "hints": ["Verander count naar 10."]
+        },
+        {
+          "prompt": "Controleer de groottes van beide bestanden.",
+          "acceptors": ["ls -lh *.file", "ls -lh 1MB.file 10MB.file"],
+          "solution": "ls -lh *.file",
+          "expectedOutput": [],
+          "hints": ["Gebruik ls -lh voor mensvriendelijke groottes."]
+        },
+        {
+          "prompt": "Kopieer 1MB.file naar copy.file met een blokgrootte van 4K.",
+          "acceptors": ["dd if=1MB.file of=copy.file bs=4K"],
+          "solution": "dd if=1MB.file of=copy.file bs=4K",
+          "expectedOutput": [],
+          "hints": ["Gebruik hetzelfde dd-commando maar nu met het bestand als invoer in plaats van /dev/zero."]
+        },
+        {
+          "prompt": "Maak een bestand random.dat van 5 KB met willekeurige data.",
+          "acceptors": ["dd if=/dev/urandom of=random.dat bs=1K count=5"],
+          "solution": "dd if=/dev/urandom of=random.dat bs=1K count=5",
+          "expectedOutput": [],
+          "hints": ["Gebruik /dev/urandom als invoerbron voor willekeurige data."]
+        }
+      ]
+    },
+    {
+      "title": "Archief aanmaken met datum in bestandsnaam",
+      "difficulty": "medium",
+      "type": "command",
+      "prompt": "Maak een gzip-gecomprimeerd tar-archief van de thuismap waarbij de datum van vandaag in de bestandsnaam verwerkt is (formaat: home_backup_JJJJMMDD.tar.gz).",
+      "solution": "tar -czf home_backup_$(date +%Y%m%d).tar.gz ~",
+      "acceptors": [
+        "tar -czf home_backup_$(date +%Y%m%d).tar.gz ~",
+        "tar -czf home_backup_$(date +%Y%m%d).tar.gz $HOME"
+      ],
+      "expectedOutput": [],
+      "hints": [
+        "Gebruik command substitution $(date +%Y%m%d) om de datum in de bestandsnaam op te nemen.",
+        "De tilde (~) verwijst naar de thuismap."
+      ],
+      "tags": ["archief", "tar", "datum"],
+      "commandsUsed": ["tar", "date"]
+    },
+    {
+      "title": "Inhoud van een archief tonen zonder uitpakken",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Toon de inhoud van het archief project.tar.gz zonder het uit te pakken.",
+      "solution": "tar -tzf project.tar.gz",
+      "acceptors": ["tar -tzf project.tar.gz", "tar tzf project.tar.gz", "tar -tf project.tar.gz"],
+      "expectedOutput": [],
+      "hints": [
+        "Gebruik de vlag -t (list) in combinatie met -z voor gzip en -f voor de bestandsnaam."
+      ],
+      "tags": ["archief", "tar"],
+      "commandsUsed": ["tar"]
+    },
+    {
+      "title": "Gebroken symbolische links opsporen",
+      "difficulty": "hard",
+      "type": "command",
+      "prompt": "Zoek in de huidige map alle gebroken symbolische links op en druk hun paden af.",
+      "solution": "find . -type l ! -exec test -e {} \\; -print",
+      "acceptors": [
+        "find . -type l ! -exec test -e {} \\; -print",
+        "find . -type l -exec sh -c 'test -e \"$1\" || echo \"Broken: $1\"' _ {} \\;"
+      ],
+      "expectedOutput": [],
+      "hints": [
+        "Gebruik find met -type l om symbolische links te zoeken.",
+        "Combineer met ! -exec test -e {} om te controleren of het doelbestand bestaat."
+      ],
+      "tags": ["links", "find", "symlinks"],
+      "commandsUsed": ["find"]
+    },
+    {
+      "title": "Alle harde links naar een bestand vinden",
+      "difficulty": "hard",
+      "type": "command",
+      "prompt": "Vind alle bestanden die hetzelfde inode delen als original.txt (d.w.z. alle harde links naar dat bestand).",
+      "solution": "find . -inum $(stat -c %i original.txt)",
+      "acceptors": [
+        "find . -inum $(stat -c %i original.txt)",
+        "find . -inum $(stat -c%i original.txt)"
+      ],
+      "expectedOutput": [],
+      "hints": [
+        "Gebruik stat -c %i om het inode-nummer op te vragen en geef dat door aan find -inum."
+      ],
+      "tags": ["links", "inodes", "find", "stat"],
+      "commandsUsed": ["find", "stat"]
+    },
+    {
+      "title": "Glob-patroon veilig testen",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Test een globbing-patroon zonder commando's uit te voeren door het patroon *.txt te gebruiken met echo.",
+      "solution": "echo *.txt",
+      "acceptors": ["echo *.txt"],
+      "expectedOutput": [],
+      "hints": [
+        "echo breidt het glob-patroon uit maar voert geen schijfoperaties uit — dit is de veiligste manier om een patroon te testen."
+      ],
+      "tags": ["globbing", "echo"],
+      "commandsUsed": ["echo"]
+    }
+  ],
+  "theory": [
+    {
+      "question": "Wat is het verschil tussen * en ? in globbing-patronen?",
+      "type": "open",
+      "choices": [],
+      "answer": "* matcht nul, één of meer willekeurige tekens. ? matcht precies één willekeurig teken.",
+      "explanation": "* is onbegrensd en kan dus ook lege strings matchen, terwijl ? altijd exact één teken vereist. Bijvoorbeeld: file*.txt matcht fileA.txt maar ook file.txt; file?.txt matcht fileA.txt maar niet file.txt of file10.txt."
+    },
+    {
+      "question": "Welk globbing-patroon matcht file1.txt, file2.txt en file3.txt maar NIET file4.txt?",
+      "type": "mc",
+      "choices": [
+        "A. file*.txt",
+        "B. file[1-3].txt",
+        "C. file?.txt",
+        "D. file[!4].txt"
+      ],
+      "answer": "B",
+      "explanation": "file[1-3].txt gebruikt een tekenbereik en matcht alleen bestanden waarbij het teken op die positie 1, 2 of 3 is. file*.txt zou ook file4.txt matchen. file?.txt matcht één willekeurig teken inclusief 4. file[!4].txt matcht alles behalve 4, dus ook cijfers 5-9."
+    },
+    {
+      "question": "Welk commando maakt een gzip-gecomprimeerd tar-archief aan van de map project/?",
+      "type": "mc",
+      "choices": [
+        "A. tar -cf project.tar.gz project/",
+        "B. tar -czf project.tar.gz project/",
+        "C. tar -cjf project.tar.gz project/",
+        "D. gzip project/"
+      ],
+      "answer": "B",
+      "explanation": "De vlag -z schakelt gzip-compressie in. -c staat voor create, -f voor de bestandsnaam. -j zou bzip2-compressie gebruiken, en tar -cf maakt een niet-gecomprimeerd archief."
+    },
+    {
+      "question": "Wat is het verschil tussen een harde link en een symbolische link?",
+      "type": "open",
+      "choices": [],
+      "answer": "Een harde link verwijst direct naar hetzelfde inode als het origineel en deelt dus dezelfde data. Een symbolische link is een apart bestand dat het pad naar het origineel opslaat.",
+      "explanation": "Harde links kunnen niet naar mappen wijzen, werken niet over bestandssystemen heen, maar blijven werken als het origineel verwijderd wordt. Symbolische links kunnen naar mappen én over bestandssystemen heen wijzen, maar worden gebroken als het origineel verdwijnt."
+    },
+    {
+      "question": "Wat is een inode in een Linux-bestandssysteem?",
+      "type": "open",
+      "choices": [],
+      "answer": "Een inode is een datastructuur die alle metadata van een bestand bevat: bestandstype, permissies, eigenaar, grootte, tijdstempels, link-telling en de locatie van de datablokken op schijf. De bestandsnaam zelf is NIET opgeslagen in de inode maar in de map.",
+      "explanation": "De scheiding tussen bestandsnaam (in de map) en inode (metadata + datablokken) maakt het mogelijk meerdere harde links naar hetzelfde bestand te hebben, en is fundamenteel voor de werking van het Linux-bestandssysteem."
+    },
+    {
+      "question": "Wanneer gebruik je het dd-commando?",
+      "type": "open",
+      "choices": [],
+      "answer": "dd gebruik je voor blokgewijze kopieerbewerkingen zoals: schijfback-ups maken/terugzetten, bestanden van een specifieke grootte aanmaken (testdata), bootbare USB-sticks schrijven vanuit een ISO, en performancetests uitvoeren.",
+      "explanation": "dd werkt op blokniveau en is daardoor extreem krachtig maar ook gevaarlijk: een vergissing in de apparaatnaam kan data permanent vernietigen. Controleer altijd if= (invoer) en of= (uitvoer) voor je het uitvoert."
+    },
+    {
+      "question": "Hoe sluit je bepaalde bestandstypen uit van een tar-archief?",
+      "type": "mc",
+      "choices": [
+        "A. tar -czf archief.tar.gz --skip='*.tmp' map/",
+        "B. tar -czf archief.tar.gz --exclude='*.tmp' map/",
+        "C. tar -czf archief.tar.gz -e '*.tmp' map/",
+        "D. tar -czf archief.tar.gz --ignore='*.tmp' map/"
+      ],
+      "answer": "B",
+      "explanation": "De optie --exclude='PATROON' sluit bestanden die overeenkomen met het patroon uit van het archief. Je kunt meerdere --exclude-opties combineren, bijv. --exclude='*.tmp' --exclude='*.log'."
+    },
+    {
+      "question": "Hoe vind je alle bestanden die hetzelfde inode delen als original.txt?",
+      "type": "mc",
+      "choices": [
+        "A. find . -links $(stat original.txt)",
+        "B. find . -inum $(stat -c %i original.txt)",
+        "C. ls -li original.txt",
+        "D. stat --links original.txt"
+      ],
+      "answer": "B",
+      "explanation": "find . -inum N zoekt alle bestanden met inode-nummer N. stat -c %i original.txt geeft het inode-nummer van original.txt terug. Door beide te combineren via command substitution vind je alle harde links naar hetzelfde bestand."
+    },
+    {
+      "question": "Wat zijn de kenmerken van een harde link? (selecteer alles wat van toepassing is)",
+      "type": "mc",
+      "choices": [
+        "A. Heeft hetzelfde inode-nummer als het origineel.",
+        "B. Kan naar mappen wijzen.",
+        "C. Blijft werken nadat het origineel verwijderd is.",
+        "D. Kan over bestandssystemen heen werken."
+      ],
+      "answer": "A en C",
+      "explanation": "Harde links delen het inode-nummer met het origineel (A) en blijven werken als het origineel verwijderd wordt, omdat de data bewaard blijft zolang er nog één harde link bestaat (C). Harde links kunnen NIET naar mappen wijzen (B) en kunnen NIET over bestandssysteemgrenzen heen werken (D) — dat zijn eigenschappen van symbolische links."
+    },
+    {
+      "question": "Welk commando toont gedetailleerde metadata van een bestand, inclusief het inode-nummer en de link-telling?",
+      "type": "mc",
+      "choices": [
+        "A. ls -l bestand.txt",
+        "B. file bestand.txt",
+        "C. stat bestand.txt",
+        "D. info bestand.txt"
+      ],
+      "answer": "C",
+      "explanation": "stat toont alle inode-informatie: bestandstype, permissies, eigenaar, grootte, tijdstempels (access, modify, change), inode-nummer en link-telling. ls -l toont een beperktere weergave en info is een documentatietool."
+    },
+    {
+      "question": "Wat doet het commando 'shopt -s globstar'?",
+      "type": "open",
+      "choices": [],
+      "answer": "Het schakelt de globstar-shell-optie in, waardoor ** als wildcard door alle submappen heen werkt.",
+      "explanation": "Zonder globstar matcht ** hetzelfde als *. Met globstar ingeschakeld matcht ls **/*.py alle .py-bestanden in de huidige map én alle submappen recursief."
+    },
+    {
+      "question": "Wat is het verschil in compressie tussen gzip (-z), bzip2 (-j) en xz (-J) bij gebruik met tar?",
+      "type": "open",
+      "choices": [],
+      "answer": "gzip is het snelst maar geeft de minste compressie; bzip2 is trager maar comprimeert beter dan gzip; xz is het traagst maar levert de beste compressie.",
+      "explanation": "Kies gzip voor snelle dagelijkse back-ups, bzip2 voor een betere balans, en xz wanneer bestandsgrootte de prioriteit heeft (bijv. distributies). De extensies zijn respectievelijk .tar.gz/.tgz, .tar.bz2 en .tar.xz."
+    },
+    {
+      "question": "Welke veiligheidsregels zijn essentieel bij het gebruik van dd?",
+      "type": "open",
+      "choices": [],
+      "answer": "Controleer altijd de apparaatnaam (if= en of=) voor uitvoering; gebruik lsblk om het correcte apparaat te identificeren; voer sync uit na de bewerking; test eerst met kleine hoeveelheden data.",
+      "explanation": "dd heeft geen bevestigingsvraag en kan een schijf onherstelbaar overschrijven bij een foutief apparaatpad. status=progress geeft voortgang en helpt menselijke fouten tijdig op te merken."
+    },
+    {
+      "question": "Wat slaat een inode NIET op?",
+      "type": "mc",
+      "choices": [
+        "A. Bestandspermissies",
+        "B. De bestandsnaam",
+        "C. De bestandsgrootte",
+        "D. Tijdstempels"
+      ],
+      "answer": "B",
+      "explanation": "De bestandsnaam is NIET opgeslagen in de inode maar in het directory-item (de map). De inode bevat wel permissies, grootte, tijdstempels, eigenaar, link-telling en verwijzingen naar datablokken. Dit is wat meerdere harde links (verschillende namen) naar hetzelfde inode mogelijk maakt."
+    },
+    {
+      "question": "Hoe maak je een symbolische link aan die naar de map /etc/nginx/sites-available/mysite wijst in /etc/nginx/sites-enabled/?",
+      "type": "mc",
+      "choices": [
+        "A. ln /etc/nginx/sites-available/mysite /etc/nginx/sites-enabled/",
+        "B. ln -s /etc/nginx/sites-available/mysite /etc/nginx/sites-enabled/",
+        "C. cp -s /etc/nginx/sites-available/mysite /etc/nginx/sites-enabled/",
+        "D. link /etc/nginx/sites-available/mysite /etc/nginx/sites-enabled/"
+      ],
+      "answer": "B",
+      "explanation": "ln -s maakt een symbolische link aan. Dit is het standaardpatroon in nginx (en Apache) voor het in- en uitschakelen van virtuele hosts: de configuratie staat in sites-available en een symlink in sites-enabled activeert die."
+    },
+    {
+      "question": "Wat toont het commando 'df -i'?",
+      "type": "mc",
+      "choices": [
+        "A. De schijfruimte per bestandssysteem in mensvriendelijk formaat.",
+        "B. Het inode-gebruik per bestandssysteem.",
+        "C. De inode-nummers van bestanden in de huidige map.",
+        "D. De grootte van alle mappen recursief."
+      ],
+      "answer": "B",
+      "explanation": "df -i toont het aantal gebruikte en beschikbare inodes per bestandssysteem. Als het aantal inodes vol raakt, kun je geen nieuwe bestanden aanmaken ook al is er nog schijfruimte beschikbaar."
+    }
+  ]
+}

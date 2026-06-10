@@ -1,0 +1,1243 @@
+{
+  "chapterId": "12",
+  "chapterTitle": "Examenvoorbereiding: Recap",
+  "summary": "Hoofdstuk 12 is een gerichte herhaling van de meest examrelevante Linux-commando's en -concepten uit lessen 1–10. Het behandelt bestandslijsten en navigatie, I/O-omleiding en pipelines, tekstfilters, links en permissies, aliassen en scripting. Het examen is openboek maar tijdsgebonden: snelheid komt van weten welk commando je nodig hebt en hoe je ze combineert.",
+  "commands": [
+    {
+      "name": "ls",
+      "category": "Bestanden",
+      "short": "Toont de inhoud van een map.",
+      "synopsis": "ls [OPTIE]... [PAD]...",
+      "flags": [
+        { "flag": "-l", "desc": "Lange opmaak: toont permissies, eigenaar, grootte en datum." },
+        { "flag": "-h", "desc": "Mensvriendelijke bestandsgroottes (KB, MB); alleen zinvol met -l." },
+        { "flag": "-a", "desc": "Toont verborgen bestanden (namen die beginnen met een punt)." },
+        { "flag": "-i", "desc": "Toont het inode-nummer van elk item." },
+        { "flag": "-S", "desc": "Sorteert op bestandsgrootte (grootste eerst)." },
+        { "flag": "-t", "desc": "Sorteert op wijzigingstijd (nieuwste eerst)." },
+        { "flag": "-r", "desc": "Keert de sorteervolgorde om." }
+      ],
+      "examples": [
+        { "cmd": "ls -lha /usr/share", "desc": "Lange opmaak, mensvriendelijke groottes en verborgen bestanden in /usr/share." },
+        { "cmd": "ls -li /tmp", "desc": "Lange opmaak met inode-nummers voor elke bestand in /tmp." },
+        { "cmd": "ls -lS /var/log | head -n 11", "desc": "De 10 grootste bestanden in /var/log (gesorteerd op grootte)." },
+        { "cmd": "ls -ltr /tmp", "desc": "Bestanden in /tmp gesorteerd op wijzigingstijd, oudste eerst." }
+      ],
+      "related": ["find", "sort"],
+      "tags": ["navigatie", "bestanden"]
+    },
+    {
+      "name": "find",
+      "category": "Zoeken",
+      "short": "Doorzoekt een mappenstructuur op naam, type, grootte of inode.",
+      "synopsis": "find [STARTPAD] [OPTIES]...",
+      "flags": [
+        { "flag": "-type f", "desc": "Alleen gewone bestanden." },
+        { "flag": "-type d", "desc": "Alleen mappen." },
+        { "flag": "-name 'patroon'", "desc": "Naam komt overeen met globpatroon (hoofdlettergevoelig)." },
+        { "flag": "-iname 'patroon'", "desc": "Naam komt overeen, niet hoofdlettergevoelig." },
+        { "flag": "-size Nc", "desc": "Precies N bytes groot (c = bytes)." },
+        { "flag": "-size +Nk", "desc": "Groter dan N kilobytes." },
+        { "flag": "-inum N", "desc": "Overeenkomst op inode-nummer N." },
+        { "flag": "-maxdepth N", "desc": "Beperkt zoekdiepte tot N niveaus (1 = alleen huidige map)." },
+        { "flag": "-exec cmd {} \\;", "desc": "Voert cmd uit voor elk gevonden bestand ({} = bestandspad)." }
+      ],
+      "examples": [
+        { "cmd": "find /etc -type f -size 16c 2>/dev/null", "desc": "Alle gewone bestanden in /etc van precies 16 bytes; foutmeldingen onderdrukt." },
+        { "cmd": "find /etc -inum 98765", "desc": "Bestand in /etc opzoeken op basis van inode-nummer." },
+        { "cmd": "find ~ -maxdepth 1 -type f -name '[A-Z]*.txt'", "desc": "Gewone bestanden in de homedirectory waarvan de naam met een hoofdletter begint en eindigt op .txt." },
+        { "cmd": "find /boot -type f -name '*.cfg' 2>/dev/null", "desc": "Alle bestanden in /boot die eindigen op .cfg, fouten onderdrukt." },
+        { "cmd": "find ~/project -type f -exec chmod 644 {} \\;", "desc": "Zet permissies op 644 voor alle gewone bestanden in ~/project recursief." }
+      ],
+      "related": ["ls", "grep", "xargs"],
+      "tags": ["zoeken", "bestanden"]
+    },
+    {
+      "name": "tee",
+      "category": "I/O & pipes",
+      "short": "Splitst stdin naar zowel een bestand als stdout tegelijk.",
+      "synopsis": "commando | tee [OPTIE]... BESTAND",
+      "flags": [
+        { "flag": "-a", "desc": "Voegt toe aan het bestand in plaats van overschrijven." }
+      ],
+      "examples": [
+        { "cmd": "ls -la /usr/share | tee details.txt | sort -k5 -n", "desc": "Slaat ls-uitvoer op in details.txt en geeft tegelijk de gesorteerde versie op het scherm." },
+        { "cmd": "find /etc -name '*.conf' 2>/dev/null | tee conf_files.txt | wc -l", "desc": "Slaat de lijst van .conf-bestanden op en telt ze tegelijk." }
+      ],
+      "related": ["echo", "sort", "wc"],
+      "tags": ["i/o", "pipes"]
+    },
+    {
+      "name": "echo",
+      "category": "Shell scripting",
+      "short": "Drukt tekst of variabelen af naar stdout.",
+      "synopsis": "echo [OPTIE]... [STRING]...",
+      "flags": [
+        { "flag": "-n", "desc": "Drukt geen regelafstand af aan het einde." },
+        { "flag": "-e", "desc": "Interpreteert escape-tekens zoals \\n en \\t." }
+      ],
+      "examples": [
+        { "cmd": "echo $SHELL", "desc": "Toont de huidige shell, bijv. /bin/bash." },
+        { "cmd": "echo $(hostname)", "desc": "Toont de servernaam via commandosubstitutie." },
+        { "cmd": "echo \"Shell: $(basename $SHELL)\"", "desc": "Toont alleen de naam van de shell (niet het volledige pad)." },
+        { "cmd": "echo \"$(date): gestart\" >> log.txt", "desc": "Voegt een tijdstempel met tekst toe aan log.txt." }
+      ],
+      "related": ["tee", "printf"],
+      "tags": ["shell", "output"]
+    },
+    {
+      "name": "xargs",
+      "category": "I/O & pipes",
+      "short": "Leest regels van stdin en geeft ze als argumenten door aan een commando.",
+      "synopsis": "xargs [OPTIE]... [COMMANDO]",
+      "flags": [
+        { "flag": "-n 1", "desc": "Geeft één argument tegelijk door." },
+        { "flag": "-I{}", "desc": "Gebruikt {} als plaatshouder voor elk argument." }
+      ],
+      "examples": [
+        { "cmd": "cat newfiles.txt | xargs -I{} touch ~/{}","desc": "Maakt voor elke bestandsnaam in newfiles.txt een leeg bestand in de homedirectory." },
+        { "cmd": "cat dirs_to_remove.txt | xargs rmdir", "desc": "Verwijdert elke map die in dirs_to_remove.txt staat." }
+      ],
+      "related": ["find", "cat"],
+      "tags": ["i/o", "pipes"]
+    },
+    {
+      "name": "grep",
+      "category": "Tekst",
+      "short": "Zoekt naar regels die overeenkomen met een patroon.",
+      "synopsis": "grep [OPTIE]... PATROON [BESTAND]...",
+      "flags": [
+        { "flag": "-i", "desc": "Hoofdletteronafhankelijk zoeken." },
+        { "flag": "-v", "desc": "Toont regels die NIET overeenkomen." },
+        { "flag": "-c", "desc": "Telt het aantal overeenkomende regels." },
+        { "flag": "-m N", "desc": "Stopt na N overeenkomsten." },
+        { "flag": "-n", "desc": "Toont regelnummers bij overeenkomsten." },
+        { "flag": "-ci", "desc": "Telt overeenkomsten, hoofdletteronafhankelijk." }
+      ],
+      "examples": [
+        { "cmd": "grep -i 'error' /var/log/dpkg.log", "desc": "Zoekt naar 'error' (hoofdletteronafhankelijk) in het logbestand." },
+        { "cmd": "grep -v 'nologin' /etc/passwd", "desc": "Toont alle regels in /etc/passwd die nologin NIET bevatten." },
+        { "cmd": "grep -m 1 -i 'error' /var/log/dpkg.log", "desc": "Toont alleen de eerste overeenkomst voor 'error'." },
+        { "cmd": "grep '/bin/bash' /etc/passwd | cut -d':' -f6", "desc": "Toont de homedirectory van elke gebruiker met bash als shell." }
+      ],
+      "related": ["cut", "awk", "wc"],
+      "tags": ["tekst", "zoeken"]
+    },
+    {
+      "name": "head",
+      "category": "Tekst",
+      "short": "Toont de eerste N regels van een bestand.",
+      "synopsis": "head [OPTIE]... [BESTAND]...",
+      "flags": [
+        { "flag": "-n N", "desc": "Toont de eerste N regels (standaard 10)." }
+      ],
+      "examples": [
+        { "cmd": "head -n 5 file.txt", "desc": "Toont de eerste 5 regels van file.txt." }
+      ],
+      "related": ["tail", "grep"],
+      "tags": ["tekst"]
+    },
+    {
+      "name": "tail",
+      "category": "Tekst",
+      "short": "Toont de laatste N regels van een bestand.",
+      "synopsis": "tail [OPTIE]... [BESTAND]...",
+      "flags": [
+        { "flag": "-n N", "desc": "Toont de laatste N regels (standaard 10)." },
+        { "flag": "-n +N", "desc": "Toont alle regels vanaf regel N (slaat eerste N-1 regels over)." }
+      ],
+      "examples": [
+        { "cmd": "tail -n 3 /var/log/dpkg.log", "desc": "Toont de laatste 3 regels van het dpkg-logbestand." },
+        { "cmd": "ls -ltr /tmp | tail -n +2", "desc": "Slaat de 'total'-koptekstregel over en toont de rest." }
+      ],
+      "related": ["head", "grep"],
+      "tags": ["tekst"]
+    },
+    {
+      "name": "cut",
+      "category": "Tekst",
+      "short": "Extraheert kolommen of tekenreeksen uit elke regel.",
+      "synopsis": "cut [OPTIE]... [BESTAND]...",
+      "flags": [
+        { "flag": "-d 'SCHEIDINGSTEKEN'", "desc": "Geeft het veldscheidingsteken op." },
+        { "flag": "-f N", "desc": "Selecteert veld N (of een reeks met komma's of koppelteken)." },
+        { "flag": "-c N-M", "desc": "Selecteert tekens van positie N tot M." }
+      ],
+      "examples": [
+        { "cmd": "cut -d':' -f1 /etc/passwd", "desc": "Haalt de gebruikersnaam op (veld 1, scheidingsteken :)." },
+        { "cmd": "cut -d':' -f1,6 /etc/passwd", "desc": "Haalt gebruikersnaam en homedirectory op." }
+      ],
+      "related": ["grep", "awk"],
+      "tags": ["tekst"]
+    },
+    {
+      "name": "tr",
+      "category": "Tekst",
+      "short": "Vertaalt of verwijdert tekens uit stdin.",
+      "synopsis": "tr [OPTIE]... TEKENSET1 [TEKENSET2]",
+      "flags": [
+        { "flag": "-d", "desc": "Verwijdert alle tekens die voorkomen in TEKENSET1." },
+        { "flag": "-s", "desc": "Vervangt opeenvolgende gelijke tekens door één enkel exemplaar." }
+      ],
+      "examples": [
+        { "cmd": "tr 'a-z' 'A-Z' < file.txt", "desc": "Converteert alle kleine letters naar hoofdletters." },
+        { "cmd": "tr ' ' '_' < file.txt", "desc": "Vervangt spaties door underscores." },
+        { "cmd": "tr -d '\\n' < file.txt", "desc": "Verwijdert alle regeleinden (voegt alle regels samen)." },
+        { "cmd": "tr -d '\\n' < sentence.txt | tr ' ' '_' > oneline.txt", "desc": "Verwijdert eerst regeleinden, vervangt dan spaties door underscores." }
+      ],
+      "related": ["sed", "awk"],
+      "tags": ["tekst"]
+    },
+    {
+      "name": "sort",
+      "category": "Tekst",
+      "short": "Sorteert regels van tekstinvoer.",
+      "synopsis": "sort [OPTIE]... [BESTAND]...",
+      "flags": [
+        { "flag": "-n", "desc": "Numerieke sortering." },
+        { "flag": "-r", "desc": "Omgekeerde volgorde." },
+        { "flag": "-nr", "desc": "Omgekeerde numerieke sortering (grootste eerst)." },
+        { "flag": "-k N", "desc": "Sorteert op kolom N (witruimte als scheidingsteken)." },
+        { "flag": "-t 'SCHEIDINGSTEKEN'", "desc": "Geeft een aangepast veldscheidingsteken op." }
+      ],
+      "examples": [
+        { "cmd": "sort file.txt | uniq -c | sort -nr", "desc": "Telt unieke regels en sorteert van meest naar minst frequent." },
+        { "cmd": "ls -l /tmp | sort -k5 -n", "desc": "Sorteert de ls-uitvoer op bestandsgrootte (kolom 5) numeriek." },
+        { "cmd": "sort -t':' -k3 -n /etc/passwd", "desc": "Sorteert /etc/passwd op UID (veld 3) numeriek." }
+      ],
+      "related": ["uniq", "grep"],
+      "tags": ["tekst"]
+    },
+    {
+      "name": "uniq",
+      "category": "Tekst",
+      "short": "Verwijdert opeenvolgende dubbele regels; tel overeenkomsten met -c.",
+      "synopsis": "uniq [OPTIE]... [INVOER [UITVOER]]",
+      "flags": [
+        { "flag": "-c", "desc": "Voegt het aantal voor elke unieke regel." },
+        { "flag": "-d", "desc": "Toont alleen regels die meerdere keren voorkomen." }
+      ],
+      "examples": [
+        { "cmd": "sort words.txt | uniq -c | sort -nr", "desc": "Telt elke uniek woord en sorteert van meest naar minst frequent." }
+      ],
+      "related": ["sort", "grep"],
+      "tags": ["tekst"]
+    },
+    {
+      "name": "comm",
+      "category": "Tekst",
+      "short": "Vergelijkt twee gesorteerde bestanden regel voor regel.",
+      "synopsis": "comm [OPTIE]... BESTAND1 BESTAND2",
+      "flags": [
+        { "flag": "-12", "desc": "Onderdrukt kolommen 1 en 2: toont alleen regels die in BEIDE bestanden voorkomen." },
+        { "flag": "-23", "desc": "Toont alleen regels die UITSLUITEND in bestand1 voorkomen." },
+        { "flag": "-13", "desc": "Toont alleen regels die UITSLUITEND in bestand2 voorkomen." }
+      ],
+      "examples": [
+        { "cmd": "comm -12 list_a.txt list_b.txt", "desc": "Toont regels die in beide gesorteerde bestanden voorkomen." },
+        { "cmd": "comm -23 list_a.txt list_b.txt", "desc": "Toont regels die in list_a.txt maar niet in list_b.txt staan." }
+      ],
+      "related": ["sort", "diff"],
+      "tags": ["tekst"]
+    },
+    {
+      "name": "wc",
+      "category": "Tekst",
+      "short": "Telt regels, woorden of tekens in een bestand of pipeline.",
+      "synopsis": "wc [OPTIE]... [BESTAND]...",
+      "flags": [
+        { "flag": "-l", "desc": "Telt het aantal regels." },
+        { "flag": "-w", "desc": "Telt het aantal woorden." },
+        { "flag": "-c", "desc": "Telt het aantal bytes/tekens." }
+      ],
+      "examples": [
+        { "cmd": "ls /etc | wc -l", "desc": "Telt hoeveel items er in /etc staan." },
+        { "cmd": "ps -e --no-headers | wc -l", "desc": "Telt het aantal actieve processen." },
+        { "cmd": "find /etc -type f 2>/dev/null | wc -l", "desc": "Telt gewone bestanden in /etc." }
+      ],
+      "related": ["grep", "find"],
+      "tags": ["tekst"]
+    },
+    {
+      "name": "awk",
+      "category": "Tekst",
+      "short": "Verwerkt tekst per veld; krachtig voor gestructureerde uitvoer.",
+      "synopsis": "awk [OPTIE]... 'PROGRAMMA' [BESTAND]...",
+      "flags": [
+        { "flag": "-F 'SCHEIDINGSTEKEN'", "desc": "Geeft het veldscheidingsteken op (standaard: witruimte)." }
+      ],
+      "examples": [
+        { "cmd": "awk '{print $1}' file.txt", "desc": "Drukt het eerste veld van elke regel af (witruimte als scheidingsteken)." },
+        { "cmd": "awk -F',' '{print NR, $2}' data.csv", "desc": "Drukt regelnummer en tweede kolom af uit een CSV-bestand." },
+        { "cmd": "awk -F':' '{print $1 \" -> \" $7}' /etc/passwd", "desc": "Toont gebruikersnaam en shell per gebruiker in het formaat 'user -> shell'." }
+      ],
+      "related": ["cut", "grep"],
+      "tags": ["tekst"]
+    },
+    {
+      "name": "ln",
+      "category": "Bestanden",
+      "short": "Maakt hard of symbolische (soft) koppelingen naar bestanden.",
+      "synopsis": "ln [OPTIE]... DOEL KOPPELING",
+      "flags": [
+        { "flag": "-s", "desc": "Maakt een symbolische (soft) koppeling aan." }
+      ],
+      "examples": [
+        { "cmd": "ln -s /bin/bash ~/myShell", "desc": "Maakt een symlink myShell in ~ die naar /bin/bash wijst." },
+        { "cmd": "ln /etc/hostname ~/backup.conf", "desc": "Maakt een hardlink backup.conf in ~ voor /etc/hostname." },
+        { "cmd": "ls -li ~/backup.conf /etc/hostname", "desc": "Controleert of beide hetzelfde inode-nummer delen." }
+      ],
+      "related": ["ls", "find"],
+      "tags": ["bestanden", "permissies"]
+    },
+    {
+      "name": "chmod",
+      "category": "Permissies",
+      "short": "Wijzigt bestand- of mappermissies (symbolisch of octaal).",
+      "synopsis": "chmod [OPTIE]... MODUS BESTAND...",
+      "flags": [
+        { "flag": "u+x", "desc": "Voegt uitvoerrecht toe voor de eigenaar." },
+        { "flag": "g-w", "desc": "Verwijdert schrijfrecht van de groep." },
+        { "flag": "o=", "desc": "Wist alle rechten voor anderen." },
+        { "flag": "a+x", "desc": "Voegt uitvoerrecht toe voor iedereen (eigenaar, groep, anderen)." }
+      ],
+      "examples": [
+        { "cmd": "chmod u=,g=r,o=rx examenscript.sh", "desc": "Eigenaar: geen rechten; groep: lezen; anderen: lezen en uitvoeren." },
+        { "cmd": "chmod u+x *.sh", "desc": "Voegt uitvoerrecht toe voor de eigenaar op alle .sh-bestanden." },
+        { "cmd": "chmod 644 file.txt", "desc": "Octaal: eigenaar rw-, groep r--, anderen r--." },
+        { "cmd": "chmod 755 script.sh", "desc": "Octaal: eigenaar rwx, groep r-x, anderen r-x." },
+        { "cmd": "chmod 502 report.txt", "desc": "Octaal: eigenaar r-x, groep ---, anderen -w-." },
+        { "cmd": "chmod 634 ~/executables/*", "desc": "Octaal op alle inhoud van de map (niet de map zelf)." },
+        { "cmd": "find ~/project -type f -exec chmod 644 {} \\;", "desc": "Zet recursief alle gewone bestanden op 644." }
+      ],
+      "related": ["ls", "find"],
+      "tags": ["permissies"]
+    },
+    {
+      "name": "alias",
+      "category": "Shell scripting",
+      "short": "Definieert een afkorting voor een langer commando.",
+      "synopsis": "alias [NAAM='COMMANDO']",
+      "flags": [],
+      "examples": [
+        { "cmd": "alias ll='ls -lh'", "desc": "Maakt een tijdelijke alias ll aan." },
+        { "cmd": "alias", "desc": "Toont alle actieve aliassen." },
+        { "cmd": "unalias ll", "desc": "Verwijdert de alias ll." },
+        { "cmd": "echo \"alias mygrep='grep -i --color'\" >> ~/.bashrc && source ~/.bashrc", "desc": "Voegt een permanente alias toe aan ~/.bashrc en laadt de configuratie opnieuw." }
+      ],
+      "related": ["source", "bash"],
+      "tags": ["shell scripting"]
+    }
+  ],
+  "exercises": [
+    {
+      "title": "ls met opties",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Toon de inhoud van /usr/share in lange opmaak, inclusief verborgen bestanden, met mensvriendelijke groottes.",
+      "solution": "ls -lha /usr/share",
+      "acceptors": ["ls -lha /usr/share", "ls -lah /usr/share", "ls -alh /usr/share", "ls -ahl /usr/share", "ls -hal /usr/share", "ls -hla /usr/share"],
+      "expectedOutput": [],
+      "hints": ["Combineer de opties -l, -h en -a."],
+      "tags": ["ls", "navigatie"],
+      "commandsUsed": ["ls"]
+    },
+    {
+      "title": "ls met inode-nummers",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Toon de inode-nummers samen met de details van elk bestand in /etc.",
+      "solution": "ls -li /etc",
+      "acceptors": ["ls -li /etc", "ls -il /etc"],
+      "expectedOutput": [],
+      "hints": ["Gebruik -i voor inode en -l voor lange opmaak."],
+      "tags": ["ls", "inode"],
+      "commandsUsed": ["ls"]
+    },
+    {
+      "title": "ls + tee + sort in één commando",
+      "difficulty": "medium",
+      "type": "pipeline",
+      "prompt": "Vanuit je homedirectory: toon /usr/share in lange opmaak met verborgen bestanden, sla de uitvoer op in details.txt EN toon direct daarna dezelfde lijst gesorteerd op bestandsgrootte (kolom 5, numeriek). Doe dit in één enkel commando.",
+      "solution": "ls -la /usr/share | tee details.txt | sort -k5 -n",
+      "acceptors": ["ls -la /usr/share | tee details.txt | sort -k5 -n", "ls -al /usr/share | tee details.txt | sort -k5 -n"],
+      "expectedOutput": [],
+      "hints": ["Gebruik tee om naar bestand te schrijven en tegelijk door te geven aan sort.", "sort -k5 -n sorteert op het 5e veld (grootte) numeriek."],
+      "tags": ["ls", "tee", "sort", "pipeline"],
+      "commandsUsed": ["ls", "tee", "sort"]
+    },
+    {
+      "title": "find op bestandsgrootte",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Gebruik find om in /etc alle gewone bestanden te zoeken die precies 16 bytes groot zijn. Onderdruk foutmeldingen.",
+      "solution": "find /etc -type f -size 16c 2>/dev/null",
+      "acceptors": ["find /etc -type f -size 16c 2>/dev/null"],
+      "expectedOutput": [],
+      "hints": ["De optie -size 16c betekent precies 16 bytes (c = bytes).", "Voeg 2>/dev/null toe om 'permission denied'-fouten te verbergen."],
+      "tags": ["find", "bestanden"],
+      "commandsUsed": ["find"]
+    },
+    {
+      "title": "find: bestanden met hoofdletter",
+      "difficulty": "medium",
+      "type": "command",
+      "prompt": "Zoek in je homedirectory (zonder in submappen te gaan) alle gewone bestanden waarvan de naam begint met een hoofdletter en eindigt op .txt.",
+      "solution": "find ~ -maxdepth 1 -type f -name '[A-Z]*.txt'",
+      "acceptors": ["find ~ -maxdepth 1 -type f -name '[A-Z]*.txt'", "find $HOME -maxdepth 1 -type f -name '[A-Z]*.txt'"],
+      "expectedOutput": [],
+      "hints": ["Gebruik -maxdepth 1 om niet in submappen te zoeken.", "Het patroon [A-Z]* matcht namen die beginnen met een hoofdletter."],
+      "tags": ["find", "bestanden"],
+      "commandsUsed": ["find"]
+    },
+    {
+      "title": "find .cfg-bestanden in /boot",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Zoek alle bestanden in /boot die eindigen op .cfg. Onderdruk toegangsfouten.",
+      "solution": "find /boot -type f -name '*.cfg' 2>/dev/null",
+      "acceptors": ["find /boot -type f -name '*.cfg' 2>/dev/null", "find /boot -name '*.cfg' 2>/dev/null"],
+      "expectedOutput": [],
+      "hints": ["Gebruik -name '*.cfg' voor de bestandsextensie."],
+      "tags": ["find"],
+      "commandsUsed": ["find"]
+    },
+    {
+      "title": "find op inode-nummer",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Een bestand in /etc heeft inode-nummer 98765. Schrijf het find-commando om het te localiseren.",
+      "solution": "find /etc -inum 98765",
+      "acceptors": ["find /etc -inum 98765"],
+      "expectedOutput": [],
+      "hints": ["Gebruik -inum gevolgd door het inode-nummer."],
+      "tags": ["find", "inode"],
+      "commandsUsed": ["find"]
+    },
+    {
+      "title": "cp met absoluut pad",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Kopieer het bestand /etc/resolvconf/update.d/libc naar /tmp/ via zijn absoluut pad.",
+      "solution": "cp /etc/resolvconf/update.d/libc /tmp/",
+      "acceptors": ["cp /etc/resolvconf/update.d/libc /tmp/", "cp /etc/resolvconf/update.d/libc /tmp"],
+      "expectedOutput": [],
+      "hints": ["Een absoluut pad begint altijd met /."],
+      "tags": ["cp", "navigatie"],
+      "commandsUsed": ["cp"]
+    },
+    {
+      "title": "mv met relatief pad",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Je bevindt je in /home/student/projects/. Verplaats notes.txt naar /home/student/ via een relatief pad (gebruik dus niet het volledige absolute pad voor de bestemming).",
+      "solution": "mv notes.txt ../",
+      "acceptors": ["mv notes.txt ../", "mv notes.txt .."],
+      "expectedOutput": [],
+      "hints": [".. verwijst naar de bovenliggende map."],
+      "tags": ["mv", "navigatie"],
+      "commandsUsed": ["mv"]
+    },
+    {
+      "title": "Uitvoer omleiden en toevoegen",
+      "difficulty": "easy",
+      "type": "multi-step",
+      "prompt": "Schrijf de uitvoer van 'ls /etc' naar etcfiles.txt. Voeg daarna de tekst '--- end of list ---' toe aan hetzelfde bestand. Gebruik twee afzonderlijke commando's.",
+      "solution": "ls /etc > etcfiles.txt",
+      "acceptors": ["ls /etc > etcfiles.txt"],
+      "expectedOutput": [],
+      "hints": ["Gebruik > voor overschrijven en >> voor toevoegen."],
+      "tags": ["redirectie", "echo"],
+      "commandsUsed": ["ls", "echo"],
+      "steps": [
+        {
+          "prompt": "Schrijf de uitvoer van 'ls /etc' naar etcfiles.txt (overschrijven).",
+          "acceptors": ["ls /etc > etcfiles.txt"],
+          "solution": "ls /etc > etcfiles.txt",
+          "expectedOutput": [],
+          "hints": ["Gebruik > om te overschrijven."]
+        },
+        {
+          "prompt": "Voeg de tekst '--- end of list ---' toe aan etcfiles.txt.",
+          "acceptors": ["echo \"--- end of list ---\" >> etcfiles.txt", "echo '--- end of list ---' >> etcfiles.txt"],
+          "solution": "echo \"--- end of list ---\" >> etcfiles.txt",
+          "expectedOutput": [],
+          "hints": ["Gebruik >> om toe te voegen zonder te overschrijven."]
+        }
+      ]
+    },
+    {
+      "title": "Stderr omleiden",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Voer 'find /etc -type f' uit en sla de foutmeldingen op in find_errors.txt, terwijl de normale uitvoer op het scherm verschijnt.",
+      "solution": "find /etc -type f 2> find_errors.txt",
+      "acceptors": ["find /etc -type f 2> find_errors.txt", "find /etc -type f 2>find_errors.txt"],
+      "expectedOutput": [],
+      "hints": ["2> leidt stderr om naar een bestand."],
+      "tags": ["redirectie", "find"],
+      "commandsUsed": ["find"]
+    },
+    {
+      "title": "10 grootste bestanden in /var/log",
+      "difficulty": "easy",
+      "type": "pipeline",
+      "prompt": "Toon de 10 grootste bestanden in /var/log op grootte (gebruik ls -lS en toon alleen de top 10).",
+      "solution": "ls -lS /var/log | head -n 11",
+      "acceptors": ["ls -lS /var/log | head -n 11", "ls -lS /var/log | head -11"],
+      "expectedOutput": [],
+      "hints": ["ls -lS sorteert op grootte (grootste eerst). head -n 11 toont 10 bestanden + de 'total' koptekstregel."],
+      "tags": ["ls", "head", "pipeline"],
+      "commandsUsed": ["ls", "head"]
+    },
+    {
+      "title": "Aantal items in /usr/bin",
+      "difficulty": "easy",
+      "type": "pipeline",
+      "prompt": "Tel hoeveel bestanden en mappen er in /usr/bin staan.",
+      "solution": "ls /usr/bin | wc -l",
+      "acceptors": ["ls /usr/bin | wc -l"],
+      "expectedOutput": [],
+      "hints": ["Gebruik ls gevolgd door wc -l in een pipeline."],
+      "tags": ["ls", "wc", "pipeline"],
+      "commandsUsed": ["ls", "wc"]
+    },
+    {
+      "title": "find + tee + wc",
+      "difficulty": "medium",
+      "type": "pipeline",
+      "prompt": "Voer 'find /etc -name \"*.conf\"' uit en sla de resultaten op in conf_files.txt. Tel tegelijk het totale aantal resultaten (gebruik wc -l). Onderdruk fouten.",
+      "solution": "find /etc -name \"*.conf\" 2>/dev/null | tee conf_files.txt | wc -l",
+      "acceptors": ["find /etc -name '*.conf' 2>/dev/null | tee conf_files.txt | wc -l", "find /etc -name \"*.conf\" 2>/dev/null | tee conf_files.txt | wc -l"],
+      "expectedOutput": [],
+      "hints": ["tee schrijft naar het bestand en geeft de uitvoer ook door aan de volgende stap in de pipeline."],
+      "tags": ["find", "tee", "wc"],
+      "commandsUsed": ["find", "tee", "wc"]
+    },
+    {
+      "title": "echo met variabelen naar bestand",
+      "difficulty": "medium",
+      "type": "command",
+      "prompt": "Voeg in één commando een regel toe aan ~/processinfo.txt met: het aantal actieve processen (ps -e --no-headers | wc -l), de naam van de huidige shell (alleen de naam, niet het pad) en de hostnaam — gescheiden door @. Overschrijf de bestaande inhoud NIET.",
+      "solution": "echo \"$(ps -e --no-headers | wc -l)@$(basename $SHELL)@$(hostname)\" >> ~/processinfo.txt",
+      "acceptors": [
+        "echo \"$(ps -e --no-headers | wc -l)@$(basename $SHELL)@$(hostname)\" >> ~/processinfo.txt",
+        "echo \"$(ps -e --no-headers | wc -l)@$(basename $SHELL)@$HOSTNAME\" >> ~/processinfo.txt"
+      ],
+      "expectedOutput": [],
+      "hints": ["Gebruik >> om toe te voegen.", "basename $SHELL extraheert alleen 'bash' uit '/bin/bash'."],
+      "tags": ["echo", "variabelen", "redirectie"],
+      "commandsUsed": ["echo", "ps", "wc", "basename"]
+    },
+    {
+      "title": "echo: sysinfo naar bestand",
+      "difficulty": "medium",
+      "type": "command",
+      "prompt": "Voeg een regel toe aan ~/sysinfo.txt met de huidige gebruiker ($USER), de huidige datum in formaat YYYY-MM-DD en het aantal bestanden in /etc — gescheiden door ':'.",
+      "solution": "echo \"$USER:$(date +%Y-%m-%d):$(ls /etc | wc -l)\" >> ~/sysinfo.txt",
+      "acceptors": ["echo \"$USER:$(date +%Y-%m-%d):$(ls /etc | wc -l)\" >> ~/sysinfo.txt"],
+      "expectedOutput": [],
+      "hints": ["$(date +%Y-%m-%d) geeft de datum in het gevraagde formaat.", "$(ls /etc | wc -l) telt het aantal items in /etc."],
+      "tags": ["echo", "variabelen"],
+      "commandsUsed": ["echo", "date", "ls", "wc"]
+    },
+    {
+      "title": "xargs: bestanden aanmaken",
+      "difficulty": "medium",
+      "type": "command",
+      "prompt": "Het bestand newfiles.txt bevat één bestandsnaam per regel. Maak voor elke naam een leeg bestand aan in je homedirectory. Gebruik xargs.",
+      "solution": "cat newfiles.txt | xargs -I{} touch ~/{}",
+      "acceptors": [
+        "cat newfiles.txt | xargs -I{} touch ~/{}",
+        "xargs -n 1 -I{} touch ~/{}  < newfiles.txt",
+        "xargs -n 1 -I{} touch ~/{}< newfiles.txt"
+      ],
+      "expectedOutput": [],
+      "hints": ["-I{} gebruikt {} als plaatshouder voor elk item.", "touch ~/{}  maakt een leeg bestand aan in de homedirectory."],
+      "tags": ["xargs", "touch"],
+      "commandsUsed": ["cat", "xargs", "touch"]
+    },
+    {
+      "title": "xargs: mappen verwijderen",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Het bestand dirs_to_remove.txt bevat één mapnaam per regel. Verwijder elke map met rmdir via xargs.",
+      "solution": "cat dirs_to_remove.txt | xargs rmdir",
+      "acceptors": ["cat dirs_to_remove.txt | xargs rmdir", "xargs rmdir < dirs_to_remove.txt"],
+      "expectedOutput": [],
+      "hints": ["xargs leest de namen van stdin en geeft ze door aan rmdir."],
+      "tags": ["xargs", "rmdir"],
+      "commandsUsed": ["cat", "xargs", "rmdir"]
+    },
+    {
+      "title": "tail: laatste 3 regels",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Toon de laatste 3 regels van /var/log/dpkg.log.",
+      "solution": "tail -n 3 /var/log/dpkg.log",
+      "acceptors": ["tail -n 3 /var/log/dpkg.log", "tail -3 /var/log/dpkg.log"],
+      "expectedOutput": [],
+      "hints": ["tail -n N toont de laatste N regels."],
+      "tags": ["tail"],
+      "commandsUsed": ["tail"]
+    },
+    {
+      "title": "grep: eerste overeenkomst",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Zoek in /var/log/dpkg.log de EERSTE keer dat het woord 'error' voorkomt (hoofdletteronafhankelijk). Toon alleen die ene regel.",
+      "solution": "grep -m 1 -i \"error\" /var/log/dpkg.log",
+      "acceptors": ["grep -m 1 -i \"error\" /var/log/dpkg.log", "grep -m 1 -i 'error' /var/log/dpkg.log", "grep -im 1 'error' /var/log/dpkg.log"],
+      "expectedOutput": [],
+      "hints": ["-m 1 stopt na de eerste overeenkomst.", "-i maakt de zoekopdracht hoofdletteronafhankelijk."],
+      "tags": ["grep"],
+      "commandsUsed": ["grep"]
+    },
+    {
+      "title": "grep -v: regels uitsluiten",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Toon alle regels in /etc/passwd die het woord 'nologin' NIET bevatten.",
+      "solution": "grep -v \"nologin\" /etc/passwd",
+      "acceptors": ["grep -v \"nologin\" /etc/passwd", "grep -v 'nologin' /etc/passwd"],
+      "expectedOutput": [],
+      "hints": ["-v keert de selectie om: toon regels die NIET overeenkomen."],
+      "tags": ["grep"],
+      "commandsUsed": ["grep"]
+    },
+    {
+      "title": "cut: gebruikersnaam extraheren",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Extraheer uit /etc/passwd alleen de gebruikersnaam (veld 1, scheidingsteken :).",
+      "solution": "cut -d':' -f1 /etc/passwd",
+      "acceptors": ["cut -d':' -f1 /etc/passwd"],
+      "expectedOutput": [],
+      "hints": ["-d':' geeft het scheidingsteken op.", "-f1 selecteert het eerste veld."],
+      "tags": ["cut"],
+      "commandsUsed": ["cut"]
+    },
+    {
+      "title": "cut: gebruikersnaam en homedirectory",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Extraheer uit /etc/passwd de gebruikersnaam (veld 1) en de homedirectory (veld 6), beide gescheiden door :.",
+      "solution": "cut -d':' -f1,6 /etc/passwd",
+      "acceptors": ["cut -d':' -f1,6 /etc/passwd"],
+      "expectedOutput": [],
+      "hints": ["Gebruik komma's om meerdere velden te selecteren: -f1,6."],
+      "tags": ["cut"],
+      "commandsUsed": ["cut"]
+    },
+    {
+      "title": "grep + cut: homedirectory van bash-gebruikers",
+      "difficulty": "medium",
+      "type": "pipeline",
+      "prompt": "Toon vanuit /etc/passwd de homedirectory (veld 6) van elke gebruiker wiens shell /bin/bash is.",
+      "solution": "grep \"/bin/bash\" /etc/passwd | cut -d':' -f6",
+      "acceptors": ["grep \"/bin/bash\" /etc/passwd | cut -d':' -f6", "grep '/bin/bash' /etc/passwd | cut -d':' -f6"],
+      "expectedOutput": [],
+      "hints": ["Gebruik grep om de juiste regels te selecteren, daarna cut voor het juiste veld."],
+      "tags": ["grep", "cut", "pipeline"],
+      "commandsUsed": ["grep", "cut"]
+    },
+    {
+      "title": "grep + cut: groepen met leden",
+      "difficulty": "medium",
+      "type": "pipeline",
+      "prompt": "Toon vanuit /etc/group de groepsnaam (veld 1) van alle groepen die minstens één lid hebben (veld 4 is niet leeg). Gebruik grep en dan cut.",
+      "solution": "grep -v ':$' /etc/group | cut -d':' -f1",
+      "acceptors": ["grep -v ':$' /etc/group | cut -d':' -f1"],
+      "expectedOutput": [],
+      "hints": ["Regels die eindigen op : hebben een leeg laatste veld.", "grep -v ':$' houdt regels over die niet eindigen op :."],
+      "tags": ["grep", "cut", "pipeline"],
+      "commandsUsed": ["grep", "cut"]
+    },
+    {
+      "title": "tr: naar hoofdletters",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Converteer alle tekst in names.txt naar hoofdletters en sla op in upper.txt.",
+      "solution": "tr 'a-z' 'A-Z' < names.txt > upper.txt",
+      "acceptors": ["tr 'a-z' 'A-Z' < names.txt > upper.txt"],
+      "expectedOutput": [],
+      "hints": ["tr leest altijd van stdin, gebruik < voor invoer uit bestand."],
+      "tags": ["tr"],
+      "commandsUsed": ["tr"]
+    },
+    {
+      "title": "tr: spaties en regeleinden",
+      "difficulty": "medium",
+      "type": "pipeline",
+      "prompt": "Vervang spaties door underscores EN voeg alle regels samen tot één regel. Lees van sentence.txt, schrijf naar oneline.txt.",
+      "solution": "tr -d '\\n' < sentence.txt | tr ' ' '_' > oneline.txt",
+      "acceptors": ["tr -d '\\n' < sentence.txt | tr ' ' '_' > oneline.txt"],
+      "expectedOutput": [],
+      "hints": ["Verwijder eerst de regeleinden (\\n), vervang dan de spaties.", "Volgorde is belangrijk: eerst newlines verwijderen, dan spaties vervangen."],
+      "tags": ["tr", "pipeline"],
+      "commandsUsed": ["tr"]
+    },
+    {
+      "title": "tr: tekens verwijderen",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Verwijder alle dubbele punten (:) uit data.txt en toon het resultaat op het scherm.",
+      "solution": "tr -d ':' < data.txt",
+      "acceptors": ["tr -d ':' < data.txt"],
+      "expectedOutput": [],
+      "hints": ["tr -d verwijdert alle opgegeven tekens."],
+      "tags": ["tr"],
+      "commandsUsed": ["tr"]
+    },
+    {
+      "title": "sort + uniq -c: woordfrequentie",
+      "difficulty": "medium",
+      "type": "pipeline",
+      "prompt": "Toon vanuit words.txt elk uniek woord en hoe vaak het voorkomt, gesorteerd van meest naar minst frequent.",
+      "solution": "sort words.txt | uniq -c | sort -nr",
+      "acceptors": ["sort words.txt | uniq -c | sort -nr"],
+      "expectedOutput": [],
+      "hints": ["Sorteer eerst, dan uniq -c voor het tellen, daarna sort -nr voor aflopende volgorde."],
+      "tags": ["sort", "uniq", "pipeline"],
+      "commandsUsed": ["sort", "uniq"]
+    },
+    {
+      "title": "find + extensietelling",
+      "difficulty": "hard",
+      "type": "pipeline",
+      "prompt": "Tel het aantal bestanden in /boot per bestandsextensie (bijv. .conf, .img). Sorteer van meest naar minst frequent. Onderdruk fouten.",
+      "solution": "find /boot -type f 2>/dev/null | sed 's/.*\\.//' | sort | uniq -c | sort -nr",
+      "acceptors": [
+        "find /boot -type f 2>/dev/null | sed 's/.*\\.//' | sort | uniq -c | sort -nr",
+        "find /boot -type f 2>/dev/null | cut -d'.' -f2- | sort | uniq -c | sort -nr"
+      ],
+      "expectedOutput": [],
+      "hints": ["sed 's/.*\\.//' haalt alles weg tot en met de laatste punt, zodat alleen de extensie overblijft.", "Sorteer, tel met uniq -c, sorteer opnieuw numeriek aflopend."],
+      "tags": ["find", "sed", "sort", "uniq", "pipeline"],
+      "commandsUsed": ["find", "sed", "sort", "uniq"]
+    },
+    {
+      "title": "ls gesorteerd op wijzigingstijd",
+      "difficulty": "easy",
+      "type": "pipeline",
+      "prompt": "Toon alle bestanden in /tmp gesorteerd op wijzigingstijd, oudste eerst. Verberg de 'total'-koptekstregel.",
+      "solution": "ls -ltr /tmp | tail -n +2",
+      "acceptors": ["ls -ltr /tmp | tail -n +2", "ls -ltr /tmp"],
+      "expectedOutput": [],
+      "hints": ["ls -t sorteert op tijd, -r keert de volgorde om.", "tail -n +2 slaat de eerste regel over."],
+      "tags": ["ls", "tail"],
+      "commandsUsed": ["ls", "tail"]
+    },
+    {
+      "title": "ls gesorteerd op grootte (grootste eerst)",
+      "difficulty": "easy",
+      "type": "pipeline",
+      "prompt": "Toon de inhoud van /var/log in lange opmaak, gesorteerd op bestandsgrootte (grootste eerst).",
+      "solution": "ls -l /var/log | sort -k5 -rn",
+      "acceptors": ["ls -l /var/log | sort -k5 -rn", "ls -l /var/log | sort -k5 -nr"],
+      "expectedOutput": [],
+      "hints": ["sort -k5 sorteert op het 5e veld (grootte), -rn is omgekeerd numeriek."],
+      "tags": ["ls", "sort"],
+      "commandsUsed": ["ls", "sort"]
+    },
+    {
+      "title": "comm: gemeenschappelijke regels",
+      "difficulty": "medium",
+      "type": "command",
+      "prompt": "Toon alleen de regels die voorkomen in ZOWEL list_a.txt als list_b.txt. Beide bestanden zijn al gesorteerd.",
+      "solution": "comm -12 list_a.txt list_b.txt",
+      "acceptors": ["comm -12 list_a.txt list_b.txt"],
+      "expectedOutput": [],
+      "hints": ["-1 onderdrukt kolom 1 (alleen in bestand1), -2 onderdrukt kolom 2 (alleen in bestand2). Wat overblijft zijn de gemeenschappelijke regels."],
+      "tags": ["comm"],
+      "commandsUsed": ["comm"]
+    },
+    {
+      "title": "comm: regels enkel in bestand1",
+      "difficulty": "medium",
+      "type": "command",
+      "prompt": "Toon de regels die in list_a.txt staan maar NIET in list_b.txt. Beide bestanden zijn al gesorteerd.",
+      "solution": "comm -23 list_a.txt list_b.txt",
+      "acceptors": ["comm -23 list_a.txt list_b.txt"],
+      "expectedOutput": [],
+      "hints": ["-2 onderdrukt regels die alleen in bestand2 staan, -3 onderdrukt gemeenschappelijke regels."],
+      "tags": ["comm"],
+      "commandsUsed": ["comm"]
+    },
+    {
+      "title": "wc: aantal regels tellen",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Tel hoeveel regels /etc/passwd heeft.",
+      "solution": "wc -l /etc/passwd",
+      "acceptors": ["wc -l /etc/passwd", "cat /etc/passwd | wc -l"],
+      "expectedOutput": [],
+      "hints": ["wc -l telt het aantal regels."],
+      "tags": ["wc"],
+      "commandsUsed": ["wc"]
+    },
+    {
+      "title": "wc: actieve processen tellen",
+      "difficulty": "easy",
+      "type": "pipeline",
+      "prompt": "Tel hoeveel processen er momenteel actief zijn.",
+      "solution": "ps -e --no-headers | wc -l",
+      "acceptors": ["ps -e --no-headers | wc -l"],
+      "expectedOutput": [],
+      "hints": ["ps -e --no-headers toont alle processen zonder koptekstregel."],
+      "tags": ["ps", "wc"],
+      "commandsUsed": ["ps", "wc"]
+    },
+    {
+      "title": "find + wc: bestanden tellen in /var/log",
+      "difficulty": "easy",
+      "type": "pipeline",
+      "prompt": "Tel hoeveel gewone bestanden er in /var/log staan. Onderdruk toegangsfouten.",
+      "solution": "find /var/log -type f 2>/dev/null | wc -l",
+      "acceptors": ["find /var/log -type f 2>/dev/null | wc -l"],
+      "expectedOutput": [],
+      "hints": ["Gebruik find met -type f, daarna wc -l."],
+      "tags": ["find", "wc"],
+      "commandsUsed": ["find", "wc"]
+    },
+    {
+      "title": "grep -c: foutregels tellen",
+      "difficulty": "medium",
+      "type": "command",
+      "prompt": "Tel hoeveel regels in /var/log/dpkg.log het woord 'error' bevatten (hoofdletteronafhankelijk). Geef twee oplossingen: één met wc -l in een pipeline, één met een grep-optie rechtstreeks.",
+      "solution": "grep -i \"error\" /var/log/dpkg.log | wc -l",
+      "acceptors": [
+        "grep -i \"error\" /var/log/dpkg.log | wc -l",
+        "grep -i 'error' /var/log/dpkg.log | wc -l",
+        "grep -ci \"error\" /var/log/dpkg.log",
+        "grep -ci 'error' /var/log/dpkg.log"
+      ],
+      "expectedOutput": [],
+      "hints": ["grep -c telt direct het aantal overeenkomende regels zonder dat je wc -l nodig hebt."],
+      "tags": ["grep", "wc"],
+      "commandsUsed": ["grep", "wc"]
+    },
+    {
+      "title": "awk: kolom 3 opmaken",
+      "difficulty": "medium",
+      "type": "command",
+      "prompt": "Vanuit data.csv (kommagescheiden): druk de derde kolom af van elke rij, voorafgegaan door 'Column 3: ', het regelnummer tussen haakjes en een uitroepteken aan het einde. Verwacht formaat: Column 3: (1) Score!",
+      "solution": "awk -F',' '{print \"Column 3: (\" NR \") \" $3 \"!\"}' data.csv",
+      "acceptors": ["awk -F',' '{print \"Column 3: (\" NR \") \" $3 \"!\"}' data.csv"],
+      "expectedOutput": ["Column 3: (1) Score!"],
+      "hints": ["NR is het regelnummer in awk.", "-F',' stelt komma in als scheidingsteken."],
+      "tags": ["awk"],
+      "commandsUsed": ["awk"]
+    },
+    {
+      "title": "awk: gebruiker en shell",
+      "difficulty": "medium",
+      "type": "command",
+      "prompt": "Gebruik awk op /etc/passwd (scheidingsteken :) om elke gebruikersnaam (veld 1) en zijn shell (veld 7) af te drukken in het formaat: user -> shell",
+      "solution": "awk -F':' '{print $1 \" -> \" $7}' /etc/passwd",
+      "acceptors": ["awk -F':' '{print $1 \" -> \" $7}' /etc/passwd"],
+      "expectedOutput": [],
+      "hints": ["$1 en $7 zijn respectievelijk het eerste en zevende veld.", "-F':' stelt : in als scheidingsteken."],
+      "tags": ["awk"],
+      "commandsUsed": ["awk"]
+    },
+    {
+      "title": "Symbolische koppeling aanmaken",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Maak een symbolische koppeling genaamd myShell in je homedirectory die wijst naar /bin/bash. De koppeling moet kapot gaan als /bin/bash verwijderd wordt.",
+      "solution": "ln -s /bin/bash ~/myShell",
+      "acceptors": ["ln -s /bin/bash ~/myShell", "ln -s /bin/bash $HOME/myShell"],
+      "expectedOutput": [],
+      "hints": ["Gebruik ln -s voor een symbolische koppeling.", "Een symlink breekt als het doelbestand verwijderd wordt."],
+      "tags": ["ln", "symlink"],
+      "commandsUsed": ["ln"]
+    },
+    {
+      "title": "Harde koppeling aanmaken",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Maak een harde koppeling genaamd backup.conf in je homedirectory die naar /etc/hostname wijst.",
+      "solution": "ln /etc/hostname ~/backup.conf",
+      "acceptors": ["ln /etc/hostname ~/backup.conf", "ln /etc/hostname $HOME/backup.conf"],
+      "expectedOutput": [],
+      "hints": ["Geen -s-vlag = harde koppeling.", "Beide namen delen hetzelfde inode-nummer."],
+      "tags": ["ln", "hardlink"],
+      "commandsUsed": ["ln"]
+    },
+    {
+      "title": "Inode-nummers controleren",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Controleer met ls -li of backup.conf en /etc/hostname hetzelfde inode-nummer delen.",
+      "solution": "ls -li ~/backup.conf /etc/hostname",
+      "acceptors": ["ls -li ~/backup.conf /etc/hostname", "ls -li /etc/hostname ~/backup.conf"],
+      "expectedOutput": [],
+      "hints": ["Beide regels tonen hetzelfde inode-nummer in kolom 1."],
+      "tags": ["ls", "inode"],
+      "commandsUsed": ["ls"]
+    },
+    {
+      "title": "chmod symbolisch (één commando)",
+      "difficulty": "medium",
+      "type": "command",
+      "prompt": "Stel via symbolische notatie de permissies van examenscript.sh in met één chmod-commando (geen ;, && of ||): eigenaar: geen toegang; groep: alleen lezen; anderen: lezen en uitvoeren.",
+      "solution": "chmod u=,g=r,o=rx examenscript.sh",
+      "acceptors": ["chmod u=,g=r,o=rx examenscript.sh", "chmod u-rwx,g=r,o=rx examenscript.sh"],
+      "expectedOutput": [],
+      "hints": ["u= wist alle rechten van de eigenaar.", "Scheid meerdere groepen met komma's in hetzelfde chmod-commando."],
+      "tags": ["chmod", "permissies"],
+      "commandsUsed": ["chmod"]
+    },
+    {
+      "title": "chmod: uitvoerrecht toevoegen",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Voeg uitvoerrecht toe voor de eigenaar op alle .sh-bestanden in de huidige map.",
+      "solution": "chmod u+x *.sh",
+      "acceptors": ["chmod u+x *.sh"],
+      "expectedOutput": [],
+      "hints": ["u+x voegt uitvoerrecht toe voor de eigenaar.", "*.sh matcht alle .sh-bestanden in de huidige map."],
+      "tags": ["chmod"],
+      "commandsUsed": ["chmod"]
+    },
+    {
+      "title": "chmod: schrijfrecht verwijderen + anderen instellen",
+      "difficulty": "medium",
+      "type": "command",
+      "prompt": "Verwijder schrijfrecht van de eigenaar EN stel anderen in op alleen-lezen, in één chmod-commando.",
+      "solution": "chmod u-w,o=r file.txt",
+      "acceptors": ["chmod u-w,o=r file.txt"],
+      "expectedOutput": [],
+      "hints": ["Gebruik komma's voor meerdere wijzigingen in één commando."],
+      "tags": ["chmod"],
+      "commandsUsed": ["chmod"]
+    },
+    {
+      "title": "chmod octaal: r-x---w-",
+      "difficulty": "medium",
+      "type": "command",
+      "prompt": "Stel de permissies van report.txt in via octaalnotatie: eigenaar = lezen en uitvoeren, groep = geen toegang, anderen = alleen schrijven.",
+      "solution": "chmod 502 report.txt",
+      "acceptors": ["chmod 502 report.txt"],
+      "expectedOutput": [],
+      "hints": ["r=4, w=2, x=1. eigenaar: r+x=5, groep: ---=0, anderen: w=2 → 502"],
+      "tags": ["chmod", "octaal"],
+      "commandsUsed": ["chmod"]
+    },
+    {
+      "title": "chmod octaal op mapinhoud",
+      "difficulty": "medium",
+      "type": "command",
+      "prompt": "Stel via octaalnotatie alle bestanden in ~/executables/ in op: eigenaar = lezen+schrijven, groep = schrijven+uitvoeren, anderen = alleen lezen. Pas alleen de INHOUD aan, niet de map zelf.",
+      "solution": "chmod 634 ~/executables/*",
+      "acceptors": ["chmod 634 ~/executables/*"],
+      "expectedOutput": [],
+      "hints": ["rw-=6, -wx=3, r--=4 → 634.", "Gebruik * om de inhoud te selecteren, niet de map zelf."],
+      "tags": ["chmod", "octaal"],
+      "commandsUsed": ["chmod"]
+    },
+    {
+      "title": "find + chmod: recursief permissies instellen",
+      "difficulty": "medium",
+      "type": "command",
+      "prompt": "Stel recursief alle gewone bestanden in ~/project/ in op permissie 644 via find.",
+      "solution": "find ~/project -type f -exec chmod 644 {} \\;",
+      "acceptors": ["find ~/project -type f -exec chmod 644 {} \\;", "find ~/project/ -type f -exec chmod 644 {} \\;"],
+      "expectedOutput": [],
+      "hints": ["-exec chmod 644 {} \\; voert chmod uit voor elk gevonden bestand."],
+      "tags": ["find", "chmod"],
+      "commandsUsed": ["find", "chmod"]
+    },
+    {
+      "title": "alias aanmaken",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Maak een tijdelijke alias 'lsize' aan die 'ls -lhS' uitvoert.",
+      "solution": "alias lsize='ls -lhS'",
+      "acceptors": ["alias lsize='ls -lhS'", "alias lsize=\"ls -lhS\""],
+      "expectedOutput": [],
+      "hints": ["Een alias die je in de terminal definieert, is tijdelijk en verdwijnt als de shell afgesloten wordt."],
+      "tags": ["alias"],
+      "commandsUsed": ["alias"]
+    },
+    {
+      "title": "Permanente alias instellen",
+      "difficulty": "medium",
+      "type": "multi-step",
+      "prompt": "Maak een permanente alias 'mygrep' aan die 'grep -i --color' uitvoert. Leg de twee benodigde stappen uit.",
+      "solution": "echo \"alias mygrep='grep -i --color'\" >> ~/.bashrc",
+      "acceptors": ["echo \"alias mygrep='grep -i --color'\" >> ~/.bashrc"],
+      "expectedOutput": [],
+      "hints": ["Voeg de alias toe aan ~/.bashrc voor persistentie.", "Laad de configuratie opnieuw met 'source ~/.bashrc'."],
+      "tags": ["alias", "bashrc"],
+      "commandsUsed": ["echo", "source"],
+      "steps": [
+        {
+          "prompt": "Voeg de alias toe aan ~/.bashrc zodat hij permanent is.",
+          "acceptors": ["echo \"alias mygrep='grep -i --color'\" >> ~/.bashrc"],
+          "solution": "echo \"alias mygrep='grep -i --color'\" >> ~/.bashrc",
+          "expectedOutput": [],
+          "hints": ["Gebruik >> om toe te voegen aan ~/.bashrc."]
+        },
+        {
+          "prompt": "Laad ~/.bashrc opnieuw zodat de alias direct beschikbaar is.",
+          "acceptors": ["source ~/.bashrc", ". ~/.bashrc"],
+          "solution": "source ~/.bashrc",
+          "expectedOutput": [],
+          "hints": ["source laadt het bestand opnieuw in de huidige shell."]
+        }
+      ]
+    },
+    {
+      "title": "Script: hello.sh",
+      "difficulty": "medium",
+      "type": "script",
+      "prompt": "Schrijf een script hello.sh dat: bij één argument 'Hello, <argument>!' afdrukt; bij geen argument 'Hello, World!' afdrukt; bij meer dan één argument een foutmelding geeft en eindigt met exitcode 1.",
+      "solution": "#!/bin/bash\nif [[ $# -gt 1 ]]; then\n    echo \"Error: too many arguments.\"\n    exit 1\nelif [[ $# -eq 1 ]]; then\n    echo \"Hello, $1!\"\nelse\n    echo \"Hello, World!\"\nfi",
+      "acceptors": [
+        "#!/bin/bash\nif [[ $# -gt 1 ]]; then\n    echo \"Error: too many arguments.\"\n    exit 1\nelif [[ $# -eq 1 ]]; then\n    echo \"Hello, $1!\"\nelse\n    echo \"Hello, World!\"\nfi"
+      ],
+      "expectedOutput": [],
+      "hints": ["$# bevat het aantal argumenten.", "Controleer op te veel argumenten voordat je controleert op exact één."],
+      "tags": ["bash scripting", "if", "variabelen"],
+      "commandsUsed": ["echo", "exit"]
+    },
+    {
+      "title": "Script: check_args.sh",
+      "difficulty": "medium",
+      "type": "script",
+      "prompt": "Schrijf een script check_args.sh dat: een foutmelding en exit 1 geeft als er geen argumenten zijn; een foutmelding en exit 1 geeft als er meer dan één argument is; anders 'Argument received: <waarde>' afdrukt.",
+      "solution": "#!/bin/bash\nif [[ $# -eq 0 ]]; then\n    echo \"Error: no argument provided.\"\n    exit 1\nelif [[ $# -gt 1 ]]; then\n    echo \"Error: too many arguments.\"\n    exit 1\nfi\necho \"Argument received: $1\"",
+      "acceptors": [
+        "#!/bin/bash\nif [[ $# -eq 0 ]]; then\n    echo \"Error: no argument provided.\"\n    exit 1\nelif [[ $# -gt 1 ]]; then\n    echo \"Error: too many arguments.\"\n    exit 1\nfi\necho \"Argument received: $1\""
+      ],
+      "expectedOutput": [],
+      "hints": ["Controleer eerst op 0 argumenten, dan op meer dan 1."],
+      "tags": ["bash scripting", "if"],
+      "commandsUsed": ["echo", "exit"]
+    },
+    {
+      "title": "Script: mode.sh met case",
+      "difficulty": "hard",
+      "type": "script",
+      "prompt": "Schrijf een script mode.sh dat precies één argument accepteert: -r toont 'Read mode', -w toont 'Write mode', -x toont 'Execute mode'. Bij een ander argument: 'Unknown mode' en exit 1. Valideer dat er precies één argument is (fout bij 0 of meer dan 1).",
+      "solution": "#!/bin/bash\nif [[ $# -ne 1 ]]; then\n    echo \"Error: exactly one argument required.\"\n    exit 1\nfi\ncase \"$1\" in\n    -r) echo \"Read mode\" ;;\n    -w) echo \"Write mode\" ;;\n    -x) echo \"Execute mode\" ;;\n    *)  echo \"Unknown mode: $1\"; exit 1 ;;\nesac",
+      "acceptors": [
+        "#!/bin/bash\nif [[ $# -ne 1 ]]; then\n    echo \"Error: exactly one argument required.\"\n    exit 1\nfi\ncase \"$1\" in\n    -r) echo \"Read mode\" ;;\n    -w) echo \"Write mode\" ;;\n    -x) echo \"Execute mode\" ;;\n    *)  echo \"Unknown mode: $1\"; exit 1 ;;\nesac"
+      ],
+      "expectedOutput": [],
+      "hints": ["$# -ne 1 controleert of het aantal argumenten niet gelijk is aan 1.", "case is netter dan meerdere elif voor vaste opties."],
+      "tags": ["bash scripting", "case", "if"],
+      "commandsUsed": ["echo", "exit"]
+    },
+    {
+      "title": "Script: studylog.sh (volledig examescript)",
+      "difficulty": "insane",
+      "type": "script",
+      "prompt": "Schrijf het script studylog.sh met drie modi:\n- Zonder argumenten: vraag naam, tijdslot en datum; voeg een regel toe aan /home/$USER/studylog.txt in het formaat naam#tijdslot#datum#timestamp.\n- Met -l: vraag hoeveel recente entries te tonen; toon die van onderaan het logbestand.\n- Met -d: leeg het logbestand en toon een bevestigingsbericht.\n- Bij onjuist gebruik: foutmelding en exit 1.\nGebruik absoluut pad voor het logbestand.",
+      "solution": "#!/bin/bash\nLOGFILE=\"/home/$USER/studylog.txt\"\n\nif [[ $# -eq 0 ]]; then\n    read -p \"Name: \" naam\n    read -p \"Time slot (e.g. 14:00-16:00): \" tijdslot\n    read -p \"Date (YYYY-MM-DD): \" datum\n    timestamp=$(date \"+%Y-%m-%d %H:%M\")\n    echo \"${naam}#${tijdslot}#${datum}#${timestamp}\" >> \"$LOGFILE\"\n\nelif [[ \"$1\" == \"-l\" && $# -eq 1 ]]; then\n    read -p \"How many recent entries to show? \" aantal\n    tail -n \"$aantal\" \"$LOGFILE\"\n\nelif [[ \"$1\" == \"-d\" && $# -eq 1 ]]; then\n    > \"$LOGFILE\"\n    echo \"Log file cleared.\"\n\nelif [[ $# -gt 1 ]]; then\n    echo \"Error: Incorrect usage.\"\n    exit 1\n\nelse\n    echo \"Invalid option! Use -l to view recent entries or -d to clear the log file.\"\n    exit 1\nfi",
+      "acceptors": [
+        "#!/bin/bash\nLOGFILE=\"/home/$USER/studylog.txt\"\n\nif [[ $# -eq 0 ]]; then\n    read -p \"Name: \" naam\n    read -p \"Time slot (e.g. 14:00-16:00): \" tijdslot\n    read -p \"Date (YYYY-MM-DD): \" datum\n    timestamp=$(date \"+%Y-%m-%d %H:%M\")\n    echo \"${naam}#${tijdslot}#${datum}#${timestamp}\" >> \"$LOGFILE\"\n\nelif [[ \"$1\" == \"-l\" && $# -eq 1 ]]; then\n    read -p \"How many recent entries to show? \" aantal\n    tail -n \"$aantal\" \"$LOGFILE\"\n\nelif [[ \"$1\" == \"-d\" && $# -eq 1 ]]; then\n    > \"$LOGFILE\"\n    echo \"Log file cleared.\"\n\nelif [[ $# -gt 1 ]]; then\n    echo \"Error: Incorrect usage.\"\n    exit 1\n\nelse\n    echo \"Invalid option! Use -l to view recent entries or -d to clear the log file.\"\n    exit 1\nfi"
+      ],
+      "expectedOutput": [],
+      "hints": [
+        "Bewaar het logbestandspad in een variabele met absoluut pad.",
+        "> \"$LOGFILE\" leegt het bestand zonder het te verwijderen.",
+        "Controleer $# én de argumentwaarde tegelijk in de elif-voorwaarden."
+      ],
+      "tags": ["bash scripting", "case", "if", "read", "tail", "echo"],
+      "commandsUsed": ["read", "echo", "date", "tail", "exit"]
+    }
+  ],
+  "theory": [
+    {
+      "question": "Welke ls-optie toont de bestandsgroottes in mensvriendelijk formaat (KB, MB)?",
+      "type": "mc",
+      "choices": ["-l", "-h", "-a", "-i"],
+      "answer": "-h",
+      "explanation": "-h staat voor 'human-readable' en werkt enkel zinvol in combinatie met -l."
+    },
+    {
+      "question": "Wat is het verschil tussen > en >> bij uitvoeromleidingen?",
+      "type": "open",
+      "choices": [],
+      "answer": "> overschrijft het bestand; >> voegt toe aan het einde zonder te overschrijven.",
+      "explanation": "Gebruik > wanneer je een nieuw bestand wilt maken of de inhoud wilt vervangen. Gebruik >> wanneer je bestaande inhoud wilt bewaren en nieuwe inhoud wilt toevoegen."
+    },
+    {
+      "question": "Welk commando gebruik je om uitvoer tegelijk op het scherm te tonen én naar een bestand te schrijven?",
+      "type": "mc",
+      "choices": ["tee", "echo", "cat", "pipe"],
+      "answer": "tee",
+      "explanation": "tee leest van stdin en schrijft tegelijk naar stdout en naar het opgegeven bestand. Zo kun je verdere verwerking in de pipeline koppelen."
+    },
+    {
+      "question": "Wat doet de optie -size 16c bij het find-commando?",
+      "type": "mc",
+      "choices": ["Bestanden groter dan 16 KB", "Bestanden precies 16 bytes groot", "Bestanden van 16 kolommen", "Bestanden met 16 tekens in de naam"],
+      "answer": "Bestanden precies 16 bytes groot",
+      "explanation": "In find staat c voor bytes (characters). -size 16c zoekt dus naar bestanden van exact 16 bytes."
+    },
+    {
+      "question": "Wat is het verschil tussen een hard link en een symbolische (soft) link?",
+      "type": "open",
+      "choices": [],
+      "answer": "Een hard link is een tweede naam voor hetzelfde bestand (zelfde inode); een symlink is een verwijzing naar het pad van het originele bestand (ander inode).",
+      "explanation": "Harde koppelingen overleven het verwijderen van het origineel; symlinks breken dan. Harde koppelingen kunnen niet over filesystemen of naar mappen wijzen, symlinks wel."
+    },
+    {
+      "question": "Welk type koppeling overleeft het verwijderen van het originele bestand?",
+      "type": "mc",
+      "choices": ["Harde koppeling", "Symbolische koppeling", "Beide", "Geen van beide"],
+      "answer": "Harde koppeling",
+      "explanation": "Een harde koppeling deelt het inode met het origineel. Zolang er minstens één harde koppeling bestaat, blijft de bestandsdata beschikbaar."
+    },
+    {
+      "question": "Wat is de octaalwaarde voor de permissies rwxr-xr--?",
+      "type": "mc",
+      "choices": ["755", "754", "744", "764"],
+      "answer": "754",
+      "explanation": "rwx=7, r-x=5, r--=4. De octaalwaarde is dus 754."
+    },
+    {
+      "question": "Welke permissies komen overeen met de octaalcode 502?",
+      "type": "open",
+      "choices": [],
+      "answer": "r-x---w-",
+      "explanation": "5=r-x (eigenaar), 0=--- (groep), 2=-w- (anderen). De volledige permissiestring is r-x---w-."
+    },
+    {
+      "question": "Wat is het verschil tussen 'chmod 644 ~/mydir' en 'chmod 644 ~/mydir/*'?",
+      "type": "open",
+      "choices": [],
+      "answer": "chmod 644 ~/mydir past de permissies aan van de map zelf; chmod 644 ~/mydir/* past de permissies aan van alle bestanden binnenin de map.",
+      "explanation": "De * glob matcht de inhoud van de map, niet de map zelf. Wil je de permissies van een heel directorieboom recursief aanpassen, gebruik dan find met -exec chmod."
+    },
+    {
+      "question": "Wat doet uniq -c?",
+      "type": "mc",
+      "choices": ["Verwijdert alle duplicaten", "Telt het aantal opeenvolgende gelijke regels", "Verwijdert lege regels", "Sorteert regels op frequentie"],
+      "answer": "Telt het aantal opeenvolgende gelijke regels",
+      "explanation": "uniq -c voegt voor elke unieke regel het aantal keer dat die opvolgende verschijnt. Gebruik altijd sort voor uniq -c om niet-aaneengesloten duplicaten ook mee te tellen."
+    },
+    {
+      "question": "Welke volgorde is correct om woorden te tellen op frequentie?",
+      "type": "mc",
+      "choices": ["uniq -c | sort | sort -nr", "sort | uniq -c | sort -nr", "uniq -c | sort -nr | sort", "sort -nr | uniq -c"],
+      "answer": "sort | uniq -c | sort -nr",
+      "explanation": "Eerst sort om duplicaten aaneen te plaatsen, dan uniq -c om te tellen, dan sort -nr om van meest naar minst frequent te sorteren."
+    },
+    {
+      "question": "Wat doet comm -12 bestand1 bestand2?",
+      "type": "mc",
+      "choices": [
+        "Toont regels die alleen in bestand1 staan",
+        "Toont regels die alleen in bestand2 staan",
+        "Toont regels die in beide bestanden voorkomen",
+        "Toont regels die in geen enkel bestand voorkomen"
+      ],
+      "answer": "Toont regels die in beide bestanden voorkomen",
+      "explanation": "-1 onderdrukt kolom 1 (alleen in bestand1) en -2 onderdrukt kolom 2 (alleen in bestand2). Wat overblijft zijn de gemeenschappelijke regels (kolom 3)."
+    },
+    {
+      "question": "Hoe gebruik je xargs om voor elk item in een bestand een actie uit te voeren met een placeholder?",
+      "type": "open",
+      "choices": [],
+      "answer": "cat bestand.txt | xargs -I{} commando {}",
+      "explanation": "-I{} definieert {} als plaatshouder. xargs vervangt {} door elk item van stdin, één per keer."
+    },
+    {
+      "question": "Wat is het verschil tussen grep -v en grep -c?",
+      "type": "open",
+      "choices": [],
+      "answer": "grep -v toont regels die NIET overeenkomen; grep -c telt het aantal overeenkomende regels.",
+      "explanation": "-v staat voor 'invert match', -c voor 'count'. Ze doen dus heel verschillende dingen."
+    },
+    {
+      "question": "Wat doet tr -d '\\n' < bestand.txt?",
+      "type": "mc",
+      "choices": [
+        "Verwijdert alle spaties",
+        "Verwijdert alle regelafsluiters en zet alle regels op één lijn",
+        "Verwijdert de eerste regel",
+        "Vervangt \\n door een spatie"
+      ],
+      "answer": "Verwijdert alle regelafsluiters en zet alle regels op één lijn",
+      "explanation": "tr -d '\\n' verwijdert het newline-teken uit elke positie, waardoor alle regels aaneengeregen worden tot één lange regel."
+    },
+    {
+      "question": "Waarom moet je bij comm beide bestanden gesorteerd aanleveren?",
+      "type": "open",
+      "choices": [],
+      "answer": "comm vergelijkt regels in volgorde. Als de bestanden niet gesorteerd zijn, kan het geen correcte vergelijking maken en geeft het foute resultaten.",
+      "explanation": "Gesorteerde bestanden garanderen dat overeenkomende regels ook naast elkaar staan in de vergelijking. Gebruik sort of process substitution <(sort bestand) indien nodig."
+    },
+    {
+      "question": "Wat is de functie van $# in een bashscript?",
+      "type": "mc",
+      "choices": [
+        "De naam van het script",
+        "Alle doorgegeven argumenten",
+        "Het aantal doorgegeven argumenten",
+        "De exitcode van het laatste commando"
+      ],
+      "answer": "Het aantal doorgegeven argumenten",
+      "explanation": "$# bevat het aantal positionele parameters dat aan het script werd doorgegeven. Gebruik het voor validatie van de invoer."
+    },
+    {
+      "question": "Wat is het verschil tussen een tijdelijke en een permanente alias?",
+      "type": "open",
+      "choices": [],
+      "answer": "Een tijdelijke alias bestaat alleen in de huidige shellsessie en verdwijnt bij sluiten. Een permanente alias staat in ~/.bashrc en is beschikbaar na elke login.",
+      "explanation": "Om een alias permanent te maken voeg je hem toe aan ~/.bashrc en laad je het bestand opnieuw met 'source ~/.bashrc'."
+    },
+    {
+      "question": "Wat is het nut van de shebang-regel #!/bin/bash bovenaan een script?",
+      "type": "open",
+      "choices": [],
+      "answer": "De shebang geeft aan met welke interpreter het script uitgevoerd moet worden. Zonder shebang gebruikt het systeem de standaard shell, wat tot onverwacht gedrag kan leiden.",
+      "explanation": "#!/bin/bash zorgt ervoor dat het script altijd door bash verwerkt wordt, ongeacht welke shell de gebruiker op dat moment gebruikt."
+    },
+    {
+      "question": "Welk commando maak je een script uitvoerbaar?",
+      "type": "mc",
+      "choices": ["chmod +x script.sh", "chmod 400 script.sh", "chmod u-x script.sh", "exec script.sh"],
+      "answer": "chmod +x script.sh",
+      "explanation": "chmod +x voegt het uitvoerbit toe voor eigenaar, groep en anderen. Daarna kun je het script uitvoeren met ./script.sh."
+    },
+    {
+      "question": "Wat is een absoluut pad en waarom gebruik je het in scripts?",
+      "type": "open",
+      "choices": [],
+      "answer": "Een absoluut pad begint met / en verwijst altijd naar dezelfde locatie, ongeacht de huidige werkmap. In scripts zijn absolute paden veiliger omdat het script vanuit elke locatie aangeroepen kan worden.",
+      "explanation": "Relatieve paden zijn afhankelijk van de werkmap op het moment van uitvoeren. Een absoluut pad zoals /home/user/logfile.txt werkt altijd correct."
+    },
+    {
+      "question": "Waarvoor dient de awk-variabele NR?",
+      "type": "mc",
+      "choices": ["Aantal kolommen", "Huidig regelnummer", "Aantal records verwerkt per bestand", "Naam van het huidige bestand"],
+      "answer": "Huidig regelnummer",
+      "explanation": "NR (Number of Records) houdt het cumulatieve regelnummer bij over alle invoerbestanden heen. NR=1 bij de eerste regel."
+    },
+    {
+      "question": "Welk find-commando zoekt alleen in de homedirectory zelf en niet in submappen?",
+      "type": "mc",
+      "choices": [
+        "find ~ -depth 1 -type f",
+        "find ~ -maxdepth 1 -type f",
+        "find ~ -level 1 -type f",
+        "find ~ -nodepth -type f"
+      ],
+      "answer": "find ~ -maxdepth 1 -type f",
+      "explanation": "-maxdepth 1 beperkt de zoekdiepte tot de startmap zelf. Submappen worden niet doorzocht."
+    },
+    {
+      "question": "Wat is het verschil tussen het relatieve pad '../archive/' en het absolute pad '/home/student/archive/'?",
+      "type": "open",
+      "choices": [],
+      "answer": "Het relatieve pad is afhankelijk van de huidige werkmap (.. verwijst naar de bovenliggende map), het absolute pad werkt altijd ongeacht de huidige werkmap.",
+      "explanation": "Vanuit /home/student/projects/ verwijst ../archive/ naar /home/student/archive/. Absolute paden zijn explicieter en veiliger in scripts."
+    }
+  ]
+}

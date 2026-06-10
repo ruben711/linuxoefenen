@@ -1,0 +1,244 @@
+{
+  "chapterId": "01",
+  "chapterTitle": "Introductie tot Linux en Unix",
+  "summary": "In dit hoofdstuk leer je de historische oorsprong van Unix en Linux kennen, van de eerste Unix-systemen in 1969 tot de geboorte van Linux in 1991 door Linus Torvalds. Je begrijpt het verschil tussen een besturingssysteem en een kernel, de rol van het GNU-project en de GPL-licentie, en waarom Linux vandaag de dag dominant is op servers, supercomputers en mobiele apparaten. Er zijn geen praktische commando-oefeningen in dit hoofdstuk; de nadruk ligt volledig op concepten en geschiedenis.",
+  "commands": [],
+  "exercises": [],
+  "theory": [
+    {
+      "question": "Wat betekent de afkorting GNU?",
+      "type": "mc",
+      "choices": [
+        "A. General Network Utility",
+        "B. GNU's Not Unix",
+        "C. Global New Unix",
+        "D. GNU Networked Utilities"
+      ],
+      "answer": "B. GNU's Not Unix",
+      "explanation": "GNU is een recursief acroniem dat staat voor 'GNU's Not Unix'. Het GNU-project werd in 1983 gestart door Richard Stallman met als doel een volledig vrij Unix-achtig besturingssysteem te maken."
+    },
+    {
+      "question": "In welk jaar werd het GNU-project gestart en door wie?",
+      "type": "open",
+      "choices": [],
+      "answer": "1983 door Richard Stallman",
+      "explanation": "Richard Stallman lanceerde het GNU-project in 1983 met als doel een compleet vrij (free as in freedom) Unix-achtig besturingssysteem te ontwikkelen."
+    },
+    {
+      "question": "Wat is het verschil tussen een besturingssysteem en een kernel?",
+      "type": "open",
+      "choices": [],
+      "answer": "De kernel is de kern van het besturingssysteem die hardwarebronnen beheert. Het besturingssysteem is het volledige pakket inclusief kernel, systeemhulpprogramma's, bibliotheken en gebruikersinterface.",
+      "explanation": "De kernel verwerkt systeemaanroepen, geheugenbeheer, processen en bestandssystemen. Het volledige besturingssysteem omvat ook shell, bureaubladomgeving, bibliotheken en andere hulpprogramma's."
+    },
+    {
+      "question": "Welke van de volgende onderdelen behoort NIET tot het besturingssysteem, maar uitsluitend tot de kernel?",
+      "type": "mc",
+      "choices": [
+        "A. Shell (gebruikersinterface)",
+        "B. Systeembibliotheken",
+        "C. Geheugenbeheer",
+        "D. Bureaubladomgeving"
+      ],
+      "answer": "C. Geheugenbeheer",
+      "explanation": "Geheugenbeheer is een kernfunctie die rechtstreeks door de kernel wordt uitgevoerd. De shell, bibliotheken en bureaubladomgeving zijn onderdelen van het bredere besturingssysteem maar niet van de kernel zelf."
+    },
+    {
+      "question": "Wat zijn de vier vrijheden van vrije software (GNU)?",
+      "type": "open",
+      "choices": [],
+      "answer": "Vrijheid 0: het programma uitvoeren voor elk doel. Vrijheid 1: bestuderen en aanpassen van de broncode. Vrijheid 2: kopieën verspreiden. Vrijheid 3: gewijzigde versies verspreiden.",
+      "explanation": "De vier vrijheden vormen de basis van de vrije softwarebeweging. Ze garanderen dat gebruikers de controle behouden over de software die ze gebruiken."
+    },
+    {
+      "question": "Wat is het verschil tussen 'copyright' en 'copyleft'?",
+      "type": "open",
+      "choices": [],
+      "answer": "Copyright beperkt wat je met software mag doen. Copyleft zorgt ervoor dat software en afgeleiden ervan vrij blijven.",
+      "explanation": "De GPL gebruikt het copyleft-principe: iedereen die de software verspreidt, moet dit doen onder dezelfde (vrije) licentie. Zo blijft de software altijd toegankelijk."
+    },
+    {
+      "question": "Wat zijn de belangrijkste vereisten van de GNU General Public License (GPL)?",
+      "type": "mc",
+      "choices": [
+        "A. Broncode hoeft niet beschikbaar te zijn, commercieel gebruik is verboden",
+        "B. Broncode moet beschikbaar zijn, wijzigingen moeten ook GPL zijn, geen extra beperkingen",
+        "C. Alleen niet-commercieel gebruik is toegestaan",
+        "D. De licentie geldt enkel voor de originele auteur"
+      ],
+      "answer": "B. Broncode moet beschikbaar zijn, wijzigingen moeten ook GPL zijn, geen extra beperkingen",
+      "explanation": "De GPL vereist dat broncode beschikbaar is, dat wijzigingen ook onder GPL worden verspreid, en dat er geen extra beperkingen worden toegevoegd. Commercieel gebruik is wél toegestaan."
+    },
+    {
+      "question": "Wie is de maker van MINIX en in welk jaar werd het gemaakt?",
+      "type": "open",
+      "choices": [],
+      "answer": "Andrew Tanenbaum, 1987",
+      "explanation": "MINIX werd in 1987 gemaakt door Andrew Tanenbaum als educatief Unix-achtig besturingssysteem. Het had een microkernel-ontwerp en inspireerde Linus Torvalds bij het maken van Linux."
+    },
+    {
+      "question": "Waarvoor was MINIX oorspronkelijk bedoeld?",
+      "type": "mc",
+      "choices": [
+        "A. Commerciële servers",
+        "B. Educatieve doeleinden om besturingssystemen te leren",
+        "C. Supercomputers",
+        "D. Mobiele apparaten"
+      ],
+      "answer": "B. Educatieve doeleinden om besturingssystemen te leren",
+      "explanation": "Andrew Tanenbaum ontwikkelde MINIX als leermiddel voor zijn studenten om de principes van besturingssystemen te begrijpen. Het werd geleverd met volledige broncode."
+    },
+    {
+      "question": "In welk jaar kondigde Linus Torvalds Linux aan en hoe omschreef hij het?",
+      "type": "open",
+      "choices": [],
+      "answer": "1991; hij omschreef het als een hobbyproject ('just a hobby, won't be big and professional like gnu') voor 386/486 AT-klonen.",
+      "explanation": "Op 25 augustus 1991 maakte Linus Torvalds zijn project bekend op de comp.os.minix nieuwsgroep. Versie 0.01 werd uitgebracht in september 1991, versie 1.0 in maart 1994."
+    },
+    {
+      "question": "Hoe komt de naam 'Linux' tot stand?",
+      "type": "open",
+      "choices": [],
+      "answer": "Linux komt van 'Linus' Unix'. Oorspronkelijk heette het project 'Freax' (free + freak + Unix), maar de naam Linux werd gebruikt door de FTP-beheerder van de server waar de bestanden werden gehost.",
+      "explanation": "Linus Torvalds wilde zijn project aanvankelijk 'Freax' noemen, maar Ari Lemmke, de FTP-beheerder, noemde de map op de server 'linux', waarna die naam bleef hangen."
+    },
+    {
+      "question": "Welke Linux-distributie staat bekend als gebruiksvriendelijk en geschikt voor beginners?",
+      "type": "mc",
+      "choices": [
+        "A. Debian",
+        "B. Red Hat Enterprise Linux",
+        "C. Ubuntu",
+        "D. Fedora"
+      ],
+      "answer": "C. Ubuntu",
+      "explanation": "Ubuntu, afgeleid van Debian, staat bekend als één van de meest gebruiksvriendelijke Linux-distributies en is populair bij beginners. Debian staat meer bekend om stabiliteit, RHEL om enterprise-gebruik."
+    },
+    {
+      "question": "Tot welke distributiefamilie behoren Ubuntu en Debian?",
+      "type": "mc",
+      "choices": [
+        "A. Red Hat-familie",
+        "B. SUSE-familie",
+        "C. Debian-familie",
+        "D. Arch-familie"
+      ],
+      "answer": "C. Debian-familie",
+      "explanation": "Ubuntu is gebaseerd op Debian. Samen vormen ze de Debian-familie, die het apt-pakketbeheersysteem gebruikt. Red Hat gebruikt rpm/dnf, SUSE gebruikt zypper."
+    },
+    {
+      "question": "Noem drie populaire Linux-distributies en hun kenmerken.",
+      "type": "open",
+      "choices": [],
+      "answer": "Debian: stabiliteit en vrije softwareprincipes; Ubuntu: gebruiksvriendelijk voor beginners (Debian-familie); Red Hat Enterprise Linux: commerciële enterprise-distributie; Fedora: nieuwste functies, gesponsord door Red Hat; CentOS: gratis alternatief voor RHEL; openSUSE: gemeenschapsgedreven distributie.",
+      "explanation": "Linux-distributies zijn complete besturingssystemen gebouwd rond de Linux-kernel, elk met eigen pakketbeheer, standaardsoftware en configuratie."
+    },
+    {
+      "question": "Welk percentage van de supercomputers in de wereld draait op Linux?",
+      "type": "mc",
+      "choices": [
+        "A. Circa 50%",
+        "B. Circa 75%",
+        "C. Meer dan 95%",
+        "D. Circa 30%"
+      ],
+      "answer": "C. Meer dan 95%",
+      "explanation": "Linux domineert de supercomputermarkt met meer dan 95% van de top 500 supercomputers. Dit omvat wetenschappelijke onderzoekssystemen, weersvoorspellingssystemen en financiële modelleringssystemen."
+    },
+    {
+      "question": "Welke grote bedrijven gebruiken Linux als basis voor hun infrastructuur?",
+      "type": "open",
+      "choices": [],
+      "answer": "Google (volledige infrastructuur), Amazon (AWS-diensten), Netflix (streaming-infrastructuur), SpaceX (missiekritieke systemen).",
+      "explanation": "Linux is de ruggengraat van de moderne cloudinfrastructuur en wordt gebruikt door nagenoeg alle grote technologiebedrijven."
+    },
+    {
+      "question": "Wat betekent de 'Unix-filosofie' van 'Everything is a file'?",
+      "type": "open",
+      "choices": [],
+      "answer": "In Unix/Linux worden apparaten, processen en netwerkverbindingen als bestanden behandeld, zodat ze op een uniforme manier kunnen worden benaderd via dezelfde lees/schrijf-bewerkingen.",
+      "explanation": "Deze filosofie maakt de Unix-commandoregelinterface krachtig en consistent: tools die tekst lezen en schrijven, kunnen werken met bestanden, apparaten én andere processen via pipes."
+    },
+    {
+      "question": "Welke eigenschap van Unix-systemen maakt het mogelijk dat meerdere gebruikers tegelijk kunnen werken?",
+      "type": "mc",
+      "choices": [
+        "A. Hiërarchisch bestandssysteem",
+        "B. Multi-user en multi-tasking",
+        "C. Commandoregelinterface",
+        "D. Vrije software"
+      ],
+      "answer": "B. Multi-user en multi-tasking",
+      "explanation": "Unix is van oorsprong ontworpen als multi-user, multi-tasking systeem, wat betekent dat meerdere gebruikers tegelijk kunnen inloggen en meerdere processen gelijktijdig kunnen draaien."
+    },
+    {
+      "question": "Wat zijn de belangrijkste kenmerken van Unix?",
+      "type": "open",
+      "choices": [],
+      "answer": "Multi-user en multi-tasking besturingssysteem, hiërarchisch bestandssysteem, krachtige commandoregelinterface, 'everything is a file'-filosofie.",
+      "explanation": "Deze kenmerken maken Unix (en dus Linux) bijzonder geschikt voor servers, ontwikkeling en systeembeheer."
+    },
+    {
+      "question": "Welk besturingssysteem is gebaseerd op FreeBSD, een open-source Unix-variant?",
+      "type": "mc",
+      "choices": [
+        "A. Windows",
+        "B. Android",
+        "C. macOS",
+        "D. ChromeOS"
+      ],
+      "answer": "C. macOS",
+      "explanation": "macOS is gebaseerd op FreeBSD (een BSD Unix-variant) en heeft daardoor veel Unix-eigenschappen. Android daarentegen is gebaseerd op de Linux-kernel."
+    },
+    {
+      "question": "Waarom is Linux dominant in server-omgevingen?",
+      "type": "open",
+      "choices": [],
+      "answer": "Linux is gratis en open source, stabiel, veilig, heeft krachtige commandoregeltools, wordt actief onderhouden door een grote community, en ondersteunt virtualisatie en containers (Docker, Kubernetes) uitstekend.",
+      "explanation": "De combinatie van vrije beschikbaarheid, stabiliteit, beveiliging en krachtige tools maakt Linux de voorkeurskeuze voor webservers, databases, cloud-platforms en container-orchestratie."
+    },
+    {
+      "question": "Welk GNU-component zorgt voor de standaard shell in Linux?",
+      "type": "mc",
+      "choices": [
+        "A. GCC",
+        "B. GNU Make",
+        "C. GNU Bash",
+        "D. GNU Coreutils"
+      ],
+      "answer": "C. GNU Bash",
+      "explanation": "GNU Bash (Bourne Again SHell) is de standaard interactieve shell in de meeste Linux-distributies. GCC is de compiler, GNU Make de bouwautomatisering, GNU Coreutils bevat basiscommando's zoals ls, cp en mv."
+    },
+    {
+      "question": "Wat levert GNU Coreutils aan een Linux-systeem?",
+      "type": "mc",
+      "choices": [
+        "A. De compiler voor C-programma's",
+        "B. Basiscommando's voor bestands-, shell- en tekstbeheer",
+        "C. De debugger voor programma's",
+        "D. Het bouwautomatiseringssysteem"
+      ],
+      "answer": "B. Basiscommando's voor bestands-, shell- en tekstbeheer",
+      "explanation": "GNU Coreutils bevat essentiële hulpprogramma's zoals ls, cp, mv, rm, cat, echo, en many more. Zonder Coreutils zou een Linux-systeem niet bruikbaar zijn voor dagelijkse taken."
+    },
+    {
+      "question": "Wat zijn de carrièrevoordelen van Linux-kennis?",
+      "type": "open",
+      "choices": [],
+      "answer": "Grote vraag naar Linux-vaardigheden in IT, hogere salarissen voor Linux-professionals, essentieel voor DevOps en cloud computing, vereist voor cybersecurityrollen.",
+      "explanation": "Linux is de ruggengraat van de moderne IT-infrastructuur. Kennis van Linux opent deuren naar serverbeheeer, cloudplatforms (AWS, GCP, Azure), DevOps en security."
+    },
+    {
+      "question": "Welke stap komt NIET voor in een typisch Linux-leertraject?",
+      "type": "mc",
+      "choices": [
+        "A. Basisnavigatie via de commandoregel",
+        "B. Tekstverwerking en shell scripting",
+        "C. Systeemregistratie en licentieactivering",
+        "D. Netwerkconfiguratie"
+      ],
+      "answer": "C. Systeemregistratie en licentieactivering",
+      "explanation": "Linux is vrij en open source; er is geen licentieactivering nodig. Het leertraject omvat wel navigatie, bestandssysteem, tekstverwerking, scripting, systeembeheer, netwerkconfiguratie en beveiliging."
+    }
+  ]
+}

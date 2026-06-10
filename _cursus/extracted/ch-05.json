@@ -1,0 +1,839 @@
+{
+  "chapterId": "05",
+  "chapterTitle": "Echo, Alias & Operatoren",
+  "summary": "In dit hoofdstuk leer je hoe aanhalingstekens en escape-tekens de interpretatie van tekst in de shell beïnvloeden. Je maakt kennis met aliassen als handige snelkoppelingen en ontdekt hoe controle-operatoren (&&, ||, ;, &) je in staat stellen om commando's slim aan elkaar te koppelen.",
+  "commands": [
+    {
+      "name": "echo",
+      "category": "Shell scripting",
+      "short": "Drukt tekst of variabelen af naar de standaarduitvoer.",
+      "synopsis": "echo [OPTIE]... [STRING]...",
+      "flags": [
+        { "flag": "-e", "desc": "Interpreteert escape-sequenties zoals \\n (newline) en \\t (tab)." },
+        { "flag": "-n", "desc": "Drukt geen afsluitende newline af." }
+      ],
+      "examples": [
+        { "cmd": "echo \"Hallo $USER\"", "desc": "Drukt 'Hallo' gevolgd door de waarde van $USER af." },
+        { "cmd": "echo 'Hallo $USER'", "desc": "Drukt letterlijk 'Hallo $USER' af zonder variabele-uitbreiding." },
+        { "cmd": "echo -e \"Regel 1\\nRegel 2\"", "desc": "Drukt twee regels af door \\n als newline te interpreteren." },
+        { "cmd": "echo -n \"Geen newline\"", "desc": "Drukt tekst af zonder de cursor naar de volgende regel te verplaatsen." },
+        { "cmd": "echo -e \"\\033[31mRode tekst\\033[0m\"", "desc": "Drukt tekst in het rood af via ANSI-kleurcodes." }
+      ],
+      "related": ["printf", "cat"],
+      "tags": ["uitvoer", "variabelen", "quotes"]
+    },
+    {
+      "name": "type",
+      "category": "Shell scripting",
+      "short": "Geeft aan hoe de shell een opgegeven naam zou interpreteren (ingebouwd, extern, alias, functie).",
+      "synopsis": "type [OPTIE] naam...",
+      "flags": [
+        { "flag": "-a", "desc": "Toont alle locaties van het commando, inclusief aliassen en ingebouwde versies." },
+        { "flag": "-t", "desc": "Drukt alleen het type af: alias, keyword, function, builtin of file." }
+      ],
+      "examples": [
+        { "cmd": "type ls", "desc": "Toont het pad naar het ls-programma, bijv. /bin/ls." },
+        { "cmd": "type cd", "desc": "Toont dat cd een shell-builtin is." },
+        { "cmd": "type ll", "desc": "Toont dat ll een alias is van ls -la (indien gedefinieerd)." },
+        { "cmd": "type -a echo", "desc": "Toont alle implementaties van echo (builtin én /bin/echo)." }
+      ],
+      "related": ["which", "command", "whereis"],
+      "tags": ["ontdekking", "shell"]
+    },
+    {
+      "name": "which",
+      "category": "Shell scripting",
+      "short": "Toont het volledige pad van een extern commando in de PATH.",
+      "synopsis": "which commando...",
+      "flags": [],
+      "examples": [
+        { "cmd": "which ls", "desc": "Toont /bin/ls of /usr/bin/ls." },
+        { "cmd": "which python3", "desc": "Toont het pad naar Python 3, of niets als het niet geïnstalleerd is." },
+        { "cmd": "which bash", "desc": "Toont het pad naar de Bash-interpreter." }
+      ],
+      "related": ["type", "command", "whereis"],
+      "tags": ["ontdekking", "pad"]
+    },
+    {
+      "name": "command",
+      "category": "Shell scripting",
+      "short": "Voert een commando uit of controleert of het bestaat, zonder aliassen te gebruiken.",
+      "synopsis": "command [-v] naam [argumenten]",
+      "flags": [
+        { "flag": "-v", "desc": "Drukt het pad of de definitie van het commando af (draagbaar alternatief voor which)." }
+      ],
+      "examples": [
+        { "cmd": "command -v git", "desc": "Toont het pad naar git, of niets als het ontbreekt." },
+        { "cmd": "command -v docker && echo \"Docker beschikbaar\"", "desc": "Controleert of Docker aanwezig is en drukt bevestiging af." }
+      ],
+      "related": ["type", "which"],
+      "tags": ["ontdekking", "controle"]
+    },
+    {
+      "name": "alias",
+      "category": "Shell scripting",
+      "short": "Maakt een snelkoppeling (alias) voor een commando of toont bestaande aliassen.",
+      "synopsis": "alias [naam[='commando']]",
+      "flags": [],
+      "examples": [
+        { "cmd": "alias ll='ls -la'", "desc": "Maakt een alias ll aan die ls -la uitvoert." },
+        { "cmd": "alias", "desc": "Toont alle gedefinieerde aliassen in de huidige sessie." },
+        { "cmd": "alias ll", "desc": "Toont de definitie van de alias ll." },
+        { "cmd": "alias grep='grep --color=auto'", "desc": "Maakt grep standaard met gekleurde uitvoer." },
+        { "cmd": "alias ..='cd ..'", "desc": "Maakt een snelkoppeling om één map omhoog te gaan." }
+      ],
+      "related": ["unalias", "source"],
+      "tags": ["snelkoppeling", "productiviteit"]
+    },
+    {
+      "name": "unalias",
+      "category": "Shell scripting",
+      "short": "Verwijdert een of meer aliassen.",
+      "synopsis": "unalias [-a] naam...",
+      "flags": [
+        { "flag": "-a", "desc": "Verwijdert alle gedefinieerde aliassen in één keer." }
+      ],
+      "examples": [
+        { "cmd": "unalias ll", "desc": "Verwijdert de alias ll." },
+        { "cmd": "unalias -a", "desc": "Verwijdert alle aliassen." },
+        { "cmd": "unalias ll h", "desc": "Verwijdert de aliassen ll en h tegelijk." }
+      ],
+      "related": ["alias"],
+      "tags": ["snelkoppeling", "beheer"]
+    },
+    {
+      "name": "source",
+      "category": "Shell scripting",
+      "short": "Voert een script uit in de huidige shell-omgeving (laadt bijv. ~/.bashrc opnieuw).",
+      "synopsis": "source bestand",
+      "flags": [],
+      "examples": [
+        { "cmd": "source ~/.bashrc", "desc": "Laadt de Bash-configuratie opnieuw, zodat nieuwe aliassen direct beschikbaar zijn." },
+        { "cmd": ". ~/.bashrc", "desc": "Zelfde als source, maar met de punt-notatie." }
+      ],
+      "related": ["alias", "export"],
+      "tags": ["configuratie", "shell"]
+    },
+    {
+      "name": "jobs",
+      "category": "Processen",
+      "short": "Toont de actieve achtergrondprocessen in de huidige shell-sessie.",
+      "synopsis": "jobs [-l]",
+      "flags": [
+        { "flag": "-l", "desc": "Toont ook de proces-ID (PID) van elk achtergrondproces." }
+      ],
+      "examples": [
+        { "cmd": "jobs", "desc": "Toont alle actieve achtergrondtaken." },
+        { "cmd": "jobs -l", "desc": "Toont taken met hun PID." }
+      ],
+      "related": ["fg", "bg", "kill"],
+      "tags": ["processen", "achtergrond"]
+    },
+    {
+      "name": "fg",
+      "category": "Processen",
+      "short": "Brengt een achtergrondproces terug naar de voorgrond.",
+      "synopsis": "fg [%taaknummer]",
+      "flags": [],
+      "examples": [
+        { "cmd": "fg %1", "desc": "Brengt taak 1 terug naar de voorgrond." }
+      ],
+      "related": ["bg", "jobs"],
+      "tags": ["processen", "achtergrond"]
+    },
+    {
+      "name": "bg",
+      "category": "Processen",
+      "short": "Hervat een gestopte taak als achtergrondproces.",
+      "synopsis": "bg [%taaknummer]",
+      "flags": [],
+      "examples": [
+        { "cmd": "bg %1", "desc": "Laat taak 1 verder lopen op de achtergrond." }
+      ],
+      "related": ["fg", "jobs"],
+      "tags": ["processen", "achtergrond"]
+    }
+  ],
+  "exercises": [
+    {
+      "title": "Enkelvoudige en dubbele aanhalingstekens vergelijken",
+      "difficulty": "easy",
+      "type": "predict",
+      "prompt": "Wat is het verschil in uitvoer tussen deze twee echo-commando's? Voorspel wat elk commando afdrukt als NAME=\"Linux\" is ingesteld:\n1. echo \"Hallo $NAME\"\n2. echo 'Hallo $NAME'",
+      "solution": "echo \"Hallo $NAME\"",
+      "acceptors": ["echo \"Hallo $NAME\"", "echo \"Hallo ${NAME}\""],
+      "expectedOutput": ["Hallo Linux"],
+      "hints": [
+        "Dubbele aanhalingstekens laten variabele-uitbreiding toe.",
+        "Enkele aanhalingstekens behandelen alles letterlijk."
+      ],
+      "tags": ["quotes", "variabelen"],
+      "commandsUsed": ["echo"]
+    },
+    {
+      "title": "Bestand aanmaken met spaties in de naam",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Maak een bestand aan met de naam 'mijn bestand.txt' (met een spatie in de naam). Gebruik aanhalingstekens.",
+      "solution": "touch \"mijn bestand.txt\"",
+      "acceptors": ["touch \"mijn bestand.txt\"", "touch 'mijn bestand.txt'", "touch mijn\\ bestand.txt"],
+      "expectedOutput": [],
+      "hints": [
+        "Zet de bestandsnaam tussen aanhalingstekens om de spatie te beschermen.",
+        "Je kan zowel enkele als dubbele aanhalingstekens gebruiken, of de spatie escapen met \\."
+      ],
+      "tags": ["bestanden", "quotes", "spaties"],
+      "commandsUsed": ["touch"]
+    },
+    {
+      "title": "Echo met escape-sequenties",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Druk de tekst 'Regel 1' en 'Regel 2' af op twee aparte regels met één enkel echo-commando. Gebruik de -e vlag.",
+      "solution": "echo -e \"Regel 1\\nRegel 2\"",
+      "acceptors": ["echo -e \"Regel 1\\nRegel 2\"", "echo -e 'Regel 1\\nRegel 2'"],
+      "expectedOutput": ["Regel 1", "Regel 2"],
+      "hints": [
+        "Gebruik echo -e om escape-sequenties te interpreteren.",
+        "\\n staat voor een newline-karakter."
+      ],
+      "tags": ["echo", "escape"],
+      "commandsUsed": ["echo"]
+    },
+    {
+      "title": "Commandotype opzoeken",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Controleer wat het type is van het commando 'cd'. Is het een builtin, een extern programma of iets anders?",
+      "solution": "type cd",
+      "acceptors": ["type cd"],
+      "expectedOutput": ["cd is a shell builtin"],
+      "hints": [
+        "Gebruik het type-commando gevolgd door de naam van het te controleren commando."
+      ],
+      "tags": ["ontdekking", "type"],
+      "commandsUsed": ["type"]
+    },
+    {
+      "title": "Alle locaties van echo tonen",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Toon alle locaties en versies van het commando 'echo' (zowel builtin als extern bestand).",
+      "solution": "type -a echo",
+      "acceptors": ["type -a echo"],
+      "expectedOutput": ["echo is a shell builtin", "echo is /bin/echo"],
+      "hints": [
+        "Gebruik de -a vlag bij type om alle instanties te tonen."
+      ],
+      "tags": ["ontdekking", "type"],
+      "commandsUsed": ["type"]
+    },
+    {
+      "title": "Pad van ls opzoeken",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Gebruik which om het volledige pad van het ls-commando te vinden.",
+      "solution": "which ls",
+      "acceptors": ["which ls"],
+      "expectedOutput": ["/bin/ls", "/usr/bin/ls"],
+      "hints": [
+        "which zoekt naar externe commando's in de PATH-variabele."
+      ],
+      "tags": ["ontdekking", "pad"],
+      "commandsUsed": ["which"]
+    },
+    {
+      "title": "Alias aanmaken voor ls -la",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Maak een alias 'll' aan die hetzelfde doet als 'ls -la'.",
+      "solution": "alias ll='ls -la'",
+      "acceptors": ["alias ll='ls -la'", "alias ll=\"ls -la\""],
+      "expectedOutput": [],
+      "hints": [
+        "Gebruik alias naam='commando' om een alias te definiëren."
+      ],
+      "tags": ["alias", "snelkoppeling"],
+      "commandsUsed": ["alias"]
+    },
+    {
+      "title": "Alias verwijderen",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Verwijder de alias 'c' die je eerder hebt aangemaakt.",
+      "solution": "unalias c",
+      "acceptors": ["unalias c"],
+      "expectedOutput": [],
+      "hints": [
+        "Gebruik unalias gevolgd door de naam van de alias."
+      ],
+      "tags": ["alias", "beheer"],
+      "commandsUsed": ["unalias"]
+    },
+    {
+      "title": "Alle aliassen tonen",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Toon een lijst van alle huidige aliassen in je shell-sessie.",
+      "solution": "alias",
+      "acceptors": ["alias"],
+      "expectedOutput": [],
+      "hints": [
+        "Roep alias aan zonder argumenten om alle aliassen te tonen."
+      ],
+      "tags": ["alias", "overzicht"],
+      "commandsUsed": ["alias"]
+    },
+    {
+      "title": "Sequentiële uitvoering met puntkomma",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Voer achtereenvolgens de commando's pwd, date en whoami uit op één enkele regel.",
+      "solution": "pwd; date; whoami",
+      "acceptors": ["pwd; date; whoami", "pwd ; date ; whoami"],
+      "expectedOutput": [],
+      "hints": [
+        "Gebruik een puntkomma (;) als scheidingsteken tussen commando's.",
+        "Met ; worden commando's altijd uitgevoerd, ongeacht succes of fout."
+      ],
+      "tags": ["operatoren", "sequentieel"],
+      "commandsUsed": ["pwd", "date", "whoami"]
+    },
+    {
+      "title": "Logische EN-operator",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Maak een map 'testdir' aan en druk 'Map aangemaakt' af als dat lukt, met && als operator.",
+      "solution": "mkdir testdir && echo \"Map aangemaakt\"",
+      "acceptors": [
+        "mkdir testdir && echo \"Map aangemaakt\"",
+        "mkdir testdir && echo 'Map aangemaakt'"
+      ],
+      "expectedOutput": ["Map aangemaakt"],
+      "hints": [
+        "De && operator voert het tweede commando alleen uit als het eerste slaagt (exitstatus 0)."
+      ],
+      "tags": ["operatoren", "&&"],
+      "commandsUsed": ["mkdir", "echo"]
+    },
+    {
+      "title": "Foutafhandeling met ||",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Probeer naar de map '/bestaantniet' te navigeren en druk 'Map niet gevonden' af als het mislukt, gebruik ||.",
+      "solution": "cd /bestaantniet || echo \"Map niet gevonden\"",
+      "acceptors": [
+        "cd /bestaantniet || echo \"Map niet gevonden\"",
+        "cd /bestaantniet || echo 'Map niet gevonden'"
+      ],
+      "expectedOutput": ["Map niet gevonden"],
+      "hints": [
+        "De || operator voert het tweede commando alleen uit als het eerste MISLUKT."
+      ],
+      "tags": ["operatoren", "||", "foutafhandeling"],
+      "commandsUsed": ["cd", "echo"]
+    },
+    {
+      "title": "Achtergrondproces starten",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Start het commando 'sleep 10' als achtergrondproces.",
+      "solution": "sleep 10 &",
+      "acceptors": ["sleep 10 &"],
+      "expectedOutput": [],
+      "hints": [
+        "Voeg een & toe aan het einde van het commando om het op de achtergrond te laten lopen."
+      ],
+      "tags": ["processen", "achtergrond"],
+      "commandsUsed": ["sleep"]
+    },
+    {
+      "title": "Git controleren vóór gebruik",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Controleer met command -v of git geïnstalleerd is. Druk 'Git beschikbaar' af als dat zo is.",
+      "solution": "command -v git && echo \"Git beschikbaar\"",
+      "acceptors": [
+        "command -v git && echo \"Git beschikbaar\"",
+        "command -v git && echo 'Git beschikbaar'"
+      ],
+      "expectedOutput": [],
+      "hints": [
+        "command -v geeft het pad terug als het commando bestaat, anders niets.",
+        "Koppel met && om een bericht af te drukken bij succes."
+      ],
+      "tags": ["ontdekking", "controle"],
+      "commandsUsed": ["command"]
+    },
+    {
+      "title": "Lab 5.1: Aanhalingstekens en variabelen",
+      "difficulty": "medium",
+      "type": "multi-step",
+      "prompt": "Doorloop de oefening over aanhalingstekens stap voor stap: stel variabelen in, test het gedrag van enkele en dubbele aanhalingstekens, maak een map met spaties aan en werk daarin.",
+      "solution": "NAME=\"Linux Student\"\nCOURSE=\"Introduction to Linux\"\necho \"Student: $NAME\"\necho 'Student: $NAME'\necho \"Course: \\\"$COURSE\\\"\"\nmkdir \"My Documents\"\ncd \"My Documents\"\ntouch \"important file.txt\"\nls -la\ncd ..",
+      "acceptors": [],
+      "expectedOutput": [],
+      "hints": [
+        "Gebruik dubbele aanhalingstekens voor variabele-uitbreiding.",
+        "Gebruik enkele aanhalingstekens voor letterlijke tekst.",
+        "Escape een aanhalingsteken in dubbele quotes met \\\"."
+      ],
+      "tags": ["quotes", "variabelen", "bestanden"],
+      "commandsUsed": ["echo", "mkdir", "cd", "touch", "ls"],
+      "steps": [
+        {
+          "prompt": "Stel de variabele NAME in op 'Linux Student'.",
+          "acceptors": ["NAME=\"Linux Student\"", "NAME='Linux Student'"],
+          "solution": "NAME=\"Linux Student\"",
+          "expectedOutput": [],
+          "hints": ["Gebruik aanhalingstekens omdat de waarde een spatie bevat."]
+        },
+        {
+          "prompt": "Druk 'Student: Linux Student' af met variabele-uitbreiding.",
+          "acceptors": ["echo \"Student: $NAME\"", "echo \"Student: ${NAME}\""],
+          "solution": "echo \"Student: $NAME\"",
+          "expectedOutput": ["Student: Linux Student"],
+          "hints": ["Gebruik dubbele aanhalingstekens om $NAME uit te breiden."]
+        },
+        {
+          "prompt": "Druk letterlijk 'Student: $NAME' af (geen uitbreiding).",
+          "acceptors": ["echo 'Student: $NAME'"],
+          "solution": "echo 'Student: $NAME'",
+          "expectedOutput": ["Student: $NAME"],
+          "hints": ["Gebruik enkele aanhalingstekens om variabele-uitbreiding te voorkomen."]
+        },
+        {
+          "prompt": "Maak de map 'My Documents' aan.",
+          "acceptors": ["mkdir \"My Documents\"", "mkdir 'My Documents'", "mkdir My\\ Documents"],
+          "solution": "mkdir \"My Documents\"",
+          "expectedOutput": [],
+          "hints": ["De naam bevat een spatie, dus aanhalingstekens zijn verplicht."]
+        },
+        {
+          "prompt": "Navigeer naar 'My Documents'.",
+          "acceptors": ["cd \"My Documents\"", "cd 'My Documents'", "cd My\\ Documents"],
+          "solution": "cd \"My Documents\"",
+          "expectedOutput": [],
+          "hints": ["Gebruik dezelfde aanhalingstekentechniek als bij mkdir."]
+        },
+        {
+          "prompt": "Maak het bestand 'important file.txt' aan.",
+          "acceptors": ["touch \"important file.txt\"", "touch 'important file.txt'", "touch important\\ file.txt"],
+          "solution": "touch \"important file.txt\"",
+          "expectedOutput": [],
+          "hints": ["Zet de naam tussen aanhalingstekens vanwege de spatie."]
+        }
+      ]
+    },
+    {
+      "title": "Lab 5.2: Commandoontdekking",
+      "difficulty": "medium",
+      "type": "multi-step",
+      "prompt": "Onderzoek het type en de locatie van veelgebruikte commando's en controleer of optionele software aanwezig is.",
+      "solution": "type ls\ntype cd\ntype echo\nwhich ls\nwhich bash\ncommand -v python3\ncommand -v docker\ncommand -v git\ntype -a echo\ntype -a test",
+      "acceptors": [],
+      "expectedOutput": [],
+      "hints": [
+        "type onderscheidt builtins, aliassen en externe bestanden.",
+        "which toont enkel externe bestanden.",
+        "command -v is de draagbare methode om te testen of iets bestaat."
+      ],
+      "tags": ["ontdekking", "type", "which"],
+      "commandsUsed": ["type", "which", "command"],
+      "steps": [
+        {
+          "prompt": "Controleer het type van het commando 'ls'.",
+          "acceptors": ["type ls"],
+          "solution": "type ls",
+          "expectedOutput": ["ls is /bin/ls", "ls is /usr/bin/ls"],
+          "hints": ["type gevolgd door de commandonaam."]
+        },
+        {
+          "prompt": "Controleer het type van 'cd'.",
+          "acceptors": ["type cd"],
+          "solution": "type cd",
+          "expectedOutput": ["cd is a shell builtin"],
+          "hints": ["cd is een ingebouwd shell-commando."]
+        },
+        {
+          "prompt": "Zoek het pad van het bash-commando op.",
+          "acceptors": ["which bash"],
+          "solution": "which bash",
+          "expectedOutput": ["/bin/bash"],
+          "hints": ["which geeft het pad van een extern commando."]
+        },
+        {
+          "prompt": "Controleer of git beschikbaar is via command -v.",
+          "acceptors": ["command -v git"],
+          "solution": "command -v git",
+          "expectedOutput": ["/usr/bin/git", "/bin/git"],
+          "hints": ["command -v is de draagbare manier om een commando te lokaliseren."]
+        },
+        {
+          "prompt": "Toon alle versies van het echo-commando (builtin en extern).",
+          "acceptors": ["type -a echo"],
+          "solution": "type -a echo",
+          "expectedOutput": ["echo is a shell builtin", "echo is /bin/echo"],
+          "hints": ["Gebruik type -a om alle instanties te tonen."]
+        }
+      ]
+    },
+    {
+      "title": "Lab 5.3: Aliassen aanmaken en beheren",
+      "difficulty": "medium",
+      "type": "multi-step",
+      "prompt": "Maak een reeks handige aliassen aan, test ze, en verwijder achteraf de alias 'c'.",
+      "solution": "alias ll='ls -la'\nalias h='history'\nalias c='clear'\nalias psg='ps aux | grep'\nll\nh | tail -5\nalias ..='cd ..'\nalias ...='cd ../..'\nalias home='cd ~'\nalias\nunalias c\nalias",
+      "acceptors": [],
+      "expectedOutput": [],
+      "hints": [
+        "Aliassen zijn tijdelijk tenzij je ze opslaat in ~/.bashrc.",
+        "alias zonder argumenten toont alle huidige aliassen.",
+        "unalias verwijdert een alias permanent uit de sessie."
+      ],
+      "tags": ["alias", "beheer", "navigatie"],
+      "commandsUsed": ["alias", "unalias", "ls", "history"],
+      "steps": [
+        {
+          "prompt": "Maak de alias 'll' aan voor 'ls -la'.",
+          "acceptors": ["alias ll='ls -la'", "alias ll=\"ls -la\""],
+          "solution": "alias ll='ls -la'",
+          "expectedOutput": [],
+          "hints": ["alias naam='commando'"]
+        },
+        {
+          "prompt": "Maak de alias 'h' aan voor 'history'.",
+          "acceptors": ["alias h='history'", "alias h=\"history\""],
+          "solution": "alias h='history'",
+          "expectedOutput": [],
+          "hints": ["Korte aliassen voor veelgebruikte commando's sparen tijd."]
+        },
+        {
+          "prompt": "Maak de alias 'c' aan voor 'clear'.",
+          "acceptors": ["alias c='clear'", "alias c=\"clear\""],
+          "solution": "alias c='clear'",
+          "expectedOutput": [],
+          "hints": ["Eén teken als alias is heel snel te typen."]
+        },
+        {
+          "prompt": "Maak de navigatie-alias '..' aan om één map omhoog te gaan.",
+          "acceptors": ["alias ..='cd ..'", "alias ..=\"cd ..\""],
+          "solution": "alias ..='cd ..'",
+          "expectedOutput": [],
+          "hints": ["Je kan ook speciale tekens als aliasnaam gebruiken."]
+        },
+        {
+          "prompt": "Toon alle huidige aliassen.",
+          "acceptors": ["alias"],
+          "solution": "alias",
+          "expectedOutput": [],
+          "hints": ["alias zonder argumenten geeft een overzicht."]
+        },
+        {
+          "prompt": "Verwijder de alias 'c'.",
+          "acceptors": ["unalias c"],
+          "solution": "unalias c",
+          "expectedOutput": [],
+          "hints": ["unalias gevolgd door de aliasnaam."]
+        }
+      ]
+    },
+    {
+      "title": "Lab 5.4: Controle-operatoren",
+      "difficulty": "medium",
+      "type": "multi-step",
+      "prompt": "Oefen met controle-operatoren: sequentiële uitvoering, conditionele uitvoering met && en ||, achtergrondprocessen en complexe ketens.",
+      "solution": "pwd; date; whoami\nmkdir testdir && echo \"Directory created\"\nmkdir testdir && echo \"Created\" || echo \"Failed\"\ncd /nonexistent || echo \"Directory not found\"\ncd /tmp && pwd || echo \"Could not change directory\"\nsleep 10 &\njobs\nsleep 5 &\njobs",
+      "acceptors": [],
+      "expectedOutput": [],
+      "hints": [
+        "; voert altijd het volgende commando uit.",
+        "&& voert het volgende commando alleen uit bij succes.",
+        "|| voert het volgende commando alleen uit bij een fout.",
+        "& start een commando op de achtergrond."
+      ],
+      "tags": ["operatoren", "achtergrond", "foutafhandeling"],
+      "commandsUsed": ["pwd", "date", "whoami", "mkdir", "echo", "cd", "sleep", "jobs"],
+      "steps": [
+        {
+          "prompt": "Voer pwd, date en whoami sequentieel uit op één regel.",
+          "acceptors": ["pwd; date; whoami"],
+          "solution": "pwd; date; whoami",
+          "expectedOutput": [],
+          "hints": ["Gebruik ; om commando's na elkaar te laten lopen."]
+        },
+        {
+          "prompt": "Maak de map 'testdir' aan en druk 'Directory created' af als het lukt.",
+          "acceptors": ["mkdir testdir && echo \"Directory created\"", "mkdir testdir && echo 'Directory created'"],
+          "solution": "mkdir testdir && echo \"Directory created\"",
+          "expectedOutput": ["Directory created"],
+          "hints": ["&& voert het tweede commando alleen uit als het eerste slaagt."]
+        },
+        {
+          "prompt": "Probeer 'testdir' opnieuw aan te maken; druk 'Created' af bij succes en 'Failed' bij fout.",
+          "acceptors": ["mkdir testdir && echo \"Created\" || echo \"Failed\"", "mkdir testdir && echo 'Created' || echo 'Failed'"],
+          "solution": "mkdir testdir && echo \"Created\" || echo \"Failed\"",
+          "expectedOutput": ["Failed"],
+          "hints": ["De map bestaat al, dus mkdir zal mislukken en || zorgt dan dat 'Failed' verschijnt."]
+        },
+        {
+          "prompt": "Navigeer naar '/nonexistent'; druk 'Directory not found' af als dat mislukt.",
+          "acceptors": ["cd /nonexistent || echo \"Directory not found\"", "cd /nonexistent || echo 'Directory not found'"],
+          "solution": "cd /nonexistent || echo \"Directory not found\"",
+          "expectedOutput": ["Directory not found"],
+          "hints": ["|| wordt uitgevoerd als het commando ervóór mislukt."]
+        },
+        {
+          "prompt": "Start sleep 10 als achtergrondproces en controleer de actieve taken.",
+          "acceptors": ["sleep 10 &"],
+          "solution": "sleep 10 &",
+          "expectedOutput": [],
+          "hints": ["Voeg & toe om het proces op de achtergrond te starten."]
+        },
+        {
+          "prompt": "Toon de actieve achtergrondtaken.",
+          "acceptors": ["jobs", "jobs -l"],
+          "solution": "jobs",
+          "expectedOutput": [],
+          "hints": ["jobs toont alle lopende achtergrondprocessen in de huidige sessie."]
+        }
+      ]
+    },
+    {
+      "title": "Complexe commando-keten met &&, || en \\",
+      "difficulty": "hard",
+      "type": "multi-step",
+      "prompt": "Navigeer naar /tmp, maak de map 'lab5' aan, ga erin, maak twee bestanden aan (file1.txt en file2.txt), en toon daarna de inhoud. Gebruik && om iedere stap te koppelen en \\ voor regelcontinuatie. Druk 'Er ging iets mis' af als de keten mislukt.",
+      "solution": "cd /tmp && mkdir lab5 && cd lab5 && touch file1.txt file2.txt && ls -la || echo \"Er ging iets mis\"",
+      "acceptors": [
+        "cd /tmp && mkdir lab5 && cd lab5 && touch file1.txt file2.txt && ls -la || echo \"Er ging iets mis\"",
+        "cd /tmp && mkdir lab5 && cd lab5 && touch file1.txt file2.txt && ls -la || echo 'Er ging iets mis'"
+      ],
+      "expectedOutput": [],
+      "hints": [
+        "Koppel elke stap met && zodat de keten stopt bij de eerste fout.",
+        "|| echo '...' aan het einde vangt eventuele fouten op.",
+        "Je kan de keten over meerdere regels spreiden met \\ aan het einde van elke regel."
+      ],
+      "tags": ["operatoren", "keten", "&&", "||"],
+      "commandsUsed": ["cd", "mkdir", "touch", "ls", "echo"],
+      "steps": [
+        {
+          "prompt": "Navigeer naar /tmp.",
+          "acceptors": ["cd /tmp"],
+          "solution": "cd /tmp",
+          "expectedOutput": [],
+          "hints": ["/tmp is een tijdelijke map die altijd bestaat."]
+        },
+        {
+          "prompt": "Maak de map lab5 aan.",
+          "acceptors": ["mkdir lab5"],
+          "solution": "mkdir lab5",
+          "expectedOutput": [],
+          "hints": ["mkdir naam"]
+        },
+        {
+          "prompt": "Navigeer naar lab5.",
+          "acceptors": ["cd lab5"],
+          "solution": "cd lab5",
+          "expectedOutput": [],
+          "hints": ["cd mapnaam"]
+        },
+        {
+          "prompt": "Maak file1.txt en file2.txt aan met één commando.",
+          "acceptors": ["touch file1.txt file2.txt"],
+          "solution": "touch file1.txt file2.txt",
+          "expectedOutput": [],
+          "hints": ["touch accepteert meerdere bestandsnamen tegelijk."]
+        },
+        {
+          "prompt": "Toon de inhoud van de huidige map gedetailleerd.",
+          "acceptors": ["ls -la", "ls -al", "ls -l"],
+          "solution": "ls -la",
+          "expectedOutput": [],
+          "hints": ["ls -la toont ook verborgen bestanden."]
+        }
+      ]
+    },
+    {
+      "title": "Alias permanent maken",
+      "difficulty": "medium",
+      "type": "multi-step",
+      "prompt": "Maak de alias 'll=ls -la' permanent beschikbaar door hem toe te voegen aan ~/.bashrc en daarna de configuratie opnieuw te laden.",
+      "solution": "echo \"alias ll='ls -la'\" >> ~/.bashrc && source ~/.bashrc",
+      "acceptors": [
+        "echo \"alias ll='ls -la'\" >> ~/.bashrc && source ~/.bashrc",
+        "echo \"alias ll='ls -la'\" >> ~/.bashrc && . ~/.bashrc"
+      ],
+      "expectedOutput": [],
+      "hints": [
+        "Voeg de alias toe aan ~/.bashrc met >> (append-redirect).",
+        "Laad ~/.bashrc opnieuw met source of de punt-notatie (.).",
+        "Je kan ook nano ~/.bashrc gebruiken om het bestand handmatig te bewerken."
+      ],
+      "tags": ["alias", "bashrc", "permanent"],
+      "commandsUsed": ["echo", "source"],
+      "steps": [
+        {
+          "prompt": "Voeg de alias-definitie toe aan het einde van ~/.bashrc.",
+          "acceptors": ["echo \"alias ll='ls -la'\" >> ~/.bashrc"],
+          "solution": "echo \"alias ll='ls -la'\" >> ~/.bashrc",
+          "expectedOutput": [],
+          "hints": ["Gebruik >> om te appenden zonder het bestand te overschrijven."]
+        },
+        {
+          "prompt": "Laad ~/.bashrc opnieuw in de huidige sessie.",
+          "acceptors": ["source ~/.bashrc", ". ~/.bashrc"],
+          "solution": "source ~/.bashrc",
+          "expectedOutput": [],
+          "hints": ["source voert het bestand uit in de huidige shell, zodat nieuwe aliassen direct actief zijn."]
+        }
+      ]
+    }
+  ],
+  "theory": [
+    {
+      "question": "Wat is het verschil tussen enkele aanhalingstekens en dubbele aanhalingstekens in Bash?",
+      "type": "mc",
+      "choices": [
+        "A. Er is geen verschil; beide werken hetzelfde.",
+        "B. Dubbele aanhalingstekens laten variabele-uitbreiding en commandosubstitutie toe; enkele niet.",
+        "C. Enkele aanhalingstekens laten variabele-uitbreiding toe; dubbele niet.",
+        "D. Dubbele aanhalingstekens worden alleen gebruikt voor getallen."
+      ],
+      "answer": "B",
+      "explanation": "Binnen dubbele aanhalingstekens worden $VAR en $(commando) geïnterpreteerd. Binnen enkele aanhalingstekens is alles letterlijk."
+    },
+    {
+      "question": "Welk commando gebruik je om te controleren of een programma een shell-builtin of een extern bestand is?",
+      "type": "mc",
+      "choices": [
+        "A. which",
+        "B. find",
+        "C. type",
+        "D. locate"
+      ],
+      "answer": "C",
+      "explanation": "type geeft aan of een naam een builtin, een extern bestand, een alias of een functie is. which werkt alleen voor externe bestanden."
+    },
+    {
+      "question": "Wat doet de operator && in een commandoregel?",
+      "type": "mc",
+      "choices": [
+        "A. Voert beide commando's altijd uit, ongeacht het resultaat.",
+        "B. Voert het tweede commando alleen uit als het eerste geslaagd is (exitstatus 0).",
+        "C. Voert het tweede commando alleen uit als het eerste mislukt.",
+        "D. Voert beide commando's tegelijk in de achtergrond uit."
+      ],
+      "answer": "B",
+      "explanation": "&&  is de logische EN-operator: het tweede commando wordt enkel uitgevoerd als het eerste een exitstatus 0 retourneert."
+    },
+    {
+      "question": "Wat doet de operator || in een commandoregel?",
+      "type": "mc",
+      "choices": [
+        "A. Voert het tweede commando alleen uit als het eerste geslaagd is.",
+        "B. Voert beide commando's altijd uit.",
+        "C. Voert het tweede commando alleen uit als het eerste mislukt (exitstatus ≠ 0).",
+        "D. Leidt de uitvoer door naar het volgende commando."
+      ],
+      "answer": "C",
+      "explanation": "|| is de logische OF-operator en dient voor foutafhandeling: het tweede commando loopt alleen als het eerste faalt."
+    },
+    {
+      "question": "Hoe start je een commando als achtergrondproces?",
+      "type": "mc",
+      "choices": [
+        "A. Door het commando voor te laten gaan door bg.",
+        "B. Door & toe te voegen aan het einde van het commando.",
+        "C. Door het commando te beginnen met background.",
+        "D. Door Ctrl+Z in te drukken voor het uitvoeren."
+      ],
+      "answer": "B",
+      "explanation": "Een & aan het einde van een commando zorgt dat het op de achtergrond wordt gestart, zodat de terminal vrij blijft."
+    },
+    {
+      "question": "Wat bevat de variabele $? na het uitvoeren van een commando?",
+      "type": "mc",
+      "choices": [
+        "A. Het PID van het laatste proces.",
+        "B. De naam van het laatste commando.",
+        "C. De exitstatus van het laatste commando (0 = succes, niet-nul = fout).",
+        "D. De uitvoer van het laatste commando."
+      ],
+      "answer": "C",
+      "explanation": "$? slaat de exitstatus van het vorige commando op. 0 betekent succes; elke andere waarde duidt op een fout."
+    },
+    {
+      "question": "Hoe maak je een alias permanent (beschikbaar in elke nieuwe terminalsessie)?",
+      "type": "open",
+      "choices": [],
+      "answer": "Voeg de alias-definitie toe aan ~/.bashrc en laad dit bestand opnieuw met source ~/.bashrc.",
+      "explanation": "Aliassen aangemaakt in de terminal verdwijnen als de sessie sluit. Door ze in ~/.bashrc te plaatsen worden ze automatisch geladen bij elke nieuwe Bash-sessie."
+    },
+    {
+      "question": "Hoe controleer je of een commando bestaat vóór je het gebruikt in een script?",
+      "type": "open",
+      "choices": [],
+      "answer": "Gebruik command -v commando om te controleren of het bestaat, bijv. command -v git > /dev/null && echo 'Git beschikbaar'.",
+      "explanation": "command -v is de draagbare (POSIX-conforme) methode om te testen of een commando beschikbaar is, in tegenstelling tot which dat niet altijd aanwezig is."
+    },
+    {
+      "question": "Hoe escape je een speciaal teken (zoals $) in een dubbel-geciteerde string?",
+      "type": "mc",
+      "choices": [
+        "A. Door het teken te verdubbelen: $$.",
+        "B. Door een backslash voor het teken te plaatsen: \\$.",
+        "C. Door de string te wisselen naar enkele aanhalingstekens.",
+        "D. Door het teken te omsluiten met accolades: ${$}."
+      ],
+      "answer": "B",
+      "explanation": "Een backslash (\\) voor een speciaal teken heft de speciale betekenis op. echo \"Prijs: \\$10\" drukt letterlijk Prijs: $10 af."
+    },
+    {
+      "question": "Wat is het verschil tussen ; en && als scheidingsteken tussen commando's?",
+      "type": "open",
+      "choices": [],
+      "answer": "; voert het volgende commando altijd uit, ongeacht het resultaat van het vorige. && voert het volgende commando alleen uit als het vorige geslaagd is.",
+      "explanation": "Gebruik ; als volgorde belangrijk is maar afhankelijkheid niet. Gebruik && voor afhankelijke bewerkingen waarbij latere stappen geen zin hebben als een eerdere stap mislukt."
+    },
+    {
+      "question": "Wat is het verschil tussen type en which?",
+      "type": "open",
+      "choices": [],
+      "answer": "type toont alle soorten (builtin, alias, functie, extern bestand). which toont alleen het pad van externe uitvoerbare bestanden.",
+      "explanation": "cd is een builtin en which geeft dan niets terug, terwijl type cd aangeeft dat het een shell builtin is."
+    },
+    {
+      "question": "Welk echo-commando drukt tekst op twee aparte regels af zonder een tweede echo te gebruiken?",
+      "type": "mc",
+      "choices": [
+        "A. echo \"Regel 1\\nRegel 2\"",
+        "B. echo -e \"Regel 1\\nRegel 2\"",
+        "C. echo -n \"Regel 1\\nRegel 2\"",
+        "D. echo --newline \"Regel 1 Regel 2\""
+      ],
+      "answer": "B",
+      "explanation": "De -e vlag laat echo escape-sequenties interpreteren. Zonder -e wordt \\n letterlijk afgedrukt."
+    },
+    {
+      "question": "Welk commando gebruik je om de alias 'psg' te verwijderen?",
+      "type": "mc",
+      "choices": [
+        "A. alias -d psg",
+        "B. remove alias psg",
+        "C. unalias psg",
+        "D. delete psg"
+      ],
+      "answer": "C",
+      "explanation": "unalias is het ingebouwde shell-commando om aliassen te verwijderen."
+    },
+    {
+      "question": "Hoe gebruik je regelcontinuatie om een lang commando over meerdere regels te spreiden?",
+      "type": "open",
+      "choices": [],
+      "answer": "Eindig elke regel (behalve de laatste) met een backslash (\\) gevolgd door een newline.",
+      "explanation": "De backslash 'escapet' de newline, zodat de shell de volgende regel als voortzetting van hetzelfde commando behandelt. Dit verbetert de leesbaarheid van complexe commando's."
+    }
+  ]
+}

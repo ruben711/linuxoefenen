@@ -1,0 +1,1139 @@
+{
+  "chapterId": "07",
+  "chapterTitle": "Filters & Pipelines",
+  "summary": "In dit hoofdstuk leer je de krachtigste tekstverwerkingstools van Linux kennen: grep, cut, tr, wc, sort, uniq, sed, comm, cat en tee. Je leert hoe je filters koppelt via pipes om complexe gegevensanalyses uit te voeren. Elk commando doet één ding goed en samen vormen ze een onmisbare toolkit voor elke Linux-gebruiker.",
+  "commands": [
+    {
+      "name": "cat",
+      "category": "Bekijken",
+      "short": "Toont de inhoud van bestanden en kan meerdere bestanden samenvoegen.",
+      "synopsis": "cat [OPTIE]... [BESTAND]...",
+      "flags": [
+        { "flag": "-n", "desc": "Nummeert alle uitvoerregels." },
+        { "flag": "-A", "desc": "Toont regeleindes ($ aan het einde) en tabs (^I)." },
+        { "flag": "-s", "desc": "Comprimeert meerdere lege regels tot één lege regel." },
+        { "flag": "-b", "desc": "Nummeert alleen niet-lege regels." }
+      ],
+      "examples": [
+        { "cmd": "cat bestand.txt", "desc": "Toont de inhoud van bestand.txt." },
+        { "cmd": "cat -n bestand.txt", "desc": "Toont de inhoud met regelnummers." },
+        { "cmd": "cat bestand1.txt bestand2.txt > gecombineerd.txt", "desc": "Voegt twee bestanden samen in een nieuw bestand." },
+        { "cmd": "cat -A bestand.txt", "desc": "Toont regeleindes en tabs zichtbaar." }
+      ],
+      "related": ["tee", "less", "more", "head", "tail"],
+      "tags": ["bekijken", "tekstverwerking", "filter"]
+    },
+    {
+      "name": "tee",
+      "category": "I/O & pipes",
+      "short": "Leest van stdin en schrijft tegelijk naar stdout én naar een of meerdere bestanden.",
+      "synopsis": "tee [OPTIE]... [BESTAND]...",
+      "flags": [
+        { "flag": "-a", "desc": "Voegt toe aan bestand in plaats van te overschrijven." }
+      ],
+      "examples": [
+        { "cmd": "ls -la | tee overzicht.txt", "desc": "Toont de uitvoer op het scherm en slaat ze ook op in overzicht.txt." },
+        { "cmd": "ls -la | tee bestand1.txt bestand2.txt", "desc": "Slaat de uitvoer op in meerdere bestanden tegelijk." },
+        { "cmd": "commando | tee -a logbestand.txt", "desc": "Voegt de uitvoer toe aan een logbestand." },
+        { "cmd": "ps aux | tee processen.txt | grep firefox", "desc": "Slaat de volledige proceslijst op en filtert tegelijk op firefox." }
+      ],
+      "related": ["cat", "pipe", "redirect"],
+      "tags": ["I/O", "pipes", "logging"]
+    },
+    {
+      "name": "grep",
+      "category": "Zoeken",
+      "short": "Doorzoekt bestanden of stdin op regels die overeenkomen met een patroon.",
+      "synopsis": "grep [OPTIE]... PATROON [BESTAND]...",
+      "flags": [
+        { "flag": "-i", "desc": "Hoofdletterongevoelig zoeken." },
+        { "flag": "-n", "desc": "Toont het regelnummer van elke overeenkomst." },
+        { "flag": "-c", "desc": "Telt het aantal overeenkomende regels (geen inhoud)." },
+        { "flag": "-v", "desc": "Keert de zoekresultaten om: toont regels die NIET overeenkomen." },
+        { "flag": "-l", "desc": "Toont alleen de bestandsnamen die een overeenkomst bevatten." },
+        { "flag": "-L", "desc": "Toont alleen de bestandsnamen zonder overeenkomst." },
+        { "flag": "-r", "desc": "Zoekt recursief door mappen." },
+        { "flag": "-w", "desc": "Zoekt alleen naar volledige woorden." },
+        { "flag": "-E", "desc": "Gebruikt uitgebreide reguliere expressies (ERE)." },
+        { "flag": "-F", "desc": "Behandelt het patroon als letterlijke tekst (geen regex)." },
+        { "flag": "-o", "desc": "Toont alleen het overeenkomende deel van de regel." },
+        { "flag": "-A n", "desc": "Toont n regels na elke overeenkomst." },
+        { "flag": "-B n", "desc": "Toont n regels voor elke overeenkomst." },
+        { "flag": "-C n", "desc": "Toont n regels voor én na elke overeenkomst." },
+        { "flag": "-e", "desc": "Geeft een patroon op; bruikbaar voor meerdere patronen." }
+      ],
+      "examples": [
+        { "cmd": "grep \"ERROR\" /var/log/syslog", "desc": "Zoekt naar de tekst ERROR in het syslog-bestand." },
+        { "cmd": "grep -i \"error\" logbestand.txt", "desc": "Hoofdletterongevoelig zoeken naar error." },
+        { "cmd": "grep -n \"INFO\" sample.log", "desc": "Toont regels met INFO samen met hun regelnummer." },
+        { "cmd": "grep -c \"2024-01-15\" sample.log", "desc": "Telt hoeveel regels de datum 2024-01-15 bevatten." },
+        { "cmd": "grep -v \"INFO\" sample.log", "desc": "Toont alle regels die GEEN INFO bevatten." },
+        { "cmd": "grep -E \"(ERROR|WARNING)\" sample.log", "desc": "Zoekt naar regels met ERROR of WARNING via uitgebreide regex." },
+        { "cmd": "grep \"^2024\" sample.log", "desc": "Toont regels die beginnen met 2024." },
+        { "cmd": "grep \"completed$\" sample.log", "desc": "Toont regels die eindigen op completed." },
+        { "cmd": "grep -r \"TODO\" ~/code/", "desc": "Zoekt recursief naar TODO in alle bestanden in ~/code/." },
+        { "cmd": "grep -v \"^#\" config.txt", "desc": "Verwijdert commentaarregels (regels die beginnen met #)." },
+        { "cmd": "grep -o '[a-zA-Z0-9._%+-]\\+@[a-zA-Z0-9.-]\\+\\.[a-zA-Z]\\{2,\\}' mixed_data.txt", "desc": "Extraheert e-mailadressen met een regex." }
+      ],
+      "related": ["sed", "awk", "cut", "sort"],
+      "tags": ["zoeken", "regex", "filter", "tekstverwerking"]
+    },
+    {
+      "name": "cut",
+      "category": "Tekst",
+      "short": "Extraheert specifieke kolommen of tekens uit elke regel van een bestand of stdin.",
+      "synopsis": "cut [OPTIE]... [BESTAND]...",
+      "flags": [
+        { "flag": "-c bereik", "desc": "Selecteert tekens op positie (bijv. -c1-5 of -c1,3,5)." },
+        { "flag": "-f velden", "desc": "Selecteert velden op basis van een scheidingsteken." },
+        { "flag": "-d scheidingsteken", "desc": "Geeft het scheidingsteken op (standaard is een TAB)." },
+        { "flag": "--complement", "desc": "Selecteert alles behalve de opgegeven velden of tekens." }
+      ],
+      "examples": [
+        { "cmd": "cut -d: -f1 /etc/passwd", "desc": "Extraheert alle gebruikersnamen uit /etc/passwd." },
+        { "cmd": "cut -d, -f2 data.csv", "desc": "Extraheert de tweede kolom uit een CSV-bestand." },
+        { "cmd": "cut -c1-5 bestand.txt", "desc": "Toont de eerste 5 tekens van elke regel." },
+        { "cmd": "cut -d: -f1,3 /etc/passwd", "desc": "Extraheert gebruikersnaam (veld 1) en UID (veld 3)." },
+        { "cmd": "echo \"2024-01-15\" | cut -d- -f1", "desc": "Extraheert het jaar uit een datum." },
+        { "cmd": "cut -d, -f2- data.csv", "desc": "Extraheert alle kolommen vanaf de tweede." }
+      ],
+      "related": ["grep", "awk", "tr", "sort"],
+      "tags": ["tekst", "kolommen", "CSV", "filter"]
+    },
+    {
+      "name": "tr",
+      "category": "Tekst",
+      "short": "Vertaalt of verwijdert tekens uit de invoerstroom.",
+      "synopsis": "tr [OPTIE]... REEKS1 [REEKS2]",
+      "flags": [
+        { "flag": "-d", "desc": "Verwijdert tekens die in REEKS1 staan." },
+        { "flag": "-s", "desc": "Comprimeert opeenvolgende identieke tekens tot één exemplaar." },
+        { "flag": "-c", "desc": "Gebruikt het complement van REEKS1 (alles behalve die tekens)." }
+      ],
+      "examples": [
+        { "cmd": "echo \"hello world\" | tr 'a-z' 'A-Z'", "desc": "Zet alle kleine letters om naar hoofdletters." },
+        { "cmd": "echo \"HELLO\" | tr 'A-Z' 'a-z'", "desc": "Zet alle hoofdletters om naar kleine letters." },
+        { "cmd": "echo \"hello world\" | tr ' ' '_'", "desc": "Vervangt spaties door underscores." },
+        { "cmd": "echo \"hello world\" | tr -d ' '", "desc": "Verwijdert alle spaties." },
+        { "cmd": "echo \"abc123def\" | tr -d '0-9'", "desc": "Verwijdert alle cijfers." },
+        { "cmd": "echo \"hello    world\" | tr -s ' '", "desc": "Comprimeert meerdere spaties tot één." },
+        { "cmd": "cat data.txt | tr -d '\\r'", "desc": "Verwijdert Windows-regeleindes (CR)." },
+        { "cmd": "cat data.txt | tr '\\t' ','", "desc": "Vervangt TAB-tekens door komma's." },
+        { "cmd": "echo \"Hello, World! 123\" | tr -cd '[:alnum:]'", "desc": "Behoudt alleen alfanumerieke tekens." },
+        { "cmd": "tr '[:lower:]' '[:upper:]' < mixed_data.txt", "desc": "Zet alle kleine letters om via omleiding (invoerbestand)." }
+      ],
+      "related": ["sed", "cut", "grep"],
+      "tags": ["tekst", "vertaling", "verwijdering", "filter"]
+    },
+    {
+      "name": "wc",
+      "category": "Tekst",
+      "short": "Telt regels, woorden en tekens in een bestand of stdin.",
+      "synopsis": "wc [OPTIE]... [BESTAND]...",
+      "flags": [
+        { "flag": "-l", "desc": "Telt alleen het aantal regels." },
+        { "flag": "-w", "desc": "Telt alleen het aantal woorden." },
+        { "flag": "-c", "desc": "Telt alleen het aantal bytes." },
+        { "flag": "-m", "desc": "Telt alleen het aantal tekens (rekening houdend met multibyte)." }
+      ],
+      "examples": [
+        { "cmd": "wc bestand.txt", "desc": "Toont het aantal regels, woorden en bytes." },
+        { "cmd": "wc -l bestand.txt", "desc": "Telt het aantal regels." },
+        { "cmd": "wc -w bestand.txt", "desc": "Telt het aantal woorden." },
+        { "cmd": "ps aux | wc -l", "desc": "Telt het aantal actieve processen." },
+        { "cmd": "grep \"error\" log.txt | wc -l", "desc": "Telt het aantal foutregels in een logbestand." },
+        { "cmd": "cat /etc/passwd | wc -l", "desc": "Telt het aantal gebruikersaccounts." }
+      ],
+      "related": ["grep", "sort", "uniq"],
+      "tags": ["tellen", "analyse", "tekstverwerking"]
+    },
+    {
+      "name": "sort",
+      "category": "Tekst",
+      "short": "Sorteert regels van tekstbestanden of stdin.",
+      "synopsis": "sort [OPTIE]... [BESTAND]...",
+      "flags": [
+        { "flag": "-r", "desc": "Sorteert in omgekeerde volgorde." },
+        { "flag": "-n", "desc": "Sorteert numeriek in plaats van alfabetisch." },
+        { "flag": "-k veld", "desc": "Sorteert op een specifiek veld (kolom)." },
+        { "flag": "-t scheidingsteken", "desc": "Geeft het kolomscheidingsteken op." },
+        { "flag": "-u", "desc": "Verwijdert duplicaten na het sorteren." },
+        { "flag": "-i", "desc": "Negeert hoofdletters bij het sorteren." },
+        { "flag": "-h", "desc": "Sorteert op mens-leesbare grootten (1K, 2M, enz.)." }
+      ],
+      "examples": [
+        { "cmd": "sort bestand.txt", "desc": "Sorteert het bestand alfabetisch." },
+        { "cmd": "sort -r bestand.txt", "desc": "Sorteert in omgekeerde alfabetische volgorde." },
+        { "cmd": "sort -n getallen.txt", "desc": "Sorteert numeriek." },
+        { "cmd": "sort -k2 bestand.txt", "desc": "Sorteert op het tweede veld." },
+        { "cmd": "sort -t: -k3 -n /etc/passwd", "desc": "Sorteert /etc/passwd numerisch op UID (derde veld)." },
+        { "cmd": "sort -u bestand.txt", "desc": "Sorteert en verwijdert duplicaten." },
+        { "cmd": "ls -l | sort -k5 -n", "desc": "Sorteert bestanden op grootte (oplopend)." },
+        { "cmd": "ls -l | sort -k5 -nr", "desc": "Sorteert bestanden op grootte (aflopend)." },
+        { "cmd": "ps aux | sort -k4 -nr | head -10", "desc": "Toont de 10 processen met het hoogste geheugengebruik." }
+      ],
+      "related": ["uniq", "grep", "cut"],
+      "tags": ["sorteren", "tekstverwerking", "filter"]
+    },
+    {
+      "name": "uniq",
+      "category": "Tekst",
+      "short": "Filtert of telt opeenvolgende identieke regels; werkt het best op gesorteerde invoer.",
+      "synopsis": "uniq [OPTIE]... [INVOER [UITVOER]]",
+      "flags": [
+        { "flag": "-c", "desc": "Telt het aantal keren dat elke regel voorkomt." },
+        { "flag": "-d", "desc": "Toont alleen de dubbele regels." },
+        { "flag": "-u", "desc": "Toont alleen de regels die exact één keer voorkomen." },
+        { "flag": "-i", "desc": "Negeert hoofdletters bij vergelijking." },
+        { "flag": "-f n", "desc": "Slaat de eerste n velden over bij vergelijking." }
+      ],
+      "examples": [
+        { "cmd": "sort bestand.txt | uniq", "desc": "Verwijdert duplicaten na sorteren." },
+        { "cmd": "sort bestand.txt | uniq -c", "desc": "Telt hoe vaak elke unieke regel voorkomt." },
+        { "cmd": "sort bestand.txt | uniq -d", "desc": "Toont alleen de regels die meer dan eens voorkomen." },
+        { "cmd": "sort bestand.txt | uniq -u", "desc": "Toont alleen de regels die exact één keer voorkomen." },
+        { "cmd": "sort bestand.txt | uniq -c | sort -nr", "desc": "Toont de meest voorkomende regels bovenaan." },
+        { "cmd": "cut -d: -f1 /etc/passwd | sort | uniq | wc -l", "desc": "Telt het aantal unieke gebruikersnamen." }
+      ],
+      "related": ["sort", "grep", "wc"],
+      "tags": ["deduplicatie", "tellen", "tekstverwerking"]
+    },
+    {
+      "name": "comm",
+      "category": "Tekst",
+      "short": "Vergelijkt twee gesorteerde bestanden regel voor regel en toont gemeenschappelijke en unieke regels.",
+      "synopsis": "comm [OPTIE]... BESTAND1 BESTAND2",
+      "flags": [
+        { "flag": "-1", "desc": "Onderdrukt kolom 1 (regels uniek voor BESTAND1)." },
+        { "flag": "-2", "desc": "Onderdrukt kolom 2 (regels uniek voor BESTAND2)." },
+        { "flag": "-3", "desc": "Onderdrukt kolom 3 (regels gemeenschappelijk voor beide bestanden)." }
+      ],
+      "examples": [
+        { "cmd": "comm gesorteerd1.txt gesorteerd2.txt", "desc": "Toont 3 kolommen: uniek voor bestand1, uniek voor bestand2, gemeenschappelijk." },
+        { "cmd": "comm -23 gesorteerd1.txt gesorteerd2.txt", "desc": "Toont alleen de regels uniek voor bestand1." },
+        { "cmd": "comm -13 gesorteerd1.txt gesorteerd2.txt", "desc": "Toont alleen de regels uniek voor bestand2." },
+        { "cmd": "comm -12 gesorteerd1.txt gesorteerd2.txt", "desc": "Toont alleen de regels die in beide bestanden voorkomen." }
+      ],
+      "related": ["diff", "sort", "uniq"],
+      "tags": ["vergelijking", "bestanden", "tekstverwerking"]
+    },
+    {
+      "name": "sed",
+      "category": "Tekst",
+      "short": "Stroomeditor die tekst filtert en transformeert via scripts of regeladressen.",
+      "synopsis": "sed [OPTIE]... SCRIPT [BESTAND]...",
+      "flags": [
+        { "flag": "-n", "desc": "Onderdrukt automatische uitvoer; combineer met p om selectief te printen." },
+        { "flag": "-i", "desc": "Bewerkt het bestand direct (in-place)." },
+        { "flag": "-i.bak", "desc": "Bewerkt het bestand direct en maakt een back-up met de extensie .bak." },
+        { "flag": "-e script", "desc": "Voert meerdere sed-instructies uit." }
+      ],
+      "examples": [
+        { "cmd": "sed 's/oud/nieuw/' bestand.txt", "desc": "Vervangt de eerste instantie van 'oud' door 'nieuw' op elke regel." },
+        { "cmd": "sed 's/oud/nieuw/g' bestand.txt", "desc": "Vervangt alle instanties van 'oud' door 'nieuw' (globaal)." },
+        { "cmd": "sed 's/oud/nieuw/gi' bestand.txt", "desc": "Vervangt hoofdletterongevoelig en globaal." },
+        { "cmd": "sed '/patroon/d' bestand.txt", "desc": "Verwijdert alle regels die het patroon bevatten." },
+        { "cmd": "sed '1d' bestand.txt", "desc": "Verwijdert de eerste regel." },
+        { "cmd": "sed '1,5d' bestand.txt", "desc": "Verwijdert de regels 1 tot en met 5." },
+        { "cmd": "sed -n '1,5p' bestand.txt", "desc": "Toont alleen de regels 1 tot en met 5." },
+        { "cmd": "sed -i 's/oud/nieuw/g' bestand.txt", "desc": "Past het bestand direct aan zonder tussenbestand." },
+        { "cmd": "sed -i.bak 's/oud/nieuw/g' bestand.txt", "desc": "Past het bestand aan en maakt een back-up als bestand.txt.bak." },
+        { "cmd": "sed -e 's/oud1/nieuw1/g' -e 's/oud2/nieuw2/g' bestand.txt", "desc": "Voert meerdere vervangingen uit in één commando." },
+        { "cmd": "sed 's|/oud/pad|/nieuw/pad|g' bestand.txt", "desc": "Gebruikt | als scheidingsteken (handig bij paden met /)." }
+      ],
+      "related": ["grep", "tr", "awk", "cut"],
+      "tags": ["tekstverwerking", "vervangen", "verwijderen", "stream"]
+    }
+  ],
+  "exercises": [
+    {
+      "title": "Logbestand aanmaken en doorzoeken",
+      "difficulty": "easy",
+      "type": "multi-step",
+      "prompt": "Maak het bestand sample.log aan met de opgegeven inhoud en zoek daarna naar alle regels met de tekst ERROR.",
+      "solution": "cat > sample.log << EOF\n2024-01-15 10:30:45 INFO User login successful\n2024-01-15 10:31:02 ERROR Failed to connect to database\n2024-01-15 10:31:15 INFO User logout  \n2024-01-15 10:32:30 WARNING Low disk space\n2024-01-15 10:33:45 ERROR Database connection timeout\n2024-01-15 10:34:12 INFO System backup completed\nEOF\ngrep \"ERROR\" sample.log",
+      "acceptors": [
+        "grep \"ERROR\" sample.log",
+        "grep 'ERROR' sample.log",
+        "grep ERROR sample.log"
+      ],
+      "expectedOutput": [
+        "2024-01-15 10:31:02 ERROR Failed to connect to database",
+        "2024-01-15 10:33:45 ERROR Database connection timeout"
+      ],
+      "hints": [
+        "Gebruik grep gevolgd door het patroon en de bestandsnaam.",
+        "Je hoeft quotes alleen om het patroon als er speciale tekens in staan."
+      ],
+      "tags": ["grep", "logbestanden"],
+      "commandsUsed": ["cat", "grep"],
+      "steps": [
+        {
+          "prompt": "Maak het bestand sample.log aan met de zes logregels zoals beschreven.",
+          "acceptors": ["cat > sample.log << EOF\n2024-01-15 10:30:45 INFO User login successful\n2024-01-15 10:31:02 ERROR Failed to connect to database\n2024-01-15 10:31:15 INFO User logout  \n2024-01-15 10:32:30 WARNING Low disk space\n2024-01-15 10:33:45 ERROR Database connection timeout\n2024-01-15 10:34:12 INFO System backup completed\nEOF"],
+          "solution": "cat > sample.log << EOF\n2024-01-15 10:30:45 INFO User login successful\n2024-01-15 10:31:02 ERROR Failed to connect to database\n2024-01-15 10:31:15 INFO User logout  \n2024-01-15 10:32:30 WARNING Low disk space\n2024-01-15 10:33:45 ERROR Database connection timeout\n2024-01-15 10:34:12 INFO System backup completed\nEOF",
+          "expectedOutput": [],
+          "hints": ["Gebruik een here-document (<<EOF ... EOF) met cat >"]
+        },
+        {
+          "prompt": "Zoek in sample.log naar alle regels die ERROR bevatten.",
+          "acceptors": ["grep \"ERROR\" sample.log", "grep 'ERROR' sample.log", "grep ERROR sample.log"],
+          "solution": "grep \"ERROR\" sample.log",
+          "expectedOutput": [
+            "2024-01-15 10:31:02 ERROR Failed to connect to database",
+            "2024-01-15 10:33:45 ERROR Database connection timeout"
+          ],
+          "hints": ["grep PATROON BESTAND is de basisvorm."]
+        }
+      ]
+    },
+    {
+      "title": "Hoofdletterongevoelig zoeken",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Zoek in sample.log naar alle regels met 'error' (hoofdletterongevoelig) en toon daarna alleen het aantal overeenkomende regels.",
+      "solution": "grep -i \"error\" sample.log",
+      "acceptors": [
+        "grep -i \"error\" sample.log",
+        "grep -i 'error' sample.log",
+        "grep -i error sample.log",
+        "grep -ic \"error\" sample.log"
+      ],
+      "expectedOutput": [
+        "2024-01-15 10:31:02 ERROR Failed to connect to database",
+        "2024-01-15 10:33:45 ERROR Database connection timeout"
+      ],
+      "hints": [
+        "De vlag -i maakt grep hoofdletterongevoelig.",
+        "Gebruik -c als je alleen het aantal wilt zien."
+      ],
+      "tags": ["grep", "hoofdletters"],
+      "commandsUsed": ["grep"]
+    },
+    {
+      "title": "Regelnummers tonen",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Zoek in sample.log naar alle regels met INFO en toon ook het regelnummer van elke overeenkomst.",
+      "solution": "grep -n \"INFO\" sample.log",
+      "acceptors": [
+        "grep -n \"INFO\" sample.log",
+        "grep -n 'INFO' sample.log",
+        "grep -n INFO sample.log"
+      ],
+      "expectedOutput": [
+        "1:2024-01-15 10:30:45 INFO User login successful",
+        "3:2024-01-15 10:31:15 INFO User logout",
+        "6:2024-01-15 10:34:12 INFO System backup completed"
+      ],
+      "hints": [
+        "De vlag -n toont het regelnummer vóór elke overeenkomende regel."
+      ],
+      "tags": ["grep", "regelnummers"],
+      "commandsUsed": ["grep"]
+    },
+    {
+      "title": "Regels tellen met grep",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Tel hoeveel regels in sample.log de datum '2024-01-15' bevatten.",
+      "solution": "grep -c \"2024-01-15\" sample.log",
+      "acceptors": [
+        "grep -c \"2024-01-15\" sample.log",
+        "grep -c '2024-01-15' sample.log",
+        "grep -c 2024-01-15 sample.log"
+      ],
+      "expectedOutput": ["6"],
+      "hints": [
+        "De vlag -c telt de overeenkomsten in plaats van ze te tonen."
+      ],
+      "tags": ["grep", "tellen"],
+      "commandsUsed": ["grep"]
+    },
+    {
+      "title": "Omgekeerde grep",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Toon alle regels in sample.log die GEEN INFO bevatten.",
+      "solution": "grep -v \"INFO\" sample.log",
+      "acceptors": [
+        "grep -v \"INFO\" sample.log",
+        "grep -v 'INFO' sample.log",
+        "grep -v INFO sample.log"
+      ],
+      "expectedOutput": [
+        "2024-01-15 10:31:02 ERROR Failed to connect to database",
+        "2024-01-15 10:32:30 WARNING Low disk space",
+        "2024-01-15 10:33:45 ERROR Database connection timeout"
+      ],
+      "hints": [
+        "De vlag -v keert het zoekresultaat om (invert match)."
+      ],
+      "tags": ["grep", "omgekeerd"],
+      "commandsUsed": ["grep"]
+    },
+    {
+      "title": "Regex in grep",
+      "difficulty": "medium",
+      "type": "command",
+      "prompt": "Zoek in sample.log naar regels die beginnen met '2024' EN die ERROR of WARNING bevatten. Gebruik één grep-commando met uitgebreide reguliere expressies.",
+      "solution": "grep -E \"(ERROR|WARNING)\" sample.log",
+      "acceptors": [
+        "grep -E \"(ERROR|WARNING)\" sample.log",
+        "grep -E '(ERROR|WARNING)' sample.log",
+        "grep -E \"ERROR|WARNING\" sample.log",
+        "grep -E 'ERROR|WARNING' sample.log"
+      ],
+      "expectedOutput": [
+        "2024-01-15 10:31:02 ERROR Failed to connect to database",
+        "2024-01-15 10:32:30 WARNING Low disk space",
+        "2024-01-15 10:33:45 ERROR Database connection timeout"
+      ],
+      "hints": [
+        "Gebruik -E voor uitgebreide regex (ERE).",
+        "In ERE schrijf je de OR-operator als | zonder backslash.",
+        "Groepeer alternatieven met ronde haakjes: (ERROR|WARNING)."
+      ],
+      "tags": ["grep", "regex"],
+      "commandsUsed": ["grep"]
+    },
+    {
+      "title": "CSV-bestand aanmaken en kolommen extraheren",
+      "difficulty": "easy",
+      "type": "multi-step",
+      "prompt": "Maak het bestand employees.csv aan met de opgegeven inhoud en extraheer daarna de naam- en afdelingskolom (kolommen 1 en 2).",
+      "solution": "cat > employees.csv << EOF\nName,Department,Salary,Years\nJohn,IT,50000,5\nJane,HR,45000,3\nBob,IT,55000,7\nAlice,Finance,60000,4\nCharlie,IT,48000,2\nDavid,HR,52000,6\nEOF\ncut -d, -f1,2 employees.csv",
+      "acceptors": [
+        "cut -d, -f1,2 employees.csv",
+        "cut -d',' -f1,2 employees.csv"
+      ],
+      "expectedOutput": [
+        "Name,Department",
+        "John,IT",
+        "Jane,HR",
+        "Bob,IT",
+        "Alice,Finance",
+        "Charlie,IT",
+        "David,HR"
+      ],
+      "hints": [
+        "Gebruik cut met -d, voor het scheidingsteken en -f voor de veldnummers.",
+        "Meerdere velden scheid je met een komma: -f1,2"
+      ],
+      "tags": ["cut", "CSV"],
+      "commandsUsed": ["cat", "cut"],
+      "steps": [
+        {
+          "prompt": "Maak het bestand employees.csv aan met een header en zes werknemers.",
+          "acceptors": ["cat > employees.csv << EOF\nName,Department,Salary,Years\nJohn,IT,50000,5\nJane,HR,45000,3\nBob,IT,55000,7\nAlice,Finance,60000,4\nCharlie,IT,48000,2\nDavid,HR,52000,6\nEOF"],
+          "solution": "cat > employees.csv << EOF\nName,Department,Salary,Years\nJohn,IT,50000,5\nJane,HR,45000,3\nBob,IT,55000,7\nAlice,Finance,60000,4\nCharlie,IT,48000,2\nDavid,HR,52000,6\nEOF",
+          "expectedOutput": [],
+          "hints": ["Gebruik een here-document om het bestand aan te maken."]
+        },
+        {
+          "prompt": "Extraheer de eerste en tweede kolom (naam en afdeling) uit employees.csv.",
+          "acceptors": ["cut -d, -f1,2 employees.csv", "cut -d',' -f1,2 employees.csv"],
+          "solution": "cut -d, -f1,2 employees.csv",
+          "expectedOutput": ["Name,Department", "John,IT", "Jane,HR", "Bob,IT", "Alice,Finance", "Charlie,IT", "David,HR"],
+          "hints": ["cut -d, -f1,2 gebruikt komma als scheidingsteken en toont velden 1 en 2."]
+        }
+      ]
+    },
+    {
+      "title": "Salarissen extraheren en sorteren",
+      "difficulty": "medium",
+      "type": "pipeline",
+      "prompt": "Toon de drie hoogste salarissen uit employees.csv (zonder de headerregel). Bouw een pipeline met grep, cut, sort en tail.",
+      "solution": "grep -v \"^Name\" employees.csv | cut -d, -f3 | sort -n | tail -3",
+      "acceptors": [
+        "grep -v \"^Name\" employees.csv | cut -d, -f3 | sort -n | tail -3",
+        "grep -v '^Name' employees.csv | cut -d, -f3 | sort -n | tail -3",
+        "tail -n +2 employees.csv | cut -d, -f3 | sort -n | tail -3"
+      ],
+      "expectedOutput": ["52000", "55000", "60000"],
+      "hints": [
+        "Gebruik grep -v \"^Name\" om de header te overslaan.",
+        "cut -d, -f3 extraheert de salariskolom.",
+        "sort -n sorteert numerisch.",
+        "tail -3 toont de laatste (en dus hoogste) drie waarden."
+      ],
+      "tags": ["grep", "cut", "sort", "tail", "pipeline"],
+      "commandsUsed": ["grep", "cut", "sort", "tail"]
+    },
+    {
+      "title": "Afdeling-analyse pipeline",
+      "difficulty": "medium",
+      "type": "pipeline",
+      "prompt": "Bouw een pipeline die telt hoeveel werknemers er per afdeling zijn in employees.csv (sla de headerregel over). Toon het resultaat van hoog naar laag gesorteerd.",
+      "solution": "grep -v \"^Name\" employees.csv | cut -d, -f2 | sort | uniq -c | sort -nr",
+      "acceptors": [
+        "grep -v \"^Name\" employees.csv | cut -d, -f2 | sort | uniq -c | sort -nr",
+        "grep -v '^Name' employees.csv | cut -d, -f2 | sort | uniq -c | sort -nr",
+        "tail -n +2 employees.csv | cut -d, -f2 | sort | uniq -c | sort -nr"
+      ],
+      "expectedOutput": [
+        "      3 IT",
+        "      2 HR",
+        "      1 Finance"
+      ],
+      "hints": [
+        "Stap 1: verwijder de headerregel met grep -v.",
+        "Stap 2: extraheer de afdelingskolom met cut.",
+        "Stap 3: sorteer zodat identieke waarden naast elkaar staan.",
+        "Stap 4: tel met uniq -c.",
+        "Stap 5: sorteer numerisch omgekeerd met sort -nr."
+      ],
+      "tags": ["grep", "cut", "sort", "uniq", "pipeline", "analyse"],
+      "commandsUsed": ["grep", "cut", "sort", "uniq"]
+    },
+    {
+      "title": "Tekst naar hoofdletters omzetten",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Zet de tekst 'hello world' volledig om naar hoofdletters met het tr-commando.",
+      "solution": "echo \"hello world\" | tr 'a-z' 'A-Z'",
+      "acceptors": [
+        "echo \"hello world\" | tr 'a-z' 'A-Z'",
+        "echo \"hello world\" | tr '[:lower:]' '[:upper:]'",
+        "echo 'hello world' | tr 'a-z' 'A-Z'",
+        "echo 'hello world' | tr '[:lower:]' '[:upper:]'"
+      ],
+      "expectedOutput": ["HELLO WORLD"],
+      "hints": [
+        "tr vertaalt elk teken in de eerste reeks naar het overeenkomstige teken in de tweede reeks.",
+        "Je kunt tekenbereiken gebruiken: 'a-z' of tekenklassen: '[:lower:]'."
+      ],
+      "tags": ["tr", "tekst"],
+      "commandsUsed": ["echo", "tr"]
+    },
+    {
+      "title": "Tekens verwijderen met tr",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Verwijder alle cijfers uit de tekst 'abc123def456' met tr.",
+      "solution": "echo \"abc123def456\" | tr -d '0-9'",
+      "acceptors": [
+        "echo \"abc123def456\" | tr -d '0-9'",
+        "echo \"abc123def456\" | tr -d '[:digit:]'",
+        "echo 'abc123def456' | tr -d '0-9'",
+        "echo 'abc123def456' | tr -d '[:digit:]'"
+      ],
+      "expectedOutput": ["abcdef"],
+      "hints": [
+        "De vlag -d verwijdert alle tekens die in de opgegeven reeks staan.",
+        "Je kunt '0-9' of '[:digit:]' gebruiken voor cijfers."
+      ],
+      "tags": ["tr", "verwijderen"],
+      "commandsUsed": ["echo", "tr"]
+    },
+    {
+      "title": "Spaties comprimeren met tr",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Comprimeer de meerdere spaties in 'hello    world' zodat er maar één spatie overblijft.",
+      "solution": "echo \"hello    world\" | tr -s ' '",
+      "acceptors": [
+        "echo \"hello    world\" | tr -s ' '",
+        "echo 'hello    world' | tr -s ' '"
+      ],
+      "expectedOutput": ["hello world"],
+      "hints": [
+        "De vlag -s (squeeze) comprimeert opeenvolgende identieke tekens tot één."
+      ],
+      "tags": ["tr", "spaties"],
+      "commandsUsed": ["echo", "tr"]
+    },
+    {
+      "title": "Bestanden en woorden tellen",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Tel het aantal regels in /etc/passwd met wc.",
+      "solution": "wc -l /etc/passwd",
+      "acceptors": [
+        "wc -l /etc/passwd",
+        "cat /etc/passwd | wc -l"
+      ],
+      "expectedOutput": [],
+      "hints": [
+        "Gebruik wc -l om alleen regels te tellen.",
+        "Je kunt het bestand direct meegeven of via een pipe."
+      ],
+      "tags": ["wc", "tellen"],
+      "commandsUsed": ["wc"]
+    },
+    {
+      "title": "Numerisch sorteren",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Gegeven de getallen '10', '2', '1' elk op een aparte regel: sorteer ze numerisch (niet alfabetisch).",
+      "solution": "printf '10\\n2\\n1\\n' | sort -n",
+      "acceptors": [
+        "printf '10\\n2\\n1\\n' | sort -n",
+        "echo -e '10\\n2\\n1' | sort -n",
+        "sort -n <<< $'10\\n2\\n1'"
+      ],
+      "expectedOutput": ["1", "2", "10"],
+      "hints": [
+        "Zonder -n sorteert sort alfabetisch, waardoor '10' voor '2' komt.",
+        "Met -n sorteert sort numerisch."
+      ],
+      "tags": ["sort", "numerisch"],
+      "commandsUsed": ["sort"]
+    },
+    {
+      "title": "Dubbele regels verwijderen",
+      "difficulty": "easy",
+      "type": "pipeline",
+      "prompt": "Gegeven de woorden 'apple', 'banana', 'apple' elk op een aparte regel: verwijder de duplicaten en toon elk woord slechts eens.",
+      "solution": "printf 'apple\\nbanana\\napple\\n' | sort | uniq",
+      "acceptors": [
+        "printf 'apple\\nbanana\\napple\\n' | sort | uniq",
+        "echo -e 'apple\\nbanana\\napple' | sort | uniq",
+        "printf 'apple\\nbanana\\napple\\n' | sort -u"
+      ],
+      "expectedOutput": ["apple", "banana"],
+      "hints": [
+        "uniq werkt alleen op aangrenzende identieke regels; sorteer eerst.",
+        "sort -u combineert sorteren en dedupliceren in één stap."
+      ],
+      "tags": ["sort", "uniq"],
+      "commandsUsed": ["sort", "uniq"]
+    },
+    {
+      "title": "Frequentie van woorden tellen",
+      "difficulty": "medium",
+      "type": "pipeline",
+      "prompt": "Bouw een pipeline die de woorden 'apple', 'banana', 'apple', 'cherry', 'banana', 'apple' telt en ze sorteet van vaakst naar minst voorkomend.",
+      "solution": "printf 'apple\\nbanana\\napple\\ncherry\\nbanana\\napple\\n' | sort | uniq -c | sort -nr",
+      "acceptors": [
+        "printf 'apple\\nbanana\\napple\\ncherry\\nbanana\\napple\\n' | sort | uniq -c | sort -nr",
+        "echo -e 'apple\\nbanana\\napple\\ncherry\\nbanana\\napple' | sort | uniq -c | sort -nr"
+      ],
+      "expectedOutput": [
+        "      3 apple",
+        "      2 banana",
+        "      1 cherry"
+      ],
+      "hints": [
+        "Gebruik sort om identieke regels bij elkaar te brengen.",
+        "uniq -c telt het aantal voorkomens.",
+        "sort -nr sorteert numerisch aflopend."
+      ],
+      "tags": ["sort", "uniq", "tellen", "pipeline"],
+      "commandsUsed": ["sort", "uniq"]
+    },
+    {
+      "title": "Tekst vervangen met sed",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Vervang in de tekst 'hello world' het woord 'world' door 'Linux' met sed.",
+      "solution": "echo \"hello world\" | sed 's/world/Linux/'",
+      "acceptors": [
+        "echo \"hello world\" | sed 's/world/Linux/'",
+        "echo 'hello world' | sed 's/world/Linux/'",
+        "echo \"hello world\" | sed \"s/world/Linux/\""
+      ],
+      "expectedOutput": ["hello Linux"],
+      "hints": [
+        "De sed-vervangingsinstructie heeft de vorm s/oud/nieuw/.",
+        "Zonder de /g-vlag wordt alleen de eerste instantie per regel vervangen."
+      ],
+      "tags": ["sed", "vervangen"],
+      "commandsUsed": ["echo", "sed"]
+    },
+    {
+      "title": "Alle instanties vervangen met sed",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Vervang in de tekst 'the cat sat on the mat' ALLE voorkomen van 'the' door 'a' met sed.",
+      "solution": "echo \"the cat sat on the mat\" | sed 's/the/a/g'",
+      "acceptors": [
+        "echo \"the cat sat on the mat\" | sed 's/the/a/g'",
+        "echo 'the cat sat on the mat' | sed 's/the/a/g'"
+      ],
+      "expectedOutput": ["a cat sat on a mat"],
+      "hints": [
+        "Voeg de /g-vlag toe aan het sed-vervangingscommando voor globale vervanging.",
+        "Zonder /g wordt alleen de eerste instantie per regel vervangen."
+      ],
+      "tags": ["sed", "globale vervanging"],
+      "commandsUsed": ["echo", "sed"]
+    },
+    {
+      "title": "Commentaarregels verwijderen",
+      "difficulty": "medium",
+      "type": "command",
+      "prompt": "Verwijder alle regels die beginnen met '#' uit een bestand config.txt met sed.",
+      "solution": "sed '/^#/d' config.txt",
+      "acceptors": [
+        "sed '/^#/d' config.txt",
+        "grep -v '^#' config.txt"
+      ],
+      "expectedOutput": [],
+      "hints": [
+        "In sed verwijder je regels met het /patroon/d-commando.",
+        "^ in het patroon staat voor het begin van de regel."
+      ],
+      "tags": ["sed", "verwijderen", "commentaar"],
+      "commandsUsed": ["sed"]
+    },
+    {
+      "title": "Bestand in-place bewerken",
+      "difficulty": "medium",
+      "type": "command",
+      "prompt": "Vervang in het bestand data.txt alle voorkomen van 'foo' door 'bar' direct in het bestand (in-place) en bewaar een back-up als data.txt.bak.",
+      "solution": "sed -i.bak 's/foo/bar/g' data.txt",
+      "acceptors": [
+        "sed -i.bak 's/foo/bar/g' data.txt",
+        "sed -i'.bak' 's/foo/bar/g' data.txt"
+      ],
+      "expectedOutput": [],
+      "hints": [
+        "De vlag -i bewerkt het bestand direct.",
+        "Voeg een extensie toe (bijv. .bak) aan -i om een back-up te maken."
+      ],
+      "tags": ["sed", "in-place", "back-up"],
+      "commandsUsed": ["sed"]
+    },
+    {
+      "title": "E-mailadressen extraheren",
+      "difficulty": "hard",
+      "type": "multi-step",
+      "prompt": "Maak het bestand mixed_data.txt aan met de opgegeven gebruikersdata en extraheer daarna alle e-mailadressen met grep -o en een regex.",
+      "solution": "grep -o '[a-zA-Z0-9._%+-]\\+@[a-zA-Z0-9.-]\\+\\.[a-zA-Z]\\{2,\\}' mixed_data.txt",
+      "acceptors": [
+        "grep -o '[a-zA-Z0-9._%+-]\\+@[a-zA-Z0-9.-]\\+\\.[a-zA-Z]\\{2,\\}' mixed_data.txt",
+        "grep -oE '[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}' mixed_data.txt"
+      ],
+      "expectedOutput": [
+        "john@example.com",
+        "jane@company.org",
+        "bob@test.net",
+        "alice@admin.com",
+        "temp@guest.tmp"
+      ],
+      "hints": [
+        "De vlag -o toont alleen het overeenkomende deel (niet de hele regel).",
+        "Een e-mailadres bevat altijd een @.",
+        "\\+ staat voor 'één of meer' in standaard grep-regex (BRE).",
+        "Gebruik -E voor ERE waarbij je + zonder backslash schrijft."
+      ],
+      "tags": ["grep", "regex", "e-mail"],
+      "commandsUsed": ["cat", "grep"],
+      "steps": [
+        {
+          "prompt": "Maak het bestand mixed_data.txt aan met de vijf gebruikerregels.",
+          "acceptors": ["cat > mixed_data.txt << EOF\nUser: john@example.com (ID: 1001)\nUser: jane@company.org (ID: 1002)  \nUser: bob@test.net (ID: 1003)\nAdmin: alice@admin.com (ID: 2001)\nGuest: temp@guest.tmp (ID: 3001)\nEOF"],
+          "solution": "cat > mixed_data.txt << EOF\nUser: john@example.com (ID: 1001)\nUser: jane@company.org (ID: 1002)  \nUser: bob@test.net (ID: 1003)\nAdmin: alice@admin.com (ID: 2001)\nGuest: temp@guest.tmp (ID: 3001)\nEOF",
+          "expectedOutput": [],
+          "hints": ["Gebruik een here-document."]
+        },
+        {
+          "prompt": "Extraheer alle e-mailadressen uit mixed_data.txt met grep -o en een geschikte regex.",
+          "acceptors": [
+            "grep -o '[a-zA-Z0-9._%+-]\\+@[a-zA-Z0-9.-]\\+\\.[a-zA-Z]\\{2,\\}' mixed_data.txt",
+            "grep -oE '[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}' mixed_data.txt"
+          ],
+          "solution": "grep -o '[a-zA-Z0-9._%+-]\\+@[a-zA-Z0-9.-]\\+\\.[a-zA-Z]\\{2,\\}' mixed_data.txt",
+          "expectedOutput": ["john@example.com", "jane@company.org", "bob@test.net", "alice@admin.com", "temp@guest.tmp"],
+          "hints": ["-o toont alleen het overeenkomende deel. Zorg dat je regex het @-teken bevat."]
+        }
+      ]
+    },
+    {
+      "title": "ID-nummers extraheren en sorteren",
+      "difficulty": "medium",
+      "type": "pipeline",
+      "prompt": "Extraheer alle ID-nummers uit mixed_data.txt (formaat: 'ID: GETAL') en sorteer ze numerisch.",
+      "solution": "grep -o 'ID: [0-9]\\+' mixed_data.txt | cut -d' ' -f2 | sort -n",
+      "acceptors": [
+        "grep -o 'ID: [0-9]\\+' mixed_data.txt | cut -d' ' -f2 | sort -n",
+        "grep -oE 'ID: [0-9]+' mixed_data.txt | cut -d' ' -f2 | sort -n",
+        "sed -n 's/.*ID: \\([0-9]\\+\\).*/\\1/p' mixed_data.txt | sort -n"
+      ],
+      "expectedOutput": ["1001", "1002", "1003", "2001", "3001"],
+      "hints": [
+        "Gebruik grep -o om alleen het patroon 'ID: GETAL' te extraheren.",
+        "Gebruik daarna cut -d' ' -f2 om alleen het getal te bewaren.",
+        "sort -n sorteert numerisch."
+      ],
+      "tags": ["grep", "cut", "sort", "regex", "pipeline"],
+      "commandsUsed": ["grep", "cut", "sort"]
+    },
+    {
+      "title": "Karaktermanipulatie met tr-pipeline",
+      "difficulty": "medium",
+      "type": "pipeline",
+      "prompt": "Zet de inhoud van mixed_data.txt om naar hoofdletters, verwijder de haakjes '(' en ')' en comprimeer meerdere spaties tot één. Gebruik een pipeline met drie tr-commando's.",
+      "solution": "tr '[:lower:]' '[:upper:]' < mixed_data.txt | tr -d '()' | tr -s ' '",
+      "acceptors": [
+        "tr '[:lower:]' '[:upper:]' < mixed_data.txt | tr -d '()' | tr -s ' '",
+        "cat mixed_data.txt | tr '[:lower:]' '[:upper:]' | tr -d '()' | tr -s ' '"
+      ],
+      "expectedOutput": [],
+      "hints": [
+        "Gebruik < om het bestand als invoer te geven aan tr.",
+        "tr heeft geen bestandsargument; het leest altijd van stdin.",
+        "Koppel drie tr-commando's met pipes."
+      ],
+      "tags": ["tr", "pipeline"],
+      "commandsUsed": ["tr"]
+    },
+    {
+      "title": "Proceslijst verwerken",
+      "difficulty": "medium",
+      "type": "pipeline",
+      "prompt": "Toon de 5 processen die het meeste geheugen gebruiken. Gebruik ps aux, filter de header, sorteer op kolom 4 (geheugen) aflopend en toon de eerste 5.",
+      "solution": "ps aux | grep -v \"^USER\" | sort -k4 -nr | head -5",
+      "acceptors": [
+        "ps aux | grep -v \"^USER\" | sort -k4 -nr | head -5",
+        "ps aux | grep -v '^USER' | sort -k4 -nr | head -5",
+        "ps aux | sort -k4 -nr | head -6 | tail -5"
+      ],
+      "expectedOutput": [],
+      "hints": [
+        "ps aux toont alle processen inclusief een header.",
+        "grep -v '^USER' verwijdert de headerregel.",
+        "sort -k4 -nr sorteert op kolom 4 (geheugen %) numerisch aflopend.",
+        "head -5 toont de eerste vijf resultaten."
+      ],
+      "tags": ["ps", "grep", "sort", "head", "pipeline", "processen"],
+      "commandsUsed": ["ps", "grep", "sort", "head"]
+    },
+    {
+      "title": "Schijfgebruik sorteren",
+      "difficulty": "medium",
+      "type": "pipeline",
+      "prompt": "Toon de 5 bestandssystemen met het hoogste gebruikspercentage. Gebruik df -h, verwijder de headerregel en sorteer op kolom 5 aflopend.",
+      "solution": "df -h | grep -v \"^Filesystem\" | sort -k5 -nr | head -5",
+      "acceptors": [
+        "df -h | grep -v \"^Filesystem\" | sort -k5 -nr | head -5",
+        "df -h | grep -v '^Filesystem' | sort -k5 -nr | head -5",
+        "df -h | tail -n +2 | sort -k5 -nr | head -5"
+      ],
+      "expectedOutput": [],
+      "hints": [
+        "df -h toont schijfgebruik in mensleesbaar formaat.",
+        "grep -v '^Filesystem' verwijdert de header.",
+        "Kolom 5 is het gebruikspercentage (bijv. 45%).",
+        "sort -nr sorteert numerisch aflopend — maar let op: de % wordt genegeerd door sort."
+      ],
+      "tags": ["df", "grep", "sort", "pipeline", "schijf"],
+      "commandsUsed": ["df", "grep", "sort", "head"]
+    },
+    {
+      "title": "Unieke gebruikers tellen",
+      "difficulty": "medium",
+      "type": "pipeline",
+      "prompt": "Tel het aantal unieke gebruikersnamen in /etc/passwd. Gebruik cut, sort, uniq en wc.",
+      "solution": "cut -d: -f1 /etc/passwd | sort | uniq | wc -l",
+      "acceptors": [
+        "cut -d: -f1 /etc/passwd | sort | uniq | wc -l",
+        "cut -d: -f1 /etc/passwd | sort -u | wc -l"
+      ],
+      "expectedOutput": [],
+      "hints": [
+        "cut -d: -f1 extraheert de eerste kolom (gebruikersnaam).",
+        "Sorteer eerst zodat uniq duplicaten kan herkennen.",
+        "wc -l telt de resterende regels."
+      ],
+      "tags": ["cut", "sort", "uniq", "wc", "pipeline"],
+      "commandsUsed": ["cut", "sort", "uniq", "wc"]
+    },
+    {
+      "title": "Tee gebruiken om output te splitsen",
+      "difficulty": "medium",
+      "type": "pipeline",
+      "prompt": "Zoek in sample.log naar alle ERROR-regels, sla het resultaat op in errors.txt EN toon tegelijk het aantal gevonden regels.",
+      "solution": "grep \"ERROR\" sample.log | tee errors.txt | wc -l",
+      "acceptors": [
+        "grep \"ERROR\" sample.log | tee errors.txt | wc -l",
+        "grep 'ERROR' sample.log | tee errors.txt | wc -l"
+      ],
+      "expectedOutput": ["2"],
+      "hints": [
+        "tee splitst de uitvoer: het schrijft naar een bestand én geeft de data door naar de volgende pipe-stap.",
+        "wc -l telt daarna de doorgestuurde regels."
+      ],
+      "tags": ["grep", "tee", "wc", "pipeline"],
+      "commandsUsed": ["grep", "tee", "wc"]
+    },
+    {
+      "title": "Woordfrequentie-analyse pipeline",
+      "difficulty": "hard",
+      "type": "pipeline",
+      "prompt": "Bouw een pipeline die een document verwerkt: zet alles om naar kleine letters, verwijder leestekens, zet elk woord op een aparte regel, verwijder lege regels, sorteer, tel de frequentie en toon de 20 meest voorkomende woorden.",
+      "solution": "cat document.txt | tr '[:upper:]' '[:lower:]' | tr -d '[:punct:]' | tr ' ' '\\n' | grep -v \"^$\" | sort | uniq -c | sort -nr | head -20",
+      "acceptors": [
+        "cat document.txt | tr '[:upper:]' '[:lower:]' | tr -d '[:punct:]' | tr ' ' '\\n' | grep -v '^$' | sort | uniq -c | sort -nr | head -20",
+        "tr '[:upper:]' '[:lower:]' < document.txt | tr -d '[:punct:]' | tr ' ' '\\n' | grep -v '^$' | sort | uniq -c | sort -nr | head -20"
+      ],
+      "expectedOutput": [],
+      "hints": [
+        "Gebruik tr '[:upper:]' '[:lower:]' voor kleine letters.",
+        "Gebruik tr -d '[:punct:]' om leestekens te verwijderen.",
+        "Gebruik tr ' ' '\\n' om elk woord op een nieuwe regel te zetten.",
+        "grep -v '^$' verwijdert lege regels.",
+        "sort | uniq -c | sort -nr geeft een gesorteerde frequentietelling."
+      ],
+      "tags": ["tr", "grep", "sort", "uniq", "pipeline", "analyse"],
+      "commandsUsed": ["cat", "tr", "grep", "sort", "uniq", "head"]
+    },
+    {
+      "title": "Bestanden vergelijken met comm",
+      "difficulty": "medium",
+      "type": "multi-step",
+      "prompt": "Maak twee gesorteerde bestanden (lijst1.txt en lijst2.txt) en toon daarna alleen de regels die uitsluitend in lijst1.txt voorkomen.",
+      "solution": "comm -23 lijst1.txt lijst2.txt",
+      "acceptors": [
+        "comm -23 lijst1.txt lijst2.txt",
+        "comm -23 gesorteerd1.txt gesorteerd2.txt"
+      ],
+      "expectedOutput": [],
+      "hints": [
+        "comm vereist gesorteerde invoerbestanden.",
+        "-23 onderdrukt kolom 2 (uniek voor bestand2) en kolom 3 (gemeenschappelijk), zodat alleen kolom 1 (uniek voor bestand1) overblijft."
+      ],
+      "tags": ["comm", "vergelijking"],
+      "commandsUsed": ["comm", "sort"],
+      "steps": [
+        {
+          "prompt": "Maak lijst1.txt aan met de inhoud: apple, banana, cherry (elk op een aparte regel) en sorteer het bestand.",
+          "acceptors": ["printf 'apple\\nbanana\\ncherry\\n' | sort > lijst1.txt", "sort <<< $'apple\\nbanana\\ncherry' > lijst1.txt"],
+          "solution": "printf 'apple\\nbanana\\ncherry\\n' | sort > lijst1.txt",
+          "expectedOutput": [],
+          "hints": ["comm werkt alleen correct op gesorteerde bestanden."]
+        },
+        {
+          "prompt": "Maak lijst2.txt aan met de inhoud: banana, cherry, date (elk op een aparte regel) en sorteer het bestand.",
+          "acceptors": ["printf 'banana\\ncherry\\ndate\\n' | sort > lijst2.txt"],
+          "solution": "printf 'banana\\ncherry\\ndate\\n' | sort > lijst2.txt",
+          "expectedOutput": [],
+          "hints": ["comm werkt alleen correct op gesorteerde bestanden."]
+        },
+        {
+          "prompt": "Toon alleen de regels die uitsluitend in lijst1.txt voorkomen.",
+          "acceptors": ["comm -23 lijst1.txt lijst2.txt"],
+          "solution": "comm -23 lijst1.txt lijst2.txt",
+          "expectedOutput": ["apple"],
+          "hints": ["-23 onderdrukt kolommen 2 en 3, zodat alleen kolom 1 (uniek voor bestand1) overblijft."]
+        }
+      ]
+    },
+    {
+      "title": "Fouten debuggen in pipeline",
+      "difficulty": "medium",
+      "type": "debug",
+      "prompt": "De volgende pipeline is bedoeld om getallen numerisch te sorteren, maar sorteert alfabetisch. Wat is er fout en hoe herstel je het?\n\nPipeline: echo -e '10\\n2\\n1' | sort",
+      "solution": "echo -e '10\\n2\\n1' | sort -n",
+      "acceptors": [
+        "echo -e '10\\n2\\n1' | sort -n",
+        "printf '10\\n2\\n1\\n' | sort -n"
+      ],
+      "expectedOutput": ["1", "2", "10"],
+      "hints": [
+        "Zonder opties sorteert sort alfabetisch: '1' < '10' < '2'.",
+        "Voeg de vlag -n toe voor numerieke sortering."
+      ],
+      "tags": ["sort", "debug", "numerisch"],
+      "commandsUsed": ["sort"]
+    },
+    {
+      "title": "Predict: wat doet deze pipeline?",
+      "difficulty": "medium",
+      "type": "predict",
+      "prompt": "Wat is de uitvoer van het volgende commando als employees.csv de bekende inhoud heeft?\n\ngrep -v \"^Name\" employees.csv | cut -d, -f2 | sort | uniq -c | sort -nr",
+      "solution": "      3 IT\n      2 HR\n      1 Finance",
+      "acceptors": [
+        "      3 IT\n      2 HR\n      1 Finance",
+        "3 IT\n2 HR\n1 Finance"
+      ],
+      "expectedOutput": [
+        "      3 IT",
+        "      2 HR",
+        "      1 Finance"
+      ],
+      "hints": [
+        "Stap 1: grep -v '^Name' verwijdert de headerregel.",
+        "Stap 2: cut -d, -f2 extraheert de afdeling.",
+        "Stap 3: sort groepeert identieke afdelingen.",
+        "Stap 4: uniq -c telt ze.",
+        "Stap 5: sort -nr sorteert op count aflopend."
+      ],
+      "tags": ["grep", "cut", "sort", "uniq", "predict"],
+      "commandsUsed": ["grep", "cut", "sort", "uniq"]
+    }
+  ],
+  "theory": [
+    {
+      "question": "Wat is het verschil tussen `grep -v` en `grep -c`?",
+      "type": "open",
+      "choices": [],
+      "answer": "grep -v toont de regels die NIET overeenkomen met het patroon (invert match); grep -c telt het aantal regels dat WEL overeenkomt en toont alleen dat getal.",
+      "explanation": "-v keert de selectie om zodat je de niet-overeenkomende regels ziet. -c telt de overeenkomende regels en geeft alleen het aantal terug, niet de regels zelf."
+    },
+    {
+      "question": "Hoe extraheer je de derde kolom uit een CSV-bestand met komma als scheidingsteken?",
+      "type": "open",
+      "choices": [],
+      "answer": "cut -d, -f3 bestand.csv",
+      "explanation": "Met cut gebruik je -d om het scheidingsteken op te geven (hier een komma) en -f om het veldnummer te kiezen (hier 3)."
+    },
+    {
+      "question": "Wat doet de pipeline `sort | uniq -c | sort -nr`?",
+      "type": "open",
+      "choices": [],
+      "answer": "Ze sorteert de invoer, telt hoe vaak elke unieke regel voorkomt en sorteert dan het resultaat van hoog naar laag op het aantal.",
+      "explanation": "sort groepeert identieke regels. uniq -c telt opeenvolgende identieke regels en zet het aantal ervoor. sort -nr sorteert numerisch in omgekeerde volgorde zodat de meest voorkomende regel bovenaan staat."
+    },
+    {
+      "question": "Hoe vervang je tekst rechtstreeks in een bestand met sed (in-place) terwijl je een back-up bewaart?",
+      "type": "open",
+      "choices": [],
+      "answer": "sed -i.bak 's/oud/nieuw/g' bestand.txt",
+      "explanation": "De vlag -i past het bestand direct aan. Door een extensie (.bak) toe te voegen, maakt sed eerst een back-up van het originele bestand."
+    },
+    {
+      "question": "Wat is het doel van het `tee`-commando?",
+      "type": "open",
+      "choices": [],
+      "answer": "tee leest van stdin en schrijft de data tegelijk naar stdout én naar een of meerdere bestanden, zodat je de uitvoer kunt opslaan zonder de pipeline te onderbreken.",
+      "explanation": "Zonder tee zou je de uitvoer moeten omleiden naar een bestand, waardoor de volgende stap in de pipeline niets ontvangt. tee lost dit op door de stroom te splitsen."
+    },
+    {
+      "question": "Hoe tel je het aantal unieke regels in een bestand?",
+      "type": "open",
+      "choices": [],
+      "answer": "sort bestand.txt | uniq | wc -l  of  sort -u bestand.txt | wc -l",
+      "explanation": "Eerst sorteer je zodat identieke regels naast elkaar staan. uniq verwijdert de duplicaten en wc -l telt de resterende regels."
+    },
+    {
+      "question": "Wat is het verschil tussen `tr -d` en `tr -s`?",
+      "type": "open",
+      "choices": [],
+      "answer": "tr -d verwijdert alle opgegeven tekens volledig; tr -s comprimeert opeenvolgende identieke tekens tot één exemplaar.",
+      "explanation": "Voorbeeld: echo 'aaa bbb' | tr -d 'a' geeft '  bbb' (alle a's weg). echo 'aaa bbb' | tr -s 'a' geeft 'a bbb' (meerdere a's gecomprimeerd tot één)."
+    },
+    {
+      "question": "Welk commando gebruik je om een bestand te lezen én de uitvoer door te sturen naar zowel een bestand als een volgende pipe-stap?",
+      "type": "mc",
+      "choices": ["cat", "tee", "grep", "wc"],
+      "answer": "tee",
+      "explanation": "tee is het enige commando dat de uitvoerstroom opsplitst: het schrijft tegelijk naar een bestand en geeft de data ongewijzigd door naar stdout (en zo naar de volgende pipe-stap)."
+    },
+    {
+      "question": "Wat doet `grep -E \"(ERROR|WARNING)\" logbestand.txt`?",
+      "type": "mc",
+      "choices": [
+        "A: Zoekt letterlijk naar de tekst (ERROR|WARNING)",
+        "B: Zoekt naar regels die ERROR of WARNING bevatten",
+        "C: Zoekt alleen naar regels die zowel ERROR als WARNING bevatten",
+        "D: Telt het aantal regels met ERROR of WARNING"
+      ],
+      "answer": "B: Zoekt naar regels die ERROR of WARNING bevatten",
+      "explanation": "Met -E (Extended Regular Expressions) is | de OR-operator. (ERROR|WARNING) matcht elke regel die ERROR OF WARNING bevat."
+    },
+    {
+      "question": "Welk commando zet alle kleine letters in een tekststroom om naar hoofdletters?",
+      "type": "mc",
+      "choices": [
+        "tr 'a-z' 'A-Z'",
+        "sed 's/[a-z]/[A-Z]/g'",
+        "grep -i",
+        "cut -u"
+      ],
+      "answer": "tr 'a-z' 'A-Z'",
+      "explanation": "tr vertaalt elk teken in de eerste reeks naar het corresponderende teken in de tweede reeks. 'a-z' naar 'A-Z' zet alle kleine letters om naar hoofdletters."
+    },
+    {
+      "question": "Je wilt regels in een CSV-bestand sorteren op de derde kolom (numerisch) waarbij het scheidingsteken een komma is. Welk commando gebruik je?",
+      "type": "mc",
+      "choices": [
+        "sort -k3 bestand.csv",
+        "sort -t, -k3 -n bestand.csv",
+        "sort -d, -f3 bestand.csv",
+        "sort -n -c3 bestand.csv"
+      ],
+      "answer": "sort -t, -k3 -n bestand.csv",
+      "explanation": "-t, geeft het kolomscheidingsteken op. -k3 sorteert op kolom 3. -n zorgt voor numerieke sortering."
+    },
+    {
+      "question": "Wat is een filter in de context van Linux-tekstverwering?",
+      "type": "open",
+      "choices": [],
+      "answer": "Een filter is een commando dat invoer leest van stdin of een bestand, de data verwerkt of transformeert en het resultaat naar stdout schrijft, zodat het in een pipeline gekoppeld kan worden.",
+      "explanation": "Filters volgen de Unix-filosofie: doe één ding goed. Door filters te koppelen via pipes (|) kun je complexe tekstverwerkingstaken uitvoeren."
+    },
+    {
+      "question": "Waarom moet je de invoer voor `uniq` eerst sorteren?",
+      "type": "open",
+      "choices": [],
+      "answer": "Omdat uniq alleen aangrenzende (opvolgende) identieke regels herkent en verwijdert. Als er dezelfde waarden verspreid in het bestand staan, worden ze niet als duplicaten beschouwd.",
+      "explanation": "Voorbeeld: een bestand met 'apple, banana, apple' geeft via uniq nog steeds alle drie de regels terug. Na sort staat 'apple' twee keer naast elkaar en verwijdert uniq de duplicaat."
+    },
+    {
+      "question": "Wat is het verschil tussen `sort -n` en `sort` (zonder vlaggen)?",
+      "type": "mc",
+      "choices": [
+        "A: Er is geen verschil",
+        "B: sort -n sorteert numerisch; sort zonder vlag sorteert alfabetisch",
+        "C: sort -n sorteert omgekeerd",
+        "D: sort zonder vlag sorteert numerisch"
+      ],
+      "answer": "B: sort -n sorteert numerisch; sort zonder vlag sorteert alfabetisch",
+      "explanation": "Alfabetisch staat '10' voor '2' omdat '1' < '2'. Numerisch staat '2' voor '10'. Gebruik altijd -n als je getallen wilt sorteren op waarde."
+    },
+    {
+      "question": "Welke vlag gebruik je bij `grep` om de context van 3 regels voor en na elke overeenkomst te tonen?",
+      "type": "mc",
+      "choices": ["-A 3", "-B 3", "-C 3", "-n 3"],
+      "answer": "-C 3",
+      "explanation": "-C (context) toont het opgegeven aantal regels voor én na de overeenkomst. -A toont regels na (after), -B toont regels voor (before)."
+    },
+    {
+      "question": "Hoe verwijder je Windows-regeleindes (carriage returns, \\r) uit een bestand met tr?",
+      "type": "open",
+      "choices": [],
+      "answer": "cat bestand.txt | tr -d '\\r'  of  tr -d '\\r' < bestand.txt",
+      "explanation": "Windows-tekstbestanden gebruiken \\r\\n als regelafsluiters, terwijl Linux alleen \\n gebruikt. tr -d '\\r' verwijdert alle carriage-return tekens."
+    },
+    {
+      "question": "Welk commando gebruik je om twee gesorteerde bestanden te vergelijken en alleen de gemeenschappelijke regels te tonen?",
+      "type": "mc",
+      "choices": [
+        "diff bestand1.txt bestand2.txt",
+        "comm -12 bestand1.txt bestand2.txt",
+        "comm -23 bestand1.txt bestand2.txt",
+        "grep -f bestand1.txt bestand2.txt"
+      ],
+      "answer": "comm -12 bestand1.txt bestand2.txt",
+      "explanation": "comm toont drie kolommen: kolom 1 (uniek voor bestand1), kolom 2 (uniek voor bestand2) en kolom 3 (gemeenschappelijk). -12 onderdrukt kolommen 1 en 2, zodat alleen de gemeenschappelijke regels overblijven."
+    },
+    {
+      "question": "Wat is het nut van `cat -A bestand.txt`?",
+      "type": "open",
+      "choices": [],
+      "answer": "Het toont onzichtbare tekens: regeleindes worden zichtbaar als '$' en TAB-tekens als '^I'. Dit helpt bij het debuggen van bestanden met verborgen whitespace.",
+      "explanation": "Dit is handig om te controleren of een bestand Windows-regeleindes (\\r$) heeft of TAB-tekens bevat die anders onzichtbaar zouden zijn."
+    },
+    {
+      "question": "Je wilt de meest gebruikte shell-commando's uit je geschiedenis halen. Welke pipeline gebruik je?",
+      "type": "open",
+      "choices": [],
+      "answer": "history | awk '{print $2}' | sort | uniq -c | sort -nr | head -10",
+      "explanation": "history geeft de commandogeschiedenis. awk '{print $2}' extraheert het tweede veld (het commando). Daarna wordt de standaard frequentietelling-pipeline (sort | uniq -c | sort -nr) toegepast en head -10 toont de top 10."
+    },
+    {
+      "question": "Wat is het verschil tussen `grep -l` en `grep -L`?",
+      "type": "mc",
+      "choices": [
+        "A: -l toont bestanden met overeenkomsten; -L toont bestanden zonder overeenkomsten",
+        "B: -l toont regelnummers; -L toont bestandsnamen",
+        "C: -l is hoofdletterongevoelig; -L is hoofdlettergevoelig",
+        "D: Er is geen verschil"
+      ],
+      "answer": "A: -l toont bestanden met overeenkomsten; -L toont bestanden zonder overeenkomsten",
+      "explanation": "-l (lowercase L) toont alleen de bestandsnamen die minstens één overeenkomst bevatten. -L toont de bestandsnamen die géén overeenkomst bevatten. Beide zijn handig bij het doorzoeken van meerdere bestanden."
+    }
+  ]
+}

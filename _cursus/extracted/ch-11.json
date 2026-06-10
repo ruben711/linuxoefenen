@@ -1,0 +1,1306 @@
+{
+  "chapterId": "11",
+  "chapterTitle": "Serverbeheer",
+  "summary": "Dit hoofdstuk behandelt het beheer van een Linux-server: procesbeheer, systeemservices met systemd, taakplanning met cron, netwerkconfiguratie, systeemonderhoud en monitoring, back-up- en herstelstrategieën, en prestatieoptimalisatie. De leerstof is informatief van aard en wordt niet getoetst in het examen, maar biedt een integratie van alle eerder geleerde vaardigheden voor echte systeembeheer­taken.",
+  "commands": [
+    {
+      "name": "ps",
+      "category": "Processen",
+      "short": "Toont lopende processen op het systeem.",
+      "synopsis": "ps [OPTIE]...",
+      "flags": [
+        { "flag": "aux", "desc": "Toont alle processen van alle gebruikers met uitgebreide info (gebruiker, PID, CPU, MEM, etc.)." },
+        { "flag": "-ef", "desc": "Toont alle processen in uitgebreid formaat (alternatief voor aux)." },
+        { "flag": "--forest", "desc": "Toont een boomstructuur van proces-kind-relaties." },
+        { "flag": "-u gebruiker", "desc": "Toont processen die door een specifieke gebruiker draaien." },
+        { "flag": "--sort=-%cpu", "desc": "Sorteert resultaten op CPU-gebruik (hoogste eerst)." },
+        { "flag": "--sort=-%mem", "desc": "Sorteert resultaten op geheugengebruik (hoogste eerst)." }
+      ],
+      "examples": [
+        { "cmd": "ps aux", "desc": "Toont alle processen van alle gebruikers." },
+        { "cmd": "ps -ef", "desc": "Toont alle processen in volledig formaat." },
+        { "cmd": "ps aux --forest", "desc": "Toont processenlijst als boomstructuur." },
+        { "cmd": "ps aux --sort=-%cpu | head -10", "desc": "Toont de 10 processen met hoogste CPU-gebruik." }
+      ],
+      "related": ["top", "htop", "pgrep", "kill"],
+      "tags": ["processen", "monitoring"]
+    },
+    {
+      "name": "top",
+      "category": "Processen",
+      "short": "Interactieve weergave van lopende processen en systeemresources.",
+      "synopsis": "top [OPTIE]...",
+      "flags": [
+        { "flag": "-bn1", "desc": "Niet-interactieve modus, één iteratie (nuttig in scripts)." },
+        { "flag": "-o %CPU", "desc": "Sorteert op CPU-gebruik." }
+      ],
+      "examples": [
+        { "cmd": "top", "desc": "Start de interactieve procesmonitor." },
+        { "cmd": "top -bn1 | grep 'Cpu(s)'", "desc": "Toont CPU-gebruik eenmalig voor gebruik in een script." }
+      ],
+      "related": ["htop", "ps", "vmstat"],
+      "tags": ["processen", "monitoring", "systeem"]
+    },
+    {
+      "name": "htop",
+      "category": "Processen",
+      "short": "Uitgebreide interactieve procesmonitor (moet apart geïnstalleerd worden).",
+      "synopsis": "htop",
+      "flags": [],
+      "examples": [
+        { "cmd": "htop", "desc": "Start de uitgebreide interactieve procesmonitor." }
+      ],
+      "related": ["top", "ps"],
+      "tags": ["processen", "monitoring"]
+    },
+    {
+      "name": "pgrep",
+      "category": "Processen",
+      "short": "Zoekt processen op naam en geeft hun PID terug.",
+      "synopsis": "pgrep [OPTIE]... PATROON",
+      "flags": [
+        { "flag": "-l", "desc": "Toont ook de procesnaam naast de PID." }
+      ],
+      "examples": [
+        { "cmd": "pgrep firefox", "desc": "Geeft de PID van het firefox-proces terug." },
+        { "cmd": "pgrep -l ssh", "desc": "Toont PID en naam van ssh-processen." }
+      ],
+      "related": ["ps", "kill", "pkill"],
+      "tags": ["processen"]
+    },
+    {
+      "name": "kill",
+      "category": "Processen",
+      "short": "Stuurt een signaal naar een proces op basis van PID.",
+      "synopsis": "kill [SIGNAAL] PID",
+      "flags": [
+        { "flag": "-9", "desc": "Stuurt het KILL-signaal (onmiddellijk beëindigen, kan niet genegeerd worden)." },
+        { "flag": "-STOP", "desc": "Pauzeert het proces." },
+        { "flag": "-CONT", "desc": "Hervat een gepauzeerd proces." }
+      ],
+      "examples": [
+        { "cmd": "kill 1234", "desc": "Stuurt TERM-signaal (vriendelijk afsluiten) naar PID 1234." },
+        { "cmd": "kill -9 1234", "desc": "Dwingt PID 1234 onmiddellijk te stoppen." },
+        { "cmd": "kill -STOP 1234", "desc": "Pauzeert het proces met PID 1234." }
+      ],
+      "related": ["killall", "pkill", "pgrep"],
+      "tags": ["processen", "signalen"]
+    },
+    {
+      "name": "killall",
+      "category": "Processen",
+      "short": "Beëindigt alle processen met een bepaalde naam.",
+      "synopsis": "killall [OPTIE]... NAAM",
+      "flags": [],
+      "examples": [
+        { "cmd": "killall firefox", "desc": "Beëindigt alle processen met de naam firefox." }
+      ],
+      "related": ["kill", "pkill"],
+      "tags": ["processen"]
+    },
+    {
+      "name": "pkill",
+      "category": "Processen",
+      "short": "Beëindigt processen op basis van naam of patroon.",
+      "synopsis": "pkill [OPTIE]... PATROON",
+      "flags": [
+        { "flag": "-u gebruiker", "desc": "Beëindigt alle processen van een specifieke gebruiker." }
+      ],
+      "examples": [
+        { "cmd": "pkill firefox", "desc": "Beëindigt alle processen die overeenkomen met 'firefox'." },
+        { "cmd": "sudo pkill -u alice", "desc": "Beëindigt alle processen van gebruiker alice." }
+      ],
+      "related": ["kill", "killall", "pgrep"],
+      "tags": ["processen"]
+    },
+    {
+      "name": "jobs",
+      "category": "Processen",
+      "short": "Toont de achtergrondtaken van de huidige shell-sessie.",
+      "synopsis": "jobs",
+      "flags": [],
+      "examples": [
+        { "cmd": "jobs", "desc": "Geeft een overzicht van alle achtergrondtaken in de huidige shell." }
+      ],
+      "related": ["fg", "bg", "nohup"],
+      "tags": ["processen", "achtergrond"]
+    },
+    {
+      "name": "fg",
+      "category": "Processen",
+      "short": "Brengt een achtergrondtaak terug naar de voorgrond.",
+      "synopsis": "fg [%TAAKNUMMER]",
+      "flags": [],
+      "examples": [
+        { "cmd": "fg %1", "desc": "Brengt taak 1 (te zien via 'jobs') naar de voorgrond." }
+      ],
+      "related": ["bg", "jobs"],
+      "tags": ["processen", "achtergrond"]
+    },
+    {
+      "name": "bg",
+      "category": "Processen",
+      "short": "Stuurt een gestopte taak naar de achtergrond.",
+      "synopsis": "bg [%TAAKNUMMER]",
+      "flags": [],
+      "examples": [
+        { "cmd": "bg %1", "desc": "Hervat taak 1 op de achtergrond." }
+      ],
+      "related": ["fg", "jobs"],
+      "tags": ["processen", "achtergrond"]
+    },
+    {
+      "name": "nohup",
+      "category": "Processen",
+      "short": "Voert een commando uit dat blijft draaien na afmelden (immuun voor HUP-signaal).",
+      "synopsis": "nohup COMMANDO [ARG]... &",
+      "flags": [],
+      "examples": [
+        { "cmd": "nohup ./script.sh &", "desc": "Voert script.sh uit in de achtergrond, ook na afmelden." }
+      ],
+      "related": ["jobs", "bg"],
+      "tags": ["processen", "achtergrond"]
+    },
+    {
+      "name": "nice",
+      "category": "Processen",
+      "short": "Voert een commando uit met een aangepaste prioriteit (nice-waarde).",
+      "synopsis": "nice [-n PRIORITEIT] COMMANDO",
+      "flags": [
+        { "flag": "-n WAARDE", "desc": "Stelt de nice-waarde in (-20 = hoogste prioriteit, 19 = laagste prioriteit)." }
+      ],
+      "examples": [
+        { "cmd": "nice -n 10 ./backup.sh", "desc": "Voert backup.sh uit met lage prioriteit (10)." },
+        { "cmd": "nice -n -5 ./kritisch.sh", "desc": "Voert kritisch.sh uit met hogere prioriteit (vereist rechten)." }
+      ],
+      "related": ["renice", "top"],
+      "tags": ["processen", "prioriteit"]
+    },
+    {
+      "name": "renice",
+      "category": "Processen",
+      "short": "Wijzigt de prioriteit van een al lopend proces.",
+      "synopsis": "renice PRIORITEIT PID",
+      "flags": [
+        { "flag": "-u gebruiker", "desc": "Wijzigt de prioriteit van alle processen van een gebruiker." }
+      ],
+      "examples": [
+        { "cmd": "renice 5 1234", "desc": "Stelt de nice-waarde van PID 1234 in op 5." },
+        { "cmd": "renice -5 -u alice", "desc": "Verhoogt de prioriteit van alle processen van alice." }
+      ],
+      "related": ["nice", "ps"],
+      "tags": ["processen", "prioriteit"]
+    },
+    {
+      "name": "vmstat",
+      "category": "Systeem",
+      "short": "Toont statistieken over geheugen, swap, I/O en CPU.",
+      "synopsis": "vmstat [INTERVAL] [AANTAL]",
+      "flags": [
+        { "flag": "-m", "desc": "Toont geheugen-slab-statistieken." }
+      ],
+      "examples": [
+        { "cmd": "vmstat 1", "desc": "Toont systeemstatistieken elke seconde." },
+        { "cmd": "vmstat 1 10", "desc": "Toont statistieken 10 keer met interval van 1 seconde." }
+      ],
+      "related": ["top", "free", "iostat"],
+      "tags": ["systeem", "monitoring", "geheugen"]
+    },
+    {
+      "name": "iostat",
+      "category": "Systeem",
+      "short": "Toont I/O-statistieken van schijven en partities.",
+      "synopsis": "iostat [OPTIE]... [INTERVAL] [AANTAL]",
+      "flags": [
+        { "flag": "-x", "desc": "Toont uitgebreide statistieken per schijf." }
+      ],
+      "examples": [
+        { "cmd": "iostat 1", "desc": "Toont I/O-statistieken elke seconde." },
+        { "cmd": "iostat -x 1 10", "desc": "Uitgebreide I/O-statistieken, 10 keer elke seconde." }
+      ],
+      "related": ["vmstat", "df", "du"],
+      "tags": ["systeem", "schijf", "monitoring"]
+    },
+    {
+      "name": "free",
+      "category": "Systeem",
+      "short": "Toont het geheugengebruik van het systeem.",
+      "synopsis": "free [OPTIE]",
+      "flags": [
+        { "flag": "-h", "desc": "Toont geheugenwaarden in leesbaar formaat (KB, MB, GB)." }
+      ],
+      "examples": [
+        { "cmd": "free -h", "desc": "Toont RAM- en swap-gebruik in leesbaar formaat." }
+      ],
+      "related": ["vmstat", "top"],
+      "tags": ["systeem", "geheugen", "monitoring"]
+    },
+    {
+      "name": "uptime",
+      "category": "Systeem",
+      "short": "Toont hoe lang het systeem draait en de gemiddelde belasting.",
+      "synopsis": "uptime",
+      "flags": [
+        { "flag": "-p", "desc": "Toont de uptime in een leesbaar formaat (bv. 'up 2 hours, 15 minutes')." }
+      ],
+      "examples": [
+        { "cmd": "uptime", "desc": "Toont uptime en load average van het systeem." },
+        { "cmd": "uptime -p", "desc": "Toont de uptime in mensvriendelijk formaat." }
+      ],
+      "related": ["w", "top"],
+      "tags": ["systeem", "monitoring"]
+    },
+    {
+      "name": "w",
+      "category": "Systeem",
+      "short": "Toont wie er ingelogd is en wat ze doen.",
+      "synopsis": "w [GEBRUIKER]",
+      "flags": [],
+      "examples": [
+        { "cmd": "w", "desc": "Toont alle ingelogde gebruikers en hun huidige activiteit." }
+      ],
+      "related": ["who", "last", "uptime"],
+      "tags": ["gebruikers", "systeem", "monitoring"]
+    },
+    {
+      "name": "systemctl",
+      "category": "Systeem",
+      "short": "Beheert systemd-services en het systeem.",
+      "synopsis": "systemctl [COMMANDO] [SERVICE]",
+      "flags": [
+        { "flag": "status SERVICE", "desc": "Toont de status van een service." },
+        { "flag": "start SERVICE", "desc": "Start een service." },
+        { "flag": "stop SERVICE", "desc": "Stopt een service." },
+        { "flag": "restart SERVICE", "desc": "Herstart een service." },
+        { "flag": "reload SERVICE", "desc": "Herlaadt de configuratie van een service zonder te herstarten." },
+        { "flag": "enable SERVICE", "desc": "Schakelt de service in om automatisch te starten bij het opstarten." },
+        { "flag": "disable SERVICE", "desc": "Schakelt automatisch starten bij het opstarten uit." },
+        { "flag": "enable --now SERVICE", "desc": "Schakelt in én start de service meteen." },
+        { "flag": "list-units --type=service", "desc": "Toont alle geladen service-units." },
+        { "flag": "list-units --state=failed", "desc": "Toont alle mislukte services." },
+        { "flag": "list-unit-files --type=service", "desc": "Toont alle beschikbare service-bestanden." },
+        { "flag": "daemon-reload", "desc": "Herlaadt de systemd-configuratie na wijzigingen." },
+        { "flag": "get-default", "desc": "Toont het standaard runlevel (target)." },
+        { "flag": "set-default TARGET", "desc": "Stelt het standaard runlevel in." },
+        { "flag": "isolate TARGET", "desc": "Schakelt tijdelijk naar een ander target (runlevel)." },
+        { "flag": "is-active SERVICE", "desc": "Controleert of een service actief is (exitcode 0 = ja)." }
+      ],
+      "examples": [
+        { "cmd": "systemctl status ssh", "desc": "Toont de status van de SSH-service." },
+        { "cmd": "sudo systemctl restart nginx", "desc": "Herstart de nginx-webserver." },
+        { "cmd": "sudo systemctl enable --now ssh", "desc": "Schakelt SSH in en start het meteen." },
+        { "cmd": "systemctl list-units --state=failed", "desc": "Toont alle mislukte services." },
+        { "cmd": "sudo systemctl daemon-reload", "desc": "Herlaadt systemd na een wijziging aan een service-bestand." }
+      ],
+      "related": ["journalctl", "service"],
+      "tags": ["systeem", "services", "systemd"]
+    },
+    {
+      "name": "journalctl",
+      "category": "Systeem",
+      "short": "Toont logs van het systemd-journaal.",
+      "synopsis": "journalctl [OPTIE]...",
+      "flags": [
+        { "flag": "-u SERVICE", "desc": "Toont logs van een specifieke service." },
+        { "flag": "-f", "desc": "Volgt het journaal in realtime (zoals tail -f)." },
+        { "flag": "--since \"TIJDSTIP\"", "desc": "Toont logs vanaf een bepaald tijdstip (bv. '1 hour ago')." }
+      ],
+      "examples": [
+        { "cmd": "sudo journalctl", "desc": "Toont alle systeemlogboeken." },
+        { "cmd": "sudo journalctl -u ssh", "desc": "Toont alleen de logs van de SSH-service." },
+        { "cmd": "sudo journalctl -f", "desc": "Volgt het systeemlogboek in realtime." },
+        { "cmd": "sudo journalctl --since '1 hour ago'", "desc": "Toont logs van het afgelopen uur." }
+      ],
+      "related": ["systemctl", "tail"],
+      "tags": ["systeem", "logs", "monitoring"]
+    },
+    {
+      "name": "crontab",
+      "category": "Systeem",
+      "short": "Beheert geplande taken (cron-jobs) voor een gebruiker.",
+      "synopsis": "crontab [OPTIE]",
+      "flags": [
+        { "flag": "-e", "desc": "Opent de crontab van de huidige gebruiker voor bewerking." },
+        { "flag": "-l", "desc": "Toont de huidige cron-jobs van de gebruiker." },
+        { "flag": "-r", "desc": "Verwijdert alle cron-jobs van de gebruiker." },
+        { "flag": "-e -u gebruiker", "desc": "Bewerkt de crontab van een andere gebruiker (als root)." }
+      ],
+      "examples": [
+        { "cmd": "crontab -e", "desc": "Opent de crontab-editor om taken toe te voegen of te wijzigen." },
+        { "cmd": "crontab -l", "desc": "Toont een lijst van alle geplande taken." },
+        { "cmd": "crontab -r", "desc": "Verwijdert alle geplande taken van de huidige gebruiker." }
+      ],
+      "related": ["systemctl"],
+      "tags": ["systeem", "automatisering", "cron"]
+    },
+    {
+      "name": "ip",
+      "category": "Netwerk",
+      "short": "Toont en beheert netwerkinstellingen (interfaces, routes, adressen).",
+      "synopsis": "ip [SUBCOMMANDO] [OPTIE]...",
+      "flags": [
+        { "flag": "addr show", "desc": "Toont alle netwerkadressen van alle interfaces." },
+        { "flag": "a", "desc": "Verkorte versie van 'addr show'." },
+        { "flag": "route show", "desc": "Toont de routeringstabel." },
+        { "flag": "link set INTERFACE up", "desc": "Schakelt een netwerkinterface in." },
+        { "flag": "link set INTERFACE down", "desc": "Schakelt een netwerkinterface uit." },
+        { "flag": "addr add IP/MASK dev INTERFACE", "desc": "Voegt tijdelijk een IP-adres toe aan een interface." }
+      ],
+      "examples": [
+        { "cmd": "ip addr show", "desc": "Toont alle IP-adressen en netwerkinterfaces." },
+        { "cmd": "ip a", "desc": "Korte notatie voor ip addr show." },
+        { "cmd": "ip route show", "desc": "Toont de routeringstabel." },
+        { "cmd": "sudo ip link set eth0 up", "desc": "Schakelt de interface eth0 in." }
+      ],
+      "related": ["ifconfig", "ping", "netstat", "ss"],
+      "tags": ["netwerk"]
+    },
+    {
+      "name": "ss",
+      "category": "Netwerk",
+      "short": "Toont socketstatistieken en actieve netwerkverbindingen (moderne vervanger van netstat).",
+      "synopsis": "ss [OPTIE]...",
+      "flags": [
+        { "flag": "-t", "desc": "Toont TCP-verbindingen." },
+        { "flag": "-u", "desc": "Toont UDP-verbindingen." },
+        { "flag": "-l", "desc": "Toont alleen luisterende sockets." },
+        { "flag": "-n", "desc": "Toont nummers in plaats van servicenamen." },
+        { "flag": "-p", "desc": "Toont het processenassociatie per socket." }
+      ],
+      "examples": [
+        { "cmd": "ss -tuln", "desc": "Toont alle TCP/UDP-poorten die luisteren." },
+        { "cmd": "ss -tup", "desc": "Toont TCP/UDP-verbindingen met procesnamen." }
+      ],
+      "related": ["netstat", "ip"],
+      "tags": ["netwerk"]
+    },
+    {
+      "name": "ping",
+      "category": "Netwerk",
+      "short": "Test de netwerkverbinding met een host.",
+      "synopsis": "ping [OPTIE]... HOST",
+      "flags": [
+        { "flag": "-c AANTAL", "desc": "Stuurt een bepaald aantal pakketten in plaats van oneindig." }
+      ],
+      "examples": [
+        { "cmd": "ping google.com", "desc": "Test de verbinding met google.com (oneindig, stop met Ctrl+C)." },
+        { "cmd": "ping -c 4 google.com", "desc": "Stuurt exact 4 pakketten naar google.com." }
+      ],
+      "related": ["traceroute", "ip"],
+      "tags": ["netwerk"]
+    },
+    {
+      "name": "traceroute",
+      "category": "Netwerk",
+      "short": "Toont het netwerkpad (hops) naar een bestemming.",
+      "synopsis": "traceroute HOST",
+      "flags": [],
+      "examples": [
+        { "cmd": "traceroute google.com", "desc": "Toont elk netwerkstation op weg naar google.com." }
+      ],
+      "related": ["ping", "ip"],
+      "tags": ["netwerk"]
+    },
+    {
+      "name": "nslookup",
+      "category": "Netwerk",
+      "short": "Voert een DNS-opzoeking uit voor een hostnaam.",
+      "synopsis": "nslookup HOST",
+      "flags": [],
+      "examples": [
+        { "cmd": "nslookup google.com", "desc": "Zoekt het IP-adres van google.com op via DNS." }
+      ],
+      "related": ["dig", "host"],
+      "tags": ["netwerk", "dns"]
+    },
+    {
+      "name": "dig",
+      "category": "Netwerk",
+      "short": "Voert uitgebreide DNS-opzoekopdrachten uit.",
+      "synopsis": "dig [OPTIE]... HOST",
+      "flags": [],
+      "examples": [
+        { "cmd": "dig google.com", "desc": "Toont gedetailleerde DNS-informatie voor google.com." }
+      ],
+      "related": ["nslookup", "host"],
+      "tags": ["netwerk", "dns"]
+    },
+    {
+      "name": "ufw",
+      "category": "Netwerk",
+      "short": "Beheert de eenvoudige firewall (Uncomplicated Firewall) van Ubuntu/Debian.",
+      "synopsis": "ufw [COMMANDO] [REGEL]",
+      "flags": [
+        { "flag": "status", "desc": "Toont de huidige firewall-status en regels." },
+        { "flag": "enable", "desc": "Schakelt de firewall in." },
+        { "flag": "allow ssh", "desc": "Staat SSH-verkeer toe." },
+        { "flag": "allow 80/tcp", "desc": "Staat TCP-verkeer op poort 80 toe." },
+        { "flag": "deny 23/tcp", "desc": "Blokkeert TCP-verkeer op poort 23." }
+      ],
+      "examples": [
+        { "cmd": "sudo ufw status", "desc": "Toont of de firewall actief is en welke regels er gelden." },
+        { "cmd": "sudo ufw enable", "desc": "Schakelt de firewall in." },
+        { "cmd": "sudo ufw allow ssh", "desc": "Voegt een regel toe om SSH-verbindingen toe te staan." }
+      ],
+      "related": ["ss", "iptables"],
+      "tags": ["netwerk", "beveiliging", "firewall"]
+    },
+    {
+      "name": "apt",
+      "category": "Pakketten",
+      "short": "Beheert softwarepakketten op Debian/Ubuntu-systemen.",
+      "synopsis": "apt [COMMANDO] [PAKKET]",
+      "flags": [
+        { "flag": "update", "desc": "Ververst de lijst met beschikbare pakketten." },
+        { "flag": "upgrade", "desc": "Upgrades alle geïnstalleerde pakketten naar de nieuwste versie." },
+        { "flag": "install PAKKET", "desc": "Installeert een pakket." },
+        { "flag": "remove PAKKET", "desc": "Verwijdert een pakket (behoudt configuratiebestanden)." },
+        { "flag": "autoremove", "desc": "Verwijdert automatisch onnodige afhankelijkheden." },
+        { "flag": "search ZOEKTERM", "desc": "Zoekt naar pakketten op naam of omschrijving." }
+      ],
+      "examples": [
+        { "cmd": "sudo apt update", "desc": "Ververst de pakketlijsten van de repositories." },
+        { "cmd": "sudo apt upgrade", "desc": "Upgradet alle geïnstalleerde pakketten." },
+        { "cmd": "sudo apt install nginx", "desc": "Installeert de nginx-webserver." },
+        { "cmd": "sudo apt update && sudo apt upgrade -y", "desc": "Ververs pakketlijsten en upgrade alles zonder bevestiging." }
+      ],
+      "related": ["dpkg", "apt-get"],
+      "tags": ["pakketten", "systeem"]
+    },
+    {
+      "name": "rsync",
+      "category": "Archieven",
+      "short": "Synchroniseert bestanden en mappen lokaal of over het netwerk.",
+      "synopsis": "rsync [OPTIE]... BRON DOEL",
+      "flags": [
+        { "flag": "-a", "desc": "Archiefmodus: behoudt rechten, eigenaar, tijdstempels en kopieert recursief." },
+        { "flag": "-v", "desc": "Uitgebreide uitvoer (verbose)." },
+        { "flag": "--delete", "desc": "Verwijdert bestanden in de doelmap die niet meer in de bronmap bestaan." }
+      ],
+      "examples": [
+        { "cmd": "rsync -av --delete /home/ /backup/home/", "desc": "Synchroniseert /home naar /backup/home en verwijdert verouderde bestanden." },
+        { "cmd": "rsync -av /home/ user@server:/backups/home/", "desc": "Synchroniseert /home naar een externe server via SSH." }
+      ],
+      "related": ["tar", "scp"],
+      "tags": ["archieven", "back-up", "netwerk"]
+    },
+    {
+      "name": "dd",
+      "category": "Archieven",
+      "short": "Kopieert en converteert bestanden op een laag niveau (ook schijfimages).",
+      "synopsis": "dd if=INVOER of=UITVOER [OPTIE]...",
+      "flags": [
+        { "flag": "if=BESTAND", "desc": "Invoerbestand of apparaat." },
+        { "flag": "of=BESTAND", "desc": "Uitvoerbestand of apparaat." },
+        { "flag": "bs=BLOKGROOTTE", "desc": "Blokgrootte (bv. 4M voor 4 megabyte per blok)." },
+        { "flag": "status=progress", "desc": "Toont voortgang tijdens het kopiëren." }
+      ],
+      "examples": [
+        { "cmd": "sudo dd if=/dev/sda of=/backup/disk_image.img bs=4M status=progress", "desc": "Maakt een volledige schijfimage van /dev/sda." },
+        { "cmd": "sudo gunzip -c /backup/disk.img.gz | dd of=/dev/sda bs=4M", "desc": "Herstelt een gecomprimeerde schijfimage naar /dev/sda." }
+      ],
+      "related": ["tar", "rsync"],
+      "tags": ["archieven", "back-up", "schijf"]
+    },
+    {
+      "name": "df",
+      "category": "Systeem",
+      "short": "Toont het schijfgebruik van bestandssystemen.",
+      "synopsis": "df [OPTIE]... [BESTANDSSYSTEEM]...",
+      "flags": [
+        { "flag": "-h", "desc": "Toont groottes in leesbaar formaat (KB, MB, GB)." }
+      ],
+      "examples": [
+        { "cmd": "df -h", "desc": "Toont schijfgebruik van alle bestandssystemen in leesbaar formaat." }
+      ],
+      "related": ["du", "iostat"],
+      "tags": ["systeem", "schijf", "monitoring"]
+    },
+    {
+      "name": "du",
+      "category": "Systeem",
+      "short": "Toont de schijfruimte die mappen en bestanden gebruiken.",
+      "synopsis": "du [OPTIE]... [MAP]...",
+      "flags": [
+        { "flag": "-s", "desc": "Toont alleen de totale som van de opgegeven map." },
+        { "flag": "-h", "desc": "Toont groottes in leesbaar formaat." },
+        { "flag": "--max-depth=N", "desc": "Beperkt de rapportage tot N niveaus diep." }
+      ],
+      "examples": [
+        { "cmd": "du -sh /home/", "desc": "Toont de totale grootte van de map /home." },
+        { "cmd": "du -h --max-depth=1 /", "desc": "Toont de grootte van alle submappen onder / (één niveau diep)." }
+      ],
+      "related": ["df", "ls"],
+      "tags": ["systeem", "schijf"]
+    },
+    {
+      "name": "lsof",
+      "category": "Processen",
+      "short": "Toont een lijst van alle geopende bestanden en sockets.",
+      "synopsis": "lsof [OPTIE]...",
+      "flags": [
+        { "flag": "-p PID", "desc": "Toont bestanden die door een specifiek proces zijn geopend." }
+      ],
+      "examples": [
+        { "cmd": "lsof | grep deleted", "desc": "Zoekt naar bestanden die verwijderd zijn maar nog open staan." },
+        { "cmd": "lsof -p 1234", "desc": "Toont alle bestanden geopend door het proces met PID 1234." }
+      ],
+      "related": ["ps", "fuser"],
+      "tags": ["processen", "bestanden", "monitoring"]
+    },
+    {
+      "name": "last",
+      "category": "Gebruikers",
+      "short": "Toont een geschiedenis van in- en uitloggebeurtenissen.",
+      "synopsis": "last [OPTIE]... [GEBRUIKER]",
+      "flags": [
+        { "flag": "-n AANTAL", "desc": "Beperkt de uitvoer tot de laatste N regels." }
+      ],
+      "examples": [
+        { "cmd": "last", "desc": "Toont de volledige aanmeldingsgeschiedenis." },
+        { "cmd": "last -n 5", "desc": "Toont de laatste 5 aanmeldingen." }
+      ],
+      "related": ["who", "w"],
+      "tags": ["gebruikers", "beveiliging"]
+    },
+    {
+      "name": "who",
+      "category": "Gebruikers",
+      "short": "Toont welke gebruikers momenteel ingelogd zijn.",
+      "synopsis": "who",
+      "flags": [],
+      "examples": [
+        { "cmd": "who", "desc": "Toont alle ingelogde gebruikers en hun terminal." }
+      ],
+      "related": ["w", "last"],
+      "tags": ["gebruikers"]
+    },
+    {
+      "name": "hostname",
+      "category": "Systeem",
+      "short": "Toont of stelt de hostnaam van het systeem in.",
+      "synopsis": "hostname",
+      "flags": [],
+      "examples": [
+        { "cmd": "hostname", "desc": "Toont de huidige hostnaam van het systeem." }
+      ],
+      "related": ["uname", "ip"],
+      "tags": ["systeem", "netwerk"]
+    },
+    {
+      "name": "uname",
+      "category": "Systeem",
+      "short": "Toont informatie over het besturingssysteem en de kernel.",
+      "synopsis": "uname [OPTIE]",
+      "flags": [
+        { "flag": "-a", "desc": "Toont alle systeem-informatie (kernel, hostnaam, architectuur, etc.)." },
+        { "flag": "-r", "desc": "Toont alleen de kernelversie." }
+      ],
+      "examples": [
+        { "cmd": "uname -a", "desc": "Toont volledige systeem- en kernelinformatie." },
+        { "cmd": "uname -r", "desc": "Toont alleen de kernelversie." }
+      ],
+      "related": ["hostname", "lsb_release"],
+      "tags": ["systeem"]
+    }
+  ],
+  "exercises": [
+    {
+      "title": "Processen bekijken",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Toon alle lopende processen van alle gebruikers met uitgebreide informatie.",
+      "solution": "ps aux",
+      "acceptors": ["ps aux", "ps -aux", "ps -ef"],
+      "expectedOutput": [],
+      "hints": ["Gebruik de vlaggen 'a' (alle gebruikers), 'u' (gebruikersformaat) en 'x' (ook processen zonder terminal)."],
+      "tags": ["processen"],
+      "commandsUsed": ["ps"]
+    },
+    {
+      "title": "Processen sorteren op CPU-gebruik",
+      "difficulty": "easy",
+      "type": "pipeline",
+      "prompt": "Toon de 10 processen die de meeste CPU-tijd gebruiken, gesorteerd van hoog naar laag.",
+      "solution": "ps aux --sort=-%cpu | head -10",
+      "acceptors": ["ps aux --sort=-%cpu | head -10", "ps aux --sort=-%cpu | head -n 10"],
+      "expectedOutput": [],
+      "hints": ["Gebruik ps met --sort=-%cpu (min-teken = aflopend) en pipe naar head."],
+      "tags": ["processen", "monitoring"],
+      "commandsUsed": ["ps", "head"]
+    },
+    {
+      "title": "Processenstructuur als boom",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Toon alle lopende processen als een boomstructuur die de ouder-kind-relaties weergeeft.",
+      "solution": "ps aux --forest",
+      "acceptors": ["ps aux --forest", "pstree"],
+      "expectedOutput": [],
+      "hints": ["Gebruik de vlag --forest bij het ps-commando, of gebruik het aparte commando pstree."],
+      "tags": ["processen"],
+      "commandsUsed": ["ps"]
+    },
+    {
+      "title": "Proces beëindigen",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Stuur het KILL-signaal naar het proces met PID 5678 om het onmiddellijk te beëindigen.",
+      "solution": "kill -9 5678",
+      "acceptors": ["kill -9 5678", "kill -KILL 5678", "kill -s KILL 5678"],
+      "expectedOutput": [],
+      "hints": ["Signaal -9 staat voor SIGKILL, de geforceerde stop."],
+      "tags": ["processen", "signalen"],
+      "commandsUsed": ["kill"]
+    },
+    {
+      "title": "Alle processen van een gebruiker beëindigen",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Beëindig alle processen van de gebruiker 'testuser' met pkill.",
+      "solution": "sudo pkill -u testuser",
+      "acceptors": ["sudo pkill -u testuser", "pkill -u testuser"],
+      "expectedOutput": [],
+      "hints": ["pkill met de vlag -u laat je processen van een specifieke gebruiker beëindigen."],
+      "tags": ["processen"],
+      "commandsUsed": ["pkill"]
+    },
+    {
+      "title": "Commando op de achtergrond draaien",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Voer het commando 'sleep 100' op de achtergrond uit.",
+      "solution": "sleep 100 &",
+      "acceptors": ["sleep 100 &"],
+      "expectedOutput": [],
+      "hints": ["Voeg een '&' toe aan het einde van het commando om het op de achtergrond te draaien."],
+      "tags": ["processen", "achtergrond"],
+      "commandsUsed": ["sleep"]
+    },
+    {
+      "title": "Achtergrondtaken bekijken",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Toon alle achtergrondtaken van de huidige shell-sessie.",
+      "solution": "jobs",
+      "acceptors": ["jobs"],
+      "expectedOutput": [],
+      "hints": ["Het commando 'jobs' geeft een overzicht van taken die op de achtergrond draaien."],
+      "tags": ["processen", "achtergrond"],
+      "commandsUsed": ["jobs"]
+    },
+    {
+      "title": "Service controleren",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Controleer de status van de SSH-service met systemctl.",
+      "solution": "systemctl status ssh",
+      "acceptors": ["systemctl status ssh", "systemctl status sshd", "sudo systemctl status ssh"],
+      "expectedOutput": [],
+      "hints": ["Gebruik 'systemctl status' gevolgd door de servicenaam."],
+      "tags": ["services", "systemd"],
+      "commandsUsed": ["systemctl"]
+    },
+    {
+      "title": "Service herstarten",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Herstart de nginx-service.",
+      "solution": "sudo systemctl restart nginx",
+      "acceptors": ["sudo systemctl restart nginx"],
+      "expectedOutput": [],
+      "hints": ["Gebruik 'sudo systemctl restart' met de servicenaam."],
+      "tags": ["services", "systemd"],
+      "commandsUsed": ["systemctl"]
+    },
+    {
+      "title": "Service automatisch laten starten",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Zorg ervoor dat de nginx-service automatisch start bij het opstarten van het systeem én start hem meteen.",
+      "solution": "sudo systemctl enable --now nginx",
+      "acceptors": ["sudo systemctl enable --now nginx"],
+      "expectedOutput": [],
+      "hints": ["De vlag --now combineert enable en start in één commando."],
+      "tags": ["services", "systemd"],
+      "commandsUsed": ["systemctl"]
+    },
+    {
+      "title": "Mislukte services tonen",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Toon alle services die momenteel in een fout-toestand verkeren.",
+      "solution": "systemctl list-units --state=failed",
+      "acceptors": ["systemctl list-units --state=failed", "sudo systemctl list-units --state=failed"],
+      "expectedOutput": [],
+      "hints": ["Gebruik systemctl list-units met de vlag --state=failed."],
+      "tags": ["services", "systemd"],
+      "commandsUsed": ["systemctl"]
+    },
+    {
+      "title": "Crontab bekijken",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Toon alle geplande cron-jobs van de huidige gebruiker.",
+      "solution": "crontab -l",
+      "acceptors": ["crontab -l"],
+      "expectedOutput": [],
+      "hints": ["De vlag -l staat voor 'list'."],
+      "tags": ["cron", "automatisering"],
+      "commandsUsed": ["crontab"]
+    },
+    {
+      "title": "Crontab-formaat herkennen",
+      "difficulty": "medium",
+      "type": "predict",
+      "prompt": "Wat betekent de volgende cron-expressie: '30 2 * * * /opt/backup.sh'? Geef aan hoe vaak en wanneer het script uitgevoerd wordt.",
+      "solution": "30 2 * * * /opt/backup.sh",
+      "acceptors": [],
+      "expectedOutput": ["Elke dag om 02:30 uur"],
+      "hints": ["De cron-velden zijn: minuut uur dag-van-maand maand dag-van-week commando."],
+      "tags": ["cron", "automatisering"],
+      "commandsUsed": []
+    },
+    {
+      "title": "Dagelijkse back-up plannen met cron",
+      "difficulty": "medium",
+      "type": "command",
+      "prompt": "Voeg een cron-job toe die elke dag om 02:00 uur het script /opt/scripts/backup.sh uitvoert. Gebruik crontab -e (toon het commando dat je in de crontab zet).",
+      "solution": "0 2 * * * /opt/scripts/backup.sh",
+      "acceptors": ["0 2 * * * /opt/scripts/backup.sh"],
+      "expectedOutput": [],
+      "hints": ["Het formaat is: minuut uur * * * commando. Minuut 0, uur 2 = 02:00."],
+      "tags": ["cron", "automatisering"],
+      "commandsUsed": ["crontab"]
+    },
+    {
+      "title": "Netwerk-interfaces bekijken",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Toon alle netwerkinterfaces en hun IP-adressen.",
+      "solution": "ip addr show",
+      "acceptors": ["ip addr show", "ip a", "ip addr", "ifconfig"],
+      "expectedOutput": [],
+      "hints": ["Gebruik het moderne ip-commando of de klassieke ifconfig."],
+      "tags": ["netwerk"],
+      "commandsUsed": ["ip"]
+    },
+    {
+      "title": "Connectiviteit testen",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Test de netwerkverbinding met google.com door precies 4 pakketten te sturen.",
+      "solution": "ping -c 4 google.com",
+      "acceptors": ["ping -c 4 google.com", "ping -c4 google.com"],
+      "expectedOutput": [],
+      "hints": ["Gebruik de vlag -c gevolgd door het gewenste aantal pakketten."],
+      "tags": ["netwerk"],
+      "commandsUsed": ["ping"]
+    },
+    {
+      "title": "Luisterende poorten tonen",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Toon alle TCP- en UDP-poorten waarop het systeem momenteel luistert.",
+      "solution": "ss -tuln",
+      "acceptors": ["ss -tuln", "ss -ltun", "netstat -tuln"],
+      "expectedOutput": [],
+      "hints": ["Gebruik ss met de vlaggen -t (TCP), -u (UDP), -l (listening) en -n (numeriek)."],
+      "tags": ["netwerk"],
+      "commandsUsed": ["ss"]
+    },
+    {
+      "title": "Firewall-status bekijken",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Controleer de status van de UFW-firewall en de actieve regels.",
+      "solution": "sudo ufw status",
+      "acceptors": ["sudo ufw status", "ufw status"],
+      "expectedOutput": [],
+      "hints": ["Gebruik ufw met het subcommando 'status'."],
+      "tags": ["netwerk", "beveiliging"],
+      "commandsUsed": ["ufw"]
+    },
+    {
+      "title": "SSH-verkeer toestaan",
+      "difficulty": "easy",
+      "type": "multi-step",
+      "prompt": "Schakel de UFW-firewall in en sta vervolgens SSH-verkeer toe.",
+      "solution": "sudo ufw enable",
+      "acceptors": ["sudo ufw enable"],
+      "expectedOutput": [],
+      "hints": ["Schakel eerst de firewall in, voeg daarna een regel toe."],
+      "tags": ["netwerk", "beveiliging", "firewall"],
+      "commandsUsed": ["ufw"],
+      "steps": [
+        {
+          "prompt": "Schakel de UFW-firewall in.",
+          "acceptors": ["sudo ufw enable"],
+          "solution": "sudo ufw enable",
+          "expectedOutput": [],
+          "hints": ["Gebruik sudo ufw enable."]
+        },
+        {
+          "prompt": "Sta SSH-verkeer toe via UFW.",
+          "acceptors": ["sudo ufw allow ssh", "sudo ufw allow 22/tcp", "sudo ufw allow 22"],
+          "solution": "sudo ufw allow ssh",
+          "expectedOutput": [],
+          "hints": ["Gebruik sudo ufw allow ssh of sudo ufw allow 22/tcp."]
+        }
+      ]
+    },
+    {
+      "title": "Pakketlijsten verversen en upgraden",
+      "difficulty": "easy",
+      "type": "pipeline",
+      "prompt": "Ververs de APT-pakketlijsten en upgrade daarna alle geïnstalleerde pakketten zonder bevestiging.",
+      "solution": "sudo apt update && sudo apt upgrade -y",
+      "acceptors": ["sudo apt update && sudo apt upgrade -y", "sudo apt update && sudo apt upgrade"],
+      "expectedOutput": [],
+      "hints": ["Gebruik apt update gevolgd door apt upgrade met de vlag -y voor automatische bevestiging."],
+      "tags": ["pakketten", "systeem"],
+      "commandsUsed": ["apt"]
+    },
+    {
+      "title": "Pakket installeren",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Installeer het pakket 'htop' via apt.",
+      "solution": "sudo apt install htop",
+      "acceptors": ["sudo apt install htop", "apt install htop"],
+      "expectedOutput": [],
+      "hints": ["Gebruik apt install gevolgd door de pakketnaam."],
+      "tags": ["pakketten"],
+      "commandsUsed": ["apt"]
+    },
+    {
+      "title": "Systeemgeheugen bekijken",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Toon het RAM- en swap-gebruik in een leesbaar formaat.",
+      "solution": "free -h",
+      "acceptors": ["free -h"],
+      "expectedOutput": [],
+      "hints": ["Gebruik het commando free met de vlag -h voor human-readable formaat."],
+      "tags": ["systeem", "geheugen"],
+      "commandsUsed": ["free"]
+    },
+    {
+      "title": "Schijfgebruik bekijken",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Toon het schijfgebruik van alle bestandssystemen in leesbaar formaat.",
+      "solution": "df -h",
+      "acceptors": ["df -h"],
+      "expectedOutput": [],
+      "hints": ["Gebruik df met de vlag -h."],
+      "tags": ["systeem", "schijf"],
+      "commandsUsed": ["df"]
+    },
+    {
+      "title": "Grote mappen opsporen",
+      "difficulty": "medium",
+      "type": "pipeline",
+      "prompt": "Toon de grootte van alle submappen onder / (één niveau diep) en sorteer van groot naar klein.",
+      "solution": "du -sh /* | sort -hr",
+      "acceptors": ["du -sh /* | sort -hr", "du -h --max-depth=1 / | sort -hr"],
+      "expectedOutput": [],
+      "hints": ["Gebruik du -sh /* voor de grootte van alle submappen en sort -hr om te sorteren op grootte."],
+      "tags": ["systeem", "schijf"],
+      "commandsUsed": ["du", "sort"]
+    },
+    {
+      "title": "Systeemlogboek volgen",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Volg het systeemlogboek in realtime met journalctl.",
+      "solution": "sudo journalctl -f",
+      "acceptors": ["sudo journalctl -f", "journalctl -f", "sudo tail -f /var/log/syslog"],
+      "expectedOutput": [],
+      "hints": ["De vlag -f staat voor 'follow' (volgen in realtime)."],
+      "tags": ["systeem", "logs"],
+      "commandsUsed": ["journalctl"]
+    },
+    {
+      "title": "Logs van een service bekijken",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Toon de logboekberichten van de SSH-service via journalctl.",
+      "solution": "sudo journalctl -u ssh",
+      "acceptors": ["sudo journalctl -u ssh", "sudo journalctl -u sshd", "journalctl -u ssh"],
+      "expectedOutput": [],
+      "hints": ["Gebruik journalctl met de vlag -u gevolgd door de servicenaam."],
+      "tags": ["systeem", "logs"],
+      "commandsUsed": ["journalctl"]
+    },
+    {
+      "title": "Back-up maken met tar",
+      "difficulty": "medium",
+      "type": "command",
+      "prompt": "Maak een gecomprimeerde tar-back-up van de mappen /home en /etc met de datum in de bestandsnaam.",
+      "solution": "tar -czf backup-$(date +%Y%m%d).tar.gz /home /etc",
+      "acceptors": ["tar -czf backup-$(date +%Y%m%d).tar.gz /home /etc", "tar -czf backup-$(date +%Y%m%d).tar.gz /etc /home"],
+      "expectedOutput": [],
+      "hints": ["Gebruik tar met -czf en gebruik $(date +%Y%m%d) in de bestandsnaam."],
+      "tags": ["archieven", "back-up"],
+      "commandsUsed": ["tar", "date"]
+    },
+    {
+      "title": "Mappen synchroniseren met rsync",
+      "difficulty": "medium",
+      "type": "command",
+      "prompt": "Synchroniseer de inhoud van /home naar /backup/home en verwijder bestanden in de doelmap die niet meer in de bronmap staan.",
+      "solution": "rsync -av --delete /home/ /backup/home/",
+      "acceptors": ["rsync -av --delete /home/ /backup/home/", "rsync -a --delete /home/ /backup/home/"],
+      "expectedOutput": [],
+      "hints": ["Gebruik rsync met -av (archief + verbose) en --delete."],
+      "tags": ["archieven", "back-up"],
+      "commandsUsed": ["rsync"]
+    },
+    {
+      "title": "Lab 11.1 – Systeem-dashboard script maken",
+      "difficulty": "hard",
+      "type": "multi-step",
+      "prompt": "Maak een uitvoerbaar bash-script 'system_dashboard.sh' dat systeeminformatie toont (hostnaam, OS, kernel, uptime), resourcegebruik (CPU, geheugen, schijf), netwerkinformatie (IP-adressen, verbindingen), ingelogde gebruikers en de status van services (ssh, nginx, cron).",
+      "solution": "cat > system_dashboard.sh << 'EOF'\n#!/bin/bash\nclear\necho \"==================================\" \necho \"    LINUX ADMINISTRATION DASHBOARD\"\necho \"==================================\"\necho\necho \"=== SYSTEM INFORMATION ===\"\necho \"Hostname: $(hostname)\"\necho \"Kernel: $(uname -r)\"\necho \"Uptime: $(uptime -p)\"\necho\necho \"=== RESOURCE USAGE ===\"\nfree -h | grep '^Mem:'\ndf -h /\necho\necho \"=== NETWORK ===\"\nip addr show | grep 'inet ' | awk '{print $2}'\necho\necho \"=== USER ACTIVITY ===\"\nwho\necho\necho \"=== SERVICE STATUS ===\"\nfor service in ssh nginx cron; do\n  if systemctl is-active --quiet \"$service\"; then\n    echo \"$service: Running\"\n  else\n    echo \"$service: Stopped\"\n  fi\ndone\nEOF\nchmod +x system_dashboard.sh",
+      "acceptors": [],
+      "expectedOutput": [],
+      "hints": ["Gebruik hostname, uname -r, uptime -p, free -h, df -h, ip addr, who en systemctl is-active."],
+      "tags": ["scripting", "monitoring", "systeem"],
+      "commandsUsed": ["hostname", "uname", "uptime", "free", "df", "ip", "who", "systemctl"],
+      "steps": [
+        {
+          "prompt": "Maak het scriptbestand 'system_dashboard.sh' aan met een shebang-regel.",
+          "acceptors": ["cat > system_dashboard.sh << 'EOF'\n#!/bin/bash\nEOF", "touch system_dashboard.sh", "nano system_dashboard.sh"],
+          "solution": "cat > system_dashboard.sh << 'EOF'\n#!/bin/bash\nEOF",
+          "expectedOutput": [],
+          "hints": ["Begin het script altijd met #!/bin/bash."]
+        },
+        {
+          "prompt": "Voeg de systeeminformatie-sectie toe: hostname, kernel en uptime.",
+          "acceptors": [],
+          "solution": "echo \"Hostname: $(hostname)\"; echo \"Kernel: $(uname -r)\"; echo \"Uptime: $(uptime -p)\"",
+          "expectedOutput": [],
+          "hints": ["Gebruik de commando's hostname, uname -r en uptime -p."]
+        },
+        {
+          "prompt": "Maak het script uitvoerbaar.",
+          "acceptors": ["chmod +x system_dashboard.sh", "chmod 755 system_dashboard.sh"],
+          "solution": "chmod +x system_dashboard.sh",
+          "expectedOutput": [],
+          "hints": ["Gebruik chmod +x om een script uitvoerbaar te maken."]
+        }
+      ]
+    },
+    {
+      "title": "Lab 11.2 – Onderhoudscript maken",
+      "difficulty": "hard",
+      "type": "multi-step",
+      "prompt": "Maak een bash-script 'system_maintenance.sh' dat: systeempakketten updatet, tijdelijke bestanden ouder dan 7 dagen verwijdert uit /tmp, logrotatie uitvoert en een configuratieback-up maakt.",
+      "solution": "cat > system_maintenance.sh << 'EOF'\n#!/bin/bash\nLOG_FILE=\"/var/log/maintenance.log\"\nBACKUP_DIR=\"/maintenance_backups\"\nlog() { echo \"$(date '+%Y-%m-%d %H:%M:%S') - $1\" | tee -a \"$LOG_FILE\"; }\nlog \"Starting maintenance\"\napt update && apt upgrade -y\nlog \"Updates done\"\nfind /tmp -type f -atime +7 -delete\nfind /var/tmp -type f -atime +7 -delete\nlog \"Temp cleanup done\"\nlogrotate -f /etc/logrotate.conf\nlog \"Log rotation done\"\nmkdir -p \"$BACKUP_DIR\"\ntar -czf \"$BACKUP_DIR/config_backup_$(date +%Y%m%d).tar.gz\" /etc\nlog \"Backup done\"\nEOF\nchmod +x system_maintenance.sh",
+      "acceptors": [],
+      "expectedOutput": [],
+      "hints": ["Gebruik apt update/upgrade, find met -atime, logrotate en tar voor de back-up."],
+      "tags": ["scripting", "systeem", "onderhoud"],
+      "commandsUsed": ["apt", "find", "logrotate", "tar", "chmod"],
+      "steps": [
+        {
+          "prompt": "Verwijder tijdelijke bestanden in /tmp die meer dan 7 dagen geleden voor het laatst geopend zijn.",
+          "acceptors": ["find /tmp -type f -atime +7 -delete"],
+          "solution": "find /tmp -type f -atime +7 -delete",
+          "expectedOutput": [],
+          "hints": ["Gebruik find met -atime +7 -delete."]
+        },
+        {
+          "prompt": "Voer een geforceerde logrotatie uit.",
+          "acceptors": ["sudo logrotate -f /etc/logrotate.conf", "logrotate -f /etc/logrotate.conf"],
+          "solution": "sudo logrotate -f /etc/logrotate.conf",
+          "expectedOutput": [],
+          "hints": ["Gebruik logrotate -f met het pad naar het configuratiebestand."]
+        },
+        {
+          "prompt": "Maak een gecomprimeerde back-up van /etc naar de map /maintenance_backups met de datum in de bestandsnaam.",
+          "acceptors": ["tar -czf /maintenance_backups/config_backup_$(date +%Y%m%d).tar.gz /etc"],
+          "solution": "tar -czf /maintenance_backups/config_backup_$(date +%Y%m%d).tar.gz /etc",
+          "expectedOutput": [],
+          "hints": ["Gebruik tar -czf en $(date +%Y%m%d) in de bestandsnaam."]
+        }
+      ]
+    },
+    {
+      "title": "Lab 11.3 – Gebruikersomgeving instellen",
+      "difficulty": "medium",
+      "type": "multi-step",
+      "prompt": "Maak een gebruiker aan met de naam 'devuser', stel zijn standaard shell in op /bin/bash en maak in zijn home-map de submappen bin, scripts en projects aan.",
+      "solution": "sudo useradd -m -s /bin/bash devuser",
+      "acceptors": [],
+      "expectedOutput": [],
+      "hints": ["Gebruik useradd met -m (home aanmaken) en -s (shell). Daarna mkdir voor de submappen."],
+      "tags": ["gebruikers", "scripting"],
+      "commandsUsed": ["useradd", "mkdir"],
+      "steps": [
+        {
+          "prompt": "Maak de gebruiker 'devuser' aan met een home-map en bash als standaardshell.",
+          "acceptors": ["sudo useradd -m -s /bin/bash devuser"],
+          "solution": "sudo useradd -m -s /bin/bash devuser",
+          "expectedOutput": [],
+          "hints": ["Gebruik useradd -m -s /bin/bash gevolgd door de gebruikersnaam."]
+        },
+        {
+          "prompt": "Maak als devuser de mappen bin, scripts en projects aan in zijn home-map.",
+          "acceptors": ["sudo -u devuser mkdir -p /home/devuser/{bin,scripts,projects}", "sudo -u devuser bash -c 'mkdir -p ~/bin ~/scripts ~/projects'"],
+          "solution": "sudo -u devuser mkdir -p /home/devuser/{bin,scripts,projects}",
+          "expectedOutput": [],
+          "hints": ["Gebruik accolade-uitbreiding {bin,scripts,projects} om meerdere mappen in één commando aan te maken."]
+        }
+      ]
+    },
+    {
+      "title": "Recente logs van het afgelopen uur",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Toon alle journalctl-logberichten van het afgelopen uur.",
+      "solution": "sudo journalctl --since '1 hour ago'",
+      "acceptors": ["sudo journalctl --since '1 hour ago'", "journalctl --since '1 hour ago'", "sudo journalctl --since \"1 hour ago\""],
+      "expectedOutput": [],
+      "hints": ["Gebruik de vlag --since met een tijdsomschrijving."],
+      "tags": ["systeem", "logs"],
+      "commandsUsed": ["journalctl"]
+    },
+    {
+      "title": "Zombie-processen opsporen",
+      "difficulty": "medium",
+      "type": "pipeline",
+      "prompt": "Toon alle processen met de status 'Z' (zombie) uit de processenlijst.",
+      "solution": "ps aux | awk '$8 == \"Z\"'",
+      "acceptors": ["ps aux | grep ' Z '", "ps aux | awk '$8 == \"Z\"'", "ps aux | awk '$8~/^Z/'"],
+      "expectedOutput": [],
+      "hints": ["De status van een proces staat in de 8e kolom van ps aux. Filter op de letter Z."],
+      "tags": ["processen", "monitoring"],
+      "commandsUsed": ["ps", "awk"]
+    },
+    {
+      "title": "Inactieve systeemservices tonen",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Toon een lijst van alle beschikbare service-bestanden (unit files) op het systeem.",
+      "solution": "systemctl list-unit-files --type=service",
+      "acceptors": ["systemctl list-unit-files --type=service", "sudo systemctl list-unit-files --type=service"],
+      "expectedOutput": [],
+      "hints": ["Gebruik systemctl list-unit-files met --type=service."],
+      "tags": ["services", "systemd"],
+      "commandsUsed": ["systemctl"]
+    }
+  ],
+  "theory": [
+    {
+      "question": "Wat is de PID van een proces?",
+      "type": "mc",
+      "choices": [
+        "A. De naam van het programma dat het proces gestart heeft",
+        "B. Een uniek numeriek proces-ID",
+        "C. De gebruiker die het proces runt",
+        "D. Het geheugengebruik van het proces"
+      ],
+      "answer": "B",
+      "explanation": "Elk lopend proces in Linux krijgt een unieke Process ID (PID) toegewezen waarmee het geïdentificeerd en beheerd kan worden."
+    },
+    {
+      "question": "Wat zijn de mogelijke processtatussen in Linux? Noem minstens 4.",
+      "type": "open",
+      "choices": [],
+      "answer": "R (Running), S (Sleeping interruptible), D (Sleeping uninterruptible), T (Stopped), Z (Zombie)",
+      "explanation": "Elk proces bevindt zich op elk moment in een van deze toestanden. Zombies zijn processen die klaar zijn maar nog niet opgeruimd zijn door de ouder."
+    },
+    {
+      "question": "Welke nice-waarden vertegenwoordigen respectievelijk de hoogste en de laagste prioriteit?",
+      "type": "mc",
+      "choices": [
+        "A. Hoog = 19, Laag = -20",
+        "B. Hoog = -20, Laag = 19",
+        "C. Hoog = 0, Laag = 100",
+        "D. Hoog = 1, Laag = 10"
+      ],
+      "answer": "B",
+      "explanation": "Nice-waarden lopen van -20 (hoogste prioriteit) tot 19 (laagste prioriteit). Alleen root kan negatieve waarden instellen."
+    },
+    {
+      "question": "Wat is de taak van systemd in een modern Linux-systeem?",
+      "type": "open",
+      "choices": [],
+      "answer": "systemd is het init-systeem dat services, mount-points, apparaten, login-sessies en systeemstatus beheert.",
+      "explanation": "systemd start als PID 1 en is verantwoordelijk voor het opstarten van alle andere services en het beheer van het systeem."
+    },
+    {
+      "question": "Welk commando gebruik je om een service in te schakelen én onmiddellijk te starten?",
+      "type": "mc",
+      "choices": [
+        "A. sudo systemctl start --enable ssh",
+        "B. sudo systemctl enable --now ssh",
+        "C. sudo systemctl activate ssh",
+        "D. sudo systemctl boot ssh"
+      ],
+      "answer": "B",
+      "explanation": "De vlag --now bij enable start de service onmiddellijk, terwijl enable er voor zorgt dat de service bij elke opstart actief is."
+    },
+    {
+      "question": "Wat betekent het cron-veld '*/15' in de minuten-positie?",
+      "type": "mc",
+      "choices": [
+        "A. Elke 15e minuut van het uur (0, 15, 30, 45)",
+        "B. Alleen om minuut 15",
+        "C. Elke 15 uur",
+        "D. Het kolomscheidingsteken"
+      ],
+      "answer": "A",
+      "explanation": "De */N-notatie betekent 'elke N eenheden'. */15 bij minuten wil zeggen: elke 15 minuten (minuut 0, 15, 30 en 45)."
+    },
+    {
+      "question": "Welk cron-veldformaat gebruik je om een taak te plannen die elke maandag om 9:00 AM uitvoert?",
+      "type": "open",
+      "choices": [],
+      "answer": "0 9 * * 1 /pad/naar/commando",
+      "explanation": "Dag-van-de-week 1 = maandag (0 = zondag). Minuut 0, uur 9, dag/maand vrij (*), dag-van-week 1."
+    },
+    {
+      "question": "Welk commando gebruik je om geplande taken van de huidige gebruiker te bekijken?",
+      "type": "mc",
+      "choices": [
+        "A. crontab -a",
+        "B. crontab -l",
+        "C. crontab -s",
+        "D. cron --list"
+      ],
+      "answer": "B",
+      "explanation": "De vlag -l (list) bij crontab toont alle geplande taken van de huidige gebruiker."
+    },
+    {
+      "question": "Wat is het verschil tussen 'netstat -tuln' en 'ss -tuln'?",
+      "type": "open",
+      "choices": [],
+      "answer": "Beide tonen luisterende TCP/UDP-sockets, maar ss is de moderne vervanger van netstat en is sneller en betrouwbaarder.",
+      "explanation": "netstat is verouderd (deel van net-tools) terwijl ss deel uitmaakt van de iproute2-suite die de standaard is op moderne Linux-systemen."
+    },
+    {
+      "question": "Welk commando toont het netwerkpad (alle hops) van jouw computer naar een externe server?",
+      "type": "mc",
+      "choices": [
+        "A. ping",
+        "B. ip route",
+        "C. traceroute",
+        "D. nslookup"
+      ],
+      "answer": "C",
+      "explanation": "traceroute stuurt pakketten met oplopende TTL-waarden om elk tussenstation (hop) te identificeren op weg naar de bestemming."
+    },
+    {
+      "question": "Wat is de standaard locatie van systeemlogberichten op een Ubuntu/Debian-systeem?",
+      "type": "mc",
+      "choices": [
+        "A. /var/log/system.log",
+        "B. /etc/log/syslog",
+        "C. /var/log/syslog",
+        "D. /proc/log/syslog"
+      ],
+      "answer": "C",
+      "explanation": "Op Debian/Ubuntu-systemen worden algemene systeemberichten opgeslagen in /var/log/syslog. Authenticatieberichten staan in /var/log/auth.log."
+    },
+    {
+      "question": "Welk commando gebruik je om alle beschikbare updates te installeren op een Ubuntu-server zonder handmatige bevestiging?",
+      "type": "mc",
+      "choices": [
+        "A. sudo apt update -y",
+        "B. sudo apt upgrade --auto",
+        "C. sudo apt update && sudo apt upgrade -y",
+        "D. sudo apt install --all"
+      ],
+      "answer": "C",
+      "explanation": "Eerst ververs je de pakketlijsten met 'apt update', dan installeer je de updates met 'apt upgrade -y' (de -y geeft automatisch 'ja' op bevestigingsvragen)."
+    },
+    {
+      "question": "Leg uit waarvoor rsync gebruikt wordt en geef de drie meest gebruikte vlaggen.",
+      "type": "open",
+      "choices": [],
+      "answer": "rsync synchroniseert bestanden en mappen lokaal of over het netwerk. Meest gebruikte vlaggen: -a (archief: behoudt rechten/tijdstempels/recursief), -v (verbose) en --delete (verwijdert bestanden in doel die niet meer in bron staan).",
+      "explanation": "rsync gebruikt checksums om alleen gewijzigde bestanden te kopiëren, wat het veel efficiënter maakt dan een gewone cp voor back-ups."
+    },
+    {
+      "question": "Wat is een zombie-proces?",
+      "type": "open",
+      "choices": [],
+      "answer": "Een zombie-proces is een proces dat klaar is met uitvoeren maar waarvan de exit-status nog niet gelezen is door het ouder-proces. Het staat als 'Z' in de processenlijst.",
+      "explanation": "Zombie-processen nemen vrijwel geen resources in, maar kunnen de PID-tabel vol maken bij excessieve opbouw. Ze verdwijnen zodra het ouder-proces de exit-status ophaalt."
+    },
+    {
+      "question": "Wat doet het commando 'sudo systemctl daemon-reload'?",
+      "type": "mc",
+      "choices": [
+        "A. Herstart alle services",
+        "B. Herlaadt de systemd-configuratiebestanden zonder services te herstarten",
+        "C. Verwijdert alle gestopte services",
+        "D. Toont de systemd-journaallogboeken"
+      ],
+      "answer": "B",
+      "explanation": "Na het aanmaken of wijzigen van een service-bestand moet systemd op de hoogte gebracht worden. daemon-reload herlaadt alle unit-bestanden zonder iets te herstarten."
+    },
+    {
+      "question": "Ontwerp een back-upstrategie voor een kleine server: welke drie aspecten zijn cruciaal?",
+      "type": "open",
+      "choices": [],
+      "answer": "1) Regelmaat (dagelijkse/wekelijkse automatische back-ups via cron). 2) Bewaarperiode (rotatie, bv. 7 dagen behouden, oudere verwijderen). 3) Externe opslag (back-up op externe server/locatie voor herstel bij hardware-defect).",
+      "explanation": "Een goede back-upstrategie combineert automatisering (cron + rsync/tar), retentiebeleid (find -mtime +7 -delete) en geografische spreiding (externe server of cloudopslag)."
+    },
+    {
+      "question": "Hoe beveilig je een nieuwe Linux-server in de eerste stappen? Noem minstens 4 maatregelen.",
+      "type": "open",
+      "choices": [],
+      "answer": "1) Systeem updaten (apt update && apt upgrade). 2) Firewall inschakelen (ufw enable + regels). 3) SSH beveiligen (poort wijzigen, root-login uitschakelen). 4) Alleen nodige services activeren. 5) Sterke wachtwoorden / sleutelauthenticatie.",
+      "explanation": "Security hardening begint met een up-to-date systeem en minimale aanvalsoppervlakte (firewall + minimale services). SSH-hardening is essentieel voor serverbeveiliging."
+    },
+    {
+      "question": "Wat is het verschil tussen 'kill PID' en 'kill -9 PID'?",
+      "type": "open",
+      "choices": [],
+      "answer": "'kill PID' stuurt het SIGTERM-signaal, dat het proces vraagt netjes af te sluiten (kan genegeerd worden). 'kill -9 PID' stuurt SIGKILL, dat het proces onmiddellijk beëindigt en niet genegeerd kan worden.",
+      "explanation": "SIGTERM is de vriendelijke manier om een proces te stoppen: het krijgt de kans om opruimingswerk te doen. SIGKILL is de noodsituatie-stop die niet genegeerd kan worden door het proces."
+    },
+    {
+      "question": "Welk signaal stuurt 'kill' standaard (zonder vlag)?",
+      "type": "mc",
+      "choices": [
+        "A. SIGKILL (9)",
+        "B. SIGSTOP (19)",
+        "C. SIGTERM (15)",
+        "D. SIGHUP (1)"
+      ],
+      "answer": "C",
+      "explanation": "Zonder extra vlag stuurt kill het signaal SIGTERM (15), wat het proces vriendelijk vraagt om te stoppen."
+    },
+    {
+      "question": "Wat doet 'logrotate'?",
+      "type": "open",
+      "choices": [],
+      "answer": "logrotate roteert logbestanden automatisch: het comprimeerd oudere logs, verwijdert logs die ouder zijn dan de bewaarperiode en maakt nieuwe lege logbestanden aan. Dit voorkomt dat logbestanden de schijf vollopen.",
+      "explanation": "Logrotatie is essentieel voor server-onderhoud. De configuratie staat in /etc/logrotate.conf en /etc/logrotate.d/."
+    },
+    {
+      "question": "Welk commando toont alle ingelogde gebruikers en wat ze momenteel aan het doen zijn?",
+      "type": "mc",
+      "choices": [
+        "A. users",
+        "B. who",
+        "C. w",
+        "D. last"
+      ],
+      "answer": "C",
+      "explanation": "'w' toont wie er ingelogd is én wat ze doen (huidig commando). 'who' toont alleen de ingelogde gebruikers, 'last' toont de aanmeldingsgeschiedenis."
+    },
+    {
+      "question": "Wat is het verschil tussen een 'target' en een 'service' in systemd?",
+      "type": "open",
+      "choices": [],
+      "answer": "Een service is een individuele daemon of programma dat beheerd wordt door systemd. Een target is een groepering van services die samen een systeemtoestand definiëren (vergelijkbaar met runlevels in SysV init), zoals multi-user.target of graphical.target.",
+      "explanation": "Targets vervangen de klassieke runlevels. Wanneer je systemctl set-default gebruikt, stel je in welk target bij het opstarten geladen wordt."
+    }
+  ]
+}

@@ -1,0 +1,992 @@
+{
+  "chapterId": "09",
+  "chapterTitle": "Gebruikers & Groepen",
+  "summary": "In dit hoofdstuk leer je hoe Linux gebruikers en groepen beheert als multi-user besturingssysteem. Je leert gebruikers en groepen aanmaken, wijzigen en verwijderen via commando's als useradd, usermod, groupadd en gpasswd. Verder behandelen we het sudo-systeem voor geprivilegieerde commando's, de configuratiebestanden /etc/passwd, /etc/shadow en /etc/group, en basisbeginselen van gebruikersbeveiliging.",
+  "commands": [
+    {
+      "name": "id",
+      "category": "Gebruikers",
+      "short": "Toont de gebruikers-ID (UID) en groeps-ID's (GID) van een gebruiker.",
+      "synopsis": "id [OPTIE]... [GEBRUIKER]",
+      "flags": [],
+      "examples": [
+        { "cmd": "id", "desc": "Toont UID, GID en groepen van de huidige gebruiker." },
+        { "cmd": "id alice", "desc": "Toont UID, GID en groepen van gebruiker alice." }
+      ],
+      "related": ["whoami", "groups", "getent"],
+      "tags": ["gebruikers", "informatie"]
+    },
+    {
+      "name": "whoami",
+      "category": "Gebruikers",
+      "short": "Toont de naam van de momenteel ingelogde gebruiker.",
+      "synopsis": "whoami",
+      "flags": [],
+      "examples": [
+        { "cmd": "whoami", "desc": "Drukt de naam af van de huidige gebruiker." }
+      ],
+      "related": ["id", "who", "w"],
+      "tags": ["gebruikers", "informatie"]
+    },
+    {
+      "name": "who",
+      "category": "Gebruikers",
+      "short": "Toont wie er op dit moment ingelogd is op het systeem.",
+      "synopsis": "who [OPTIE]...",
+      "flags": [],
+      "examples": [
+        { "cmd": "who", "desc": "Toont alle momenteel ingelogde gebruikers." }
+      ],
+      "related": ["w", "last", "whoami"],
+      "tags": ["gebruikers", "informatie"]
+    },
+    {
+      "name": "w",
+      "category": "Gebruikers",
+      "short": "Toont wie er ingelogd is en wat ze doen (uitgebreide versie van who).",
+      "synopsis": "w [OPTIE]... [GEBRUIKER]",
+      "flags": [],
+      "examples": [
+        { "cmd": "w", "desc": "Toont alle ingelogde gebruikers met hun activiteit." }
+      ],
+      "related": ["who", "last", "whoami"],
+      "tags": ["gebruikers", "informatie"]
+    },
+    {
+      "name": "last",
+      "category": "Gebruikers",
+      "short": "Toont de inloggeschiedenis van gebruikers.",
+      "synopsis": "last [OPTIE]... [GEBRUIKER]",
+      "flags": [
+        { "flag": "-n N", "desc": "Toont de laatste N inlogpogingen." }
+      ],
+      "examples": [
+        { "cmd": "last", "desc": "Toont de volledige inloggeschiedenis." },
+        { "cmd": "last | head -10", "desc": "Toont de 10 meest recente inlogpogingen." },
+        { "cmd": "last alice", "desc": "Toont de inloggeschiedenis van gebruiker alice." }
+      ],
+      "related": ["lastlog", "lastb", "who", "w"],
+      "tags": ["gebruikers", "beveiliging", "logging"]
+    },
+    {
+      "name": "groups",
+      "category": "Gebruikers",
+      "short": "Toont de groepen waartoe een gebruiker behoort.",
+      "synopsis": "groups [GEBRUIKER]...",
+      "flags": [],
+      "examples": [
+        { "cmd": "groups", "desc": "Toont de groepen van de huidige gebruiker." },
+        { "cmd": "groups alice", "desc": "Toont de groepen van gebruiker alice." }
+      ],
+      "related": ["id", "getent"],
+      "tags": ["groepen", "informatie"]
+    },
+    {
+      "name": "getent",
+      "category": "Gebruikers",
+      "short": "Haalt vermeldingen op uit systeembeheerdatabanken zoals passwd en group.",
+      "synopsis": "getent DATABANK [SLEUTEL]...",
+      "flags": [],
+      "examples": [
+        { "cmd": "getent passwd alice", "desc": "Toont de passwd-vermelding van gebruiker alice." },
+        { "cmd": "getent group developers", "desc": "Toont de vermelding van groep developers inclusief leden." },
+        { "cmd": "getent group", "desc": "Toont alle groepen op het systeem." }
+      ],
+      "related": ["id", "groups", "cat"],
+      "tags": ["gebruikers", "groepen", "informatie"]
+    },
+    {
+      "name": "useradd",
+      "category": "Gebruikers",
+      "short": "Maakt een nieuwe gebruikersaccount aan op de opdrachtregel.",
+      "synopsis": "useradd [OPTIE]... GEBRUIKER",
+      "flags": [
+        { "flag": "-m", "desc": "Maakt de home-map aan voor de nieuwe gebruiker." },
+        { "flag": "-s SHELL", "desc": "Stelt de standaard login-shell in." },
+        { "flag": "-g GROEP", "desc": "Stelt de primaire groep in." },
+        { "flag": "-G GROEPEN", "desc": "Stelt secundaire (extra) groepen in (kommagescheiden)." },
+        { "flag": "-u UID", "desc": "Stelt een specifiek gebruikers-ID in." },
+        { "flag": "-c COMMENTAAR", "desc": "Stelt het GECOS-veld in (bijv. volledige naam)." },
+        { "flag": "-e DATUM", "desc": "Stelt de vervaldatum van het account in (YYYY-MM-DD)." },
+        { "flag": "-r", "desc": "Maakt een systeemaccount aan (geen home-map, UID < 1000)." }
+      ],
+      "examples": [
+        { "cmd": "sudo useradd -m -s /bin/bash alice", "desc": "Maakt gebruiker alice aan met home-map en bash als shell." },
+        { "cmd": "sudo useradd -m -s /bin/bash -G sudo,adm alice", "desc": "Maakt alice aan met home-map, bash-shell en secondaire groepen sudo en adm." },
+        { "cmd": "sudo useradd -m -u 1500 -g users newuser", "desc": "Maakt een gebruiker aan met specifiek UID 1500 en primaire groep users." },
+        { "cmd": "sudo useradd -r systemuser", "desc": "Maakt een systeemgebruiker aan zonder home-map." }
+      ],
+      "related": ["adduser", "userdel", "usermod", "passwd"],
+      "tags": ["gebruikers", "beheer"]
+    },
+    {
+      "name": "adduser",
+      "category": "Gebruikers",
+      "short": "Interactief commando om een nieuwe gebruiker aan te maken (Debian/Ubuntu).",
+      "synopsis": "adduser [OPTIE]... GEBRUIKER",
+      "flags": [],
+      "examples": [
+        { "cmd": "sudo adduser newuser", "desc": "Start een interactieve wizard voor het aanmaken van een gebruiker (vraagt wachtwoord, volledige naam, enz.)." }
+      ],
+      "related": ["useradd", "deluser", "passwd"],
+      "tags": ["gebruikers", "beheer", "debian"]
+    },
+    {
+      "name": "passwd",
+      "category": "Gebruikers",
+      "short": "Wijzigt het wachtwoord van een gebruiker of beheert het wachtwoordbeleid.",
+      "synopsis": "passwd [OPTIE]... [GEBRUIKER]",
+      "flags": [
+        { "flag": "-e", "desc": "Verloopt het wachtwoord onmiddellijk: gebruiker moet bij volgende inlog wachtwoord wijzigen." },
+        { "flag": "-l", "desc": "Vergrendelt het account (login niet mogelijk)." },
+        { "flag": "-u", "desc": "Ontgrendelt het account." },
+        { "flag": "-S", "desc": "Toont de status van het wachtwoord." }
+      ],
+      "examples": [
+        { "cmd": "passwd", "desc": "Wijzigt het wachtwoord van de huidige gebruiker." },
+        { "cmd": "sudo passwd alice", "desc": "Stelt een nieuw wachtwoord in voor gebruiker alice." },
+        { "cmd": "sudo passwd -l alice", "desc": "Vergrendelt het account van alice." },
+        { "cmd": "sudo passwd -u alice", "desc": "Ontgrendelt het account van alice." },
+        { "cmd": "sudo passwd -S alice", "desc": "Toont de wachtwoordstatus van alice." },
+        { "cmd": "sudo passwd -e alice", "desc": "Dwingt alice bij volgende inlog haar wachtwoord te wijzigen." }
+      ],
+      "related": ["chage", "usermod", "useradd"],
+      "tags": ["gebruikers", "wachtwoord", "beveiliging"]
+    },
+    {
+      "name": "usermod",
+      "category": "Gebruikers",
+      "short": "Wijzigt de eigenschappen van een bestaande gebruikersaccount.",
+      "synopsis": "usermod [OPTIE]... GEBRUIKER",
+      "flags": [
+        { "flag": "-l NIEUWNAAM", "desc": "Wijzigt de inlognaam van de gebruiker." },
+        { "flag": "-g GROEP", "desc": "Wijzigt de primaire groep van de gebruiker." },
+        { "flag": "-aG GROEPEN", "desc": "Voegt de gebruiker toe aan extra groepen (gebruik altijd -a om bestaande groepen te behouden)." },
+        { "flag": "-G GROEPEN", "desc": "Vervangt alle secundaire groepen (gevaarlijk zonder -a)." },
+        { "flag": "-d MAP", "desc": "Wijzigt de home-map." },
+        { "flag": "-m", "desc": "Verplaatst de inhoud van de home-map naar de nieuwe locatie (gebruik samen met -d)." },
+        { "flag": "-s SHELL", "desc": "Wijzigt de standaard login-shell." },
+        { "flag": "-L", "desc": "Vergrendelt het account." },
+        { "flag": "-U", "desc": "Ontgrendelt het account." },
+        { "flag": "-e DATUM", "desc": "Stelt de vervaldatum in (YYYY-MM-DD)." },
+        { "flag": "-c COMMENTAAR", "desc": "Wijzigt het GECOS-veld (volledige naam)." }
+      ],
+      "examples": [
+        { "cmd": "sudo usermod -aG sudo bob", "desc": "Voegt bob toe aan de sudo-groep (behoudt bestaande groepen)." },
+        { "cmd": "sudo usermod -aG developers,testers alice", "desc": "Voegt alice toe aan de groepen developers en testers." },
+        { "cmd": "sudo usermod -c \"Alice Johnson\" alice", "desc": "Stelt de volledige naam van alice in." },
+        { "cmd": "sudo usermod -s /bin/zsh charlie", "desc": "Wijzigt de standaard shell van charlie naar zsh." },
+        { "cmd": "sudo usermod -L alice", "desc": "Vergrendelt het account van alice." },
+        { "cmd": "sudo usermod -e 2024-12-31 tempuser", "desc": "Stelt de vervaldatum van tempuser in op 31 december 2024." }
+      ],
+      "related": ["useradd", "userdel", "passwd", "chsh"],
+      "tags": ["gebruikers", "beheer"]
+    },
+    {
+      "name": "userdel",
+      "category": "Gebruikers",
+      "short": "Verwijdert een gebruikersaccount van het systeem.",
+      "synopsis": "userdel [OPTIE]... GEBRUIKER",
+      "flags": [
+        { "flag": "-r", "desc": "Verwijdert ook de home-map en mailspool van de gebruiker." },
+        { "flag": "-f", "desc": "Dwingt verwijdering, ook als de gebruiker nog ingelogd is." }
+      ],
+      "examples": [
+        { "cmd": "sudo userdel alice", "desc": "Verwijdert gebruiker alice maar behoudt de home-map." },
+        { "cmd": "sudo userdel -r alice", "desc": "Verwijdert gebruiker alice inclusief home-map." }
+      ],
+      "related": ["deluser", "useradd", "usermod"],
+      "tags": ["gebruikers", "beheer"]
+    },
+    {
+      "name": "chsh",
+      "category": "Gebruikers",
+      "short": "Wijzigt de standaard login-shell van een gebruiker.",
+      "synopsis": "chsh [OPTIE]... [GEBRUIKER]",
+      "flags": [
+        { "flag": "-s SHELL", "desc": "Stelt de opgegeven shell in als standaard." }
+      ],
+      "examples": [
+        { "cmd": "chsh", "desc": "Start een interactieve vraag om de shell te wijzigen voor de huidige gebruiker." },
+        { "cmd": "sudo chsh -s /bin/zsh alice", "desc": "Wijzigt de standaard shell van alice naar zsh." }
+      ],
+      "related": ["usermod", "cat /etc/shells"],
+      "tags": ["gebruikers", "shell"]
+    },
+    {
+      "name": "chfn",
+      "category": "Gebruikers",
+      "short": "Wijzigt de GECOS-informatie (volledige naam en contactgegevens) van een gebruiker.",
+      "synopsis": "chfn [OPTIE]... [GEBRUIKER]",
+      "flags": [],
+      "examples": [
+        { "cmd": "chfn", "desc": "Interactief wijzigen van persoonlijke informatie van de huidige gebruiker." },
+        { "cmd": "sudo chfn alice", "desc": "Wijzigt de GECOS-informatie van gebruiker alice." }
+      ],
+      "related": ["usermod", "getent"],
+      "tags": ["gebruikers", "informatie"]
+    },
+    {
+      "name": "groupadd",
+      "category": "Gebruikers",
+      "short": "Maakt een nieuwe groep aan op het systeem.",
+      "synopsis": "groupadd [OPTIE]... GROEP",
+      "flags": [
+        { "flag": "-g GID", "desc": "Stelt een specifiek groeps-ID in." },
+        { "flag": "-r", "desc": "Maakt een systeemgroep aan (GID < 1000)." }
+      ],
+      "examples": [
+        { "cmd": "sudo groupadd developers", "desc": "Maakt een nieuwe groep 'developers' aan." },
+        { "cmd": "sudo groupadd -g 2000 project", "desc": "Maakt een groep aan met GID 2000." }
+      ],
+      "related": ["groupdel", "groupmod", "gpasswd"],
+      "tags": ["groepen", "beheer"]
+    },
+    {
+      "name": "groupmod",
+      "category": "Gebruikers",
+      "short": "Wijzigt de eigenschappen van een bestaande groep.",
+      "synopsis": "groupmod [OPTIE]... GROEP",
+      "flags": [
+        { "flag": "-n NIEUWNAAM", "desc": "Wijzigt de naam van de groep." },
+        { "flag": "-g GID", "desc": "Wijzigt het GID van de groep." }
+      ],
+      "examples": [
+        { "cmd": "sudo groupmod -n newname oldname", "desc": "Hernoemt groep 'oldname' naar 'newname'." },
+        { "cmd": "sudo groupmod -g 2500 developers", "desc": "Wijzigt het GID van groep developers naar 2500." }
+      ],
+      "related": ["groupadd", "groupdel", "gpasswd"],
+      "tags": ["groepen", "beheer"]
+    },
+    {
+      "name": "groupdel",
+      "category": "Gebruikers",
+      "short": "Verwijdert een groep van het systeem.",
+      "synopsis": "groupdel GROEP",
+      "flags": [],
+      "examples": [
+        { "cmd": "sudo groupdel developers", "desc": "Verwijdert de groep 'developers'." }
+      ],
+      "related": ["groupadd", "groupmod", "delgroup"],
+      "tags": ["groepen", "beheer"]
+    },
+    {
+      "name": "gpasswd",
+      "category": "Gebruikers",
+      "short": "Beheert groepswachtwoorden en groepsleden.",
+      "synopsis": "gpasswd [OPTIE]... GROEP",
+      "flags": [
+        { "flag": "-a GEBRUIKER", "desc": "Voegt een gebruiker toe aan de groep." },
+        { "flag": "-d GEBRUIKER", "desc": "Verwijdert een gebruiker uit de groep." },
+        { "flag": "-A BEHEERDERS", "desc": "Stelt groepadministrators in (kommagescheiden)." },
+        { "flag": "-M LEDEN", "desc": "Vervangt de volledige ledenlijst (kommagescheiden)." }
+      ],
+      "examples": [
+        { "cmd": "sudo gpasswd -a alice developers", "desc": "Voegt alice toe aan de groep developers." },
+        { "cmd": "sudo gpasswd -d bob developers", "desc": "Verwijdert bob uit de groep developers." },
+        { "cmd": "sudo gpasswd -A alice developers", "desc": "Maakt alice beheerder van de groep developers." }
+      ],
+      "related": ["usermod", "groupadd", "groups"],
+      "tags": ["groepen", "beheer"]
+    },
+    {
+      "name": "sudo",
+      "category": "Gebruikers",
+      "short": "Voert een commando uit met verhoogde (root)rechten.",
+      "synopsis": "sudo [OPTIE]... COMMANDO",
+      "flags": [
+        { "flag": "-u GEBRUIKER", "desc": "Voert het commando uit als de opgegeven gebruiker (standaard: root)." },
+        { "flag": "-i", "desc": "Start een interactieve root-shell (login-shell)." },
+        { "flag": "-s", "desc": "Start een interactieve root-shell (niet-login)." },
+        { "flag": "-l", "desc": "Toont de lijst van commando's die de huidige gebruiker via sudo mag uitvoeren." },
+        { "flag": "-v", "desc": "Vernieuwt de sudo-authenticatietimer zonder een commando uit te voeren." }
+      ],
+      "examples": [
+        { "cmd": "sudo apt update", "desc": "Voert apt update uit als root." },
+        { "cmd": "sudo -u alice whoami", "desc": "Voert whoami uit als gebruiker alice." },
+        { "cmd": "sudo -l", "desc": "Toont welke commando's je via sudo mag uitvoeren." },
+        { "cmd": "sudo -i", "desc": "Opent een interactieve root-shell." }
+      ],
+      "related": ["visudo", "su"],
+      "tags": ["beveiliging", "rechten", "sudo"]
+    },
+    {
+      "name": "visudo",
+      "category": "Gebruikers",
+      "short": "Bewerkt het sudoers-configuratiebestand op een veilige manier (met syntaxcontrole).",
+      "synopsis": "visudo [OPTIE]",
+      "flags": [
+        { "flag": "-c", "desc": "Controleert de syntaxis van het sudoers-bestand zonder het te bewerken." }
+      ],
+      "examples": [
+        { "cmd": "sudo visudo", "desc": "Opent /etc/sudoers in een editor met automatische syntaxcontrole." },
+        { "cmd": "sudo visudo -c", "desc": "Controleert enkel de syntaxis van het sudoers-bestand." }
+      ],
+      "related": ["sudo"],
+      "tags": ["beveiliging", "sudo", "configuratie"]
+    },
+    {
+      "name": "chage",
+      "category": "Gebruikers",
+      "short": "Beheert het wachtwoordvervalbeleid van een gebruiker.",
+      "synopsis": "chage [OPTIE]... GEBRUIKER",
+      "flags": [
+        { "flag": "-l", "desc": "Toont de wachtwoordvervalinformatie van een gebruiker." },
+        { "flag": "-M DAGEN", "desc": "Stelt het maximum aantal dagen in dat een wachtwoord geldig is." },
+        { "flag": "-m DAGEN", "desc": "Stelt het minimum aantal dagen in tussen wachtwoordwijzigingen." },
+        { "flag": "-W DAGEN", "desc": "Stelt het aantal waarschuwingsdagen voor verval in." },
+        { "flag": "-d 0", "desc": "Verloopt het wachtwoord onmiddellijk, forceert wijziging bij volgende inlog." }
+      ],
+      "examples": [
+        { "cmd": "sudo chage -l alice", "desc": "Toont de wachtwoordvervalpolicies van alice." },
+        { "cmd": "sudo chage -M 90 -m 7 -W 7 alice", "desc": "Stelt maximale geldigheid op 90 dagen, minimum 7 dagen, waarschuwing 7 dagen voor alice." },
+        { "cmd": "sudo chage -d 0 alice", "desc": "Dwingt alice bij volgende inlog het wachtwoord te wijzigen." }
+      ],
+      "related": ["passwd", "usermod"],
+      "tags": ["gebruikers", "wachtwoord", "beveiliging"]
+    },
+    {
+      "name": "lastlog",
+      "category": "Gebruikers",
+      "short": "Toont de meest recente inlogtijd van alle gebruikers.",
+      "synopsis": "lastlog [OPTIE]",
+      "flags": [],
+      "examples": [
+        { "cmd": "lastlog", "desc": "Toont de laatste inlogtijden van alle gebruikers op het systeem." }
+      ],
+      "related": ["last", "who", "w"],
+      "tags": ["gebruikers", "logging", "beveiliging"]
+    },
+    {
+      "name": "newgrp",
+      "category": "Gebruikers",
+      "short": "Schakelt in de huidige sessie naar een andere primaire groep zonder opnieuw in te loggen.",
+      "synopsis": "newgrp [GROEP]",
+      "flags": [],
+      "examples": [
+        { "cmd": "newgrp developers", "desc": "Schakelt de actieve groep naar 'developers' in de huidige sessie." }
+      ],
+      "related": ["groups", "id", "gpasswd"],
+      "tags": ["groepen", "sessie"]
+    }
+  ],
+  "exercises": [
+    {
+      "title": "Gebruiker aanmaken met home-map en shell",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Maak een nieuwe gebruiker 'alice' aan met een home-map en /bin/bash als standaard shell.",
+      "solution": "sudo useradd -m -s /bin/bash alice",
+      "acceptors": [
+        "sudo useradd -m -s /bin/bash alice",
+        "sudo useradd -s /bin/bash -m alice"
+      ],
+      "expectedOutput": [],
+      "hints": [
+        "Gebruik de vlag -m om de home-map aan te maken.",
+        "Gebruik de vlag -s om de standaard shell in te stellen."
+      ],
+      "tags": ["gebruikers", "useradd"],
+      "commandsUsed": ["useradd"]
+    },
+    {
+      "title": "Gebruikersinformatie opvragen",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Vraag de UID, GID en groepen van gebruiker alice op.",
+      "solution": "id alice",
+      "acceptors": ["id alice"],
+      "expectedOutput": ["uid=1001(alice) gid=1001(alice) groups=1001(alice)"],
+      "hints": ["Het commando 'id' geeft gebruikers- en groepsinformatie terug."],
+      "tags": ["gebruikers", "informatie"],
+      "commandsUsed": ["id"]
+    },
+    {
+      "title": "Gebruiker toevoegen aan sudo-groep",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Voeg gebruiker bob toe aan de sudo-groep zonder zijn bestaande groepen te verwijderen.",
+      "solution": "sudo usermod -aG sudo bob",
+      "acceptors": [
+        "sudo usermod -aG sudo bob",
+        "sudo usermod -a -G sudo bob"
+      ],
+      "expectedOutput": [],
+      "hints": [
+        "Gebruik usermod met de vlag -aG.",
+        "De -a vlag staat voor 'append' (toevoegen) en is cruciaal om bestaande groepen te behouden."
+      ],
+      "tags": ["gebruikers", "groepen", "sudo"],
+      "commandsUsed": ["usermod"]
+    },
+    {
+      "title": "Groep aanmaken",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Maak een nieuwe groep 'developers' aan op het systeem.",
+      "solution": "sudo groupadd developers",
+      "acceptors": ["sudo groupadd developers"],
+      "expectedOutput": [],
+      "hints": ["Gebruik het commando groupadd."],
+      "tags": ["groepen", "groupadd"],
+      "commandsUsed": ["groupadd"]
+    },
+    {
+      "title": "Gebruiker verwijderen inclusief home-map",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Verwijder gebruiker alice en al haar bestanden inclusief home-map.",
+      "solution": "sudo userdel -r alice",
+      "acceptors": ["sudo userdel -r alice"],
+      "expectedOutput": [],
+      "hints": ["Gebruik de vlag -r bij userdel om ook de home-map te verwijderen."],
+      "tags": ["gebruikers", "userdel"],
+      "commandsUsed": ["userdel"]
+    },
+    {
+      "title": "Wachtwoordstatus opvragen",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Bekijk de wachtwoordstatus van gebruiker alice.",
+      "solution": "sudo passwd -S alice",
+      "acceptors": ["sudo passwd -S alice"],
+      "expectedOutput": [],
+      "hints": ["De vlag -S van passwd toont de status."],
+      "tags": ["gebruikers", "wachtwoord"],
+      "commandsUsed": ["passwd"]
+    },
+    {
+      "title": "Account vergrendelen",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Vergrendel het account van gebruiker alice zodat ze niet meer kan inloggen.",
+      "solution": "sudo passwd -l alice",
+      "acceptors": [
+        "sudo passwd -l alice",
+        "sudo usermod -L alice"
+      ],
+      "expectedOutput": [],
+      "hints": [
+        "Je kunt passwd -l of usermod -L gebruiken.",
+        "De vlag -l staat voor 'lock'."
+      ],
+      "tags": ["gebruikers", "beveiliging"],
+      "commandsUsed": ["passwd"]
+    },
+    {
+      "title": "Groepsleden opvragen",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Vraag op welke gebruikers lid zijn van de groep 'developers'.",
+      "solution": "getent group developers",
+      "acceptors": [
+        "getent group developers",
+        "grep 'developers' /etc/group"
+      ],
+      "expectedOutput": ["developers:x:1004:alice,bob"],
+      "hints": ["getent group <groepnaam> toont de groepsvermelding inclusief leden."],
+      "tags": ["groepen", "informatie"],
+      "commandsUsed": ["getent"]
+    },
+    {
+      "title": "Groepen van een gebruiker controleren",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Bekijk alle groepen waartoe gebruiker bob behoort.",
+      "solution": "groups bob",
+      "acceptors": [
+        "groups bob",
+        "id bob"
+      ],
+      "expectedOutput": ["bob : bob sudo developers"],
+      "hints": ["Gebruik het commando 'groups' gevolgd door de gebruikersnaam."],
+      "tags": ["groepen", "informatie"],
+      "commandsUsed": ["groups"]
+    },
+    {
+      "title": "Lab 7.1: Gebruikers aanmaken en beheren",
+      "difficulty": "medium",
+      "type": "multi-step",
+      "prompt": "Voer het volledige lab 7.1 uit: maak drie testgebruikers aan (alice, bob, charlie) met home-map en bash-shell, stel wachtwoorden in, controleer gebruikersinformatie, voeg een volledige naam toe aan alice en voeg bob toe aan de sudo-groep, en controleer de wijzigingen.",
+      "solution": "sudo useradd -m -s /bin/bash alice && sudo useradd -m -s /bin/bash bob && sudo useradd -m -s /bin/bash charlie",
+      "acceptors": [],
+      "expectedOutput": [],
+      "hints": [
+        "Gebruik useradd -m -s /bin/bash voor elke gebruiker.",
+        "Gebruik passwd om wachtwoorden in te stellen.",
+        "Gebruik usermod -c voor de volledige naam.",
+        "Gebruik usermod -aG sudo voor sudo-toegang."
+      ],
+      "tags": ["gebruikers", "beheer"],
+      "commandsUsed": ["useradd", "passwd", "id", "getent", "groups", "usermod"],
+      "steps": [
+        {
+          "prompt": "Maak gebruiker alice aan met home-map en bash als shell.",
+          "acceptors": ["sudo useradd -m -s /bin/bash alice", "sudo useradd -s /bin/bash -m alice"],
+          "solution": "sudo useradd -m -s /bin/bash alice",
+          "expectedOutput": [],
+          "hints": ["useradd met -m en -s /bin/bash"]
+        },
+        {
+          "prompt": "Maak gebruiker bob aan met home-map en bash als shell.",
+          "acceptors": ["sudo useradd -m -s /bin/bash bob", "sudo useradd -s /bin/bash -m bob"],
+          "solution": "sudo useradd -m -s /bin/bash bob",
+          "expectedOutput": [],
+          "hints": ["Hetzelfde als voor alice maar dan voor bob."]
+        },
+        {
+          "prompt": "Maak gebruiker charlie aan met home-map en bash als shell.",
+          "acceptors": ["sudo useradd -m -s /bin/bash charlie", "sudo useradd -s /bin/bash -m charlie"],
+          "solution": "sudo useradd -m -s /bin/bash charlie",
+          "expectedOutput": [],
+          "hints": ["Hetzelfde patroon als voor alice en bob."]
+        },
+        {
+          "prompt": "Vraag de UID, GID en groepen van alice op.",
+          "acceptors": ["id alice"],
+          "solution": "id alice",
+          "expectedOutput": ["uid=1001(alice) gid=1001(alice) groups=1001(alice)"],
+          "hints": ["Gebruik het commando 'id' met de gebruikersnaam."]
+        },
+        {
+          "prompt": "Vraag de passwd-vermelding op voor alice via getent.",
+          "acceptors": ["getent passwd alice"],
+          "solution": "getent passwd alice",
+          "expectedOutput": ["alice:x:1001:1001::/home/alice:/bin/bash"],
+          "hints": ["getent passwd <gebruikersnaam>"]
+        },
+        {
+          "prompt": "Voeg de volledige naam 'Alice Johnson' toe aan de account van alice.",
+          "acceptors": ["sudo usermod -c \"Alice Johnson\" alice", "sudo usermod -c 'Alice Johnson' alice"],
+          "solution": "sudo usermod -c \"Alice Johnson\" alice",
+          "expectedOutput": [],
+          "hints": ["Gebruik usermod met de vlag -c voor het commentaarveld (GECOS)."]
+        },
+        {
+          "prompt": "Voeg bob toe aan de sudo-groep.",
+          "acceptors": ["sudo usermod -aG sudo bob", "sudo usermod -a -G sudo bob"],
+          "solution": "sudo usermod -aG sudo bob",
+          "expectedOutput": [],
+          "hints": ["Gebruik usermod -aG sudo; vergeet de -a niet!"]
+        },
+        {
+          "prompt": "Controleer de bijgewerkte passwd-vermelding van alice (volledige naam zichtbaar).",
+          "acceptors": ["getent passwd alice"],
+          "solution": "getent passwd alice",
+          "expectedOutput": ["alice:x:1001:1001:Alice Johnson:/home/alice:/bin/bash"],
+          "hints": ["Gebruik getent passwd alice."]
+        },
+        {
+          "prompt": "Controleer de groepen van bob (sudo moet erbij staan).",
+          "acceptors": ["groups bob", "id bob"],
+          "solution": "groups bob",
+          "expectedOutput": ["bob : bob sudo"],
+          "hints": ["Gebruik groups bob of id bob."]
+        }
+      ]
+    },
+    {
+      "title": "Lab 7.2: Groepsbeheer",
+      "difficulty": "medium",
+      "type": "multi-step",
+      "prompt": "Voer lab 7.2 uit: maak drie projectgroepen aan (developers, testers, project-alpha), voeg gebruikers toe aan de juiste groepen en controleer het groepslidmaatschap.",
+      "solution": "sudo groupadd developers && sudo groupadd testers && sudo groupadd project-alpha",
+      "acceptors": [],
+      "expectedOutput": [],
+      "hints": [
+        "Gebruik groupadd voor het aanmaken van groepen.",
+        "Gebruik usermod -aG om gebruikers toe te voegen.",
+        "Gebruik groups of getent group om te controleren."
+      ],
+      "tags": ["groepen", "beheer"],
+      "commandsUsed": ["groupadd", "usermod", "groups", "getent"],
+      "steps": [
+        {
+          "prompt": "Maak de groep 'developers' aan.",
+          "acceptors": ["sudo groupadd developers"],
+          "solution": "sudo groupadd developers",
+          "expectedOutput": [],
+          "hints": ["sudo groupadd <groepnaam>"]
+        },
+        {
+          "prompt": "Maak de groep 'testers' aan.",
+          "acceptors": ["sudo groupadd testers"],
+          "solution": "sudo groupadd testers",
+          "expectedOutput": [],
+          "hints": ["sudo groupadd testers"]
+        },
+        {
+          "prompt": "Maak de groep 'project-alpha' aan.",
+          "acceptors": ["sudo groupadd project-alpha"],
+          "solution": "sudo groupadd project-alpha",
+          "expectedOutput": [],
+          "hints": ["sudo groupadd project-alpha"]
+        },
+        {
+          "prompt": "Voeg alice toe aan de groep 'developers'.",
+          "acceptors": ["sudo usermod -aG developers alice", "sudo gpasswd -a alice developers"],
+          "solution": "sudo usermod -aG developers alice",
+          "expectedOutput": [],
+          "hints": ["Gebruik usermod -aG of gpasswd -a."]
+        },
+        {
+          "prompt": "Voeg bob toe aan de groep 'developers'.",
+          "acceptors": ["sudo usermod -aG developers bob", "sudo gpasswd -a bob developers"],
+          "solution": "sudo usermod -aG developers bob",
+          "expectedOutput": [],
+          "hints": ["Gebruik usermod -aG developers bob."]
+        },
+        {
+          "prompt": "Voeg charlie toe aan de groep 'testers'.",
+          "acceptors": ["sudo usermod -aG testers charlie", "sudo gpasswd -a charlie testers"],
+          "solution": "sudo usermod -aG testers charlie",
+          "expectedOutput": [],
+          "hints": ["Gebruik usermod -aG testers charlie."]
+        },
+        {
+          "prompt": "Voeg alice toe aan de groep 'project-alpha'.",
+          "acceptors": ["sudo usermod -aG project-alpha alice", "sudo gpasswd -a alice project-alpha"],
+          "solution": "sudo usermod -aG project-alpha alice",
+          "expectedOutput": [],
+          "hints": ["Gebruik usermod -aG project-alpha alice."]
+        },
+        {
+          "prompt": "Voeg charlie toe aan de groep 'project-alpha'.",
+          "acceptors": ["sudo usermod -aG project-alpha charlie", "sudo gpasswd -a charlie project-alpha"],
+          "solution": "sudo usermod -aG project-alpha charlie",
+          "expectedOutput": [],
+          "hints": ["Gebruik usermod -aG project-alpha charlie."]
+        },
+        {
+          "prompt": "Controleer de groepen van alice (developers en project-alpha moeten erin staan).",
+          "acceptors": ["groups alice", "id alice"],
+          "solution": "groups alice",
+          "expectedOutput": ["alice : alice developers project-alpha"],
+          "hints": ["Gebruik groups alice."]
+        },
+        {
+          "prompt": "Controleer wie er lid is van de groep 'developers'.",
+          "acceptors": ["getent group developers"],
+          "solution": "getent group developers",
+          "expectedOutput": ["developers:x:1004:alice,bob"],
+          "hints": ["getent group <groepnaam>"]
+        }
+      ]
+    },
+    {
+      "title": "Lab 7.3: sudo-configuratie",
+      "difficulty": "medium",
+      "type": "multi-step",
+      "prompt": "Voer lab 7.3 uit: controleer je sudo-rechten, voeg alice toe aan de sudo-groep en controleer haar toegang.",
+      "solution": "sudo -l",
+      "acceptors": [],
+      "expectedOutput": [],
+      "hints": [
+        "sudo -l toont welke commando's jij via sudo mag uitvoeren.",
+        "usermod -aG sudo voegt een gebruiker toe aan de sudo-groep."
+      ],
+      "tags": ["sudo", "beveiliging"],
+      "commandsUsed": ["sudo", "usermod", "groups", "getent", "visudo"],
+      "steps": [
+        {
+          "prompt": "Bekijk welke sudo-rechten de huidige gebruiker heeft.",
+          "acceptors": ["sudo -l"],
+          "solution": "sudo -l",
+          "expectedOutput": [],
+          "hints": ["sudo -l toont de sudo-machtigingen."]
+        },
+        {
+          "prompt": "Voeg alice toe aan de sudo-groep.",
+          "acceptors": ["sudo usermod -aG sudo alice", "sudo usermod -a -G sudo alice"],
+          "solution": "sudo usermod -aG sudo alice",
+          "expectedOutput": [],
+          "hints": ["usermod -aG sudo alice"]
+        },
+        {
+          "prompt": "Controleer of alice nu in de sudo-groep zit.",
+          "acceptors": ["groups alice", "getent group sudo", "id alice"],
+          "solution": "groups alice",
+          "expectedOutput": ["alice : alice sudo developers project-alpha"],
+          "hints": ["Gebruik groups alice of getent group sudo."]
+        }
+      ]
+    },
+    {
+      "title": "Lab 7.4: Gebruikersbeveiligingsaudit",
+      "difficulty": "hard",
+      "type": "multi-step",
+      "prompt": "Voer een beveiligingsaudit uit: zoek gebruikers met interactieve shells, zoek gebruikers met UID 0, controleer lege wachtwoorden, bekijk sudo-groepleden en de recente inloggeschiedenis.",
+      "solution": "grep \"/bin/bash\\|/bin/sh\" /etc/passwd",
+      "acceptors": [],
+      "expectedOutput": [],
+      "hints": [
+        "Gebruik grep op /etc/passwd voor shells.",
+        "Gebruik awk om UID 0 te vinden.",
+        "getent group sudo toont de sudo-leden.",
+        "last | head -10 toont de recente inlogs."
+      ],
+      "tags": ["beveiliging", "audit"],
+      "commandsUsed": ["grep", "awk", "getent", "last", "sudo"],
+      "steps": [
+        {
+          "prompt": "Zoek alle gebruikers met /bin/bash of /bin/sh als shell in /etc/passwd.",
+          "acceptors": ["grep \"/bin/bash\\|/bin/sh\" /etc/passwd", "grep -E \"/bin/bash|/bin/sh\" /etc/passwd"],
+          "solution": "grep \"/bin/bash\\|/bin/sh\" /etc/passwd",
+          "expectedOutput": [],
+          "hints": ["Gebruik grep met een alternatiepatroon op /etc/passwd."]
+        },
+        {
+          "prompt": "Zoek gebruikers met UID 0 (zou alleen root mogen zijn).",
+          "acceptors": ["awk -F: '$3 == 0 {print $1}' /etc/passwd"],
+          "solution": "awk -F: '$3 == 0 {print $1}' /etc/passwd",
+          "expectedOutput": ["root"],
+          "hints": ["Gebruik awk om het derde veld (UID) te vergelijken met 0."]
+        },
+        {
+          "prompt": "Controleer op gebruikers met een leeg wachtwoord in /etc/shadow.",
+          "acceptors": ["sudo awk -F: '$2 == \"\" {print $1}' /etc/shadow"],
+          "solution": "sudo awk -F: '$2 == \"\" {print $1}' /etc/shadow",
+          "expectedOutput": [],
+          "hints": ["Gebruik sudo en awk op /etc/shadow; vergelijk het tweede veld met een lege string."]
+        },
+        {
+          "prompt": "Bekijk welke gebruikers in de sudo-groep zitten.",
+          "acceptors": ["getent group sudo"],
+          "solution": "getent group sudo",
+          "expectedOutput": [],
+          "hints": ["getent group sudo toont de leden van de sudo-groep."]
+        },
+        {
+          "prompt": "Toon de 10 meest recente inlogpogingen op het systeem.",
+          "acceptors": ["last | head -10", "last -n 10"],
+          "solution": "last | head -10",
+          "expectedOutput": [],
+          "hints": ["Gebruik last gecombineerd met head -10."]
+        },
+        {
+          "prompt": "Zoek de 10 meest recente mislukte inlogpogingen in /var/log/auth.log.",
+          "acceptors": ["sudo grep \"Failed password\" /var/log/auth.log | tail -10"],
+          "solution": "sudo grep \"Failed password\" /var/log/auth.log | tail -10",
+          "expectedOutput": [],
+          "hints": ["grep op 'Failed password' in auth.log; gebruik tail -10 voor de laatste 10."]
+        }
+      ]
+    },
+    {
+      "title": "Wachtwoordvervalbeleid instellen",
+      "difficulty": "medium",
+      "type": "command",
+      "prompt": "Stel voor gebruiker alice het wachtwoordbeleid in: maximale geldigheid 90 dagen, minimum 7 dagen, en een waarschuwing 7 dagen voor verval.",
+      "solution": "sudo chage -M 90 -m 7 -W 7 alice",
+      "acceptors": [
+        "sudo chage -M 90 -m 7 -W 7 alice",
+        "sudo chage -m 7 -M 90 -W 7 alice",
+        "sudo chage -W 7 -M 90 -m 7 alice"
+      ],
+      "expectedOutput": [],
+      "hints": [
+        "Gebruik het commando chage.",
+        "-M = maximum dagen, -m = minimum dagen, -W = waarschuwingsdagen."
+      ],
+      "tags": ["wachtwoord", "beveiliging", "chage"],
+      "commandsUsed": ["chage"]
+    },
+    {
+      "title": "Vervalbeleid bekijken",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Bekijk het wachtwoordvervalbeleid van gebruiker alice.",
+      "solution": "sudo chage -l alice",
+      "acceptors": ["sudo chage -l alice"],
+      "expectedOutput": [],
+      "hints": ["Gebruik chage met de -l vlag."],
+      "tags": ["wachtwoord", "beveiliging"],
+      "commandsUsed": ["chage"]
+    },
+    {
+      "title": "Gebruiker uit groep verwijderen",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Verwijder gebruiker bob uit de groep 'developers'.",
+      "solution": "sudo gpasswd -d bob developers",
+      "acceptors": ["sudo gpasswd -d bob developers"],
+      "expectedOutput": [],
+      "hints": ["Gebruik gpasswd met de vlag -d om een gebruiker uit een groep te verwijderen."],
+      "tags": ["groepen", "beheer"],
+      "commandsUsed": ["gpasswd"]
+    },
+    {
+      "title": "Groepsnaam wijzigen",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Hernoem de groep 'developers' naar 'dev-team'.",
+      "solution": "sudo groupmod -n dev-team developers",
+      "acceptors": ["sudo groupmod -n dev-team developers"],
+      "expectedOutput": [],
+      "hints": ["Gebruik groupmod met de vlag -n voor de nieuwe naam."],
+      "tags": ["groepen", "beheer"],
+      "commandsUsed": ["groupmod"]
+    },
+    {
+      "title": "Gebruiker account verlopen laten",
+      "difficulty": "medium",
+      "type": "command",
+      "prompt": "Stel in dat het account van tempuser vervalt op 31 december 2025.",
+      "solution": "sudo usermod -e 2025-12-31 tempuser",
+      "acceptors": ["sudo usermod -e 2025-12-31 tempuser"],
+      "expectedOutput": [],
+      "hints": [
+        "Gebruik usermod met de vlag -e.",
+        "De datum moet in het formaat YYYY-MM-DD zijn."
+      ],
+      "tags": ["gebruikers", "beveiliging"],
+      "commandsUsed": ["usermod"]
+    },
+    {
+      "title": "Sudoers-syntaxis controleren",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Controleer of het /etc/sudoers-bestand geen syntaxfouten bevat.",
+      "solution": "sudo visudo -c",
+      "acceptors": ["sudo visudo -c"],
+      "expectedOutput": [],
+      "hints": ["Gebruik visudo met de vlag -c voor een syntaxcontrole."],
+      "tags": ["sudo", "beveiliging"],
+      "commandsUsed": ["visudo"]
+    }
+  ],
+  "theory": [
+    {
+      "question": "Wat is het verschil tussen UID en GID?",
+      "type": "open",
+      "choices": [],
+      "answer": "UID (User ID) is het unieke nummer dat een gebruiker identificeert op het systeem. GID (Group ID) is het unieke nummer van een groep. Elke gebruiker heeft een primaire GID en kan lid zijn van meerdere groepen.",
+      "explanation": "UID's starten voor reguliere gebruikers bij 1000 op Debian/Ubuntu. GID's werken op dezelfde manier voor groepen. Root heeft UID 0 en GID 0."
+    },
+    {
+      "question": "Waar worden de wachtwoorden van gebruikers echt opgeslagen?",
+      "type": "mc",
+      "choices": ["/etc/passwd", "/etc/shadow", "/etc/group", "/etc/login.defs"],
+      "answer": "/etc/shadow",
+      "explanation": "/etc/passwd bevat een 'x' als plaatshouder voor het wachtwoord. De echte (gehashe) wachtwoorden staan in /etc/shadow, dat alleen leesbaar is voor root. Dit verhoogt de beveiliging."
+    },
+    {
+      "question": "Welk commando gebruik je om een gebruiker toe te voegen aan een bestaande groep zonder zijn andere groepen te verwijderen?",
+      "type": "mc",
+      "choices": ["sudo usermod -G groep gebruiker", "sudo usermod -aG groep gebruiker", "sudo groupadd gebruiker groep", "sudo gpasswd groep gebruiker"],
+      "answer": "sudo usermod -aG groep gebruiker",
+      "explanation": "De -a vlag staat voor 'append' (toevoegen). Zonder -a vervangt -G alle bestaande secundaire groepen, wat kan leiden tot verlies van groepslidmaatschappen."
+    },
+    {
+      "question": "Wat is het verschil tussen 'su' en 'sudo'?",
+      "type": "open",
+      "choices": [],
+      "answer": "su (switch user) wisselt volledig van gebruiker en vereist het wachtwoord van die gebruiker. sudo voert slechts één commando uit met verhoogde rechten en vereist het wachtwoord van de huidige gebruiker.",
+      "explanation": "sudo is veiliger omdat het het root-wachtwoord geheim houdt, en elke actie gelogd wordt. sudo kan ook via het sudoers-bestand ingeperkt worden tot specifieke commando's."
+    },
+    {
+      "question": "Hoe verhinder je dat een gebruiker kan inloggen zonder de account te verwijderen?",
+      "type": "mc",
+      "choices": [
+        "sudo userdel gebruiker",
+        "sudo usermod -L -s /usr/sbin/nologin gebruiker",
+        "sudo passwd -r gebruiker",
+        "sudo groupdel gebruiker"
+      ],
+      "answer": "sudo usermod -L -s /usr/sbin/nologin gebruiker",
+      "explanation": "-L vergrendelt het account (wachtwoord werkt niet meer), en -s /usr/sbin/nologin als shell weigert ook login via andere methodes. Je kunt ook enkel passwd -l gebruiken."
+    },
+    {
+      "question": "Welk bestand bevat de groepslidmaatschapsinformatie?",
+      "type": "mc",
+      "choices": ["/etc/passwd", "/etc/shadow", "/etc/group", "/etc/groups"],
+      "answer": "/etc/group",
+      "explanation": "/etc/group heeft het formaat: groepnaam:x:GID:ledenlijst. Elke regel is één groep en de leden worden gescheiden door komma's opgelijst."
+    },
+    {
+      "question": "Hoe stel je in dat een account vervalt op een specifieke datum?",
+      "type": "mc",
+      "choices": [
+        "sudo chage -d 2025-12-31 gebruiker",
+        "sudo usermod -e 2025-12-31 gebruiker",
+        "sudo passwd -e 2025-12-31 gebruiker",
+        "sudo groupmod -e 2025-12-31 gebruiker"
+      ],
+      "answer": "sudo usermod -e 2025-12-31 gebruiker",
+      "explanation": "De vlag -e van usermod stelt de accountvervaldatum in. Je kunt ook chage -E gebruiken. De datum moet in het formaat YYYY-MM-DD zijn."
+    },
+    {
+      "question": "Wat is de veiligste manier om het /etc/sudoers bestand te bewerken?",
+      "type": "mc",
+      "choices": ["sudo nano /etc/sudoers", "sudo vim /etc/sudoers", "sudo visudo", "sudo gedit /etc/sudoers"],
+      "answer": "sudo visudo",
+      "explanation": "visudo vergrendelt het sudoers-bestand tijdens het bewerken en controleert de syntaxis voor het opgeslagen wordt. Een syntaxfout in sudoers kan het systeem onbeheerbaar maken."
+    },
+    {
+      "question": "Welke UID heeft de root-gebruiker altijd?",
+      "type": "mc",
+      "choices": ["1", "0", "999", "1000"],
+      "answer": "0",
+      "explanation": "UID 0 is altijd gereserveerd voor root, de supergebruiker met onbeperkte rechten. Systeemdiensten gebruiken UID's 1-999 en reguliere gebruikers starten bij UID 1000."
+    },
+    {
+      "question": "Welk commando toont de huidige gebruikersnaam?",
+      "type": "mc",
+      "choices": ["id", "who", "whoami", "w"],
+      "answer": "whoami",
+      "explanation": "whoami drukt enkel de naam van de huidige gebruiker af. id geeft meer informatie (UID, GID, groepen). who en w tonen alle ingelogde gebruikers."
+    },
+    {
+      "question": "Wat doet het commando 'sudo chage -d 0 alice'?",
+      "type": "mc",
+      "choices": [
+        "Verwijdert het wachtwoord van alice",
+        "Forceert alice om haar wachtwoord te wijzigen bij de volgende inlog",
+        "Stelt de minimale wachtwoordduur in op 0 dagen",
+        "Verloopt het account van alice onmiddellijk"
+      ],
+      "answer": "Forceert alice om haar wachtwoord te wijzigen bij de volgende inlog",
+      "explanation": "-d stelt de 'last password change' datum in. Door hem op 0 te zetten (1 januari 1970), is het wachtwoord al 'verlopen' en moet alice het onmiddellijk wijzigen."
+    },
+    {
+      "question": "Wat is het verschil tussen een primaire en een secundaire groep?",
+      "type": "open",
+      "choices": [],
+      "answer": "Een primaire groep is de standaardgroep van een gebruiker (staat in /etc/passwd) en wordt gebruikt als eigenaar van nieuw aangemaakte bestanden. Secundaire groepen zijn extra groepen voor gedeelde toegang tot bestanden en mappen.",
+      "explanation": "Elke gebruiker heeft precies één primaire groep, maar kan lid zijn van meerdere secundaire groepen. De id-opdracht toont ze allemaal."
+    },
+    {
+      "question": "Welke velden staan er in /etc/passwd, in welke volgorde?",
+      "type": "open",
+      "choices": [],
+      "answer": "gebruikersnaam:x:UID:GID:GECOS:home-map:shell — zeven velden gescheiden door dubbele punten.",
+      "explanation": "Het x-veld is een plaatshouder voor het wachtwoord (dat in /etc/shadow staat). GECOS bevat optioneel de volledige naam en contactinfo."
+    },
+    {
+      "question": "Welk commando gebruik je om de inloggeschiedenis van het systeem te bekijken?",
+      "type": "mc",
+      "choices": ["who", "w", "last", "id"],
+      "answer": "last",
+      "explanation": "last leest het /var/log/wtmp-bestand en toont de historische inlogsessies. who en w tonen enkel de momenteel ingelogde gebruikers."
+    },
+    {
+      "question": "Wat doet de vlag -r bij useradd?",
+      "type": "mc",
+      "choices": [
+        "Verwijdert een bestaande gebruiker",
+        "Maakt een systeemaccount aan (UID < 1000, geen home-map)",
+        "Stelt de root als primaire groep in",
+        "Maakt de gebruiker enkel-lezen"
+      ],
+      "answer": "Maakt een systeemaccount aan (UID < 1000, geen home-map)",
+      "explanation": "Systeemaccounts worden gebruikt door diensten (daemons) en hebben doorgaans geen home-map. Ze krijgen een UID onder de 1000 toegewezen."
+    },
+    {
+      "question": "Welk commando toont de wachtwoordvervalinformatie van een gebruiker?",
+      "type": "mc",
+      "choices": ["sudo passwd -S alice", "sudo chage -l alice", "sudo id alice", "sudo getent passwd alice"],
+      "answer": "sudo chage -l alice",
+      "explanation": "chage -l toont uitgebreide informatie over het wachtwoordbeleid: laatste wijziging, minimale/maximale geldigheidsduur, waarschuwingsperiode en accountvervaldatum."
+    }
+  ]
+}

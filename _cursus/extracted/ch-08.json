@@ -1,0 +1,972 @@
+{
+  "chapterId": "08",
+  "chapterTitle": "Shell Scripting",
+  "summary": "In dit hoofdstuk leer je hoe je shell scripts schrijft om repetitieve taken te automatiseren. Je werkt met variabelen, gebruikersinvoer, conditionele statements, lussen en case-structuren. Je past best practices toe zoals foutafhandeling, documentatie en herbruikbare functies.",
+  "commands": [
+    {
+      "name": "chmod",
+      "category": "Permissies",
+      "short": "Maakt een script uitvoerbaar of past bestandsrechten aan.",
+      "synopsis": "chmod [OPTIE]... MODUS BESTAND...",
+      "flags": [
+        { "flag": "+x", "desc": "Voegt uitvoerrecht toe voor eigenaar, groep en overige gebruikers." },
+        { "flag": "-x", "desc": "Verwijdert uitvoerrecht." },
+        { "flag": "755", "desc": "Stelt octal permissies in: eigenaar rwx, groep/overig rx." }
+      ],
+      "examples": [
+        { "cmd": "chmod +x script.sh", "desc": "Maakt script.sh uitvoerbaar." },
+        { "cmd": "chmod 755 script.sh", "desc": "Zet permissies op rwxr-xr-x voor script.sh." }
+      ],
+      "related": ["ls", "stat"],
+      "tags": ["permissies", "scripting"]
+    },
+    {
+      "name": "bash",
+      "category": "Shell scripting",
+      "short": "Voert een shell script uit zonder het uitvoerbaar te maken.",
+      "synopsis": "bash [OPTIE]... SCRIPT [ARGUMENT]...",
+      "flags": [
+        { "flag": "-x", "desc": "Debugmodus: toont elk commando voor uitvoering (trace)." },
+        { "flag": "-e", "desc": "Stopt het script bij de eerste fout." },
+        { "flag": "-u", "desc": "Behandelt niet-gedefinieerde variabelen als fout." },
+        { "flag": "-o pipefail", "desc": "Laat de pipe-exitcode de eerste mislukte opdracht weerspiegelen." }
+      ],
+      "examples": [
+        { "cmd": "bash script.sh", "desc": "Voert script.sh uit via bash zonder uitvoerrecht nodig." },
+        { "cmd": "bash -x script.sh", "desc": "Voert script.sh uit in debugmodus." },
+        { "cmd": "bash -euo pipefail script.sh", "desc": "Voert script uit met strikte foutafhandeling." }
+      ],
+      "related": ["sh", "chmod"],
+      "tags": ["scripting", "uitvoering"]
+    },
+    {
+      "name": "read",
+      "category": "Shell scripting",
+      "short": "Leest invoer van de gebruiker of van een bestand in een variabele.",
+      "synopsis": "read [OPTIE]... [VARIABELE]...",
+      "flags": [
+        { "flag": "-p PROMPT", "desc": "Toont een prompttekst voor de invoer." },
+        { "flag": "-s", "desc": "Stille invoer: tekens worden niet getoond (geschikt voor wachtwoorden)." },
+        { "flag": "-r", "desc": "Raw modus: backslash wordt niet als escape-teken behandeld." },
+        { "flag": "-t SECONDEN", "desc": "Wacht maximaal het opgegeven aantal seconden op invoer." }
+      ],
+      "examples": [
+        { "cmd": "read -p \"Jouw naam: \" naam", "desc": "Vraagt de gebruiker om een naam in te voeren." },
+        { "cmd": "read -s -p \"Wachtwoord: \" ww", "desc": "Vraagt een wachtwoord zonder het op het scherm te tonen." },
+        { "cmd": "while read -r line; do echo \"$line\"; done < bestand.txt", "desc": "Leest een bestand regel voor regel in een while-lus." }
+      ],
+      "related": ["echo", "printf"],
+      "tags": ["invoer", "scripting", "interactief"]
+    },
+    {
+      "name": "echo",
+      "category": "Shell scripting",
+      "short": "Drukt tekst of variabelewaarden af naar de standaarduitvoer.",
+      "synopsis": "echo [OPTIE]... [TEKST]...",
+      "flags": [
+        { "flag": "-n", "desc": "Drukt geen newline af aan het einde." },
+        { "flag": "-e", "desc": "Interpreteert escape-sequenties zoals \\n en \\t." }
+      ],
+      "examples": [
+        { "cmd": "echo \"Hello, $USER\"", "desc": "Drukt een begroeting af met de huidige gebruikersnaam." },
+        { "cmd": "echo -n \"Geen newline\"", "desc": "Drukt tekst af zonder afsluitende newline." },
+        { "cmd": "echo \"Vandaag is: $(date)\"", "desc": "Gebruikt command substitution in een echo." }
+      ],
+      "related": ["printf", "read"],
+      "tags": ["uitvoer", "scripting"]
+    },
+    {
+      "name": "exit",
+      "category": "Shell scripting",
+      "short": "Beëindigt het script met een opgegeven exitcode.",
+      "synopsis": "exit [EXITCODE]",
+      "flags": [],
+      "examples": [
+        { "cmd": "exit 0", "desc": "Sluit het script af als geslaagd (exitcode 0)." },
+        { "cmd": "exit 1", "desc": "Sluit het script af met foutcode 1." }
+      ],
+      "related": ["$?"],
+      "tags": ["scripting", "foutafhandeling"]
+    },
+    {
+      "name": "export",
+      "category": "Shell scripting",
+      "short": "Exporteert een variabele zodat kindprocessen ze kunnen gebruiken.",
+      "synopsis": "export [NAAM[=WAARDE]]...",
+      "flags": [],
+      "examples": [
+        { "cmd": "export MIJN_VAR=\"hallo\"", "desc": "Stelt een omgevingsvariabele in die beschikbaar is voor kindprocessen." },
+        { "cmd": "export PATH=$PATH:/usr/local/bin", "desc": "Voegt een map toe aan het zoekpad." }
+      ],
+      "related": ["env", "set"],
+      "tags": ["variabelen", "omgeving", "scripting"]
+    },
+    {
+      "name": "readonly",
+      "category": "Shell scripting",
+      "short": "Markeert een variabele als alleen-lezen (constante).",
+      "synopsis": "readonly [NAAM[=WAARDE]]...",
+      "flags": [],
+      "examples": [
+        { "cmd": "readonly PI=3.14159", "desc": "Definieert PI als constante die niet gewijzigd kan worden." },
+        { "cmd": "readonly CONFIG_FILE=\"/etc/app.conf\"", "desc": "Maakt het configuratiebestandspad onveranderlijk." }
+      ],
+      "related": ["export", "declare"],
+      "tags": ["variabelen", "scripting"]
+    },
+    {
+      "name": "test",
+      "category": "Shell scripting",
+      "short": "Evalueert een conditie en geeft exitcode 0 (waar) of 1 (onwaar) terug.",
+      "synopsis": "test EXPRESSIE   of   [ EXPRESSIE ]",
+      "flags": [
+        { "flag": "-f BESTAND", "desc": "Waar als het bestand bestaat en een gewoon bestand is." },
+        { "flag": "-d MAP", "desc": "Waar als de map bestaat." },
+        { "flag": "-e PAD", "desc": "Waar als het pad bestaat (ongeacht type)." },
+        { "flag": "-r BESTAND", "desc": "Waar als het bestand leesbaar is." },
+        { "flag": "-w BESTAND", "desc": "Waar als het bestand beschrijfbaar is." },
+        { "flag": "-x BESTAND", "desc": "Waar als het bestand uitvoerbaar is." },
+        { "flag": "-s BESTAND", "desc": "Waar als het bestand niet leeg is." },
+        { "flag": "-L BESTAND", "desc": "Waar als het een symbolische koppeling is." },
+        { "flag": "-z STRING", "desc": "Waar als de tekenreeks leeg is." },
+        { "flag": "-n STRING", "desc": "Waar als de tekenreeks niet leeg is." },
+        { "flag": "-eq", "desc": "Getal: gelijk aan." },
+        { "flag": "-ne", "desc": "Getal: niet gelijk aan." },
+        { "flag": "-lt", "desc": "Getal: kleiner dan." },
+        { "flag": "-le", "desc": "Getal: kleiner dan of gelijk aan." },
+        { "flag": "-gt", "desc": "Getal: groter dan." },
+        { "flag": "-ge", "desc": "Getal: groter dan of gelijk aan." }
+      ],
+      "examples": [
+        { "cmd": "[ -f /etc/passwd ]", "desc": "Controleert of /etc/passwd een gewoon bestand is." },
+        { "cmd": "[ -d /home ] && echo \"map bestaat\"", "desc": "Drukt een bericht af als /home een map is." },
+        { "cmd": "[ \"$leeftijd\" -ge 18 ]", "desc": "Controleert of leeftijd groter of gelijk is aan 18." }
+      ],
+      "related": ["if", "bash"],
+      "tags": ["conditie", "scripting"]
+    },
+    {
+      "name": "if",
+      "category": "Shell scripting",
+      "short": "Voert een blok commando's uit als een conditie waar is.",
+      "synopsis": "if CONDITIE; then COMMANDO's [elif CONDITIE; then COMMANDO's] [else COMMANDO's] fi",
+      "flags": [],
+      "examples": [
+        { "cmd": "if [ -f \"$BESTAND\" ]; then echo \"bestaat\"; fi", "desc": "Controleert of een bestand bestaat en drukt dit af." },
+        { "cmd": "if [ \"$#\" -lt 2 ]; then echo \"Te weinig argumenten\"; exit 1; fi", "desc": "Stopt het script als er te weinig argumenten zijn." },
+        { "cmd": "if [ \"$naam\" = \"admin\" ]; then echo \"Welkom, beheerder!\"; else echo \"Welkom, $naam\"; fi", "desc": "Begroet op basis van gebruikersnaam." }
+      ],
+      "related": ["test", "case", "else", "elif"],
+      "tags": ["conditie", "scripting"]
+    },
+    {
+      "name": "case",
+      "category": "Shell scripting",
+      "short": "Vergelijkt een waarde met meerdere patronen en voert het overeenkomende blok uit.",
+      "synopsis": "case WAARDE in PATROON) COMMANDO's ;; ... esac",
+      "flags": [],
+      "examples": [
+        { "cmd": "case $keuze in 1) date ;; 2) who ;; *) echo \"Ongeldig\" ;; esac", "desc": "Voert een commando uit op basis van de menuoptie." },
+        { "cmd": "case $ext in txt|doc) echo \"document\" ;; jpg|png) echo \"afbeelding\" ;; esac", "desc": "Matcht meerdere extensies per patroon." }
+      ],
+      "related": ["if", "elif"],
+      "tags": ["conditie", "scripting", "patroon"]
+    },
+    {
+      "name": "for",
+      "category": "Shell scripting",
+      "short": "Herhaalt een reeks commando's voor elk element in een lijst of reeks.",
+      "synopsis": "for VARIABELE in LIJST; do COMMANDO's; done",
+      "flags": [],
+      "examples": [
+        { "cmd": "for i in {1..5}; do echo \"Nummer: $i\"; done", "desc": "Telt van 1 tot en met 5." },
+        { "cmd": "for bestand in *.txt; do wc -l \"$bestand\"; done", "desc": "Telt regels in alle tekstbestanden." },
+        { "cmd": "for ((i=1; i<=10; i++)); do echo $i; done", "desc": "C-stijl for-lus van 1 tot 10." },
+        { "cmd": "for i in {0..20..2}; do echo $i; done", "desc": "Telt even getallen van 0 tot 20 met stap 2." }
+      ],
+      "related": ["while", "until", "break", "continue"],
+      "tags": ["lus", "scripting"]
+    },
+    {
+      "name": "while",
+      "category": "Shell scripting",
+      "short": "Herhaalt een reeks commando's zolang een conditie waar is.",
+      "synopsis": "while CONDITIE; do COMMANDO's; done",
+      "flags": [],
+      "examples": [
+        { "cmd": "while [ $teller -le 5 ]; do echo $teller; teller=$((teller+1)); done", "desc": "Telt van 1 tot 5 met een while-lus." },
+        { "cmd": "while read -r regel; do echo \"$regel\"; done < /etc/passwd", "desc": "Leest /etc/passwd regel voor regel." },
+        { "cmd": "while true; do read -p \"Typ 'stop' om te stoppen: \" inp; [ \"$inp\" = \"stop\" ] && break; done", "desc": "Eindeloze lus die stopt bij invoer 'stop'." }
+      ],
+      "related": ["for", "until", "break"],
+      "tags": ["lus", "scripting"]
+    },
+    {
+      "name": "until",
+      "category": "Shell scripting",
+      "short": "Herhaalt een reeks commando's totdat een conditie waar wordt (omgekeerde while).",
+      "synopsis": "until CONDITIE; do COMMANDO's; done",
+      "flags": [],
+      "examples": [
+        { "cmd": "until [ $teller -gt 5 ]; do echo $teller; teller=$((teller+1)); done", "desc": "Telt tot de teller groter dan 5 is." },
+        { "cmd": "until [ -f \"/tmp/klaar.flag\" ]; do echo \"wachten...\"; sleep 1; done", "desc": "Wacht tot een bestand aangemaakt wordt." }
+      ],
+      "related": ["while", "for"],
+      "tags": ["lus", "scripting"]
+    },
+    {
+      "name": "break",
+      "category": "Shell scripting",
+      "short": "Verlaat de huidige lus onmiddellijk.",
+      "synopsis": "break [N]",
+      "flags": [],
+      "examples": [
+        { "cmd": "if [ \"$invoer\" = \"stop\" ]; then break; fi", "desc": "Verlaat de lus als de gebruiker 'stop' typt." }
+      ],
+      "related": ["continue", "while", "for"],
+      "tags": ["lus", "scripting"]
+    },
+    {
+      "name": "continue",
+      "category": "Shell scripting",
+      "short": "Slaat de rest van de huidige lusiteratie over en gaat naar de volgende.",
+      "synopsis": "continue [N]",
+      "flags": [],
+      "examples": [
+        { "cmd": "if [ $i -eq 3 ]; then continue; fi", "desc": "Slaat iteratie 3 over maar gaat door met de rest." }
+      ],
+      "related": ["break", "while", "for"],
+      "tags": ["lus", "scripting"]
+    },
+    {
+      "name": "set",
+      "category": "Shell scripting",
+      "short": "Stelt shell-opties in die het scriptgedrag bepalen.",
+      "synopsis": "set [OPTIE]...",
+      "flags": [
+        { "flag": "-e", "desc": "Sluit het script af bij de eerste fout." },
+        { "flag": "-u", "desc": "Behandelt niet-gedefinieerde variabelen als fout." },
+        { "flag": "-o pipefail", "desc": "Mislukte opdrachten in een pipe geven een niet-nul exitcode terug." },
+        { "flag": "-x", "desc": "Tracemodus: elk commando wordt afgedrukt voor uitvoering." }
+      ],
+      "examples": [
+        { "cmd": "set -euo pipefail", "desc": "Schakelt strikte foutafhandeling in aan het begin van een script." },
+        { "cmd": "set -x", "desc": "Zet tracemodus aan voor debuggen." }
+      ],
+      "related": ["bash", "trap"],
+      "tags": ["scripting", "foutafhandeling", "debug"]
+    },
+    {
+      "name": "trap",
+      "category": "Shell scripting",
+      "short": "Voert een commando uit wanneer het script een signaal of fout ontvangt.",
+      "synopsis": "trap 'COMMANDO' SIGNAAL",
+      "flags": [],
+      "examples": [
+        { "cmd": "trap 'echo \"Fout op regel $LINENO\"' ERR", "desc": "Drukt het regelnummer af bij een scriptfout." },
+        { "cmd": "trap 'rm -f /tmp/tijdelijk.txt' EXIT", "desc": "Verwijdert een tijdelijk bestand bij afsluiten van het script." }
+      ],
+      "related": ["set", "exit"],
+      "tags": ["scripting", "foutafhandeling", "signalen"]
+    },
+    {
+      "name": "getopts",
+      "category": "Shell scripting",
+      "short": "Verwerkt opdrachtregelopties in een shell script.",
+      "synopsis": "getopts OPTSTRING VARIABELE",
+      "flags": [],
+      "examples": [
+        { "cmd": "while getopts \"dh\" opt; do case $opt in d) DEBUG=true ;; h) echo \"Help\" ;; esac; done", "desc": "Verwerkt vlaggen -d (debug) en -h (help) uit de opdrachtregelargumenten." }
+      ],
+      "related": ["case", "while"],
+      "tags": ["scripting", "argumenten"]
+    },
+    {
+      "name": "source",
+      "category": "Shell scripting",
+      "short": "Voert een script uit in de huidige shell-omgeving (variabelen blijven beschikbaar).",
+      "synopsis": "source BESTAND   of   . BESTAND",
+      "flags": [],
+      "examples": [
+        { "cmd": "source ~/.bashrc", "desc": "Laadt de bashconfiguratie opnieuw in de huidige shell." },
+        { "cmd": ". ./config.sh", "desc": "Laadt variabelen uit config.sh in de huidige shell." }
+      ],
+      "related": ["bash", "export"],
+      "tags": ["scripting", "omgeving"]
+    }
+  ],
+  "exercises": [
+    {
+      "title": "Eerste script aanmaken en uitvoerbaar maken",
+      "difficulty": "easy",
+      "type": "multi-step",
+      "prompt": "Maak een bestand greeting.sh aan dat de shebang-regel #!/bin/bash bevat, dan een echo-regel 'Hello! Welcome to shell scripting!' en een regel die de huidige datum afdrukt met $(date). Maak het bestand daarna uitvoerbaar en voer het uit.",
+      "solution": "cat > greeting.sh << 'EOF'\n#!/bin/bash\necho \"Hello! Welcome to shell scripting!\"\necho \"Today is: $(date)\"\necho \"You are logged in as: $USER\"\necho \"Your home directory is: $HOME\"\nEOF\nchmod +x greeting.sh\n./greeting.sh",
+      "acceptors": [
+        "cat > greeting.sh << 'EOF'\n#!/bin/bash\necho \"Hello! Welcome to shell scripting!\"\necho \"Today is: $(date)\"\necho \"You are logged in as: $USER\"\necho \"Your home directory is: $HOME\"\nEOF\nchmod +x greeting.sh\n./greeting.sh"
+      ],
+      "expectedOutput": [
+        "Hello! Welcome to shell scripting!",
+        "Today is: ..."
+      ],
+      "hints": [
+        "Gebruik cat > bestand << 'EOF' ... EOF om de inhoud van het bestand in te schrijven.",
+        "De eerste regel van een script moet altijd #!/bin/bash zijn.",
+        "Gebruik chmod +x om uitvoerrechten toe te kennen.",
+        "Voer het script uit met ./greeting.sh"
+      ],
+      "tags": ["scripting", "shebang", "chmod"],
+      "commandsUsed": ["cat", "chmod", "echo"],
+      "steps": [
+        {
+          "prompt": "Schrijf een bestand greeting.sh met shebang-regel en twee echo-regels: één met 'Hello! Welcome to shell scripting!' en één met de huidige datum.",
+          "acceptors": [
+            "cat > greeting.sh << 'EOF'\n#!/bin/bash\necho \"Hello! Welcome to shell scripting!\"\necho \"Today is: $(date)\"\nEOF"
+          ],
+          "solution": "cat > greeting.sh << 'EOF'\n#!/bin/bash\necho \"Hello! Welcome to shell scripting!\"\necho \"Today is: $(date)\"\necho \"You are logged in as: $USER\"\necho \"Your home directory is: $HOME\"\nEOF",
+          "expectedOutput": [],
+          "hints": ["Gebruik heredoc (<<'EOF' ... EOF) om meerdere regels in een bestand te schrijven."]
+        },
+        {
+          "prompt": "Maak greeting.sh uitvoerbaar.",
+          "acceptors": ["chmod +x greeting.sh", "chmod 755 greeting.sh"],
+          "solution": "chmod +x greeting.sh",
+          "expectedOutput": [],
+          "hints": ["Gebruik chmod +x om uitvoerrechten toe te voegen."]
+        },
+        {
+          "prompt": "Voer greeting.sh uit vanuit de huidige map.",
+          "acceptors": ["./greeting.sh", "bash greeting.sh"],
+          "solution": "./greeting.sh",
+          "expectedOutput": ["Hello! Welcome to shell scripting!"],
+          "hints": ["Voeg ./ toe vóór de scriptnaam om het uit de huidige map uit te voeren."]
+        }
+      ]
+    },
+    {
+      "title": "Interactief script met gebruikersinvoer",
+      "difficulty": "easy",
+      "type": "script",
+      "prompt": "Schrijf een script interactive.sh dat de gebruiker vraagt naar naam en favoriete kleur (met read -p), en die gegevens daarna afdrukt met een begroeting.",
+      "solution": "cat > interactive.sh << 'EOF'\n#!/bin/bash\nread -p \"What's your name? \" name\nread -p \"What's your favorite color? \" color\necho \"Hello, $name!\"\necho \"Your favorite color is $color.\"\nEOF\nchmod +x interactive.sh",
+      "acceptors": [
+        "cat > interactive.sh << 'EOF'\n#!/bin/bash\nread -p \"What's your name? \" name\nread -p \"What's your favorite color? \" color\necho \"Hello, $name!\"\necho \"Your favorite color is $color.\"\nEOF\nchmod +x interactive.sh"
+      ],
+      "expectedOutput": [],
+      "hints": [
+        "Gebruik read -p 'Prompttekst: ' variabele om invoer te vragen.",
+        "Gebruik $naam om de waarde van een variabele af te drukken.",
+        "Vergeet de shebang-regel niet aan het begin van het script."
+      ],
+      "tags": ["scripting", "read", "variabelen"],
+      "commandsUsed": ["read", "echo", "chmod"]
+    },
+    {
+      "title": "Testmap en bestandenteller script aanmaken",
+      "difficulty": "medium",
+      "type": "multi-step",
+      "prompt": "Maak een map script_test aan, voeg daarin 5 .txt-bestanden, 3 .pdf-bestanden en 2 .jpg-bestanden toe. Maak daarna een script count_files.sh dat voor elke extensie (txt, pdf, jpg) het aantal bestanden telt en afdrukt, samen met het totale aantal bestanden.",
+      "solution": "mkdir script_test && cd script_test\ntouch file{1..5}.txt\ntouch document{1..3}.pdf\ntouch image{1..2}.jpg\ncat > count_files.sh << 'EOF'\n#!/bin/bash\necho \"File Statistics for: $(pwd)\"\necho \"====================\"\nfor ext in txt pdf jpg; do\n    count=$(ls *.$ext 2>/dev/null | wc -l)\n    echo \"$ext files: $count\"\ndone\necho \"====================\"\necho \"Total files: $(ls -1 | wc -l)\"\nEOF\nchmod +x count_files.sh\n./count_files.sh",
+      "acceptors": [
+        "mkdir script_test && cd script_test\ntouch file{1..5}.txt\ntouch document{1..3}.pdf\ntouch image{1..2}.jpg\ncat > count_files.sh << 'EOF'\n#!/bin/bash\necho \"File Statistics for: $(pwd)\"\necho \"====================\"\nfor ext in txt pdf jpg; do\n    count=$(ls *.$ext 2>/dev/null | wc -l)\n    echo \"$ext files: $count\"\ndone\necho \"====================\"\necho \"Total files: $(ls -1 | wc -l)\"\nEOF\nchmod +x count_files.sh\n./count_files.sh"
+      ],
+      "expectedOutput": [
+        "txt files: 5",
+        "pdf files: 3",
+        "jpg files: 2",
+        "Total files: ..."
+      ],
+      "hints": [
+        "Gebruik touch bestand{1..5}.txt om snel meerdere bestanden aan te maken.",
+        "Gebruik een for-lus over de extensies.",
+        "Gebruik ls *.ext 2>/dev/null | wc -l om bestanden te tellen zonder foutmeldingen.",
+        "Gebruik ls -1 | wc -l voor het totale aantal bestanden."
+      ],
+      "tags": ["scripting", "for-lus", "bestanden"],
+      "commandsUsed": ["mkdir", "touch", "cat", "chmod", "ls", "wc"],
+      "steps": [
+        {
+          "prompt": "Maak de map script_test aan en ga erin.",
+          "acceptors": ["mkdir script_test && cd script_test", "mkdir script_test; cd script_test"],
+          "solution": "mkdir script_test && cd script_test",
+          "expectedOutput": [],
+          "hints": ["Gebruik mkdir om de map te maken en cd om erin te gaan."]
+        },
+        {
+          "prompt": "Maak 5 .txt-bestanden, 3 .pdf-bestanden en 2 .jpg-bestanden aan.",
+          "acceptors": [
+            "touch file{1..5}.txt\ntouch document{1..3}.pdf\ntouch image{1..2}.jpg",
+            "touch file{1..5}.txt document{1..3}.pdf image{1..2}.jpg"
+          ],
+          "solution": "touch file{1..5}.txt\ntouch document{1..3}.pdf\ntouch image{1..2}.jpg",
+          "expectedOutput": [],
+          "hints": ["Gebruik brace expansion {1..5} om meerdere bestanden tegelijk aan te maken."]
+        },
+        {
+          "prompt": "Schrijf count_files.sh met een for-lus die per extensie het aantal bestanden telt, maak het uitvoerbaar en voer het uit.",
+          "acceptors": [
+            "cat > count_files.sh << 'EOF'\n#!/bin/bash\nfor ext in txt pdf jpg; do\n    count=$(ls *.$ext 2>/dev/null | wc -l)\n    echo \"$ext files: $count\"\ndone\nEOF\nchmod +x count_files.sh\n./count_files.sh"
+          ],
+          "solution": "cat > count_files.sh << 'EOF'\n#!/bin/bash\necho \"File Statistics for: $(pwd)\"\necho \"====================\"\nfor ext in txt pdf jpg; do\n    count=$(ls *.$ext 2>/dev/null | wc -l)\n    echo \"$ext files: $count\"\ndone\necho \"====================\"\necho \"Total files: $(ls -1 | wc -l)\"\nEOF\nchmod +x count_files.sh\n./count_files.sh",
+          "expectedOutput": ["txt files: 5", "pdf files: 3", "jpg files: 2"],
+          "hints": ["Gebruik 2>/dev/null om foutmeldingen bij niet-bestaande extensies te onderdrukken."]
+        }
+      ]
+    },
+    {
+      "title": "Bestandscontrolescript met if-conditionals",
+      "difficulty": "medium",
+      "type": "multi-step",
+      "prompt": "Schrijf een script file_checker.sh dat één argument verwacht (bestand of map). Het script moet controleren of het doel bestaat. Als het een bestand is, toont het de grootte en of het leesbaar/schrijfbaar/uitvoerbaar is. Als het een map is, toont het het aantal items. Als het niet bestaat, meldt het dat. Maak het uitvoerbaar en test het.",
+      "solution": "cat > file_checker.sh << 'EOF'\n#!/bin/bash\nif [ $# -eq 0 ]; then\n    echo \"Usage: $0 <file_or_directory>\"\n    exit 1\nfi\nTARGET=\"$1\"\necho \"Checking: $TARGET\"\necho \"==================\"\nif [ -e \"$TARGET\" ]; then\n    echo \"Exists\"\n    if [ -f \"$TARGET\" ]; then\n        echo \"Is a file\"\n        echo \"  Size: $(stat -c%s \"$TARGET\") bytes\"\n        [ -r \"$TARGET\" ] && echo \"  Readable\"\n        [ -w \"$TARGET\" ] && echo \"  Writable\"\n        [ -x \"$TARGET\" ] && echo \"  Executable\"\n    elif [ -d \"$TARGET\" ]; then\n        echo \"Is a directory\"\n        echo \"  Contains: $(ls -1 \"$TARGET\" | wc -l) items\"\n    fi\nelse\n    echo \"Does not exist\"\nfi\nEOF\nchmod +x file_checker.sh\n./file_checker.sh count_files.sh\n./file_checker.sh .\n./file_checker.sh nonexistent",
+      "acceptors": [
+        "cat > file_checker.sh << 'EOF'\n#!/bin/bash\nif [ $# -eq 0 ]; then\n    echo \"Usage: $0 <file_or_directory>\"\n    exit 1\nfi\nTARGET=\"$1\"\nif [ -e \"$TARGET\" ]; then\n    if [ -f \"$TARGET\" ]; then\n        echo \"Is a file\"\n        [ -r \"$TARGET\" ] && echo \"Readable\"\n        [ -w \"$TARGET\" ] && echo \"Writable\"\n        [ -x \"$TARGET\" ] && echo \"Executable\"\n    elif [ -d \"$TARGET\" ]; then\n        echo \"Is a directory\"\n    fi\nelse\n    echo \"Does not exist\"\nfi\nEOF\nchmod +x file_checker.sh"
+      ],
+      "expectedOutput": [
+        "Exists",
+        "Is a file"
+      ],
+      "hints": [
+        "Gebruik [ $# -eq 0 ] om te controleren of er geen argument opgegeven is.",
+        "Gebruik [ -e \"$TARGET\" ] om te controleren of het pad bestaat.",
+        "Gebruik [ -f \"$TARGET\" ] voor een gewoon bestand, [ -d \"$TARGET\" ] voor een map.",
+        "Gebruik stat -c%s om de bestandsgrootte in bytes te tonen."
+      ],
+      "tags": ["scripting", "conditioneel", "bestandstest"],
+      "commandsUsed": ["cat", "chmod", "stat", "ls", "wc"],
+      "steps": [
+        {
+          "prompt": "Schrijf file_checker.sh dat argumentcontrole uitvoert, het type bepaalt (bestand/map/niet gevonden) en bijhorende info toont.",
+          "acceptors": [
+            "cat > file_checker.sh << 'EOF'\n#!/bin/bash\nif [ $# -eq 0 ]; then\n    echo \"Usage: $0 <file_or_directory>\"\n    exit 1\nfi\nTARGET=\"$1\"\nif [ -e \"$TARGET\" ]; then\n    if [ -f \"$TARGET\" ]; then echo \"Is a file\"; elif [ -d \"$TARGET\" ]; then echo \"Is a directory\"; fi\nelse\n    echo \"Does not exist\"\nfi\nEOF"
+          ],
+          "solution": "cat > file_checker.sh << 'EOF'\n#!/bin/bash\nif [ $# -eq 0 ]; then\n    echo \"Usage: $0 <file_or_directory>\"\n    exit 1\nfi\nTARGET=\"$1\"\necho \"Checking: $TARGET\"\nif [ -e \"$TARGET\" ]; then\n    echo \"Exists\"\n    if [ -f \"$TARGET\" ]; then\n        echo \"Is a file\"\n        echo \"  Size: $(stat -c%s \"$TARGET\") bytes\"\n        [ -r \"$TARGET\" ] && echo \"  Readable\"\n        [ -w \"$TARGET\" ] && echo \"  Writable\"\n        [ -x \"$TARGET\" ] && echo \"  Executable\"\n    elif [ -d \"$TARGET\" ]; then\n        echo \"Is a directory\"\n        echo \"  Contains: $(ls -1 \"$TARGET\" | wc -l) items\"\n    fi\nelse\n    echo \"Does not exist\"\nfi\nEOF",
+          "expectedOutput": [],
+          "hints": ["Gebruik geneste if-structuren voor de controle van bestand vs. map."]
+        },
+        {
+          "prompt": "Maak file_checker.sh uitvoerbaar.",
+          "acceptors": ["chmod +x file_checker.sh"],
+          "solution": "chmod +x file_checker.sh",
+          "expectedOutput": [],
+          "hints": ["chmod +x maakt het bestand uitvoerbaar."]
+        },
+        {
+          "prompt": "Test file_checker.sh met een bestaand bestand, de huidige map en een niet-bestaand pad.",
+          "acceptors": [
+            "./file_checker.sh count_files.sh\n./file_checker.sh .\n./file_checker.sh nonexistent"
+          ],
+          "solution": "./file_checker.sh count_files.sh\n./file_checker.sh .\n./file_checker.sh nonexistent",
+          "expectedOutput": ["Is a file", "Is a directory", "Does not exist"],
+          "hints": ["Test met een bestand, een map (.) en een naam die niet bestaat."]
+        }
+      ]
+    },
+    {
+      "title": "Systeemmonitor met for-lus",
+      "difficulty": "medium",
+      "type": "script",
+      "prompt": "Schrijf een script system_monitor.sh dat 5 iteraties doorloopt. In elke iteratie drukt het de iteratienummer, de huidige tijd, de geheugengebruik (via free) en de belasting (via uptime) af. Tussen iteraties wacht het 2 seconden (behalve na de laatste).",
+      "solution": "cat > system_monitor.sh << 'EOF'\n#!/bin/bash\necho \"System Monitor\"\necho \"=============\"\nfor i in {1..5}; do\n    echo \"Iteration $i/5\"\n    echo \"Time: $(date)\"\n    echo \"Load: $(uptime | awk -F'load average:' '{print $2}')\"\n    echo \"Memory: $(free -m | grep '^Mem:' | awk '{printf \"%.1f%%\", $3/$2 * 100}')\"\n    echo \"---\"\n    if [ $i -lt 5 ]; then\n        sleep 2\n    fi\ndone\necho \"Monitoring complete!\"\nEOF\nchmod +x system_monitor.sh\n./system_monitor.sh",
+      "acceptors": [
+        "cat > system_monitor.sh << 'EOF'\n#!/bin/bash\nfor i in {1..5}; do\n    echo \"Iteration $i/5\"\n    echo \"Time: $(date)\"\n    echo \"Load: $(uptime)\"\n    echo \"Memory: $(free -m)\"\n    if [ $i -lt 5 ]; then sleep 2; fi\ndone\nEOF\nchmod +x system_monitor.sh\n./system_monitor.sh"
+      ],
+      "expectedOutput": [
+        "Iteration 1/5",
+        "Iteration 5/5",
+        "Monitoring complete!"
+      ],
+      "hints": [
+        "Gebruik for i in {1..5} voor een lus van 1 tot 5.",
+        "Gebruik $(date) voor de huidige tijd via command substitution.",
+        "Gebruik if [ $i -lt 5 ]; then sleep 2; fi om na de laatste iteratie niet te wachten.",
+        "free -m toont geheugen in MB; awk verwerkt de output."
+      ],
+      "tags": ["scripting", "for-lus", "systeem"],
+      "commandsUsed": ["cat", "chmod", "free", "uptime", "date", "awk", "sleep"]
+    },
+    {
+      "title": "Variabelen en command substitution",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Wijs de uitvoer van het commando date toe aan een variabele VANDAAG en druk daarna 'Vandaag is: ' gevolgd door de waarde van die variabele af.",
+      "solution": "VANDAAG=$(date)\necho \"Vandaag is: $VANDAAG\"",
+      "acceptors": [
+        "VANDAAG=$(date)\necho \"Vandaag is: $VANDAAG\"",
+        "VANDAAG=`date`\necho \"Vandaag is: $VANDAAG\"",
+        "VANDAAG=$(date) && echo \"Vandaag is: $VANDAAG\""
+      ],
+      "expectedOutput": ["Vandaag is: ..."],
+      "hints": [
+        "Gebruik $(commando) voor command substitution.",
+        "Gebruik geen spaties rond het = teken bij variabeleoewijzing.",
+        "Gebruik $VARIABELE of ${VARIABELE} om de waarde te gebruiken."
+      ],
+      "tags": ["variabelen", "command substitution", "scripting"],
+      "commandsUsed": ["date", "echo"]
+    },
+    {
+      "title": "Standaardwaarde voor variabele instellen",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Schrijf een bash-regel die variabele GEBRUIKER instelt op de waarde van $1 als die opgegeven is, of anders op 'gast' als standaardwaarde. Druk de waarde daarna af.",
+      "solution": "GEBRUIKER=${1:-\"gast\"}\necho \"$GEBRUIKER\"",
+      "acceptors": [
+        "GEBRUIKER=${1:-\"gast\"}\necho \"$GEBRUIKER\"",
+        "GEBRUIKER=${1:-gast}\necho \"$GEBRUIKER\""
+      ],
+      "expectedOutput": ["gast"],
+      "hints": [
+        "Gebruik de ${VARIABELE:-standaardwaarde} syntax voor een standaardwaarde.",
+        "Als $1 niet opgegeven is, wordt de standaardwaarde 'gast' gebruikt."
+      ],
+      "tags": ["variabelen", "standaardwaarde", "scripting"],
+      "commandsUsed": ["echo"]
+    },
+    {
+      "title": "Argumenten controleren in een script",
+      "difficulty": "medium",
+      "type": "command",
+      "prompt": "Schrijf een if-controle die nagaat of er minder dan 2 argumenten zijn meegegeven ($#). Als dat zo is, druk dan een gebruiksaanwijzing af (Usage: $0 <bron> <doel>) en sluit het script af met exitcode 1.",
+      "solution": "if [ $# -lt 2 ]; then\n    echo \"Usage: $0 <bron> <doel>\"\n    exit 1\nfi",
+      "acceptors": [
+        "if [ $# -lt 2 ]; then\n    echo \"Usage: $0 <bron> <doel>\"\n    exit 1\nfi",
+        "if [ \"$#\" -lt 2 ]; then echo \"Usage: $0 <bron> <doel>\"; exit 1; fi"
+      ],
+      "expectedOutput": ["Usage: ... <bron> <doel>"],
+      "hints": [
+        "$# bevat het aantal meegegeven argumenten.",
+        "Gebruik -lt voor 'kleiner dan'.",
+        "exit 1 sluit het script af met een foutcode."
+      ],
+      "tags": ["scripting", "argumenten", "conditioneel"],
+      "commandsUsed": ["exit"]
+    },
+    {
+      "title": "Case statement voor menuoptie",
+      "difficulty": "medium",
+      "type": "command",
+      "prompt": "Schrijf een case-statement dat variabele $keuze vergelijkt. Bij waarde '1' wordt date uitgevoerd, bij '2' wordt who uitgevoerd, en bij een andere waarde wordt 'Ongeldige keuze' afgedrukt en het script afgesloten met exitcode 1.",
+      "solution": "case $keuze in\n    1)\n        date\n        ;;\n    2)\n        who\n        ;;\n    *)\n        echo \"Ongeldige keuze\"\n        exit 1\n        ;;\nesac",
+      "acceptors": [
+        "case $keuze in\n    1)\n        date\n        ;;\n    2)\n        who\n        ;;\n    *)\n        echo \"Ongeldige keuze\"\n        exit 1\n        ;;\nesac",
+        "case \"$keuze\" in\n1) date ;;\n2) who ;;\n*) echo \"Ongeldige keuze\"; exit 1 ;;\nesac"
+      ],
+      "expectedOutput": [],
+      "hints": [
+        "Een case-statement eindigt altijd met esac.",
+        "Elk patroon wordt gevolgd door ) en afgebroken met ;;.",
+        "Gebruik * als standaard (wildcard) patroon voor alle andere gevallen."
+      ],
+      "tags": ["scripting", "case", "conditioneel"],
+      "commandsUsed": ["date", "who", "exit"]
+    },
+    {
+      "title": "While-lus met regelverwerking",
+      "difficulty": "medium",
+      "type": "command",
+      "prompt": "Schrijf een while-lus die elk regel van /etc/passwd leest en de gebruikersnaam (eerste veld vóór de eerste :) afdrukt.",
+      "solution": "while read -r line; do\n    echo \"$(echo \"$line\" | cut -d: -f1)\"\ndone < /etc/passwd",
+      "acceptors": [
+        "while read -r line; do\n    echo \"$(echo \"$line\" | cut -d: -f1)\"\ndone < /etc/passwd",
+        "while IFS=: read -r username _; do echo \"$username\"; done < /etc/passwd",
+        "cut -d: -f1 /etc/passwd"
+      ],
+      "expectedOutput": ["root", "daemon"],
+      "hints": [
+        "Gebruik while read -r line; do ... done < bestand om een bestand regelgewijs te lezen.",
+        "Gebruik cut -d: -f1 om het eerste veld van een dubbele-punt-gescheiden regel te halen.",
+        "Alternatief: gebruik IFS=: om het veldscheidingsteken in te stellen bij read."
+      ],
+      "tags": ["scripting", "while-lus", "read"],
+      "commandsUsed": ["while", "read", "cut", "echo"]
+    },
+    {
+      "title": "Until-lus teller",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Schrijf een until-lus die telt van 1 tot 5 en elk getal afdrukt. De lus stopt als de teller groter is dan 5.",
+      "solution": "teller=1\nuntil [ $teller -gt 5 ]; do\n    echo \"Count: $teller\"\n    teller=$((teller + 1))\ndone",
+      "acceptors": [
+        "teller=1\nuntil [ $teller -gt 5 ]; do\n    echo \"Count: $teller\"\n    teller=$((teller + 1))\ndone",
+        "counter=1\nuntil [ $counter -gt 5 ]; do echo $counter; counter=$((counter+1)); done"
+      ],
+      "expectedOutput": ["Count: 1", "Count: 2", "Count: 3", "Count: 4", "Count: 5"],
+      "hints": [
+        "until loopt zolang de conditie ONWAAR is (omgekeerde van while).",
+        "Gebruik $((teller + 1)) voor rekenkundige bewerkingen.",
+        "Vergeet de tellerverhoging niet anders maak je een eindeloze lus."
+      ],
+      "tags": ["scripting", "until-lus"],
+      "commandsUsed": ["echo"]
+    },
+    {
+      "title": "Stille wachtwoordinvoer",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Schrijf een bash-commando dat de gebruiker om een wachtwoord vraagt zonder dat de invoer zichtbaar is op het scherm. Sla de invoer op in variabele wachtwoord en druk daarna 'Wachtwoord ingevoerd' af.",
+      "solution": "read -s -p \"Geef wachtwoord in: \" wachtwoord\necho\necho \"Wachtwoord ingevoerd\"",
+      "acceptors": [
+        "read -s -p \"Geef wachtwoord in: \" wachtwoord\necho\necho \"Wachtwoord ingevoerd\"",
+        "read -sp \"Wachtwoord: \" wachtwoord; echo; echo \"Wachtwoord ingevoerd\""
+      ],
+      "expectedOutput": ["Wachtwoord ingevoerd"],
+      "hints": [
+        "Gebruik de vlag -s bij read om stille invoer (niet zichtbaar) te activeren.",
+        "Na een stille read is er geen newline; gebruik een losse echo om naar de volgende regel te gaan."
+      ],
+      "tags": ["scripting", "read", "invoer"],
+      "commandsUsed": ["read", "echo"]
+    },
+    {
+      "title": "Script uitvoerbaar zonder chmod",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Voer het bestand mijnscript.sh uit zonder het uitvoerbaar te maken via chmod, door de bash-interpreter expliciet op te roepen.",
+      "solution": "bash mijnscript.sh",
+      "acceptors": ["bash mijnscript.sh", "sh mijnscript.sh"],
+      "expectedOutput": [],
+      "hints": [
+        "Je kunt elk script uitvoeren door bash gevolgd door de scriptnaam te typen.",
+        "Dit werkt ook als het bestand geen uitvoerrechten heeft."
+      ],
+      "tags": ["scripting", "bash", "uitvoering"],
+      "commandsUsed": ["bash"]
+    },
+    {
+      "title": "Rekenkundige bewerking in een script",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Wijs de waarden 7 en 3 toe aan variabelen A en B, bereken de som en druk 'Som: ' gevolgd door het resultaat af.",
+      "solution": "A=7\nB=3\nSOM=$((A + B))\necho \"Som: $SOM\"",
+      "acceptors": [
+        "A=7\nB=3\nSOM=$((A + B))\necho \"Som: $SOM\"",
+        "A=7; B=3; SOM=$((A+B)); echo \"Som: $SOM\"",
+        "A=7\nB=3\necho \"Som: $((A + B))\""
+      ],
+      "expectedOutput": ["Som: 10"],
+      "hints": [
+        "Gebruik $((...)) voor rekenkundige bewerkingen in bash.",
+        "Spaties binnen $((...)) zijn toegestaan maar niet verplicht."
+      ],
+      "tags": ["scripting", "rekenen", "variabelen"],
+      "commandsUsed": ["echo"]
+    },
+    {
+      "title": "Logische AND-operator in if-conditie",
+      "difficulty": "medium",
+      "type": "command",
+      "prompt": "Schrijf een if-conditie die controleert of de variabele leeftijd gelijk aan of groter is dan 18 EN kleiner dan of gelijk aan 65, en als dat zo is 'Werkende leeftijd' afdrukt.",
+      "solution": "if [ \"$leeftijd\" -ge 18 ] && [ \"$leeftijd\" -le 65 ]; then\n    echo \"Werkende leeftijd\"\nfi",
+      "acceptors": [
+        "if [ \"$leeftijd\" -ge 18 ] && [ \"$leeftijd\" -le 65 ]; then\n    echo \"Werkende leeftijd\"\nfi",
+        "if [ $leeftijd -ge 18 ] && [ $leeftijd -le 65 ]; then echo \"Werkende leeftijd\"; fi",
+        "if [[ $leeftijd -ge 18 && $leeftijd -le 65 ]]; then echo \"Werkende leeftijd\"; fi"
+      ],
+      "expectedOutput": ["Werkende leeftijd"],
+      "hints": [
+        "Gebruik && om twee condities te combineren (beide moeten waar zijn).",
+        "Je kunt ook dubbele haken [[ ... && ... ]] gebruiken.",
+        "-ge staat voor 'groter dan of gelijk aan', -le voor 'kleiner dan of gelijk aan'."
+      ],
+      "tags": ["scripting", "conditioneel", "logisch"],
+      "commandsUsed": ["echo"]
+    },
+    {
+      "title": "Controleer scriptargumenten en voer actie uit",
+      "difficulty": "hard",
+      "type": "script",
+      "prompt": "Schrijf een script file-manager.sh dat twee argumenten verwacht: een bronbestand en een bestemming. Een optioneel derde argument bepaalt de bewerking: 'copy' (standaard) of 'move'. Het script controleert of er minstens 2 argumenten zijn, voert daarna de gevraagde bewerking uit, en bij een onbekende bewerking eindigt het met foutcode 1.",
+      "solution": "cat > file-manager.sh << 'EOF'\n#!/bin/bash\nif [ $# -lt 2 ]; then\n    echo \"Usage: $0 <source_file> <destination>\"\n    exit 1\nfi\nSOURCE_FILE=\"$1\"\nDESTINATION=\"$2\"\nOPERATION=\"${3:-copy}\"\ncase $OPERATION in\n    \"copy\")\n        cp \"$SOURCE_FILE\" \"$DESTINATION\"\n        echo \"File copied successfully\"\n        ;;\n    \"move\")\n        mv \"$SOURCE_FILE\" \"$DESTINATION\"\n        echo \"File moved successfully\"\n        ;;\n    *)\n        echo \"Unknown operation: $OPERATION\"\n        exit 1\n        ;;\nesac\nEOF\nchmod +x file-manager.sh",
+      "acceptors": [
+        "cat > file-manager.sh << 'EOF'\n#!/bin/bash\nif [ $# -lt 2 ]; then\n    echo \"Usage: $0 <source_file> <destination>\"\n    exit 1\nfi\nSOURCE_FILE=\"$1\"\nDESTINATION=\"$2\"\nOPERATION=\"${3:-copy}\"\ncase $OPERATION in\n    \"copy\") cp \"$SOURCE_FILE\" \"$DESTINATION\"; echo \"File copied successfully\" ;;\n    \"move\") mv \"$SOURCE_FILE\" \"$DESTINATION\"; echo \"File moved successfully\" ;;\n    *) echo \"Unknown operation: $OPERATION\"; exit 1 ;;\nesac\nEOF\nchmod +x file-manager.sh"
+      ],
+      "expectedOutput": [],
+      "hints": [
+        "Gebruik ${3:-copy} om de standaardwaarde 'copy' te geven als $3 niet opgegeven is.",
+        "Gebruik een case-statement om de bewerking te kiezen.",
+        "cp kopieert, mv verplaatst bestanden."
+      ],
+      "tags": ["scripting", "argumenten", "case", "cp", "mv"],
+      "commandsUsed": ["cat", "chmod", "cp", "mv", "exit"]
+    },
+    {
+      "title": "For-lus met C-stijl teller",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Schrijf een C-stijl for-lus die telt van 1 tot 10 en elk getal afdrukt als 'Counter: N'.",
+      "solution": "for ((i=1; i<=10; i++)); do\n    echo \"Counter: $i\"\ndone",
+      "acceptors": [
+        "for ((i=1; i<=10; i++)); do\n    echo \"Counter: $i\"\ndone",
+        "for ((i=1; i<=10; i++)); do echo \"Counter: $i\"; done"
+      ],
+      "expectedOutput": ["Counter: 1", "Counter: 10"],
+      "hints": [
+        "De C-stijl for-lus gebruikt dubbele ronde haken: for ((init; conditie; increment)).",
+        "i++ verhoogt de teller met 1 in elke iteratie."
+      ],
+      "tags": ["scripting", "for-lus"],
+      "commandsUsed": ["echo"]
+    },
+    {
+      "title": "Script debuggen met set -x",
+      "difficulty": "medium",
+      "type": "command",
+      "prompt": "Voer het bestand mijnscript.sh uit in debugmodus zodat elk commando afgedrukt wordt voor uitvoering.",
+      "solution": "bash -x mijnscript.sh",
+      "acceptors": ["bash -x mijnscript.sh", "set -x; bash mijnscript.sh"],
+      "expectedOutput": [],
+      "hints": [
+        "Gebruik bash -x script.sh om een script in tracemodus uit te voeren.",
+        "Elke regel die uitgevoerd wordt, wordt voorafgegaan door + in de uitvoer."
+      ],
+      "tags": ["scripting", "debug", "bash"],
+      "commandsUsed": ["bash"]
+    },
+    {
+      "title": "For-lus over even getallen",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Schrijf een for-lus die de even getallen van 2 tot 10 afdrukt met een stap van 2.",
+      "solution": "for i in {2..10..2}; do\n    echo \"Even number: $i\"\ndone",
+      "acceptors": [
+        "for i in {2..10..2}; do\n    echo \"Even number: $i\"\ndone",
+        "for i in {2..10..2}; do echo $i; done",
+        "for ((i=2; i<=10; i+=2)); do echo $i; done"
+      ],
+      "expectedOutput": ["Even number: 2", "Even number: 4", "Even number: 6", "Even number: 8", "Even number: 10"],
+      "hints": [
+        "Gebruik {begin..eind..stap} voor een reeks met een stap.",
+        "{2..10..2} geeft de reeks 2, 4, 6, 8, 10."
+      ],
+      "tags": ["scripting", "for-lus", "reeks"],
+      "commandsUsed": ["echo"]
+    }
+  ],
+  "theory": [
+    {
+      "question": "Wat is het doel van de shebang-regel (#!/bin/bash) in een shell script?",
+      "type": "mc",
+      "choices": [
+        "A. Het is een commentaarregel die de scriptnaam beschrijft.",
+        "B. Het vertelt het systeem welke interpreter gebruikt moet worden om het script uit te voeren.",
+        "C. Het maakt het script automatisch uitvoerbaar.",
+        "D. Het stelt de variabele $BASH in op de locatie van bash."
+      ],
+      "answer": "B",
+      "explanation": "De shebang-regel #!/bin/bash moet de eerste regel van het script zijn en geeft aan welke interpreter (hier bash op /bin/bash) het script uitvoert. Zonder shebang bepaalt het systeem zelf de interpreter, wat tot onverwacht gedrag kan leiden."
+    },
+    {
+      "question": "Hoe maak je een script greeting.sh uitvoerbaar?",
+      "type": "mc",
+      "choices": [
+        "A. run greeting.sh",
+        "B. chmod +x greeting.sh",
+        "C. execute greeting.sh",
+        "D. bash -x greeting.sh"
+      ],
+      "answer": "B",
+      "explanation": "chmod +x voegt het uitvoerrecht toe aan het bestand. Daarna kan het script worden uitgevoerd met ./greeting.sh. bash -x voert een script uit in debugmodus maar maakt het niet uitvoerbaar."
+    },
+    {
+      "question": "Wat is het verschil tussen $1 en $@ in een shell script?",
+      "type": "open",
+      "choices": [],
+      "answer": "$1 is het eerste argument meegegeven aan het script; $@ bevat alle argumenten als een reeks afzonderlijke waarden.",
+      "explanation": "$1 bevat enkel het eerste opdrachtregelargument. $@ bevat alle meegegeven argumenten afzonderlijk (als 'array'), terwijl $* alle argumenten samenvoegt tot één string. $# bevat het aantal argumenten."
+    },
+    {
+      "question": "Welk commando gebruik je om invoer van de gebruiker te lezen in een script?",
+      "type": "mc",
+      "choices": [
+        "A. input",
+        "B. scan",
+        "C. read",
+        "D. get"
+      ],
+      "answer": "C",
+      "explanation": "Het ingebouwde bash-commando read leest invoer van de gebruiker. Met read -p 'Prompttekst: ' variabele wordt een prompttekst getoond en de invoer opgeslagen in de opgegeven variabele."
+    },
+    {
+      "question": "Welke bestandstestoperator gebruik je om te controleren of een pad een gewone bestand is (geen map of link)?",
+      "type": "mc",
+      "choices": [
+        "A. -d",
+        "B. -e",
+        "C. -f",
+        "D. -r"
+      ],
+      "answer": "C",
+      "explanation": "-f controleert of het pad een gewoon bestand is. -d controleert op een map, -e op bestaan (ongeacht type) en -r op leesbaarheid."
+    },
+    {
+      "question": "Wanneer gebruik je een while-lus in plaats van een for-lus?",
+      "type": "open",
+      "choices": [],
+      "answer": "Een while-lus gebruik je als je niet van tevoren weet hoeveel iteraties nodig zijn, bijvoorbeeld bij het lezen van invoer tot een bepaalde conditie waar is. Een for-lus gebruik je bij een bekende lijst of reeks.",
+      "explanation": "Een for-lus itereert over een vaste lijst of reeks (bijv. {1..10} of bestanden). Een while-lus loopt zolang een conditie waar is, wat handig is bij onbepaald aantal iteraties, zoals het verwerken van gebruikersinvoer of wachten op een gebeurtenis."
+    },
+    {
+      "question": "Hoe stel je een standaardwaarde in voor een variabele als die niet opgegeven of leeg is?",
+      "type": "mc",
+      "choices": [
+        "A. ${VARIABELE=standaard}",
+        "B. ${VARIABELE:-standaard}",
+        "C. ${VARIABELE:standaard}",
+        "D. ${VARIABELE||standaard}"
+      ],
+      "answer": "B",
+      "explanation": "De syntax ${VARIABELE:-standaard} geeft de waarde van VARIABELE terug als die ingesteld en niet leeg is, anders wordt 'standaard' gebruikt. Zo kan een script flexibel argumenten of configuratiewaarden ontvangen met een veilige terugval."
+    },
+    {
+      "question": "Wat doet het commando 'set -euo pipefail' bovenaan een script?",
+      "type": "open",
+      "choices": [],
+      "answer": "Het schakelt strikte foutafhandeling in: -e stopt bij de eerste fout, -u behandelt niet-gedefinieerde variabelen als fout, en -o pipefail laat het script stoppen bij een mislukte opdracht in een pipe.",
+      "explanation": "set -e: stopt het script zodra een commando een niet-nul exitcode geeft. set -u: geeft een fout bij gebruik van een niet-gedefinieerde variabele. set -o pipefail: zorgt dat de pipe-exitcode de exitcode is van het eerste mislukte commando. Samen zorgen ze voor robuuste foutafhandeling."
+    },
+    {
+      "question": "Welke bash-syntax gebruik je voor rekenkundige bewerkingen?",
+      "type": "mc",
+      "choices": [
+        "A. $[A + B]",
+        "B. $(A + B)",
+        "C. $((A + B))",
+        "D. ${A + B}"
+      ],
+      "answer": "C",
+      "explanation": "$((expressie)) is de correcte bash-syntax voor rekenkundige bewerkingen. Het ondersteunt +, -, *, / en % (modulo). $[...] is verouderd, $(commando) is voor command substitution en ${...} is voor variabelesubstitutie."
+    },
+    {
+      "question": "Hoe voer je een script uit zonder het uitvoerbaar te maken via chmod?",
+      "type": "mc",
+      "choices": [
+        "A. ./script.sh",
+        "B. run script.sh",
+        "C. bash script.sh",
+        "D. exec script.sh"
+      ],
+      "answer": "C",
+      "explanation": "Door 'bash script.sh' te typen roep je de bash-interpreter expliciet aan om het script uit te voeren, zonder dat het bestand uitvoerrechten nodig heeft. ./script.sh vereist wél uitvoerrechten."
+    },
+    {
+      "question": "Wat is de functie van het speciale teken $? in een script?",
+      "type": "open",
+      "choices": [],
+      "answer": "$? bevat de exitcode van het laatste uitgevoerde commando. Een exitcode van 0 betekent succes; een andere waarde wijst op een fout.",
+      "explanation": "Na elk commando wordt de exitcode opgeslagen in $?. Scripts kunnen dit gebruiken om te controleren of een commando geslaagd is: if [ $? -eq 0 ]; then .... Het is een kernmechanisme voor foutafhandeling in bash."
+    },
+    {
+      "question": "Welk van de volgende commando's leest een bestand regel voor regel in een while-lus?",
+      "type": "mc",
+      "choices": [
+        "A. for line in $(cat bestand); do echo $line; done",
+        "B. while read -r line; do echo \"$line\"; done < bestand",
+        "C. until eof; do read line; done",
+        "D. read bestand | while line; do echo $line; done"
+      ],
+      "answer": "B",
+      "explanation": "while read -r line; do ... done < bestand is de correcte methode om een bestand regel voor regel te lezen. De -r vlag voorkomt dat backslashes als escape-tekens worden behandeld. De omleidingsoperator < koppelt het bestand aan de standaardinvoer van de lus."
+    },
+    {
+      "question": "Hoe sluit je een case-statement af in bash?",
+      "type": "mc",
+      "choices": [
+        "A. end case",
+        "B. done",
+        "C. esac",
+        "D. fi"
+      ],
+      "answer": "C",
+      "explanation": "Een case-statement wordt afgesloten met esac (case achterstevoren). Een if-statement sluit af met fi, een for/while/until-lus met done."
+    },
+    {
+      "question": "Wat is command substitution en hoe gebruik je het?",
+      "type": "open",
+      "choices": [],
+      "answer": "Command substitution laat je de uitvoer van een commando als waarde gebruiken. Je schrijft $(commando) of de verouderde backtick-notatie `commando`.",
+      "explanation": "Met $(commando) wordt het commando uitgevoerd en de uitvoer ingevuld op die plek. Voorbeeld: DATUM=$(date) slaat de huidige datum op in DATUM. Dit is handig voor het vullen van variabelen met dynamische waarden of voor gebruik in echo-regels."
+    },
+    {
+      "question": "Wat is het verschil tussen enkelvoudige (') en dubbele (\") aanhalingstekens in bash?",
+      "type": "open",
+      "choices": [],
+      "answer": "Dubbele aanhalingstekens staan variabelesubstitutie en command substitution toe; enkelvoudige aanhalingstekens behandelen alles letterlijk en voeren geen substitutie uit.",
+      "explanation": "In \"$naam\" wordt de variabele naam vervangen door zijn waarde. In '$naam' wordt letterlijk $naam afgedrukt, zonder substitutie. Gebruik enkelvoudige aanhalingstekens als je de tekst letterlijk wilt bewaren (bv. in heredoc-openers << 'EOF')."
+    },
+    {
+      "question": "Wat doet de -z testoperator bij een string?",
+      "type": "mc",
+      "choices": [
+        "A. Controleert of de string nul of meer tekens bevat.",
+        "B. Controleert of de string leeg is.",
+        "C. Controleert of de string een getal is.",
+        "D. Controleert of de string bestaat als bestandsnaam."
+      ],
+      "answer": "B",
+      "explanation": "-z STRING geeft waar terug als de string leeg is (lengte nul). Gebruik -n om te controleren of een string NIET leeg is. Voorbeeld: if [ -z \"$naam\" ]; then echo 'Geen naam opgegeven'; fi"
+    },
+    {
+      "question": "Hoe exporteer je een variabele zodat kindprocessen (subshells) er toegang toe hebben?",
+      "type": "mc",
+      "choices": [
+        "A. global VARIABELE=waarde",
+        "B. VARIABELE=waarde; share VARIABELE",
+        "C. export VARIABELE=waarde",
+        "D. public VARIABELE=waarde"
+      ],
+      "answer": "C",
+      "explanation": "Met export VARIABELE=waarde of export VARIABELE (als de variabele al gedefinieerd is) wordt de variabele een omgevingsvariabele die beschikbaar is voor alle kindprocessen die het script start."
+    },
+    {
+      "question": "Wat is het nut van readonly bij variabelen in een script?",
+      "type": "open",
+      "choices": [],
+      "answer": "readonly markeert een variabele als constante zodat de waarde later in het script niet meer gewijzigd kan worden. Dit is nuttig voor configuratiewaarden die niet mogen veranderen.",
+      "explanation": "Gebruik readonly voor constanten zoals PI, CONFIG_FILE of maximale drempelwaarden. Als je later toch probeert de variabele te wijzigen, geeft bash een foutmelding en weigert de wijziging."
+    },
+    {
+      "question": "Welke structuur gebruik je om een script te laten stoppen bij elke fout?",
+      "type": "mc",
+      "choices": [
+        "A. bash --strict script.sh",
+        "B. set -e aan het begin van het script",
+        "C. if error; then exit; fi na elk commando",
+        "D. error_check=true"
+      ],
+      "answer": "B",
+      "explanation": "set -e (of set -o errexit) aan het begin van een script laat bash het script onmiddellijk afsluiten zodra een commando een niet-nul exitcode geeft. Dit voorkomt dat het script doorgaat na een fout."
+    },
+    {
+      "question": "Wat drukt '$0' af in een shell script?",
+      "type": "mc",
+      "choices": [
+        "A. De naam van de huidige shell.",
+        "B. Het eerste argument van het script.",
+        "C. De naam van het script zelf.",
+        "D. De exit-code van het vorige commando."
+      ],
+      "answer": "C",
+      "explanation": "$0 bevat de naam waarmee het script aangeroepen is (bv. ./mijnscript.sh of /usr/local/bin/mijnscript.sh). Dit wordt vaak gebruikt in usage-berichten: echo \"Usage: $0 <argument>\""
+    },
+    {
+      "question": "Hoe combineer je twee condities in een if-statement zodat beide waar moeten zijn?",
+      "type": "mc",
+      "choices": [
+        "A. if [ cond1 ] & [ cond2 ]",
+        "B. if [ cond1 ] || [ cond2 ]",
+        "C. if [ cond1 ] && [ cond2 ]",
+        "D. if [ cond1 AND cond2 ]"
+      ],
+      "answer": "C",
+      "explanation": "&& is de logische AND-operator: beide condities moeten waar zijn. || is de logische OR-operator: minstens één conditie moet waar zijn. Binnen dubbele haken [[ ]] kan je ook && en || direct gebruiken."
+    },
+    {
+      "question": "Wat is een functie in een shell script en hoe definieer je er één?",
+      "type": "open",
+      "choices": [],
+      "answer": "Een functie is een herbruikbaar blok commando's dat je aanroept via zijn naam. Je definieert het met functienaam() { commando's; } of function functienaam { commando's; }.",
+      "explanation": "Functies maken scripts modulair en vermijden herhaling. Parameters worden doorgegeven via $1, $2, enz. binnen de functie. Lokale variabelen maak je met local variabele=waarde zodat ze niet buiten de functie beschikbaar zijn."
+    }
+  ]
+}

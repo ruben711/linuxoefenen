@@ -1,0 +1,677 @@
+{
+  "chapterId": "03",
+  "chapterTitle": "History & Variabelen",
+  "summary": "In dit hoofdstuk leer je omgevingsvariabelen aanmaken, bekijken en exporteren, en begrijp je het verschil tussen lokale en omgevingsvariabelen. Je verkent de commandogeschiedenis en leert sneltoetsen om eerder uitgevoerde commando's snel terug te vinden en te hergebruiken. Tot slot beheer je de PATH-variabele en configureer je je shell permanent via configuratiebestanden zoals ~/.bashrc.",
+  "commands": [
+    {
+      "name": "env",
+      "category": "Systeem",
+      "short": "Toont alle omgevingsvariabelen van de huidige shell-sessie.",
+      "synopsis": "env [OPTIE]... [NAAM=WAARDE]... [COMMANDO]...",
+      "flags": [],
+      "examples": [
+        { "cmd": "env", "desc": "Toont alle omgevingsvariabelen." },
+        { "cmd": "env | head -20", "desc": "Toont de eerste 20 omgevingsvariabelen." },
+        { "cmd": "env | grep MY_COURSE", "desc": "Controleert of MY_COURSE geëxporteerd is." }
+      ],
+      "related": ["printenv", "set", "export"],
+      "tags": ["variabelen", "omgeving"]
+    },
+    {
+      "name": "printenv",
+      "category": "Systeem",
+      "short": "Drukt de waarde van een of meerdere omgevingsvariabelen af.",
+      "synopsis": "printenv [VARIABELE]...",
+      "flags": [],
+      "examples": [
+        { "cmd": "printenv", "desc": "Toont alle omgevingsvariabelen (alternatief voor env)." },
+        { "cmd": "printenv HOME", "desc": "Toont enkel de waarde van HOME." }
+      ],
+      "related": ["env", "echo"],
+      "tags": ["variabelen", "omgeving"]
+    },
+    {
+      "name": "set",
+      "category": "Shell scripting",
+      "short": "Toont alle shell-variabelen en functies (inclusief lokale variabelen).",
+      "synopsis": "set [OPTIE]",
+      "flags": [],
+      "examples": [
+        { "cmd": "set", "desc": "Toont alle shell-variabelen (inclusief lokale variabelen, in tegenstelling tot env)." },
+        { "cmd": "set | grep MY_VAR", "desc": "Zoekt naar een specifieke variabele in de lijst." }
+      ],
+      "related": ["env", "export"],
+      "tags": ["variabelen", "shell"]
+    },
+    {
+      "name": "export",
+      "category": "Shell scripting",
+      "short": "Exporteert een variabele zodat ze beschikbaar is voor kind-processen.",
+      "synopsis": "export [NAAM[=WAARDE]]...",
+      "flags": [],
+      "examples": [
+        { "cmd": "export MY_GLOBAL_VAR=\"Hello\"", "desc": "Maakt de variabele in één stap aan en exporteert ze." },
+        { "cmd": "MY_VAR=test && export MY_VAR", "desc": "Maakt eerst een lokale variabele aan, daarna exporteer je ze." },
+        { "cmd": "export PATH=\"$HOME/mybin:$PATH\"", "desc": "Voegt ~/mybin toe aan het begin van de PATH-variabele." }
+      ],
+      "related": ["env", "set"],
+      "tags": ["variabelen", "omgeving", "PATH"]
+    },
+    {
+      "name": "echo",
+      "category": "Tekst",
+      "short": "Drukt tekst of de waarde van een variabele af naar de standaard uitvoer.",
+      "synopsis": "echo [OPTIE]... [STRING]...",
+      "flags": [
+        { "flag": "-n", "desc": "Drukt geen newline af aan het einde." },
+        { "flag": "-e", "desc": "Interpreteert escape-sequences zoals \\n en \\t." }
+      ],
+      "examples": [
+        { "cmd": "echo $HOME", "desc": "Toont de waarde van de HOME-variabele." },
+        { "cmd": "echo \"Mijn naam is $NAME\"", "desc": "Toont tekst met een variabele geïnterpoleerd." },
+        { "cmd": "echo $PATH | tr ':' '\\n'", "desc": "Toont elke map in PATH op een aparte regel." }
+      ],
+      "related": ["printf", "env"],
+      "tags": ["variabelen", "output"]
+    },
+    {
+      "name": "history",
+      "category": "Shell scripting",
+      "short": "Toont de lijst van eerder ingevoerde commando's in de huidige shell.",
+      "synopsis": "history [N]",
+      "flags": [
+        { "flag": "-c", "desc": "Verwijdert de volledige commandogeschiedenis." },
+        { "flag": "-d offset", "desc": "Verwijdert de geschiedenisregel op positie offset." }
+      ],
+      "examples": [
+        { "cmd": "history", "desc": "Toont alle bewaard commando's met nummers." },
+        { "cmd": "history 10", "desc": "Toont de laatste 10 commando's." },
+        { "cmd": "history | grep ls", "desc": "Doorzoekt de geschiedenis op commando's met 'ls'." },
+        { "cmd": "history | tail -5", "desc": "Toont de laatste 5 commando's via pipe." },
+        { "cmd": "history -c", "desc": "Wist de volledige commandogeschiedenis." }
+      ],
+      "related": ["!!","!n","Ctrl+R"],
+      "tags": ["geschiedenis", "shell"]
+    },
+    {
+      "name": "which",
+      "category": "Systeem",
+      "short": "Toont het volledige pad van een uitvoerbaar commando dat gevonden wordt in PATH.",
+      "synopsis": "which COMMANDO...",
+      "flags": [],
+      "examples": [
+        { "cmd": "which ls", "desc": "Toont het pad naar het ls-programma, bv. /bin/ls." },
+        { "cmd": "which python", "desc": "Toont het pad naar de python-interpreter." },
+        { "cmd": "which bash", "desc": "Toont het pad naar de bash-shell." }
+      ],
+      "related": ["type", "whereis", "command"],
+      "tags": ["PATH", "commando's"]
+    },
+    {
+      "name": "type",
+      "category": "Shell scripting",
+      "short": "Beschrijft hoe de shell een commando interpreteert (builtin, alias, of bestand).",
+      "synopsis": "type [-a] NAAM...",
+      "flags": [
+        { "flag": "-a", "desc": "Toont alle locaties van het commando, inclusief aliassen en builtins." }
+      ],
+      "examples": [
+        { "cmd": "type ls", "desc": "Toont: 'ls is /bin/ls' of een alias indien aanwezig." },
+        { "cmd": "type cd", "desc": "Toont: 'cd is a shell builtin'." },
+        { "cmd": "type -a ls", "desc": "Toont alle instanties van ls (alias, bestand, enz.)." }
+      ],
+      "related": ["which", "whereis"],
+      "tags": ["PATH", "commando's", "shell"]
+    },
+    {
+      "name": "source",
+      "category": "Shell scripting",
+      "short": "Voert een scriptbestand uit in de huidige shell-omgeving (laadt het opnieuw).",
+      "synopsis": "source BESTAND [ARGUMENTEN]",
+      "flags": [],
+      "examples": [
+        { "cmd": "source ~/.bashrc", "desc": "Laadt ~/.bashrc opnieuw zonder een nieuwe terminal te openen." },
+        { "cmd": ". ~/.bashrc", "desc": "Kortere notatie voor source, werkt identiek." }
+      ],
+      "related": ["export", "nano"],
+      "tags": ["configuratie", "shell"]
+    },
+    {
+      "name": "nano",
+      "category": "Tekst",
+      "short": "Eenvoudige teksteditor in de terminal voor het bewerken van bestanden.",
+      "synopsis": "nano [OPTIE]... [BESTAND]...",
+      "flags": [],
+      "examples": [
+        { "cmd": "nano ~/.bashrc", "desc": "Opent ~/.bashrc in de nano-editor om het te bewerken." }
+      ],
+      "related": ["source", "vi"],
+      "tags": ["editor", "configuratie"]
+    },
+    {
+      "name": "tr",
+      "category": "Tekst",
+      "short": "Vertaalt of verwijdert tekens van de standaard invoer.",
+      "synopsis": "tr [OPTIE]... TEKENS1 [TEKENS2]",
+      "flags": [
+        { "flag": "-d", "desc": "Verwijdert tekens die voorkomen in TEKENS1." }
+      ],
+      "examples": [
+        { "cmd": "echo $PATH | tr ':' '\\n'", "desc": "Vervangt dubbele punten door newlines zodat elke PATH-map op een aparte regel staat." }
+      ],
+      "related": ["echo", "sed"],
+      "tags": ["tekst", "PATH"]
+    },
+    {
+      "name": "chmod",
+      "category": "Permissies",
+      "short": "Wijzigt de toegangsrechten van een bestand of map.",
+      "synopsis": "chmod [OPTIE]... MODUS BESTAND...",
+      "flags": [
+        { "flag": "+x", "desc": "Voegt uitvoerrechten toe voor alle gebruikers." },
+        { "flag": "-R", "desc": "Wijzigt rechten recursief in alle submappen." }
+      ],
+      "examples": [
+        { "cmd": "chmod +x hello.sh", "desc": "Maakt hello.sh uitvoerbaar." },
+        { "cmd": "ls -la hello.sh", "desc": "Controleert of de uitvoerrechten correct ingesteld zijn." }
+      ],
+      "related": ["ls", "which"],
+      "tags": ["permissies", "script"]
+    },
+    {
+      "name": "whereis",
+      "category": "Systeem",
+      "short": "Toont de locaties van binaire bestanden, bronbestanden en man-pagina's voor een commando.",
+      "synopsis": "whereis COMMANDO...",
+      "flags": [],
+      "examples": [
+        { "cmd": "whereis ls", "desc": "Toont alle locaties van ls (binair, bron, manpagina)." }
+      ],
+      "related": ["which", "type"],
+      "tags": ["PATH", "commando's"]
+    }
+  ],
+  "exercises": [
+    {
+      "title": "Omgevingsvariabelen bekijken",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Toon de eerste 20 regels van alle omgevingsvariabelen van je huidige shell-sessie.",
+      "solution": "env | head -20",
+      "acceptors": ["env | head -20", "printenv | head -20", "env|head -20", "env | head -n 20"],
+      "expectedOutput": [],
+      "hints": ["Gebruik env om alle variabelen te tonen, en pipe de uitvoer naar head."],
+      "tags": ["variabelen", "omgeving"],
+      "commandsUsed": ["env", "head"],
+      "steps": []
+    },
+    {
+      "title": "Waarde van HOME tonen",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Druk de waarde van de omgevingsvariabele HOME af met echo.",
+      "solution": "echo $HOME",
+      "acceptors": ["echo $HOME", "echo \"$HOME\"", "echo ${HOME}"],
+      "expectedOutput": ["/home/username"],
+      "hints": ["Gebruik het dollarteken ($) vóór de variabelenaam om de waarde te lezen."],
+      "tags": ["variabelen", "echo"],
+      "commandsUsed": ["echo"],
+      "steps": []
+    },
+    {
+      "title": "Meerdere variabelen bekijken",
+      "difficulty": "easy",
+      "type": "multi-step",
+      "prompt": "Druk achtereenvolgens de waarden af van HOME, USER, SHELL en PATH.",
+      "solution": "echo $HOME && echo $USER && echo $SHELL && echo $PATH",
+      "acceptors": [],
+      "expectedOutput": [],
+      "hints": ["Je kunt elk echo-commando op een aparte regel uitvoeren."],
+      "tags": ["variabelen"],
+      "commandsUsed": ["echo"],
+      "steps": [
+        {
+          "prompt": "Toon de waarde van HOME.",
+          "acceptors": ["echo $HOME", "echo \"$HOME\"", "echo ${HOME}"],
+          "solution": "echo $HOME",
+          "expectedOutput": [],
+          "hints": ["Gebruik echo $HOME."]
+        },
+        {
+          "prompt": "Toon de waarde van USER.",
+          "acceptors": ["echo $USER", "echo \"$USER\"", "echo ${USER}"],
+          "solution": "echo $USER",
+          "expectedOutput": [],
+          "hints": ["Gebruik echo $USER."]
+        },
+        {
+          "prompt": "Toon de waarde van SHELL.",
+          "acceptors": ["echo $SHELL", "echo \"$SHELL\"", "echo ${SHELL}"],
+          "solution": "echo $SHELL",
+          "expectedOutput": ["/bin/bash"],
+          "hints": ["Gebruik echo $SHELL."]
+        },
+        {
+          "prompt": "Toon de waarde van PATH.",
+          "acceptors": ["echo $PATH", "echo \"$PATH\"", "echo ${PATH}"],
+          "solution": "echo $PATH",
+          "expectedOutput": [],
+          "hints": ["Gebruik echo $PATH."]
+        }
+      ]
+    },
+    {
+      "title": "Eigen variabele aanmaken en gebruiken",
+      "difficulty": "easy",
+      "type": "multi-step",
+      "prompt": "Maak een lokale variabele MY_NAME aan met je naam en druk ze daarna af.",
+      "solution": "MY_NAME=\"Linux Student\" && echo $MY_NAME",
+      "acceptors": [],
+      "expectedOutput": [],
+      "hints": ["Gebruik geen spaties rond het = -teken bij het toewijzen."],
+      "tags": ["variabelen"],
+      "commandsUsed": ["echo"],
+      "steps": [
+        {
+          "prompt": "Maak een variabele MY_NAME aan met als waarde je naam (gebruik aanhalingstekens bij spaties).",
+          "acceptors": ["MY_NAME=\"Linux Student\"", "MY_NAME='Linux Student'", "MY_NAME=\"Jouw Naam\"", "MY_NAME=Student"],
+          "solution": "MY_NAME=\"Linux Student\"",
+          "expectedOutput": [],
+          "hints": ["Gebruik dubbele aanhalingstekens als de waarde spaties bevat: MY_NAME=\"Jouw Naam\"."]
+        },
+        {
+          "prompt": "Druk de waarde van MY_NAME af.",
+          "acceptors": ["echo $MY_NAME", "echo \"$MY_NAME\"", "echo ${MY_NAME}"],
+          "solution": "echo $MY_NAME",
+          "expectedOutput": ["Linux Student"],
+          "hints": ["Gebruik echo $MY_NAME."]
+        }
+      ]
+    },
+    {
+      "title": "Variabele exporteren",
+      "difficulty": "easy",
+      "type": "multi-step",
+      "prompt": "Maak de variabele MY_COURSE aan met waarde 'Linux Introduction', exporteer haar, en controleer via env of ze aanwezig is.",
+      "solution": "MY_COURSE=\"Linux Introduction\" && export MY_COURSE && env | grep MY_COURSE",
+      "acceptors": [],
+      "expectedOutput": ["MY_COURSE=Linux Introduction"],
+      "hints": ["Gebruik export om een variabele beschikbaar te maken voor kind-processen."],
+      "tags": ["variabelen", "export"],
+      "commandsUsed": ["export", "env", "grep"],
+      "steps": [
+        {
+          "prompt": "Maak de variabele MY_COURSE aan met waarde 'Linux Introduction'.",
+          "acceptors": ["MY_COURSE=\"Linux Introduction\"", "MY_COURSE='Linux Introduction'"],
+          "solution": "MY_COURSE=\"Linux Introduction\"",
+          "expectedOutput": [],
+          "hints": ["Gebruik dubbele aanhalingstekens: MY_COURSE=\"Linux Introduction\"."]
+        },
+        {
+          "prompt": "Exporteer de variabele MY_COURSE.",
+          "acceptors": ["export MY_COURSE", "export MY_COURSE=\"Linux Introduction\""],
+          "solution": "export MY_COURSE",
+          "expectedOutput": [],
+          "hints": ["Gebruik het export commando."]
+        },
+        {
+          "prompt": "Controleer via env of MY_COURSE aanwezig is in de omgevingsvariabelen.",
+          "acceptors": ["env | grep MY_COURSE", "env|grep MY_COURSE"],
+          "solution": "env | grep MY_COURSE",
+          "expectedOutput": ["MY_COURSE=Linux Introduction"],
+          "hints": ["Pipe de uitvoer van env naar grep."]
+        }
+      ]
+    },
+    {
+      "title": "Commandogeschiedenis bekijken",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Toon de laatste 10 commando's uit je commandogeschiedenis.",
+      "solution": "history 10",
+      "acceptors": ["history 10", "history | tail -10", "history | tail -n 10"],
+      "expectedOutput": [],
+      "hints": ["Je kunt history een getal meegeven, of history pipen naar tail."],
+      "tags": ["geschiedenis"],
+      "commandsUsed": ["history"],
+      "steps": []
+    },
+    {
+      "title": "Geschiedenis doorzoeken",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Doorzoek de commandogeschiedenis op commando's die 'ls' bevatten.",
+      "solution": "history | grep ls",
+      "acceptors": ["history | grep ls", "history|grep ls", "history | grep 'ls'"],
+      "expectedOutput": [],
+      "hints": ["Pipe de uitvoer van history naar grep."],
+      "tags": ["geschiedenis", "grep"],
+      "commandsUsed": ["history", "grep"],
+      "steps": []
+    },
+    {
+      "title": "PATH leesbaar tonen",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Toon alle mappen in de PATH-variabele, elk op een aparte regel.",
+      "solution": "echo $PATH | tr ':' '\\n'",
+      "acceptors": ["echo $PATH | tr ':' '\\n'", "echo \"$PATH\" | tr ':' '\\n'", "echo $PATH | tr \":\" \"\\n\""],
+      "expectedOutput": [],
+      "hints": ["Gebruik tr om de dubbele punten in PATH te vervangen door newlines."],
+      "tags": ["PATH", "tr"],
+      "commandsUsed": ["echo", "tr"],
+      "steps": []
+    },
+    {
+      "title": "Locatie van een commando opzoeken",
+      "difficulty": "easy",
+      "type": "multi-step",
+      "prompt": "Zoek het pad van ls op met which, en controleer of cd een shell-builtin is met type.",
+      "solution": "which ls && type cd",
+      "acceptors": [],
+      "expectedOutput": [],
+      "hints": ["which toont het bestandspad, type toont ook shell-builtins."],
+      "tags": ["PATH", "commando's"],
+      "commandsUsed": ["which", "type"],
+      "steps": [
+        {
+          "prompt": "Zoek het volledige pad van het ls-commando op.",
+          "acceptors": ["which ls"],
+          "solution": "which ls",
+          "expectedOutput": ["/bin/ls", "/usr/bin/ls"],
+          "hints": ["Gebruik which gevolgd door de commandonaam."]
+        },
+        {
+          "prompt": "Controleer hoe de shell het commando cd interpreteert.",
+          "acceptors": ["type cd"],
+          "solution": "type cd",
+          "expectedOutput": ["cd is a shell builtin"],
+          "hints": ["Gebruik type gevolgd door de commandonaam."]
+        }
+      ]
+    },
+    {
+      "title": "Persoonlijk script aanmaken en uitvoeren via PATH",
+      "difficulty": "medium",
+      "type": "multi-step",
+      "prompt": "Maak een persoonlijke bin-map ~/mybin aan, maak daarin een script hello.sh dat 'Hello from my script!' afdrukt, maak het uitvoerbaar, voeg ~/mybin toe aan PATH en voer het script uit zonder pad.",
+      "solution": "mkdir ~/mybin && echo '#!/bin/bash' > ~/mybin/hello.sh && echo 'echo \"Hello from my script!\"' >> ~/mybin/hello.sh && chmod +x ~/mybin/hello.sh && export PATH=\"$HOME/mybin:$PATH\" && hello.sh",
+      "acceptors": [],
+      "expectedOutput": ["Hello from my script!"],
+      "hints": [
+        "Maak eerst de map aan met mkdir.",
+        "Gebruik echo met >> om regels toe te voegen aan een bestand.",
+        "Vergeet chmod +x niet om het script uitvoerbaar te maken.",
+        "Gebruik export PATH=\"$HOME/mybin:$PATH\" om de map tijdelijk toe te voegen aan PATH."
+      ],
+      "tags": ["PATH", "script", "chmod"],
+      "commandsUsed": ["mkdir", "echo", "chmod", "export"],
+      "steps": [
+        {
+          "prompt": "Maak de map ~/mybin aan.",
+          "acceptors": ["mkdir ~/mybin", "mkdir $HOME/mybin"],
+          "solution": "mkdir ~/mybin",
+          "expectedOutput": [],
+          "hints": ["Gebruik mkdir met het tilde-pad ~/mybin."]
+        },
+        {
+          "prompt": "Schrijf de shebang-regel #!/bin/bash naar ~/mybin/hello.sh.",
+          "acceptors": ["echo '#!/bin/bash' > ~/mybin/hello.sh", "echo '#!/bin/bash' > $HOME/mybin/hello.sh"],
+          "solution": "echo '#!/bin/bash' > ~/mybin/hello.sh",
+          "expectedOutput": [],
+          "hints": ["Gebruik enkelvoudige aanhalingstekens rond de shebang zodat ! niet geïnterpreteerd wordt."]
+        },
+        {
+          "prompt": "Voeg de echo-regel toe aan hello.sh zodat het 'Hello from my script!' afdrukt.",
+          "acceptors": ["echo 'echo \"Hello from my script!\"' >> ~/mybin/hello.sh", "echo 'echo \"Hello from my script!\"' >> $HOME/mybin/hello.sh"],
+          "solution": "echo 'echo \"Hello from my script!\"' >> ~/mybin/hello.sh",
+          "expectedOutput": [],
+          "hints": ["Gebruik >> om toe te voegen (niet > wat het bestand zou overschrijven)."]
+        },
+        {
+          "prompt": "Maak hello.sh uitvoerbaar.",
+          "acceptors": ["chmod +x ~/mybin/hello.sh", "chmod +x $HOME/mybin/hello.sh"],
+          "solution": "chmod +x ~/mybin/hello.sh",
+          "expectedOutput": [],
+          "hints": ["Gebruik chmod +x om uitvoerrechten toe te voegen."]
+        },
+        {
+          "prompt": "Voeg ~/mybin toe aan het BEGIN van de PATH-variabele.",
+          "acceptors": ["export PATH=\"$HOME/mybin:$PATH\"", "export PATH=\"~/mybin:$PATH\""],
+          "solution": "export PATH=\"$HOME/mybin:$PATH\"",
+          "expectedOutput": [],
+          "hints": ["Gebruik export PATH=\"$HOME/mybin:$PATH\" — zet de nieuwe map vóór $PATH."]
+        },
+        {
+          "prompt": "Voer het script hello.sh uit zonder het volledige pad te vermelden.",
+          "acceptors": ["hello.sh"],
+          "solution": "hello.sh",
+          "expectedOutput": ["Hello from my script!"],
+          "hints": ["Nu ~/mybin in PATH staat, kan de shell het script vinden zonder ./"]
+        }
+      ]
+    },
+    {
+      "title": "Bashrc permanent aanpassen",
+      "difficulty": "medium",
+      "type": "command",
+      "prompt": "Voeg de regel 'export PATH=\"$HOME/mybin:$PATH\"' permanent toe aan ~/.bashrc.",
+      "solution": "echo 'export PATH=\"$HOME/mybin:$PATH\"' >> ~/.bashrc",
+      "acceptors": ["echo 'export PATH=\"$HOME/mybin:$PATH\"' >> ~/.bashrc", "echo \"export PATH=\\\"\\$HOME/mybin:\\$PATH\\\"\" >> ~/.bashrc"],
+      "expectedOutput": [],
+      "hints": ["Gebruik >> om toe te voegen aan het bestand zonder het te overschrijven."],
+      "tags": ["configuratie", "PATH"],
+      "commandsUsed": ["echo"],
+      "steps": []
+    },
+    {
+      "title": "Bashrc herladen",
+      "difficulty": "easy",
+      "type": "command",
+      "prompt": "Herlaad je ~/.bashrc in de huidige shell zonder een nieuwe terminal te openen.",
+      "solution": "source ~/.bashrc",
+      "acceptors": ["source ~/.bashrc", ". ~/.bashrc"],
+      "expectedOutput": [],
+      "hints": ["Gebruik source of de kortere notatie . (punt) gevolgd door het pad."],
+      "tags": ["configuratie"],
+      "commandsUsed": ["source"],
+      "steps": []
+    },
+    {
+      "title": "Speciaal karakter $? uitlezen",
+      "difficulty": "medium",
+      "type": "multi-step",
+      "prompt": "Voer het commando 'ls' uit en druk daarna de exitstatus van dat commando af.",
+      "solution": "ls && echo $?",
+      "acceptors": [],
+      "expectedOutput": [],
+      "hints": ["$? bevat de exitstatus van het vorige commando. 0 betekent succes."],
+      "tags": ["variabelen", "shell"],
+      "commandsUsed": ["ls", "echo"],
+      "steps": [
+        {
+          "prompt": "Voer het ls-commando uit.",
+          "acceptors": ["ls"],
+          "solution": "ls",
+          "expectedOutput": [],
+          "hints": ["Typ gewoon ls."]
+        },
+        {
+          "prompt": "Druk de exitstatus van het vorige commando af.",
+          "acceptors": ["echo $?", "echo \"$?\""],
+          "solution": "echo $?",
+          "expectedOutput": ["0"],
+          "hints": ["Gebruik echo $? — de speciale variabele $? bevat de exitstatus."]
+        }
+      ]
+    },
+    {
+      "title": "Standaardwaarde voor lege variabele",
+      "difficulty": "medium",
+      "type": "command",
+      "prompt": "Druk de waarde van de (niet-gedefinieerde) variabele UNDEFINED_VAR af, maar gebruik 'standaard waarde' als ze leeg is.",
+      "solution": "echo ${UNDEFINED_VAR:-\"standaard waarde\"}",
+      "acceptors": ["echo ${UNDEFINED_VAR:-\"standaard waarde\"}", "echo ${UNDEFINED_VAR:-standaard waarde}", "echo ${UNDEFINED_VAR:-'standaard waarde'}"],
+      "expectedOutput": ["standaard waarde"],
+      "hints": ["Gebruik de syntaxis ${VARIABELE:-standaardwaarde} om een terugvalwaarde in te stellen."],
+      "tags": ["variabelen", "shell"],
+      "commandsUsed": ["echo"],
+      "steps": []
+    },
+    {
+      "title": "Lengte van een variabele opvragen",
+      "difficulty": "medium",
+      "type": "multi-step",
+      "prompt": "Maak een variabele VAR aan met waarde 'Hello World' en druk de lengte (aantal tekens) af.",
+      "solution": "VAR=\"Hello World\" && echo ${#VAR}",
+      "acceptors": [],
+      "expectedOutput": ["11"],
+      "hints": ["Gebruik ${#VARIABELE} om de lengte van een string op te vragen."],
+      "tags": ["variabelen", "manipulatie"],
+      "commandsUsed": ["echo"],
+      "steps": [
+        {
+          "prompt": "Maak de variabele VAR aan met waarde 'Hello World'.",
+          "acceptors": ["VAR=\"Hello World\"", "VAR='Hello World'"],
+          "solution": "VAR=\"Hello World\"",
+          "expectedOutput": [],
+          "hints": ["Gebruik dubbele aanhalingstekens: VAR=\"Hello World\"."]
+        },
+        {
+          "prompt": "Druk het aantal tekens in VAR af.",
+          "acceptors": ["echo ${#VAR}"],
+          "solution": "echo ${#VAR}",
+          "expectedOutput": ["11"],
+          "hints": ["De syntaxis ${#VAR} geeft de lengte van de string terug."]
+        }
+      ]
+    }
+  ],
+  "theory": [
+    {
+      "question": "Wat is het verschil tussen een shell-variabele en een omgevingsvariabele?",
+      "type": "open",
+      "choices": [],
+      "answer": "Een shell-variabele is enkel beschikbaar in de huidige shell; een omgevingsvariabele (aangemaakt met export) wordt ook doorgegeven aan kind-processen.",
+      "explanation": "Gebruik 'set' om alle shell-variabelen te zien en 'env' om enkel de geëxporteerde omgevingsvariabelen te zien."
+    },
+    {
+      "question": "Welk commando toon je alle huidige omgevingsvariabelen?",
+      "type": "mc",
+      "choices": ["set", "env", "ls -e", "vars"],
+      "answer": "env",
+      "explanation": "'env' toont alle geëxporteerde omgevingsvariabelen. 'set' toont alle shell-variabelen (inclusief lokale), maar dat is een superset."
+    },
+    {
+      "question": "Wat doet de PATH-variabele?",
+      "type": "open",
+      "choices": [],
+      "answer": "PATH bevat een lijst van mappen (gescheiden door dubbele punten) waarin de shell zoekt naar uitvoerbare bestanden wanneer je een commando ingeeft.",
+      "explanation": "De shell doorzoekt de mappen in PATH van links naar rechts. Het eerste gevonden programma wordt uitgevoerd. Staat de map niet in PATH, dan krijg je 'command not found'."
+    },
+    {
+      "question": "Hoe maak je een variabele beschikbaar voor kind-processen?",
+      "type": "mc",
+      "choices": ["set MY_VAR=test", "export MY_VAR", "global MY_VAR", "share MY_VAR"],
+      "answer": "export MY_VAR",
+      "explanation": "Het 'export' commando promoveert een shell-variabele naar omgevingsvariabele, zodat kind-processen (subshells, programma's) er toegang toe hebben."
+    },
+    {
+      "question": "Welk toetscombinatie herhaalt het laatste ingevoerde commando?",
+      "type": "mc",
+      "choices": ["Ctrl+R", "!!", "!last", "Ctrl+P"],
+      "answer": "!!",
+      "explanation": "!! (twee uitroeptekens) is een history-uitbreiding die het laatste commando herhaalt en uitvoert."
+    },
+    {
+      "question": "Hoe zoek je interactief door de commandogeschiedenis?",
+      "type": "mc",
+      "choices": ["Ctrl+F", "Alt+H", "Ctrl+R", "Ctrl+S"],
+      "answer": "Ctrl+R",
+      "explanation": "Ctrl+R start een omgekeerde zoekopdracht (reverse-i-search) door de history. Je typt een zoekterm en de shell toont het meest recente overeenkomende commando. Druk nogmaals Ctrl+R voor het vorige resultaat."
+    },
+    {
+      "question": "In welk bestand zet je permanente omgevingsvariabelen voor een interactieve bash-shell?",
+      "type": "mc",
+      "choices": ["~/.bashrc", "/etc/bash.bashrc", "~/.bash_logout", "~/.profile_global"],
+      "answer": "~/.bashrc",
+      "explanation": "~/.bashrc wordt ingeladen bij elke nieuwe interactieve (niet-login) bash-shell. Voor login-shells is ~/.bash_profile of ~/.profile gebruikelijk. /etc/bash.bashrc geldt systeem-breed."
+    },
+    {
+      "question": "Wat is de waarde van $? na een succesvol uitgevoerd commando?",
+      "type": "mc",
+      "choices": ["1", "0", "-1", "true"],
+      "answer": "0",
+      "explanation": "$? bevat de exitstatus van het vorige commando. 0 betekent succes; een waarde > 0 wijst op een fout."
+    },
+    {
+      "question": "Welk commando toont het volledige pad naar het uitvoerbare bestand van 'cat'?",
+      "type": "mc",
+      "choices": ["locate cat", "find cat", "which cat", "path cat"],
+      "answer": "which cat",
+      "explanation": "'which' zoekt in de mappen van PATH en toont het eerste gevonden pad van het programma."
+    },
+    {
+      "question": "Hoe voeg je een nieuwe map '/opt/mytools' VOORAAN toe aan PATH voor de huidige sessie?",
+      "type": "mc",
+      "choices": [
+        "PATH=/opt/mytools",
+        "export PATH=\"$PATH:/opt/mytools\"",
+        "export PATH=\"/opt/mytools:$PATH\"",
+        "add PATH /opt/mytools"
+      ],
+      "answer": "export PATH=\"/opt/mytools:$PATH\"",
+      "explanation": "Door de nieuwe map vóór $PATH te plaatsen, wordt ze als eerste doorzocht. Zo overschrijf je ook eventuele gelijknamige commando's uit standaardmappen."
+    },
+    {
+      "question": "Wat toont het commando 'type cd'?",
+      "type": "mc",
+      "choices": [
+        "/bin/cd",
+        "cd is a shell builtin",
+        "cd: command not found",
+        "cd is an alias"
+      ],
+      "answer": "cd is a shell builtin",
+      "explanation": "'cd' is een ingebouwd shell-commando (builtin). Het staat niet als apart bestand in PATH. 'type' laat dit verschil zien, 'which' vindt het daarom ook niet."
+    },
+    {
+      "question": "Wat is het nut van het exporteren van omgevingsvariabelen bij het werken met applicaties?",
+      "type": "open",
+      "choices": [],
+      "answer": "Exporteren zorgt ervoor dat applicaties en scripts die je start toegang hebben tot die variabelen, wat veiliger is dan gevoelige gegevens hardcoderen in de broncode.",
+      "explanation": "Best practice is om configuratie (API-sleutels, databasewachtwoorden, …) via omgevingsvariabelen door te geven zodat deze niet in de code (en versiebeheersystemen) terechtkomen."
+    },
+    {
+      "question": "Welke syntaxis gebruik je om een standaardwaarde terug te geven als een variabele leeg of niet gedefinieerd is?",
+      "type": "mc",
+      "choices": [
+        "${VAR|default}",
+        "${VAR:-default}",
+        "${VAR??default}",
+        "${VAR=?default}"
+      ],
+      "answer": "${VAR:-default}",
+      "explanation": "${VAR:-default} geeft de waarde van VAR terug als die gezet is, anders geeft het 'default' terug. ${VAR:=default} doet hetzelfde maar wijst ook de standaardwaarde toe aan VAR als die leeg is."
+    },
+    {
+      "question": "Wat doet 'source ~/.bashrc' (of '. ~/.bashrc')?",
+      "type": "open",
+      "choices": [],
+      "answer": "Het voert ~/.bashrc uit in de huidige shell-omgeving, zodat wijzigingen (nieuwe aliassen, variabelen, PATH-aanpassingen) onmiddellijk actief zijn zonder een nieuwe terminal te openen.",
+      "explanation": "In tegenstelling tot een gewone script-uitvoering wordt source/. uitgevoerd in de huidige shell-context, niet in een subshell."
+    },
+    {
+      "question": "Wat is het verschil tussen > en >> bij het schrijven naar een bestand?",
+      "type": "mc",
+      "choices": [
+        "> voegt toe, >> overschrijft",
+        "> overschrijft, >> voegt toe",
+        "Beide overschrijven",
+        "Beide voegen toe"
+      ],
+      "answer": "> overschrijft, >> voegt toe",
+      "explanation": "Met > wordt de inhoud van het bestand volledig vervangen. Met >> worden nieuwe regels aan het einde toegevoegd zonder bestaande inhoud te verwijderen. Dit is belangrijk bij het opbouwen van scripts met meerdere echo-commando's."
+    }
+  ]
+}
