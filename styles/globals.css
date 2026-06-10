@@ -117,10 +117,6 @@
   *::-webkit-scrollbar-track { background: transparent; }
   *::-webkit-scrollbar-thumb { background: rgb(var(--line-strong) / 0.7); border-radius: 99px; border: 2px solid transparent; background-clip: content-box; }
   *::-webkit-scrollbar-thumb:hover { background-clip: content-box; background-color: rgb(var(--fg-faint)); }
-  html.lenis, html.lenis body { height: auto; }
-  .lenis.lenis-smooth { scroll-behavior: auto !important; }
-  .lenis.lenis-stopped { overflow: hidden; }
-  .lenis.lenis-smooth iframe { pointer-events: none; }
 }
 
 /* ──────────────────────────────────────────── Achtergrond-systeem ──── */

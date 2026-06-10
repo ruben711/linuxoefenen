@@ -173,12 +173,17 @@ export default function Terminal({
       setInput("");
       return;
     }
-    // man <cmd> → overlay
+    // man <cmd> → overlay. We beoordelen het commando tóch (via onRun), zodat
+    // oefening-stappen die "man X" vragen wél doorschuiven; de ruwe uitvoer
+    // tonen we niet — enkel de "man-page geopend →"-regel.
     const man = /^man\s+(\S+)/.exec(trimmed);
     if (man && onMan) {
       const handled = onMan(man[1]);
       if (handled) {
-        pushBlock(command, [[{ text: `man-page voor `, cls: "tok-comment" }, { text: man[1], cls: "tok-cmd" }, { text: " geopend →", cls: "tok-comment" }]], path, false);
+        const result = onRun(command);
+        pushBlock(command, [[{ text: `man-page voor `, cls: "tok-comment" }, { text: man[1], cls: "tok-cmd" }, { text: " geopend →", cls: "tok-comment" }]], result.promptPath, false);
+        setPath(result.promptPath);
+        onAfterRun?.(command, result);
         setInput("");
         return;
       }

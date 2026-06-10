@@ -7,7 +7,6 @@ import ThemeToggle from "@/components/ThemeToggle";
 import ModeProvider from "@/components/ModeProvider";
 import Footer from "@/components/Footer";
 import BackgroundField from "@/components/BackgroundField";
-import SmoothScroll from "@/components/SmoothScroll";
 import HeaderStats from "@/components/HeaderStats";
 import XpToast from "@/components/XpToast";
 
@@ -46,8 +45,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head><script dangerouslySetInnerHTML={{ __html: themeInitScript }} /></head>
       <body>
         <ModeProvider>
-          <SmoothScroll>
-            <BackgroundField />
+          <BackgroundField />
             <div className="min-h-screen flex flex-col">
               <header className="sticky top-0 z-40 glass border-b border-line/80">
                 <div className="mx-auto w-full max-w-[1180px] h-14 px-5 sm:px-7 flex items-center gap-4">
@@ -74,7 +72,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <Footer />
             </div>
             <XpToast />
-          </SmoothScroll>
         </ModeProvider>
       </body>
     </html>

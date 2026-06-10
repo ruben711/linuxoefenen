@@ -1,9 +1,12 @@
 "use client";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import CheatsheetEntry from "./CheatsheetEntry";
 import { getCommand } from "@/lib/cheatsheet";
 
-/** Modale man-page overlay — opent bij `man <cmd>` in de terminal. Esc sluit. */
+/** Modale man-page overlay — opent bij `man <cmd>` in de terminal. Esc sluit.
+ *  Via een portal naar <body> zodat hij altijd vrij over het scherm zweeft,
+ *  ongeacht een getransformeerde/gefilterde voorouder (page-transitie). */
 export default function ManpageOverlay({
   cmd, onClose, onTry,
 }: {
@@ -11,6 +14,9 @@ export default function ManpageOverlay({
   onClose: () => void;
   onTry?: (cmd: string) => void;
 }) {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+
   useEffect(() => {
     if (!cmd) return;
     const h = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
@@ -19,10 +25,10 @@ export default function ManpageOverlay({
     return () => { window.removeEventListener("keydown", h); document.body.style.overflow = ""; };
   }, [cmd, onClose]);
 
-  if (!cmd) return null;
+  if (!cmd || !mounted) return null;
   const command = getCommand(cmd);
 
-  return (
+  return createPortal(
     <div className="fixed inset-0 z-[60] grid place-items-center p-4">
       <div className="absolute inset-0 bg-black/60 backdrop-blur-sm animate-fade-in" onClick={onClose} />
       <div className="relative w-full max-w-2xl max-h-[85vh] overflow-y-auto rounded-2xl border border-line bg-panel shadow-flyout animate-pop" data-lenis-prevent>
@@ -46,6 +52,7 @@ export default function ManpageOverlay({
           )}
         </div>
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }
