@@ -34,7 +34,8 @@ export default function LeaderboardPage() {
   const name = useIdentity((s) => s.name);
   const color = useIdentity((s) => s.color);
   const hasJoined = useIdentity((s) => s.hasJoinedBoard);
-  const join = useIdentity((s) => s.join);
+  const setName = useIdentity((s) => s.set);
+  const setColor = useIdentity((s) => s.setColor);
   const ensure = useIdentity((s) => s.ensure);
 
   const xp = useProgress((s) => s.xp);
@@ -48,6 +49,7 @@ export default function LeaderboardPage() {
   const [configured, setConfigured] = useState(false);
   const [loading, setLoading] = useState(true);
   const [now, setNow] = useState("");
+  const [editing, setEditing] = useState(false);
   const [draftName, setDraftName] = useState("");
   const [draftColor, setDraftColor] = useState("#E95420");
 
@@ -72,6 +74,13 @@ export default function LeaderboardPage() {
     setConfigured(res.configured);
     setBoard(res.board);
     setLoading(false);
+  }
+
+  function startEdit() { setDraftName(name ?? ""); setDraftColor(color); setEditing(true); }
+  function saveEdit() {
+    const nm = (draftName.trim() || useIdentity.getState().randomName()).slice(0, 24);
+    setName(nm); setColor(draftColor); setEditing(false);
+    syncMe({ uid, name: nm, xp, level, streak: streakDays, solved: solvedCount, color: draftColor });
   }
   useEffect(() => { if (mounted) refresh(); /* eslint-disable-next-line */ }, [mounted, hasJoined]);
   useEffect(() => {
@@ -101,32 +110,47 @@ export default function LeaderboardPage() {
         </p>
       </Reveal>
 
-      {/* Betreed de ranglijst (GUI — geen typen nodig) */}
-      {mounted && !hasJoined && (
+      {/* Jouw profiel — automatisch aangesloten, vrij aanpasbaar */}
+      {mounted && (
         <Reveal delay={0.05}>
-          <div className="card p-5 mt-6">
-            <div className="flex items-center gap-2 mb-3">
-              <span className="text-[13px] font-semibold">Betreed de ranglijst</span>
-              <span className="text-[11px] text-fg-dim font-mono">kies een handle &amp; kleur</span>
-            </div>
-            <div className="flex flex-wrap items-center gap-2.5">
-              <input
-                value={draftName}
-                onChange={(e) => setDraftName(e.target.value.slice(0, 24))}
-                className="h-10 px-3.5 rounded-xl bg-sunken border border-line font-mono text-[14px] outline-none focus:border-brand/50 w-[200px]"
-                aria-label="Jouw handle"
-              />
-              <button onClick={() => setDraftName(useIdentity.getState().randomName())} className="btn btn-ghost btn-sm" title="Ander voorstel">🎲</button>
-              <div className="flex items-center gap-1.5 ml-1">
-                {PALETTE.map((c) => (
-                  <button key={c} onClick={() => setDraftColor(c)} aria-label={`kleur ${c}`}
-                    className={`w-6 h-6 rounded-full transition-transform ${draftColor === c ? "ring-2 ring-offset-2 ring-offset-canvas scale-110" : "hover:scale-110"}`}
-                    style={{ background: c, boxShadow: draftColor === c ? `0 0 12px ${c}` : undefined }} />
-                ))}
+          <div className="card p-4 mt-6">
+            {!editing ? (
+              <div className="flex items-center gap-3 flex-wrap">
+                <span className="text-[12px] text-fg-dim font-mono shrink-0">jij verschijnt als</span>
+                <StyledName name={name ?? "operator"} color={color} level={level} showTitle />
+                <span className="text-[12px] text-fg-dim font-mono tabular">· {xp} XP</span>
+                <button onClick={startEdit} className="btn btn-outline btn-sm ml-auto">✎ wijzig naam &amp; kleur</button>
               </div>
-              <button onClick={() => join(draftName, draftColor)} className="btn btn-brand btn-sm ml-auto">Betreed →</button>
-            </div>
-            <div className="mt-3 text-[12px] text-fg-dim">Voorbeeld: <StyledName name={draftName || "operator"} color={draftColor} level={level} showTitle /></div>
+            ) : (
+              <div>
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="text-[13px] font-semibold">Jouw profiel</span>
+                  <span className="text-[11px] text-fg-dim font-mono">handle &amp; kleur</span>
+                </div>
+                <div className="flex flex-wrap items-center gap-2.5">
+                  <input
+                    value={draftName}
+                    onChange={(e) => setDraftName(e.target.value.slice(0, 24))}
+                    onKeyDown={(e) => { if (e.key === "Enter") saveEdit(); }}
+                    className="h-10 px-3.5 rounded-xl bg-sunken border border-line font-mono text-[14px] outline-none focus:border-brand/50 w-[200px]"
+                    aria-label="Jouw handle"
+                  />
+                  <button onClick={() => setDraftName(useIdentity.getState().randomName())} className="btn btn-ghost btn-sm" title="Willekeurige naam">🎲</button>
+                  <div className="flex items-center gap-1.5 ml-1">
+                    {PALETTE.map((c) => (
+                      <button key={c} onClick={() => setDraftColor(c)} aria-label={`kleur ${c}`}
+                        className={`w-6 h-6 rounded-full transition-transform ${draftColor === c ? "ring-2 ring-offset-2 ring-offset-canvas scale-110" : "hover:scale-110"}`}
+                        style={{ background: c, boxShadow: draftColor === c ? `0 0 12px ${c}` : undefined }} />
+                    ))}
+                  </div>
+                  <div className="ml-auto flex gap-2">
+                    <button onClick={() => setEditing(false)} className="btn btn-ghost btn-sm">annuleer</button>
+                    <button onClick={saveEdit} className="btn btn-brand btn-sm">Bewaar</button>
+                  </div>
+                </div>
+                <div className="mt-3 text-[12px] text-fg-dim">Voorbeeld: <StyledName name={draftName || "operator"} color={draftColor} level={level} showTitle /></div>
+              </div>
+            )}
           </div>
         </Reveal>
       )}
