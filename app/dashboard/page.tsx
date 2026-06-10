@@ -51,7 +51,7 @@ export default function DashboardPage() {
   const xpToNext = Math.max(0, level.nextAt - xp);
 
   return (
-    <div className="mx-auto w-full max-w-[1180px] px-5 sm:px-7 py-8 sm:py-10">
+    <div className="mx-auto w-full max-w-[1320px] px-5 sm:px-7 py-8 sm:py-10">
       {/* ───────── HERO ───────── */}
       <div className="relative overflow-hidden rounded-[26px] border border-line bg-panel/60 p-6 sm:p-8">
         <div className="absolute inset-0 -z-10 bg-brand-gradient-soft opacity-50" />

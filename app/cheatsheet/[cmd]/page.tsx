@@ -10,7 +10,7 @@ export function generateMetadata({ params }: { params: { cmd: string } }) {
 export default function CheatsheetCmdPage({ params }: { params: { cmd: string } }) {
   const name = decodeURIComponent(params.cmd);
   return (
-    <div className="mx-auto w-full max-w-[1180px] px-5 sm:px-7 py-8 sm:py-10">
+    <div className="mx-auto w-full max-w-[1320px] px-5 sm:px-7 py-8 sm:py-10">
       <div className="mb-5 text-[13px] text-fg-dim font-mono">
         <Link href="/cheatsheet" className="hover:text-fg transition-colors">cheat-sheet</Link>
         <span className="mx-1.5">/</span>

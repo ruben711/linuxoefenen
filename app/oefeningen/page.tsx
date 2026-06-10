@@ -46,7 +46,7 @@ export default function OefeningenPage() {
   const shown = shownGroups.reduce((n, g) => n + g.items.length, 0);
 
   return (
-    <div className="mx-auto w-full max-w-[1180px] px-4 sm:px-6 py-6 sm:py-8">
+    <div className="mx-auto w-full max-w-[1320px] px-4 sm:px-6 py-6 sm:py-8">
       {/* Titelbalk */}
       <div className="flex items-center justify-between gap-4 border-b border-line pb-2.5">
         <span className="font-mono text-[12px] uppercase tracking-[0.18em] text-fg-dim">

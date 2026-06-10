@@ -5,7 +5,7 @@ export const metadata = { title: "Cheat-sheet — BashAcademy" };
 
 export default function CheatsheetPage() {
   return (
-    <div className="mx-auto w-full max-w-[1180px] px-5 sm:px-7 py-8 sm:py-10">
+    <div className="mx-auto w-full max-w-[1320px] px-5 sm:px-7 py-8 sm:py-10">
       <Reveal>
         <span className="kicker">openboek · altijd binnen handbereik</span>
         <h1 className="mt-3 text-4xl font-bold tracking-tight">

@@ -12,7 +12,7 @@ export default function ComingSoon({
   cmd?: string;
 }) {
   return (
-    <div className="mx-auto w-full max-w-[1180px] px-5 sm:px-7 py-24">
+    <div className="mx-auto w-full max-w-[1320px] px-5 sm:px-7 py-24">
       <div className="mx-auto max-w-xl text-center">
         <div className="mx-auto grid place-items-center w-16 h-16 rounded-2xl bg-sunken border border-line text-3xl mb-6 animate-pop">
           {icon}

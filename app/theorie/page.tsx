@@ -12,7 +12,7 @@ export default function TheoriePage() {
   const total = getTheory().length;
 
   return (
-    <div className="mx-auto w-full max-w-[1180px] px-5 sm:px-7 py-8 sm:py-10">
+    <div className="mx-auto w-full max-w-[1320px] px-5 sm:px-7 py-8 sm:py-10">
       <Reveal>
         <span className="kicker">study-mode · geen XP</span>
         <div className="mt-3 flex items-end justify-between gap-4 flex-wrap">

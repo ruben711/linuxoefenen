@@ -41,7 +41,7 @@ export default function Home() {
     <div className="overflow-clip">
       {/* ══════════════ HERO ══════════════ */}
       <section className="relative">
-        <div className="mx-auto w-full max-w-[1180px] px-5 sm:px-7 pt-16 pb-20 lg:pt-24 lg:pb-28">
+        <div className="mx-auto w-full max-w-[1320px] px-5 sm:px-7 pt-16 pb-20 lg:pt-24 lg:pb-28">
           <div className="grid lg:grid-cols-[1.05fr_1fr] gap-12 lg:gap-10 items-center">
             <div className="animate-rise">
               <span className="kicker">Linux · Bash · openboek</span>
@@ -83,7 +83,7 @@ export default function Home() {
       </section>
 
       {/* ══════════════ FEATURES ══════════════ */}
-      <section className="mx-auto w-full max-w-[1180px] px-5 sm:px-7 py-10">
+      <section className="mx-auto w-full max-w-[1320px] px-5 sm:px-7 py-10">
         <Reveal>
           <h2 className="text-[clamp(1.7rem,3.4vw,2.4rem)] font-bold tracking-tight text-balance">
             Niet nog een tutorial. <span className="text-fg-dim">Een oefenterrein.</span>
@@ -108,7 +108,7 @@ export default function Home() {
       </section>
 
       {/* ══════════════ CURRICULUM ══════════════ */}
-      <section className="mx-auto w-full max-w-[1180px] px-5 sm:px-7 py-16">
+      <section className="mx-auto w-full max-w-[1320px] px-5 sm:px-7 py-16">
         <Reveal>
           <span className="kicker">Het volledige pad</span>
           <h2 className="mt-4 text-[clamp(1.7rem,3.4vw,2.4rem)] font-bold tracking-tight">
@@ -134,7 +134,7 @@ export default function Home() {
       </section>
 
       {/* ══════════════ CTA ══════════════ */}
-      <section className="mx-auto w-full max-w-[1180px] px-5 sm:px-7 pb-8">
+      <section className="mx-auto w-full max-w-[1320px] px-5 sm:px-7 pb-8">
         <Reveal>
           <div className="relative overflow-hidden rounded-[28px] border border-line bg-panel/60 p-10 sm:p-14 text-center">
             <div className="absolute inset-0 -z-10 bg-brand-gradient-soft opacity-60" />

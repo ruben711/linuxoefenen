@@ -48,7 +48,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <BackgroundField />
             <div className="min-h-screen flex flex-col">
               <header className="sticky top-0 z-40 glass border-b border-line/80">
-                <div className="mx-auto w-full max-w-[1180px] h-14 px-5 sm:px-7 flex items-center gap-4">
+                <div className="mx-auto w-full max-w-[1320px] h-14 px-5 sm:px-7 flex items-center gap-4">
                   <Link href="/" className="flex items-center gap-2.5 shrink-0 group" aria-label="BashAcademy home">
                     <span className="relative grid place-items-center w-9 h-9 rounded-xl bg-brand-gradient font-mono text-[14px] font-bold text-on-brand shadow-glow-soft transition-transform duration-300 group-hover:scale-105">
                       <span className="relative z-10">~$</span>
