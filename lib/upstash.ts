@@ -29,4 +29,6 @@ export const redis = {
   zcard: (key: string) => cmd<number>(["ZCARD", key]),
   hset: (key: string, field: string, value: string) => cmd(["HSET", key, field, value]),
   hmget: (key: string, fields: string[]) => cmd<(string | null)[]>(["HMGET", key, ...fields]),
+  hdel: (key: string, field: string) => cmd<number>(["HDEL", key, field]),
+  zrem: (key: string, member: string) => cmd<number>(["ZREM", key, member]),
 };
