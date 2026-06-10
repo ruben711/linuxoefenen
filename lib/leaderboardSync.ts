@@ -1,4 +1,6 @@
 "use client";
+import { useProgress } from "./store";
+import { useIdentity } from "./identity";
 
 export type Operator = {
   uid?: string;
@@ -44,4 +46,21 @@ export async function syncMe(op: Operator & { uid: string }): Promise<boolean> {
   } catch {
     return false;
   }
+}
+
+/** Duwt je huidige voortgang naar de ranglijst — roep dit aan na élke oplossing.
+ *  No-op zonder server (demo-modus) of als je nog niet aangesloten bent. */
+export function syncProgress(): void {
+  const id = useIdentity.getState();
+  if (!id.hasJoinedBoard || !id.uid) return;
+  const p = useProgress.getState();
+  void syncMe({
+    uid: id.uid,
+    name: id.name ?? "operator",
+    color: id.color,
+    xp: p.xp,
+    level: p.level().level,
+    streak: p.streakDays,
+    solved: Object.keys(p.solved).length,
+  });
 }

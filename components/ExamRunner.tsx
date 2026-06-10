@@ -9,6 +9,7 @@ import { COMMAND_NAMES } from "@/lib/commands";
 import { gradeCommand, gradeStep } from "@/lib/bashGrader";
 import { randomSample, chapters as allChapters, type Exercise } from "@/lib/exercises";
 import { useProgress } from "@/lib/store";
+import { syncProgress } from "@/lib/leaderboardSync";
 
 const DIFF_LABEL: Record<string, string> = { easy: "Makkelijk", medium: "Gemiddeld", hard: "Moeilijk", insane: "Insane" };
 const fmtTime = (s: number) => `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}`;
@@ -91,7 +92,7 @@ export default function ExamRunner() {
     const ex = pool[idx];
     if (ex) {
       setResults((r) => ({ ...r, [ex.id]: { correct: asCorrect, skipped: !asCorrect && !solvedNow } }));
-      if (asCorrect) recordAttempt({ exerciseId: ex.id, correct: true, command: ex.solution ?? "", difficulty: ex.difficulty });
+      if (asCorrect) { recordAttempt({ exerciseId: ex.id, correct: true, command: ex.solution ?? "", difficulty: ex.difficulty }); syncProgress(); }
     }
     if (idx >= pool.length - 1) { setPhase("done"); return; }
     const next = idx + 1;

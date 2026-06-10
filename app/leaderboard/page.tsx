@@ -85,7 +85,7 @@ export default function LeaderboardPage() {
   useEffect(() => { if (mounted) refresh(); /* eslint-disable-next-line */ }, [mounted, hasJoined]);
   useEffect(() => {
     if (!mounted || !configured) return;
-    const t = setInterval(() => fetchBoard().then((r) => { setConfigured(r.configured); setBoard(r.board); }), 20000);
+    const t = setInterval(() => fetchBoard().then((r) => { setConfigured(r.configured); setBoard(r.board); }), 10000);
     return () => clearInterval(t);
   }, [mounted, configured]);
 

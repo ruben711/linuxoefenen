@@ -1,13 +1,24 @@
 import { NextResponse } from "next/server";
 import { redis, upstashConfigured } from "@/lib/upstash";
+import exercises from "@/data/exercises.json";
 
 export const runtime = "edge";
 export const dynamic = "force-dynamic";
 
 const KEY_OPS = "lb:ops";
 const KEY_RANK = "lb:rank";
+const XP_PER = 25;                                              // flat 25 XP per opgeloste oefening
+const TOTAL = Array.isArray(exercises) ? (exercises as unknown[]).length : 400;
+const MAX_XP = TOTAL * XP_PER;                                  // absolute bovengrens
 const num = (v: unknown, max = 1e9) => Math.max(0, Math.min(max, Math.round(Number(v) || 0)));
 const str = (v: unknown, n: number) => String(v ?? "").slice(0, n);
+
+/** Level afgeleid van XP — zelfde curve als de client (need ×1.25). Server-bepaald, dus onvervalsbaar. */
+function deriveLevel(xp: number): number {
+  let lvl = 1, need = 100, acc = 0;
+  while (xp >= acc + need) { acc += need; lvl++; need = Math.round(need * 1.25); }
+  return lvl;
+}
 
 /** Eén ranglijst-rij per IP: we sleutelen op een hash van het IP (privacy + anti-misbruik). */
 async function ipKey(req: Request): Promise<string> {
@@ -42,11 +53,13 @@ export async function POST(req: Request) {
   try {
     const b = await req.json();
     const key = await ipKey(req);
-    const xp = num(b.xp);
+    // Server-side begrenzing: XP is niet te vervalsen tot miljoenen.
+    const solved = num(b.solved, TOTAL);                       // ≤ aantal oefeningen
+    const xp = Math.min(num(b.xp), solved * XP_PER, MAX_XP);   // ≤ 25 per oplossing, ≤ totaal
     const entry = {
       name: str(b.name, 24) || "anoniem",
-      xp, level: num(b.level, 999), streak: num(b.streak, 9999),
-      solved: num(b.solved, 99999), color: str(b.color, 9), ts: Date.now(),
+      xp, level: deriveLevel(xp), streak: num(b.streak, 3650),
+      solved, color: str(b.color, 9), ts: Date.now(),
     };
     await redis.hset(KEY_OPS, key, JSON.stringify(entry));
     await redis.zadd(KEY_RANK, xp, key);

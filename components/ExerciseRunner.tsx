@@ -11,6 +11,7 @@ import { gradeCommand, gradeStep } from "@/lib/bashGrader";
 import { useProgress } from "@/lib/store";
 import { useMounted } from "@/lib/useMounted";
 import { useXpToast } from "@/lib/xpToast";
+import { syncProgress } from "@/lib/leaderboardSync";
 import type { VFS } from "@/lib/vfs";
 import type { Exercise } from "@/lib/exercises";
 
@@ -62,7 +63,7 @@ export default function ExerciseRunner({ exercise: ex }: { exercise: Exercise })
     if (!val) return;
     const ok = gradeCommand(ex, val, "").correct;
     const gain = recordAttempt({ exerciseId: ex.id, correct: ok, command: val, difficulty: ex.difficulty });
-    if (ok) { setSolved(true); setWrong(false); flash("solved"); if (gain > 0) useXpToast.getState().show(gain); }
+    if (ok) { setSolved(true); setWrong(false); flash("solved"); if (gain > 0) useXpToast.getState().show(gain); syncProgress(); }
     else setWrong(true);
   }
 
@@ -77,13 +78,13 @@ export default function ExerciseRunner({ exercise: ex }: { exercise: Exercise })
         if (ok) {
           if (step >= steps.length - 1) {
             const gain = recordAttempt({ exerciseId: ex.id, correct: true, command: cmd.trim(), difficulty: ex.difficulty });
-            setSolved(true); flash("solved"); if (gain > 0) useXpToast.getState().show(gain);
+            setSolved(true); flash("solved"); if (gain > 0) useXpToast.getState().show(gain); syncProgress();
           } else { setStep((s) => s + 1); flash("step"); }
         }
       } else {
         const ok = gradeCommand(ex, cmd, r.stdoutText).correct;
         const gain = recordAttempt({ exerciseId: ex.id, correct: ok, command: cmd.trim(), difficulty: ex.difficulty });
-        if (ok) { setSolved(true); flash("solved"); if (gain > 0) useXpToast.getState().show(gain); }
+        if (ok) { setSolved(true); flash("solved"); if (gain > 0) useXpToast.getState().show(gain); syncProgress(); }
       }
     }
     return { lines: r.lines, clear: r.clear, promptPath: vfs.promptPath(), root: vfs.user === "root" };
