@@ -9,6 +9,7 @@ export type Operator = {
   solved: number;
   color?: string;
   ts?: number;
+  you?: boolean;   // door de server gezet o.b.v. IP (jouw eigen rij)
 };
 
 /** Linux-rang afgeleid van je level (geen invoer nodig). */

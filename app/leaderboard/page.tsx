@@ -90,13 +90,14 @@ export default function LeaderboardPage() {
   }, [mounted, configured]);
 
   const rows = useMemo(() => {
-    let list = configured ? [...board] : [...DEMO];
-    if (hasJoined) list = [...list.filter((o) => o.uid !== uid && o.name !== me.name), me];
-    return list.sort((a, b) => b.xp - a.xp).slice(0, 50);
-  }, [board, configured, hasJoined, me, uid]);
+    // Server-modus: het bord is gezaghebbend (1 rij per IP, met you-vlag) — niet lokaal mergen.
+    if (configured) return [...board].sort((a, b) => b.xp - a.xp).slice(0, 50);
+    const base = hasJoined ? [...DEMO, me] : [...DEMO];
+    return base.sort((a, b) => b.xp - a.xp).slice(0, 50);
+  }, [board, configured, hasJoined, me]);
 
   const maxXp = Math.max(1, ...rows.map((r) => r.xp));
-  const myRank = rows.findIndex((r) => r.uid === uid) + 1;
+  const myRank = rows.findIndex((r) => (configured ? r.you : r.uid === uid)) + 1;
   const totalXp = rows.reduce((a, r) => a + r.xp, 0);
 
   return (
@@ -193,7 +194,7 @@ export default function LeaderboardPage() {
             {/* rijen */}
             <div className="divide-y divide-white/5">
               {rows.map((op, i) => {
-                const isMe = hasJoined && op.uid === uid;
+                const isMe = configured ? !!op.you : (hasJoined && op.uid === uid);
                 const c = op.color || "#E95420";
                 return (
                   <div key={op.uid ?? op.name + i}
